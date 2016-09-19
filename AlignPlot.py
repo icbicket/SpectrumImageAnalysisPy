@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import itertools as itr
 
 class AlignPlot(object):
-#Class to define plot for interactive aligning of images
+	#Class to define plot for interactive aligning of images
 	def __init__(self, ImgAligner):
 		self.ImgAligner = ImgAligner
 		self.fig = plt.figure()
@@ -19,7 +19,7 @@ class AlignPlot(object):
 		self.ax.cla()
 		self.ax.imshow(self.ImgAligner.Images[0].Img, interpolation = 'none', 
 			clim = self.ImgAligner.Images[0].Imglim, cmap = 'Blues')
-
+## Fix rollover error - rolled full cycle
 		ImgOver = np.roll(np.roll(self.ImgAligner.Images[self.Index].Img, 
 			self.ImgAligner.offsets[0][self.Index], axis = 1), 
 			self.ImgAligner.offsets[1][self.Index], axis = 0)
@@ -29,21 +29,20 @@ class AlignPlot(object):
 		self.fig.canvas.draw()
 
 	def MoveImg(self, event):
-#Calculations to do on pressing a button - arrow keys to move top image to overlay the bottom
-			if event.key == 'right':
-				self.ImgAligner.offsets[0][self.Index] += 1
-			elif event.key == 'left':
-				self.ImgAligner.offsets[0][self.Index] -= 1
-			elif event.key == 'up':
-				self.ImgAligner.offsets[1][self.Index] -= 1
-			elif event.key == 'down':
-				self.ImgAligner.offsets[1][self.Index] += 1
-			elif event.key == 'n':
-				self.Index = next(self.IndGen)
-			elif event.key == 'enter':
-				self.fig.canvas.mpl_disconnect(self.cidkey)
-				print self.ImgAligner.offsets
-				plt.close()
-			else:
-				return
-			self.ShowImages()
+		#Calculations to do on pressing a button - arrow keys to move top image to overlay the bottom
+		if event.key == 'right':
+			self.ImgAligner.offsets[0][self.Index] += 1
+		elif event.key == 'left':
+			self.ImgAligner.offsets[0][self.Index] -= 1
+		elif event.key == 'up':
+			self.ImgAligner.offsets[1][self.Index] -= 1
+		elif event.key == 'down':
+			self.ImgAligner.offsets[1][self.Index] += 1
+		elif event.key == 'n':
+			self.Index = next(self.IndGen)
+		elif event.key == 'enter':
+			self.fig.canvas.mpl_disconnect(self.cidkey)
+			plt.close()
+		else:
+			return
+		self.ShowImages()
