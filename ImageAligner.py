@@ -1,5 +1,6 @@
 import numpy as np
 import Image
+import sys
 
 class ImageAligner(object):
 	"""Holds list of images (Image class) which need aligning to each other"""
@@ -10,6 +11,7 @@ class ImageAligner(object):
 		# Pad all images to the maximum image size - make all same shape
 		self.xmax = max(i.size[0] for i in self.Images)
 		self.ymax = max(i.size[1] for i in self.Images)
+		
 		for ii in self.Images:
 			sizediff = np.subtract((self.xmax, self.ymax), ii.size)
 			pad = ((0, sizediff[0]), (0, sizediff[1]))
