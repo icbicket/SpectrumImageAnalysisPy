@@ -14,7 +14,7 @@ p1 = Image.Image(p1shaped)
 p2 = Image.Image(data.coins())
 p3 = Image.Image(data.chelsea()[:, :, 0])
 p4 = Image.Image(data.astronaut()[:, :, 0])
-#print np.shape(p1.Img), np.shape(p2.Img), np.shape(p3.Img), np.shape(p4.Img)
+#print np.shape(p1.data), np.shape(p2.data), np.shape(p3.data), np.shape(p4.data)
 
 offsets = AlignLib.Align((p1,p2,p3,p4))
 #print offsets
@@ -41,7 +41,7 @@ def FindRectangleIntersectionWillsWay(r1, r2):
 
 #maxcorners = np.roll(np.transpose((p1.size, p2.size, p3.size, p4.size)), 1, axis = 0)
 #overlapcorners = (np.max(offsets, axis = 1), np.min(maxcorners+offsets, axis = 1))
-#p2_alignedtest = p2.Img[overlapcorners[0][1] - offsets[1][1]:overlapcorners[1][1]-offsets[1][1], overlapcorners[0][0] - offsets[0][1]:overlapcorners[1][0] - offsets[0][1]]
+#p2_alignedtest = p2.data[overlapcorners[0][1] - offsets[1][1]:overlapcorners[1][1]-offsets[1][1], overlapcorners[0][0] - offsets[0][1]:overlapcorners[1][0] - offsets[0][1]]
 print (offsets)
 AlignCrop.AlignCrop((p1, p2, SpectrumImage.SpectrumImage(data.chelsea()), SpectrumImage.SpectrumImage(data.astronaut())), offsets)
 
@@ -49,8 +49,8 @@ AlignCrop.AlignCrop((p1, p2, SpectrumImage.SpectrumImage(data.chelsea()), Spectr
 
 fig = plt.figure()
 ax = plt.axes([0,0,1,1])
-ax.imshow(p3.Img, interpolation = 'none', cmap = 'gray')
-ax.imshow(p1.Img, interpolation = 'none', cmap = 'Reds', alpha = 0.2)
+ax.imshow(p3.data, interpolation = 'none', cmap = 'gray')
+ax.imshow(p1.data, interpolation = 'none', cmap = 'Reds', alpha = 0.2)
 #ax.imshow(p4_aligned, interpolation = 'none', cmap = 'hot', alpha = 0.2)
 #ax.imshow(p1_aligned, alpha = 0.2, cmap = 'Blues', interpolation = 'none')
 #ax.imshow(mask, cmap = 'gray', alpha = 0.8)

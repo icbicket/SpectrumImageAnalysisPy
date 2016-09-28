@@ -11,20 +11,20 @@ class CLSet(object):
 		"""Perform dark correction on sample and on substrate"""
 		self.sample_dark = CLSpectrumData.CLDataSet(
 			SI = self.SpectrumSubtraction(self.SampleSI, self.darkSI), 
-			SEM = self.SampleSI.SEM.Img, 
-			survey = self.SampleSI.survey.Img)
+			SEM = self.SampleSI.SEM.data, 
+			survey = self.SampleSI.survey.data)
 		self.substrate_dark = CLSpectrumData.CLDataSet(
 			SI = self.SpectrumSubtraction(self.substrateSI, self.darkSI), 
-			SEM = self.SampleSI.SEM.Img, 
-			survey = self.SampleSI.survey.Img)
+			SEM = self.SampleSI.SEM.data, 
+			survey = self.SampleSI.survey.data)
 		"""Perform substrate correction on sample data"""
 		self.sample_dark_substrate = CLSpectrumData.CLDataSet(
 			SI = self.SpectrumSubtraction(self.sample_dark, self.substrate_dark), 
-			SEM = self.SampleSI.SEM.Img, 
-			survey = self.SampleSI.survey.Img)
+			SEM = self.SampleSI.SEM.data, 
+			survey = self.SampleSI.survey.data)
 
 	def SpectrumSubtraction(self, spectra, correction):
-		corrected = spectra.SI.data - np.mean(np.mean(correction.SI.data, axis = -1, keepdims = True), axis = -2, keepdims = True)
+		corrected = spectra.SI.data - np.mean(np.mean(correction.SI.data, axis = 0, keepdims = True), axis = 1, keepdims = True)
 		return corrected
 
 class PolarimetrySet(object):
@@ -36,16 +36,17 @@ class PolarimetrySet(object):
 		self.QWP270Pol90 = PolSetData['QWP270_Pol90']
 		self.QWP270Pol135 = PolSetData['QWP270_Pol135']
 		self.QWP45Pol135 = PolSetData['QWP45_Pol135']
-		self.offsets = AlignLib.Align(PolSetData)
-#		self.S0_total = self.QWP270Pol90.SI + self.QWP0Pol0.SI
 
-#		self.S1 = self.QWP270Pol90.SI - self.QWP0Pol0.SI
-#		self.S2 = self.QWP45Pol135.SI - self.QWP315Pol45.SI
-#		self.S3 = self.QWP270Pol135.SI - self.QWP270Pol45.SI
+		'''Stokes parameters calculation'''
+		self.S0_total = self.QWP270Pol90.SampleSI.SI.data + self.QWP0Pol0.SampleSI.SI.data
 
-#		self.DoP = np.sqrt(S1**2 + S2**2 + S3**2)/S0
-#		self.S0_pol = self.DoP * self.S0_total
-#		self.S0_unpol = (1 - self.DoP) * self.S0_total
+		self.S1 = self.QWP270Pol90.SampleSI.SI.data - self.QWP0Pol0.SampleSI.SI.data
+		self.S2 = self.QWP45Pol135.SampleSI.SI.data - self.QWP315Pol45.SampleSI.SI.data
+		self.S3 = self.QWP270Pol135.SampleSI.SI.data - self.QWP270Pol45.SampleSI.SI.data
+
+		self.DoP = np.sqrt(self.S1**2 + self.S2**2 + self.S3**2)/self.S0_total
+		self.S0_pol = self.DoP * self.S0_total
+		self.S0_unpol = (1 - self.DoP) * self.S0_total
 #	def MoveAlignedImages(self):
 #		
 

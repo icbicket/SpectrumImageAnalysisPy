@@ -17,10 +17,10 @@ class AlignPlot(object):
 	def ShowImages(self):
 		#Refresh the axis and plot a pair of images
 		self.ax.cla()
-		self.ax.imshow(self.ImgAligner.Images[0].Img, interpolation = 'none', 
+		self.ax.imshow(self.ImgAligner.Images[0].data, interpolation = 'none', 
 			clim = self.ImgAligner.Images[0].Imglim, cmap = 'Blues')
 ## Fix rollover error - rolled full cycle
-		ImgOver = np.roll(np.roll(self.ImgAligner.Images[self.Index].Img, 
+		ImgOver = np.roll(np.roll(self.ImgAligner.Images[self.Index].data, 
 			self.ImgAligner.offsets[0][self.Index], axis = 1), 
 			self.ImgAligner.offsets[1][self.Index], axis = 0)
 		self.ax.imshow(ImgOver, interpolation = 'none', 

@@ -36,4 +36,5 @@ class CLDataSet(object):
 	@classmethod
 	def LoadFromFile(cls, filename):
 		SI, SEM, survey, fuzzing = Readh5SI(filename)
+		SI = np.transpose(np.squeeze(SI), (1, 2, 0))
 		return cls(SI=SI, SEM=SEM, survey=survey, fuzzing=fuzzing)
