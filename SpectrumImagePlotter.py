@@ -20,6 +20,18 @@ class SpectrumImagePlotter(object):
 		self.Emin_i = 0
 		self.Emax_i = 0
 		
+		# Image axis plotting and interactive patches
+		self.summedim = np.sum(self.SI.data[:, :, self.Emin_i:(self.Emax_i)], axis = 2)
+		
+		# Contrast histogram plotting and interactive span
+		self.contrast_ax.set_axis_off()
+		self.contrastbins = 256
+		self.summedimhist, self.summedimbins = np.histogram(self.summedim, bins = self.contrastbins)
+		self.contrast_ax.plot(self.summedimhist[1:])
+		self.contrast_span = SpanSelector(self.hist_ax, self.ImgContrast, 'horizontal',
+			span_stays = True, minspan = 1)
+		self.contrast_ax.axis('off')
+		
 	def Espan(self, Emin, Emax): ##Note: draws sub-pixel Espan, fix?
 		Emin = np.round(Emin/self.SI.dispersion) * self.SI.dispersion
 		Emax = np.round(Emax/self.SI.dispersion) * self.SI.dispersion

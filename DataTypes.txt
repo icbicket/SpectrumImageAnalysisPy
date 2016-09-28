@@ -1,0 +1,55 @@
+DATA
+Spectrum Image
+	- CL
+		- (X by Y) by Wavelength
+	- EELS
+		- (X by Y) by Energy
+		
+Spectrum
+	- CL
+		- Intensity vs Wavelength
+	- EELS
+		- Intensity vs Energy
+		
+Image
+	- CL/EELS
+		- X by Y
+	- Includes pixel calibration (eg, nm per pixel)
+
+CLDataSet
+	- Import for a single CL data file
+	- Contains one SpectrumImage, one SEM Image, one survey Image
+	
+CLSet
+	- Set of CL data including associated datasets for dark and substrate references
+	- Three CLDataSets (sample, dark, substrate)
+	
+Polarimetry set
+	- Six CLSets corresponding to six polarization states
+		
+PLOTTERS
+Spectrum Image Plotter
+	- Input: 
+		- Spectrum Image
+	- Output:
+		- Interactive plot figure
+	- Control of figure and four (interactive) axes
+		- Axis for Image (display whole image) (Given to Image Plotter)
+		- Axis for Image (display patch areas only)
+		- Axis for Image contrast histogram
+		- Axis for Spectrum (CL or EELS) (Given to Spectrum Plotter)
+		
+Spectrum Plotter
+	- Input:
+		- Axis to plot in 
+		- Spectrum (CL or EELS), x and y data
+		- units (nm or eV)
+	- Output:
+		- Data plotted in labeled axis
+		
+Image Plotter
+	- Input:
+		- Axis to plot in
+		- Image (2D array)
+	- Output
+		- Image plotted in given axis, with appropriate labels/scalebar
