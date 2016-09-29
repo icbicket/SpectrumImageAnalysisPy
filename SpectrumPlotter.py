@@ -8,56 +8,60 @@ c = 299792458
 eC = 1.6021766208e-19
 
 class SpectrumPlotter(object):
-	def __init__(self, axis, x, y, unit = ''):
+	def __init__(self, spectrum, axis, colour='red'):
 		'''Line plot with span selector
 		   Input: matplotlib axis object, x and y data points
 			 x and y are arrays for plotting against each other
 		   '''
+		self.main_axis = axis
+		self.line_colour = colour
+		self.linked_axis = self.main_axis.twiny()
+		self.spectrum = spectrum
+		self.main_axis.set_ylabel(r"Intensity (a.u.)")
+		self.linked_axis.format_coord = self.axis_display
+		
+		
 
-		self.x = x
-		self.x_dispersion = x[1] - x[0]
-		self.y = y
-		self.units = unit
-
-
-		if 'nm' in self.units:
-			self.wvl_axis = axis
-			self.wvl_axis.plot(self.x, self.y)
-			formatter = FuncFormatter(nmtoeV)
-			self.ene_axis = self.wvl_axis.twiny()
-			self.ene_axis.plot(self.x, self.y)
-			self.ene_axis.clear()
-			self.ene_axis.xaxis.set_major_formatter(formatter)
-		else:
-			self.ene_axis = axis
-			self.ene_axis.plot(self.x, self.y)
-			formatter = FuncFormatter(eVtonm)
-			self.wvl_axis = self.ene_axis.twiny()
-			self.wvl_axis.plot(self.x, self.y)
-			self.wvl_axis.clear()
-			self.wvl_axis.xaxis.set_major_formatter(formatter)
-			
-		self.ene_axis.set_xlabel(r"Energy (eV)")
-		self.ene_axis.set_ylabel(r"Intensity (a.u.)")
-		self.wvl_axis.set_xlabel(r"Wavelength (nm)")
+		
+class CLSpectrumPlotter(SpectrumPlotter):
+	def __init__(self, spectrum, axis, colour='red'):
+		super(CLSpectrumPlotter, self).__init__(spectrum, axis, colour)
+		formatter = FuncFormatter(nmtoeV)
+		self.main_axis.plot(spectrum.WavelengthRange, spectrum.intensity, self.line_colour)
+		self.linked_axis.plot(spectrum.WavelengthRange, spectrum.intensity)
+		self.linked_axis.clear()
+		self.linked_axis.xaxis.set_major_formatter(formatter)
+		self.main_axis.set_xlabel(r"Wavelength (%s)" % spectrum.units)
+		self.linked_axis.set_xlabel(r"Energy (%s)" % spectrum.secondary_units)
+		self.linked_axis.format_coord = self.axis_display
+		plt.gcf().canvas.draw()
+		
+	def axis_display(self, x, y):
+	    return 'Energy=%0.4g eV, Wavelength=%0.3g nm, I=%0.5g' % (x, float(nmtoeV(x)), y)
+	
+class EELSSpectrumPlotter(SpectrumPlotter):
+	def __init__(self, spectrum, axis, colour='blue'):
+		super(EELSSpectrumPlotter, self).__init__(spectrum, axis, colour)
+		formatter = FuncFormatter(eVtonm)
+		self.main_axis.plot(spectrum.EnergyRange, spectrum.intensity, self.line_colour)
+		self.linked_axis.plot(spectrum.EnergyRange, spectrum.intensity)
+		self.linked_axis.clear()
+		self.linked_axis.xaxis.set_major_formatter(formatter)
+		self.main_axis.set_xlabel(r"Energy (%s)" % spectrum.units)
+		self.linked_axis.set_xlabel(r"Wavelength (%s)" % spectrum.secondary_units)
 		plt.gcf().canvas.draw()
 
-
-
-
-#self.E_span = SpanSelector(self.axis, self.Espan, 'horizontal', 
-#					span_stays = True)
-#		self.Emin_i = 0
-#		self.Emax_i = 1
+	def axis_display(self, x, y):
+				return 'Energy=%0.3g eV, Wavelength=%0.2g nm, I=%1.5f' % (x, float(eVtonm(x)), y)
 
 def eVtonm(eV, pos=None):
     nm = h*c/(eC*abs(eV))*1e9
     if np.isfinite(nm): nm = int(nm)
-    return "%.4g" % nm
+    return "%.3g" % nm
 
 def nmtoeV(nm, pos=None):
 	eV = h*c/(eC*abs(nm))*1e9
-	return "%.4g" % eV
+	return "%.3g" % eV
 
 #	def Espan(self, Emin, Emax): ##Note: draws sub-pixel Espan, fix?
 #		Emin = np.round(Emin/self.x_dispersion) * self.x_dispersion
