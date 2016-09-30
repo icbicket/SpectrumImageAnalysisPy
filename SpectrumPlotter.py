@@ -10,18 +10,18 @@ eC = 1.6021766208e-19
 class SpectrumPlotter(object):
 	def __init__(self, spectrum, axis, colour='red'):
 		'''Line plot with span selector
-		   Input: matplotlib axis object, x and y data points
-			 x and y are arrays for plotting against each other
+		   Input: matplotlib axis object, Spectrum object to plot
 		   '''
 		self.main_axis = axis
 		self.line_colour = colour
 		self.linked_axis = self.main_axis.twiny()
 		self.spectrum = spectrum
-		self.main_axis.plot(spectrum.SpectrumRange, spectrum.intensity, self.line_colour)
+
 		self.main_axis.set_xlabel(r"%s (%s)" % (spectrum.unit_label, spectrum.units))
 		self.main_axis.set_ylabel(r"Intensity (a.u.)")
 		self.setup_linked_axis(self.spectrum.SpectrumRange, 
 			r"%s (%s)" % (self.spectrum.secondary_unit_label, self.spectrum.secondary_units), nmtoeV)
+		self.main_axis.plot(self.spectrum.SpectrumRange, self.spectrum.intensity, self.line_colour)
 		self.linked_axis.format_coord = self.axis_display
 		plt.gcf().canvas.draw()
 		
