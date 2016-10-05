@@ -32,11 +32,6 @@ class SpectrumImagePlotter(object):
 		self.PlotImage()
 		self.PlotContrastHistogram()
 		self.PlotExtractedImage()
-		
-#		self.summedimhist, self.summedimbins = np.histogram(self.summedim, bins = self.contrastbins)
-#		self.contrast_ax.plot(self.summedimhist[1:])
-		
-		self.contrast_ax.axis('off')
 
 	def PlotSpectrum(self):
 		SpectrumPlot = SpectrumPlotter.SpectrumPlotter(
@@ -76,19 +71,7 @@ class SpectrumImagePlotter(object):
 		self.PlotContrastHistogram()
 		
 	def ContrastSpan(self, cmin, cmax):
-		self.cmin = cmin # * np.max(self.summedimbins) / self.contrastbins
-		self.cmax = cmax #* np.max(self.summedimbins) / self.contrastbins
+		self.cmin = cmin
+		self.cmax = cmax
 		self.PlotImage()
-#		self.image_ax.imshow(self.summedim, interpolation = 'none',  clim = (cmin, cmax))
-		
-#class CLSpectrumImagePlotter(SpectrumImagePlotter):
-#	def __init__(self, SI):
-#		super(CLSpectrumImagePlotter, self).__init__(SI)
-##		self.SpectrumPlot = SpectrumPlotter.CLSpectrumPlotter(
-##			self.SI.data[0,0,:], self.SI.data[1,1,:], self.spectrum_ax)
-#			
-#	def PlotSpectrum(self):
-#		print 'cl!'
-#		SpectrumPlot = SpectrumPlotter.CLSpectrumPlotter(
-#			self.SI.data[0,0,:], self.SI.data[1,1,:], self.spectrum_ax)
-#		return SpectrumPlot
+
