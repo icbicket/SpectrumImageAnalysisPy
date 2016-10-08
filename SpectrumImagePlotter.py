@@ -48,6 +48,7 @@ class SpectrumImagePlotter(object):
 	
 	def PlotImage(self):
 		self.image_ax.cla()
+		ImagePlot = ImagePlotter.ImagePlotter(Image.Image(self.summedim), self.image_ax)
 		self.image_ax.imshow(self.summedim, interpolation = 'none', 
 			cmap = 'gray', clim = (self.cmin, self.cmax))
 		self.image_ax.set_axis_off()

@@ -6,7 +6,7 @@ from matplotlib.artist import Artist
 
 class PolygonTracker(object):
 	def __init__(self, ):
-		
+		pass
 
 class PolygonMover(object):
 	''' Mostly borrowed from Matplotlib 1.5.3 example poly_editor.py
@@ -28,12 +28,18 @@ class PolygonMover(object):
 		cid = self.polygon.add_callback(self.poly_changed)
 		self._index = None
 		
-		canvas.mpl_connect('draw_event', self.draw_canvas)
-		canvas.mpl_connect('button_press_event', self.mouse_press)
-		canvas.mpl_connect('motion_notify_event', self.mouse_move)
-		canvas.mpl_connect('button_release_event', self.mouse_release)
+		self.ciddraw = canvas.mpl_connect('draw_event', self.draw_canvas)
+		self.cidpress = canvas.mpl_connect('button_press_event', self.mouse_press)
+		self.cidmotion = canvas.mpl_connect('motion_notify_event', self.mouse_move)
+		self.cidrelease = canvas.mpl_connect('button_release_event', self.mouse_release)
 #		canvas.mpl_connect('key_press_event', self.key_press)
 		self.canvas = canvas
+
+	def disconnect(self):
+		self.canvas.mpl_disconnect(self.ciddraw)
+		self.canvas.mpl_disconnect(self.cidpress)
+		self.canvas.mpl_disconnect(self.cidmotion)
+		self.canvas.mpl_disconnect(self.cidrelease)
 
 		
 	def poly_changed(self, poly):
