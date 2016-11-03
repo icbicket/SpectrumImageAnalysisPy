@@ -3,7 +3,7 @@ import numpy as np
 class Image(object):
 	def __init__(self, Img, calibration=0):
 		"""Function to initialize image class: Img = 2d numpy array"""
-		self.data = np.squeeze(Img)
+		self.data = Img
 		self.size = np.shape(self.data)
 		self.calibration = calibration # Dimension units per pixel (eg, for microscope data)
 		#Extract the contrast limits for the input image (min and max intensity value)

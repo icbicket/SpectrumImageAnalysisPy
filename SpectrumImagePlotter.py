@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.widgets import SpanSelector
 import SpectrumPlotter
+import ImagePlotter
+import Image
 
 class SpectrumImagePlotter(object):
 	def __init__(self, SI):
@@ -10,7 +12,7 @@ class SpectrumImagePlotter(object):
 		self.image_ax = plt.axes([0.075, 0.475, 0.45, 0.45])
 		self.extracted_ax = plt.axes([0.525, 0.475, 0.45, 0.45])
 		self.spectrum_ax = plt.axes([0.075, 0.07, 0.9, 0.35])
-		self.contrast_ax = plt.axes([0.075, 0.925, 0.9, 0.09])
+		self.contrast_ax = plt.axes([0.075, 0.925, 0.9, 0.075])
 
 		# Spectrum axis plotting and interactive span
 		mask3D = np.ones(self.SI.size).astype(bool)
@@ -27,12 +29,26 @@ class SpectrumImagePlotter(object):
 		
 		# Image axis plotting and interactive patches
 		self.summedim = np.sum(self.SI.data[:, :, self.Emin_i:self.Emax_i], axis = 2)
+
 		self.cmin = np.min(np.min(self.summedim))
 		self.cmax = np.max(np.max(self.summedim))
 		self.PlotImage()
 		self.PlotContrastHistogram()
+		self.extractedim = Image.Image(self.summedim * self.ImagePlot.mask)
 		self.PlotExtractedImage()
-
+		self.connect()
+	
+	def connect(self):
+		self.cidkey = self.image_ax.figure.canvas.mpl_connect('key_press_event', 
+			self.keyboard_press)
+	
+	def keyboard_press(self, event):
+		if event.inaxes != self.image_ax:
+			return
+		if event.key == 'enter':
+			self.image_ax.autoscale(tight=True)
+			print 'enter!'
+	
 	def PlotSpectrum(self):
 		SpectrumPlot = SpectrumPlotter.SpectrumPlotter(
 			self.SI.data[0,0,:], self.SI.data[1,1,:], self.spectrum_ax)
@@ -48,15 +64,23 @@ class SpectrumImagePlotter(object):
 	
 	def PlotImage(self):
 		self.image_ax.cla()
-		ImagePlot = ImagePlotter.ImagePlotter(Image.Image(self.summedim), self.image_ax)
+		self.ImagePlot = ImagePlotter.ImagePlotter(Image.Image(self.summedim), self.image_ax)
 		self.image_ax.imshow(self.summedim, interpolation = 'none', 
 			cmap = 'gray', clim = (self.cmin, self.cmax))
 		self.image_ax.set_axis_off()
 	
+	def ExtractPatch(self, mask):
+		self.extractedim = Image.Image(self.summedim * mask)
+		self.PlotExtractedImage()
+		
+	
 	def PlotExtractedImage(self):
 		self.extracted_ax.cla()
 		self.extracted_ax.set_axis_off()
-	
+		self.ExtractedImagePlot = ImagePlotter.ImagePlotter(self.extractedim, self.extracted_ax)
+		self.extracted_ax.imshow(self.summedim, interpolation = 'none',
+			cmap = 'gray', alpha = 0.3)
+		
 	def SpectrumSpan(self, Emin, Emax): ##Note: draws sub-pixel Espan, fix?
 		Emin = np.max((np.round(Emin/self.SI.dispersion) * self.SI.dispersion, 
 			self.SI.SpectrumRange[0]))
@@ -76,3 +100,21 @@ class SpectrumImagePlotter(object):
 		self.cmax = cmax
 		self.PlotImage()
 
+#class PatchWatcher(object):
+#	def __init__(self, callback):
+#		self._MaskOn = True
+#		self.callback = callback
+#		
+#	@property
+#	def MaskOn(self):
+#		return self._MaskOn
+#		
+#	@MaskOn.setter
+#	def MaskOn(self, value):
+#		print 'maskset!'
+#		self._MaskOn = value
+#		if value: self.callback()
+#		
+#	@MaskOn.deleter
+#	def MaskOn(self):
+#		del self._MaskOn

@@ -4,6 +4,8 @@ import numpy as np
 from matplotlib.patches import Polygon
 import collections
 import matplotlib.pyplot as plt
+import matplotlib.path as path
+#from SpectrumImagePlotter import PatchWatcher
 
 class PolygonGroupManager(object):
 	def __init__(self, axis):
@@ -30,9 +32,9 @@ class PolygonGroupManager(object):
 		self.RecolourGroups()
 		print self.currentID
 		
-	def NextGroup(self):
+	def NextGroup(self, step=1):
 		self.polyDict[self.currentID].Deselect()
-		self.currentID = (self.currentID + 1) % (max(self.polyDict.keys()) + 1)
+		self.currentID = (self.currentID + step) % (max(self.polyDict.keys()) + 1)
 		self.polyDict[self.currentID].SelectNext()
 		print self.currentID
 		
@@ -41,13 +43,15 @@ class PolygonGroupManager(object):
 		for (i, g) in self.polyDict.items():
 			g.SetColour(colours(i/len(self.polyDict)))
 			
-	def NextPolygon(self):
-		self.polyDict[self.currentID].SelectNext()
+	def NextPolygon(self, step=1):
+		self.polyDict[self.currentID].SelectNext(step)
 		
 	def GetActivePolygon(self):
 		return self.polyDict[self.currentID].GetActivePolygon()
 		
-
+#	def GetActiveMask(self, masksize):
+#		mask = self.polyDict[self.currentID].GetMask(masksize)
+#		return mask
 
 class PolygonGroup(object):
 	def __init__(self, axis, colour):
@@ -57,6 +61,7 @@ class PolygonGroup(object):
 		self.axis = axis
 		self.polygonList = []
 		self.selected = None
+#		self.MaskOn = PatchWatcher()
 		
 	def AddPolygon(self, polygon):
 		self.polygonList.append(polygon)
@@ -73,13 +78,13 @@ class PolygonGroup(object):
 		self.selected = i
 		self.polygonList[self.selected].set_linewidth(3)
 		
-	def SelectNext(self):
+	def SelectNext(self, step=1):
 		if not self.polygonList:
 			return
 		if self.selected is None:
 			self.Select(0)
 		else:
-			self.Select((self.selected + 1) % len(self.polygonList))
+			self.Select((self.selected + step) % len(self.polygonList))
 
 	def Deselect(self):
 		if self.selected is not None:
@@ -90,9 +95,17 @@ class PolygonGroup(object):
 		if self.selected is not None:
 			return self.polygonList[self.selected]
 		
-	def GetMask(self):
-		mesh = np.transpose(np.reshape(np.meshgrid(np.arange(self.datay), np.arange(self.datax)),
-			(2, self.datax * self.datay)))
-		testp = []
-		testp.append(np.reshape(path.Path(self.corners).contains_points(mesh), (self.datax, self.datay)))
-		mask = np.sum(testp, axis = 0)
+#	def GetMask(self, masksize):
+##		PatchWatcher.MaskOn = not PatchWatcher.MaskOn
+#		if PatchWatcher.MaskOn:
+#			mesh = np.transpose(np.reshape(np.meshgrid(np.arange(masksize[1]), np.arange(masksize[0])),
+#				(2, masksize[0] * masksize[1])))
+#			testp = []
+#			print 'mask!'
+#			for ii in self.polygonList:
+#				testp.append(np.reshape(path.Path(ii.get_xy()).contains_points(mesh), (masksize[0], masksize[1])))
+#			mask = np.sum(testp, axis = 0)
+#		else:
+#			mask = np.zeros(masksize)
+##		print PatchWatcher.MaskOn
+#		return mask

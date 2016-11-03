@@ -24,20 +24,22 @@ class PolygonCreator(object):
 		if self.polygon:
 			self.polygon.remove()
 		plt.draw()
-		
-		
+
+
 	def mouse_click(self, event):
 		if event.inaxes != self.axis:
+			return
+		if event.button == 3:
+			self.disconnect()
+			if self.callback:
+				self.callback(self.polygon)
 			return
 		if self.polygon:
 			self.polygon.remove()
 		self.vertices.append((event.xdata, event.ydata))
 		self.polygon = Polygon(self.vertices, closed = True, alpha = 0.5, color='k')
 		self.axis.add_patch(self.polygon)
-		if event.button == 3:
-			self.disconnect()
-			if self.callback:
-				self.callback(self.polygon)
+		
 		plt.draw()
 
 # Handle clicking to add vertices and return finished polygon
