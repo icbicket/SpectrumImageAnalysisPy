@@ -16,6 +16,8 @@ class PolygonGroupManager(object):
 		self.polyDict = collections.OrderedDict()
 		self.polyDict[self.currentID] = PolygonGroup(self.axis, 'k')
 		self.RecolourGroups()
+#		self.MaskOnDict = collections.OrderedDict()
+#		self.MaskOnDict[self.currentID] = False
 #		self.cmap = ...
 #		
 
@@ -49,9 +51,13 @@ class PolygonGroupManager(object):
 	def GetActivePolygon(self):
 		return self.polyDict[self.currentID].GetActivePolygon()
 		
-#	def GetActiveMask(self, masksize):
-#		mask = self.polyDict[self.currentID].GetMask(masksize)
-#		return mask
+	def GetActiveMask(self, masksize):
+		mask = self.polyDict[self.currentID].GetMask(masksize)
+		return mask
+		
+	def ToggleActiveMask(self):
+		self.polyDict[self.currentID].MaskOn = not self.polyDict[self.currentID].MaskOn
+		return self.polyDict[self.currentID].MaskOn
 
 class PolygonGroup(object):
 	def __init__(self, axis, colour):
@@ -61,7 +67,7 @@ class PolygonGroup(object):
 		self.axis = axis
 		self.polygonList = []
 		self.selected = None
-#		self.MaskOn = PatchWatcher()
+		self.MaskOn = False
 		
 	def AddPolygon(self, polygon):
 		self.polygonList.append(polygon)
@@ -95,17 +101,12 @@ class PolygonGroup(object):
 		if self.selected is not None:
 			return self.polygonList[self.selected]
 		
-#	def GetMask(self, masksize):
-##		PatchWatcher.MaskOn = not PatchWatcher.MaskOn
-#		if PatchWatcher.MaskOn:
-#			mesh = np.transpose(np.reshape(np.meshgrid(np.arange(masksize[1]), np.arange(masksize[0])),
-#				(2, masksize[0] * masksize[1])))
-#			testp = []
-#			print 'mask!'
-#			for ii in self.polygonList:
-#				testp.append(np.reshape(path.Path(ii.get_xy()).contains_points(mesh), (masksize[0], masksize[1])))
-#			mask = np.sum(testp, axis = 0)
-#		else:
-#			mask = np.zeros(masksize)
-##		print PatchWatcher.MaskOn
-#		return mask
+	def GetMask(self, masksize):
+		mesh = np.transpose(np.reshape(np.meshgrid(np.arange(masksize[1]), np.arange(masksize[0])),
+			(2, masksize[0] * masksize[1])))
+		testp = []
+		print 'mask!'
+		for ii in self.polygonList:
+			testp.append(np.reshape(path.Path(ii.get_xy()).contains_points(mesh), (masksize[0], masksize[1])))
+		mask = np.sum(testp, axis = 0).astype(bool)
+		return mask

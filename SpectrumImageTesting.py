@@ -8,6 +8,10 @@ import SpectrumImage
 import SpectrumImagePlotter
 import Spectrum
 
+'''
+Turn spectra on and off with enter - multiple spectra plotted at once
+Copy colour scheme over from patches to spectra and extracted image
+'''
 
 ## Testing Spectrum and SpectrumPlotter
 #s = np.random.random(100)

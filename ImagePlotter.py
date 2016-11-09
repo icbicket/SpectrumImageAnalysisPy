@@ -13,7 +13,7 @@ class ImagePlotter(object):
 		self.axis = axis
 		self.Image = image
 		self.axis.set_axis_off()
-		self.axis.imshow(self.Image.data, cmap = 'gray', interpolation = 'none')
+		self.PlottedImage = self.axis.imshow(self.Image.data, cmap = 'gray', interpolation = 'none')
 		if image.calibration != 0:
 			self.scalebar = ScaleBar(self.Image.calibration)
 			self.scalebar.box_alpha = 0.5
@@ -23,8 +23,15 @@ class ImagePlotter(object):
 		self.connect()
 		self.creator = None
 		self.mover = None
-		self.mask = np.zeros(self.Image.size).astype(bool)
+#		self.mask = np.zeros(self.Image.size).astype(bool)
 		
+	def RemoveImage(self):
+		self.PlottedImage.remove()
+		
+	def ReplotImage(self, image):
+		self.Image = image
+		self.PlottedImage = self.axis.imshow(self.Image.data, cmap = 'gray', interpolation = 'none')
+	
 	def connect(self):
 		self.cidkey = self.canvas.mpl_connect('key_press_event', 
 			self.keyboard_press)

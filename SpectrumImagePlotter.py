@@ -15,9 +15,11 @@ class SpectrumImagePlotter(object):
 		self.contrast_ax = plt.axes([0.075, 0.925, 0.9, 0.075])
 
 		# Spectrum axis plotting and interactive span
-		mask3D = np.ones(self.SI.size).astype(bool)
+		self.extracted_mask = np.zeros(self.SI.size[:2]).astype(bool)
+		mask3D = np.zeros(self.SI.size).astype(bool)
+		self.extracted_spectrum = self.SI.ExtractSpectrum(mask3D)
 		self.SpectrumPlot = SpectrumPlotter.SpectrumPlotter(
-			self.SI.ExtractSpectrum(mask3D), self.spectrum_ax)
+			self.extracted_spectrum, self.spectrum_ax)
 		self.spectrum_ax = self.SpectrumPlot.linked_axis
 		self.E_span = SpanSelector(self.SpectrumPlot.linked_axis, self.SpectrumSpan, 'horizontal', 
 			span_stays = True)
@@ -32,9 +34,10 @@ class SpectrumImagePlotter(object):
 
 		self.cmin = np.min(np.min(self.summedim))
 		self.cmax = np.max(np.max(self.summedim))
+		self.ImagePlot = ImagePlotter.ImagePlotter(Image.Image(self.summedim), self.image_ax)
 		self.PlotImage()
 		self.PlotContrastHistogram()
-		self.extractedim = Image.Image(self.summedim * self.ImagePlot.mask)
+		self.extractedim = Image.Image(np.ma.masked_array(self.summedim, np.invert(self.extracted_mask)))
 		self.PlotExtractedImage()
 		self.connect()
 	
@@ -46,7 +49,17 @@ class SpectrumImagePlotter(object):
 		if event.inaxes != self.image_ax:
 			return
 		if event.key == 'enter':
-			self.image_ax.autoscale(tight=True)
+#			self.image_ax.autoscale(tight=True)
+			MaskState = self.ImagePlot.PolygonGroups.ToggleActiveMask()
+			if MaskState:
+				print MaskState
+				mask = self.ImagePlot.PolygonGroups.GetActiveMask(np.shape(self.summedim))
+				mask3D = np.reshape(mask, (self.SI.size[0], self.SI.size[1], 1)) * np.ones((self.SI.size[0], self.SI.size[1], self.SI.size[2])).astype(bool)
+				self.extractedim = Image.Image(np.ma.masked_array(self.summedim, np.invert(mask)))
+				self.PlotExtractedImage()
+				self.extracted_spectrum = self.SI.ExtractSpectrum(np.invert(mask3D))
+				self.SpectrumPlot.spectrum = self.extracted_spectrum
+				self.SpectrumPlot.update_spectrum()
 			print 'enter!'
 	
 	def PlotSpectrum(self):
@@ -63,23 +76,19 @@ class SpectrumImagePlotter(object):
 			span_stays = True, rectprops = dict(alpha = 0.5, facecolor = 'green'))
 	
 	def PlotImage(self):
-		self.image_ax.cla()
-		self.ImagePlot = ImagePlotter.ImagePlotter(Image.Image(self.summedim), self.image_ax)
-		self.image_ax.imshow(self.summedim, interpolation = 'none', 
-			cmap = 'gray', clim = (self.cmin, self.cmax))
+		self.ImagePlot.RemoveImage()
+		self.ImagePlot.ReplotImage(Image.Image(self.summedim))
+		self.ImagePlot.PlottedImage.set_clim(vmin = self.cmin, vmax = self.cmax)
+#		self.image_ax.imshow(self.summedim, interpolation = 'none', 
+#			cmap = 'gray', clim = (self.cmin, self.cmax))
 		self.image_ax.set_axis_off()
-	
-	def ExtractPatch(self, mask):
-		self.extractedim = Image.Image(self.summedim * mask)
-		self.PlotExtractedImage()
-		
 	
 	def PlotExtractedImage(self):
 		self.extracted_ax.cla()
 		self.extracted_ax.set_axis_off()
 		self.ExtractedImagePlot = ImagePlotter.ImagePlotter(self.extractedim, self.extracted_ax)
-		self.extracted_ax.imshow(self.summedim, interpolation = 'none',
-			cmap = 'gray', alpha = 0.3)
+#		self.extracted_ax.imshow(self.summedim, interpolation = 'none',
+#			cmap = 'Reds', alpha = 0.3)
 		
 	def SpectrumSpan(self, Emin, Emax): ##Note: draws sub-pixel Espan, fix?
 		Emin = np.max((np.round(Emin/self.SI.dispersion) * self.SI.dispersion, 

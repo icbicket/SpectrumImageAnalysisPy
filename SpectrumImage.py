@@ -9,7 +9,7 @@ class SpectrumImage(object):
 	def __init__(self, SI, spectrum_units, calibration=0):
 		if len(np.shape(SI)) != 3:
 			raise ValueError('That was not a 3D spectrum image!')
-		self.data = SI
+		self.data = np.ma.array(SI)
 		self.size = np.shape(SI)
 		self.calibration = calibration
 		self.spectrum_units = spectrum_units
@@ -28,7 +28,7 @@ class CLSpectrumImage(SpectrumImage):
 	def ExtractSpectrum(self, mask3D):
 		extractedspectrum = Spectrum.CLSpectrum(
 			np.sum(np.sum(
-			np.ma.masked_array(self.data, ~mask3D), 
+			np.ma.masked_array(self.data, mask3D), 
 			axis = 0), axis = 0), self.SpectrumRange, 
 			units = self.spectrum_units)
 		return extractedspectrum
@@ -51,7 +51,7 @@ class EELSSpectrumImage(SpectrumImage):
 	def ExtractSpectrum(self, mask3D):
 		extractedspectrum = Spectrum.EELSSpectrum(
 			np.sum(np.sum(
-			np.ma.masked_array(self.data, ~mask3D), 
+			np.ma.masked_array(self.data, mask3D), 
 			axis = 0), axis = 0), 
 			dispersion = self.dispersion,
 			units = self.spectrum_units)

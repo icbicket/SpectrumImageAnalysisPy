@@ -21,7 +21,7 @@ class SpectrumPlotter(object):
 		self.main_axis.set_ylabel(r"Intensity (a.u.)")
 		self.setup_linked_axis(self.spectrum.SpectrumRange, 
 			r"%s (%s)" % (self.spectrum.secondary_unit_label, self.spectrum.secondary_units), nmtoeV)
-		self.main_axis.plot(self.spectrum.SpectrumRange, self.spectrum.intensity, self.line_colour)
+		self.plotted_spectrum = self.main_axis.plot(self.spectrum.SpectrumRange, self.spectrum.intensity, self.line_colour)
 		self.linked_axis.format_coord = self.axis_display
 		plt.gcf().canvas.draw()
 		
@@ -36,6 +36,10 @@ class SpectrumPlotter(object):
 	    	self.spectrum.unit_label, x, self.spectrum.units, 
 	    	self.spectrum.secondary_unit_label, float(nmtoeV(x)), 
 	    	self.spectrum.secondary_units, y)
+
+	def update_spectrum(self):
+		self.main_axis.lines.pop(0)
+		self.plotted_spectrum = self.main_axis.plot(self.spectrum.SpectrumRange, self.spectrum.intensity, self.line_colour)
 
 def eVtonm(eV, pos=None):
     nm = h*c/(eC*abs(eV))*1e9
