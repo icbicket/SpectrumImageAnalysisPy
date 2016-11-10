@@ -41,9 +41,12 @@ class PolygonGroupManager(object):
 		print self.currentID
 		
 	def RecolourGroups(self):
-		colours = plt.get_cmap('Paired')
-		for (i, g) in self.polyDict.items():
-			g.SetColour(colours(i/len(self.polyDict)))
+		colours = plt.get_cmap('brg')
+#		for (i, g) in self.polyDict.items():
+#			g.SetColour(colours(i/len(self.polyDict)))
+		for i, (j,g) in zip(np.linspace(0,1,len(self.polyDict.keys())), self.polyDict.items()):
+			g.SetColour(colours(i))
+			print 'pretty Polly colours', colours(i)
 			
 	def NextPolygon(self, step=1):
 		self.polyDict[self.currentID].SelectNext(step)

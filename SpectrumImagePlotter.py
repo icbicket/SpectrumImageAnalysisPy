@@ -4,6 +4,7 @@ from matplotlib.widgets import SpanSelector
 import SpectrumPlotter
 import ImagePlotter
 import Image
+import collections
 
 class SpectrumImagePlotter(object):
 	def __init__(self, SI):
@@ -13,15 +14,18 @@ class SpectrumImagePlotter(object):
 		self.extracted_ax = plt.axes([0.525, 0.475, 0.45, 0.45])
 		self.spectrum_ax = plt.axes([0.075, 0.07, 0.9, 0.35])
 		self.contrast_ax = plt.axes([0.075, 0.925, 0.9, 0.075])
+		self.cmap = plt.get_cmap('brg')
 
 		# Spectrum axis plotting and interactive span
 		self.extracted_mask = np.zeros(self.SI.size[:2]).astype(bool)
 		mask3D = np.zeros(self.SI.size).astype(bool)
 		self.extracted_spectrum = self.SI.ExtractSpectrum(mask3D)
-		self.SpectrumPlot = SpectrumPlotter.SpectrumPlotter(
-			self.extracted_spectrum, self.spectrum_ax)
-		self.spectrum_ax = self.SpectrumPlot.linked_axis
-		self.E_span = SpanSelector(self.SpectrumPlot.linked_axis, self.SpectrumSpan, 'horizontal', 
+#		self.SpectrumPlot = SpectrumPlotter.SpectrumPlotter(
+#			self.extracted_spectrum, self.spectrum_ax)
+		self.SpectrumPlot = SpectrumPlotter.SpectrumManager(
+			self.extracted_spectrum, self.spectrum_ax, self.cmap)
+		self.spectrum_ax = self.SpectrumPlot.SpectrumPlot.linked_axis
+		self.E_span = SpanSelector(self.SpectrumPlot.SpectrumPlot.linked_axis, self.SpectrumSpan, 'horizontal', 
 			span_stays = True)
 		self.Emin_i = 0
 		self.Emax_i = 1
@@ -38,6 +42,7 @@ class SpectrumImagePlotter(object):
 		self.PlotImage()
 		self.PlotContrastHistogram()
 		self.extractedim = Image.Image(np.ma.masked_array(self.summedim, np.invert(self.extracted_mask)))
+		self.ExtractedImagePlot = collections.OrderedDict()
 		self.PlotExtractedImage()
 		self.connect()
 	
@@ -54,17 +59,27 @@ class SpectrumImagePlotter(object):
 			if MaskState:
 				print MaskState
 				mask = self.ImagePlot.PolygonGroups.GetActiveMask(np.shape(self.summedim))
-				mask3D = np.reshape(mask, (self.SI.size[0], self.SI.size[1], 1)) * np.ones((self.SI.size[0], self.SI.size[1], self.SI.size[2])).astype(bool)
+				mask3D = np.reshape(mask, 
+					(self.SI.size[0], self.SI.size[1], 1)) * np.ones((
+					self.SI.size[0], self.SI.size[1], self.SI.size[2])).astype(bool)
 				self.extractedim = Image.Image(np.ma.masked_array(self.summedim, np.invert(mask)))
-				self.PlotExtractedImage()
+				self.AddExtractedImagePatch(self.ImagePlot.PolygonGroups.currentID)
 				self.extracted_spectrum = self.SI.ExtractSpectrum(np.invert(mask3D))
-				self.SpectrumPlot.spectrum = self.extracted_spectrum
-				self.SpectrumPlot.update_spectrum()
-			print 'enter!'
+#				self.SpectrumPlot.spectrum = self.extracted_spectrum
+				self.SpectrumPlot.update_spectrum(self.extracted_spectrum, 
+					self.ImagePlot.PolygonGroups.currentID)
+				self.SpectrumPlot.make_visible(self.ImagePlot.PolygonGroups.currentID)
+			else:
+				self.SpectrumPlot.make_invisible(self.ImagePlot.PolygonGroups.currentID)
+				self.RemoveExtractedImagePatch(self.ImagePlot.PolygonGroups.currentID)
+#		elif event.key == 'delete':
+#			
 	
 	def PlotSpectrum(self):
-		SpectrumPlot = SpectrumPlotter.SpectrumPlotter(
-			self.SI.data[0,0,:], self.SI.data[1,1,:], self.spectrum_ax)
+		SpectrumPlot = SpectrumPlotter.SpectrumManager(
+			self.extracted_spectrum, self.spectrum_ax, self.cmap)
+#		SpectrumPlot = SpectrumPlotter.SpectrumPlotter(
+#			self.SI.data[0,0,:], self.SI.data[1,1,:], self.spectrum_ax)
 		return SpectrumPlot
 	
 	def PlotContrastHistogram(self):
@@ -86,17 +101,24 @@ class SpectrumImagePlotter(object):
 	def PlotExtractedImage(self):
 		self.extracted_ax.cla()
 		self.extracted_ax.set_axis_off()
-		self.ExtractedImagePlot = ImagePlotter.ImagePlotter(self.extractedim, self.extracted_ax)
-#		self.extracted_ax.imshow(self.summedim, interpolation = 'none',
-#			cmap = 'Reds', alpha = 0.3)
+		self.extracted_ax.imshow(self.summedim, interpolation = 'none',
+			cmap = 'gray', alpha = 0.1)
+	
+	def AddExtractedImagePatch(self, ID):
+		self.ExtractedImagePlot[self.ImagePlot.PolygonGroups.currentID] = ImagePlotter.ImagePlotter(self.extractedim, self.extracted_ax)
+			
+	def RemoveExtractedImagePatch(self, ID):
+		print self.ExtractedImagePlot[ID].PlottedImage
+		self.ExtractedImagePlot[ID].PlottedImage.remove()
+		pass
 		
 	def SpectrumSpan(self, Emin, Emax): ##Note: draws sub-pixel Espan, fix?
 		Emin = np.max((np.round(Emin/self.SI.dispersion) * self.SI.dispersion, 
 			self.SI.SpectrumRange[0]))
 		Emax = np.min((np.round(Emax/self.SI.dispersion) * self.SI.dispersion, 
 			self.SI.SpectrumRange[-1]))
-		self.Emin_i = np.where(self.SpectrumPlot.spectrum.SpectrumRange == Emin)[0]
-		self.Emax_i = np.where(self.SpectrumPlot.spectrum.SpectrumRange == Emax)[0]
+		self.Emin_i = np.where(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange == Emin)[0]
+		self.Emax_i = np.where(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange == Emax)[0]
 #		print Emin, Emax, self.SI.SpectrumRange[0], self.SI.SpectrumRange[-1], self.Emin_i, self.Emax_i
 		self.summedim = np.sum(self.SI.data[:, :, self.Emin_i:self.Emax_i], axis = 2)
 		self.cmin = np.min(np.min(self.summedim))

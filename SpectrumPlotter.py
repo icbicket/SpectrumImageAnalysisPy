@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.widgets import SpanSelector
 from matplotlib.ticker import FuncFormatter
+import collections
+from matplotlib.lines import Line2D
 
 h = 6.626070040e-34
 c = 299792458
@@ -16,12 +18,12 @@ class SpectrumPlotter(object):
 		self.line_colour = colour
 		self.linked_axis = self.main_axis.twiny()
 		self.spectrum = spectrum
-
+		print self.line_colour
 		self.main_axis.set_xlabel(r"%s (%s)" % (spectrum.unit_label, spectrum.units))
 		self.main_axis.set_ylabel(r"Intensity (a.u.)")
 		self.setup_linked_axis(self.spectrum.SpectrumRange, 
 			r"%s (%s)" % (self.spectrum.secondary_unit_label, self.spectrum.secondary_units), nmtoeV)
-		self.plotted_spectrum = self.main_axis.plot(self.spectrum.SpectrumRange, self.spectrum.intensity, self.line_colour)
+#		self.plotted_spectrum = self.main_axis.plot(self.spectrum.SpectrumRange, self.spectrum.intensity, 'red')
 		self.linked_axis.format_coord = self.axis_display
 		plt.gcf().canvas.draw()
 		
@@ -35,11 +37,25 @@ class SpectrumPlotter(object):
 	    return '%s = %0.4g %s, %s = %0.3g %s, I = %0.5g' % (
 	    	self.spectrum.unit_label, x, self.spectrum.units, 
 	    	self.spectrum.secondary_unit_label, float(nmtoeV(x)), 
-	    	self.spectrum.secondary_units, y)
+	    	self.spectrum.secondary_units, y) ## Using nmtoeV! not CL friendly?
 
-	def update_spectrum(self):
-		self.main_axis.lines.pop(0)
-		self.plotted_spectrum = self.main_axis.plot(self.spectrum.SpectrumRange, self.spectrum.intensity, self.line_colour)
+	def add_spectrum(self, spectrum):
+		plotted_spectrum = self.main_axis.plot(spectrum.SpectrumRange, 
+				spectrum.intensity)
+		print plotted_spectrum, 'plots'
+		return plotted_spectrum
+		
+	def update_spectrum(self, line, spectrum):
+		print "hey, where is my update?"
+		line[0].remove()
+		plotted_spectrum = self.main_axis.plot(spectrum.SpectrumRange, 
+			spectrum.intensity)
+		return plotted_spectrum
+#	def colour_spectrum(self, colour):
+#		for ll in self.main_axis.lines:
+#			ll.set_colour(
+		
+#	def add_spectrum(self, spectrum):
 
 def eVtonm(eV, pos=None):
     nm = h*c/(eC*abs(eV))*1e9
@@ -50,3 +66,64 @@ def nmtoeV(nm, pos=None):
 	eV = h*c/(eC*abs(nm))*1e9
 	return "%.3g" % eV
 
+class SpectrumManager(object):
+	def __init__(self, spectrum, axis, cmap):
+		self.currentID = 0
+		self.cmap = cmap
+		self.axis = axis
+		self.spectrumDict = collections.OrderedDict()
+		self.spectrumDict[self.currentID] = spectrum
+		self.lineDict = collections.OrderedDict()
+		self.SpectrumPlot = SpectrumPlotter(self.spectrumDict[self.currentID], 
+			self.axis, self.cmap)
+		self.lineDict[self.currentID] = self.SpectrumPlot.add_spectrum(
+			self.spectrumDict[self.currentID])
+		self.colourDict = collections.OrderedDict()
+		self.colourDict[self.currentID] = self.cmap(0)
+#		self.RecolourSpectra()
+		
+	def make_colour_list(self):
+		colour_callers = np.linspace(0, 1, len(self.lineDict.keys()))
+		print self.lineDict.keys(), colour_callers
+		for cc, ll in zip(colour_callers, self.lineDict.keys()):
+			self.colourDict[ll] = self.cmap(cc)
+			print 'pick a colour...', self.colourDict[ll]
+
+#	def RecolourSpectra(self):
+#		colours = self.cmap(i) for i in np.linspace(0, 1, len(self.spectrumDict))
+##		cmaps = []
+##		for ii in self.spectrumDict.keys():
+##			cmaps.append(self.cmap(i/len(self.spectrumDict)))
+#		self.SpectrumPlot.colour_spectra(colours)
+##		for (i, g) in self.polyDict.items():
+##			g.colour_spectrum(self.cmap(i/len(self.polyDict)))
+#		
+		
+#	def AddSpectrum(self, spectrum):
+#		'''Adds spectrum to spectrum dictionary to be plotted'''
+#		self.currentID = (self.currentID + step) % (max(self.spectrumDict.keys()) + 1)
+#		print "I added a new spectrum for you!"
+#		self.spectrumDict[self.currentID] = spectrum
+
+	def update_spectrum(self, spectrum, ID):
+		self.currentID = ID
+		self.spectrumDict[ID] = spectrum
+		if self.currentID in self.lineDict.keys():
+			self.lineDict[self.currentID] = self.SpectrumPlot.update_spectrum(
+				self.lineDict[self.currentID], self.spectrumDict[self.currentID])
+			self.lineDict[self.currentID][0].set_color(self.colourDict[self.currentID])
+		else:
+			self.lineDict[self.currentID] = self.SpectrumPlot.add_spectrum(
+				self.spectrumDict[self.currentID])
+			self.make_colour_list()
+			for ll in self.lineDict.keys():
+				self.lineDict[ll][0].set_color(self.colourDict[ll])
+
+	def make_visible(self, ID):
+		self.lineDict[ID][0].set_visible(True)
+#		self.lineDict[ID][0].set_color('r')
+		print 'now you see me!', ID
+		
+	def make_invisible(self, ID):
+		self.lineDict[ID][0].set_visible(False)
+		print "now you don't!", ID
