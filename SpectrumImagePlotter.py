@@ -6,6 +6,8 @@ import ImagePlotter
 import Image
 import collections
 
+'''Need to fix for CL!!!'''
+
 class SpectrumImagePlotter(object):
 	def __init__(self, SI):
 		self.SI = SI
@@ -112,6 +114,11 @@ class SpectrumImagePlotter(object):
 		self.ExtractedImagePlot[ID].PlottedImage.remove()
 		pass
 		
+	def AdjustContrastExtractedImage(self):
+		for (ID, image) in self.ExtractedImagePlot.items():
+			image.PlottedImage.set_clim(vmin = self.cmin, vmax = self.cmax)
+#		self.extracted_ax.draw()
+	
 	def SpectrumSpan(self, Emin, Emax): ##Note: draws sub-pixel Espan, fix?
 		Emin = np.max((np.round(Emin/self.SI.dispersion) * self.SI.dispersion, 
 			self.SI.SpectrumRange[0]))
@@ -119,17 +126,22 @@ class SpectrumImagePlotter(object):
 			self.SI.SpectrumRange[-1]))
 		self.Emin_i = np.where(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange == Emin)[0]
 		self.Emax_i = np.where(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange == Emax)[0]
-#		print Emin, Emax, self.SI.SpectrumRange[0], self.SI.SpectrumRange[-1], self.Emin_i, self.Emax_i
+		self.Emin_i = np.searchsorted(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange, Emin)
+		self.Emax_i = np.searchsorted(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange, Emax)
+		print Emin, Emax, self.SI.SpectrumRange[0], self.SI.SpectrumRange[-1]
+		print 'where is my range?', self.SI.SpectrumRange[self.Emin_i-self.SI.dispersion],self.SI.SpectrumRange[self.Emin_i], self.SI.SpectrumRange[self.Emin_i+self.SI.dispersion]
 		self.summedim = np.sum(self.SI.data[:, :, self.Emin_i:self.Emax_i], axis = 2)
 		self.cmin = np.min(np.min(self.summedim))
 		self.cmax = np.max(np.max(self.summedim))
 		self.PlotImage()
+#		self.AdjustContrastExtractedImage()
 		self.PlotContrastHistogram()
 		
 	def ContrastSpan(self, cmin, cmax):
 		self.cmin = cmin
 		self.cmax = cmax
 		self.PlotImage()
+#		self.AdjustContrastExtractedImage()
 
 #class PatchWatcher(object):
 #	def __init__(self, callback):

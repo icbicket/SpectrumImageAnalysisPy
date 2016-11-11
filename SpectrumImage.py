@@ -24,6 +24,7 @@ class CLSpectrumImage(SpectrumImage):
 		self.spectrum_unit_label = 'Wavelength'
 		self.spectrum_secondary_units = 'eV'
 		self.spectrum_secondary_unit_label = 'Energy'
+		self.dispersion = self.SpectrumRange[1] - self.SpectrumRange[0]
 
 	def ExtractSpectrum(self, mask3D):
 		extractedspectrum = Spectrum.CLSpectrum(
