@@ -4,27 +4,45 @@ import AlignLib
 
 class CLSet(object):
 	"""CLSet includes a sample spectrum image dataset, and the associated substrate and dark references"""
-	def __init__(self, samplefile, darkfile, substratefile):
+	def __init__(self, samplefile, darkfile=None, substratefile=None, correction_spectrum=None):
 		self.SampleSI = CLSpectrumData.CLDataSet.LoadFromFile(samplefile)
-		self.darkSI = CLSpectrumData.CLDataSet.LoadFromFile(darkfile)
-		self.substrateSI = CLSpectrumData.CLDataSet.LoadFromFile(substratefile)
+#		print np.shape(self.SampleSI.SI.data), np.shape(self.darkSI.SI.data), np.shape(self.substrateSI.SI.data)
 		"""Perform dark correction on sample and on substrate"""
-		self.sample_dark = CLSpectrumData.CLDataSet(
-			SI = self.SpectrumSubtraction(self.SampleSI, self.darkSI), 
-			SEM = self.SampleSI.SEM.data, 
-			survey = self.SampleSI.survey.data)
-		self.substrate_dark = CLSpectrumData.CLDataSet(
-			SI = self.SpectrumSubtraction(self.substrateSI, self.darkSI), 
-			SEM = self.SampleSI.SEM.data, 
-			survey = self.SampleSI.survey.data)
-		"""Perform substrate correction on sample data"""
-		self.sample_dark_substrate = CLSpectrumData.CLDataSet(
-			SI = self.SpectrumSubtraction(self.sample_dark, self.substrate_dark), 
-			SEM = self.SampleSI.SEM.data, 
-			survey = self.SampleSI.survey.data)
+		if darkfile is not None:
+			self.darkSI = CLSpectrumData.CLDataSet.LoadFromFile(darkfile)
+			self.sample_dark = CLSpectrumData.CLDataSet(
+				SI = self.SpectrumSubtraction(self.SampleSI, self.darkSI), 
+				Wavelengths = self.SampleSI.SI.SpectrumRange,
+				SEM = self.SampleSI.SEM.data, 
+				survey = self.SampleSI.survey.data)
 
+			"""Perform substrate correction on sample data"""
+			if substratefile is not None:
+				self.substrateSI = CLSpectrumData.CLDataSet.LoadFromFile(substratefile)
+				self.substrate_dark = CLSpectrumData.CLDataSet(
+					SI = self.SpectrumSubtraction(self.substrateSI, self.darkSI), 
+					Wavelengths = self.SampleSI.SI.SpectrumRange,
+					SEM = self.SampleSI.SEM.data, 
+					survey = self.SampleSI.survey.data)
+				self.sample_dark_substrate = CLSpectrumData.CLDataSet(
+					SI = self.SpectrumSubtraction(self.sample_dark, self.substrate_dark), 
+					Wavelengths = self.SampleSI.SI.SpectrumRange,
+					SEM = self.SampleSI.SEM.data, 
+					survey = self.SampleSI.survey.data)
+				if correction_spectrum is not None:
+					self.sample_dark_substrate_sys = CLSpectrumData.CLDataSet(
+					SI = self.SpectrumMultiplication(self.sample_dark_substrate, correction_spectrum), 
+					Wavelengths = self.SampleSI.SI.SpectrumRange,
+					SEM = self.SampleSI.SEM.data, 
+					survey = self.SampleSI.survey.data)
+					
 	def SpectrumSubtraction(self, spectra, correction):
-		corrected = spectra.SI.data - np.mean(np.mean(correction.SI.data, axis = 0, keepdims = True), axis = 1, keepdims = True)
+		corrected = spectra.SI.data - np.mean(np.mean(correction.SI.data.data, axis = 0, keepdims = True), axis = 1, keepdims = True)
+		return corrected
+		
+	def SpectrumMultiplication(self, spectra, correction):
+		#spectra: SpectrumImage, correction: Spectrum, for system correction factor
+		corrected = spectra.SI.data * correction.intensity
 		return corrected
 
 class PolarimetrySet(object):

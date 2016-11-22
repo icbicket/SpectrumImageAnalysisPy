@@ -37,7 +37,7 @@ class PolygonCreator(object):
 		if self.polygon:
 			self.polygon.remove()
 		self.vertices.append((event.xdata, event.ydata))
-		self.polygon = Polygon(self.vertices, closed = True, alpha = 0.5, color='k')
+		self.polygon = Polygon(self.vertices, closed = True, alpha = 0.2, color='k')
 		self.axis.add_patch(self.polygon)
 		
 		plt.draw()

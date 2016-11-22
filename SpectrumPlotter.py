@@ -18,7 +18,6 @@ class SpectrumPlotter(object):
 		self.line_colour = colour
 		self.linked_axis = self.main_axis.twiny()
 		self.spectrum = spectrum
-		print self.line_colour
 		self.main_axis.set_xlabel(r"%s (%s)" % (spectrum.unit_label, spectrum.units))
 		self.main_axis.set_ylabel(r"Intensity (a.u.)")
 		self.setup_linked_axis(self.spectrum.SpectrumRange, 
@@ -42,20 +41,13 @@ class SpectrumPlotter(object):
 	def add_spectrum(self, spectrum):
 		plotted_spectrum = self.main_axis.plot(spectrum.SpectrumRange, 
 				spectrum.intensity)
-		print plotted_spectrum, 'plots'
 		return plotted_spectrum
 		
 	def update_spectrum(self, line, spectrum):
-		print "hey, where is my update?"
 		line[0].remove()
 		plotted_spectrum = self.main_axis.plot(spectrum.SpectrumRange, 
 			spectrum.intensity)
 		return plotted_spectrum
-#	def colour_spectrum(self, colour):
-#		for ll in self.main_axis.lines:
-#			ll.set_colour(
-		
-#	def add_spectrum(self, spectrum):
 
 def eVtonm(eV, pos=None):
     nm = h*c/(eC*abs(eV))*1e9
@@ -67,7 +59,7 @@ def nmtoeV(nm, pos=None):
 	return "%.3g" % eV
 
 class SpectrumManager(object):
-	def __init__(self, spectrum, axis, cmap):
+	def __init__(self, spectrum, axis, cmap=plt.get_cmap('brg')):
 		self.currentID = 0
 		self.cmap = cmap
 		self.axis = axis
@@ -80,14 +72,11 @@ class SpectrumManager(object):
 			self.spectrumDict[self.currentID])
 		self.colourDict = collections.OrderedDict()
 		self.colourDict[self.currentID] = self.cmap(0)
-#		self.RecolourSpectra()
 		
 	def make_colour_list(self):
 		colour_callers = np.linspace(0, 1, len(self.lineDict.keys()))
-		print self.lineDict.keys(), colour_callers
 		for cc, ll in zip(colour_callers, self.lineDict.keys()):
 			self.colourDict[ll] = self.cmap(cc)
-			print 'pick a colour...', self.colourDict[ll]
 
 #	def RecolourSpectra(self):
 #		colours = self.cmap(i) for i in np.linspace(0, 1, len(self.spectrumDict))
@@ -122,8 +111,6 @@ class SpectrumManager(object):
 	def make_visible(self, ID):
 		self.lineDict[ID][0].set_visible(True)
 #		self.lineDict[ID][0].set_color('r')
-		print 'now you see me!', ID
 		
 	def make_invisible(self, ID):
 		self.lineDict[ID][0].set_visible(False)
-		print "now you don't!", ID

@@ -1,5 +1,6 @@
 import numpy as np
 import Spectrum
+import csv
 
 class SpectrumImage(object):
 	"""Class for spectrum image data set, must be 3d numpy array
@@ -33,6 +34,9 @@ class CLSpectrumImage(SpectrumImage):
 			axis = 0), axis = 0), self.SpectrumRange, 
 			units = self.spectrum_units)
 		return extractedspectrum
+		
+#	def SystemCorrection(self):
+		
 				
 class EELSSpectrumImage(SpectrumImage):
 	def __init__(self, SI, dispersion=0.005, spectrum_units='eV', calibration=0):

@@ -20,7 +20,6 @@ class PolygonMover(object):
 		self.polygon = polygon
 		self.axis = axis
 		canvas = self.polygon.figure.canvas
-#		self.corners = polygon.xy
 
 		self.line = Line2D(self.polygon.xy[:, 0], self.polygon.xy[:, 1], 
 			marker = 'o', markerfacecolor = 'g', animated = True)
@@ -32,7 +31,6 @@ class PolygonMover(object):
 		self.cidpress = canvas.mpl_connect('button_press_event', self.mouse_press)
 		self.cidmotion = canvas.mpl_connect('motion_notify_event', self.mouse_move)
 		self.cidrelease = canvas.mpl_connect('button_release_event', self.mouse_release)
-#		canvas.mpl_connect('key_press_event', self.key_press)
 		self.canvas = canvas
 
 	def disconnect(self):
@@ -65,7 +63,6 @@ class PolygonMover(object):
 	def get_point_index(self, event):
 		xy_transform = self.polygon.get_transform().transform(self.polygon.xy)
 		d2 = np.sum((xy_transform - [event.x, event.y])**2, axis = 1)
-#		index = np.argmin(d2)
 		index = np.where(d2==np.min(d2))
 		if d2[index][0] >= self.epsilon**2:
 			index = None
@@ -79,7 +76,6 @@ class PolygonMover(object):
 		self._index = None
 		
 	def mouse_move(self, event):
-#		print self.showverts, self._index, event.inaxes, event.button
 		if not self.showverts:
 			return
 		if self._index is None:

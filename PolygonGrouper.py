@@ -16,37 +16,26 @@ class PolygonGroupManager(object):
 		self.polyDict = collections.OrderedDict()
 		self.polyDict[self.currentID] = PolygonGroup(self.axis, 'k')
 		self.RecolourGroups()
-#		self.MaskOnDict = collections.OrderedDict()
-#		self.MaskOnDict[self.currentID] = False
-#		self.cmap = ...
-#		
 
 	def AddPolygon(self, polygon):
-		print "I gots me a polygon"
 		self.polyDict[self.currentID].AddPolygon(polygon)
 		
 		
 	def NewGroup(self):
-		print "makin' me a new group, boss"
 		self.polyDict[self.currentID].Deselect()
 		self.currentID = max(self.polyDict.keys()) + 1
 		self.polyDict[self.currentID] = PolygonGroup(self.axis, 'k')
 		self.RecolourGroups()
-		print self.currentID
 		
 	def NextGroup(self, step=1):
 		self.polyDict[self.currentID].Deselect()
 		self.currentID = (self.currentID + step) % (max(self.polyDict.keys()) + 1)
 		self.polyDict[self.currentID].SelectNext()
-		print self.currentID
 		
 	def RecolourGroups(self):
 		colours = plt.get_cmap('brg')
-#		for (i, g) in self.polyDict.items():
-#			g.SetColour(colours(i/len(self.polyDict)))
 		for i, (j,g) in zip(np.linspace(0,1,len(self.polyDict.keys())), self.polyDict.items()):
 			g.SetColour(colours(i))
-			print 'pretty Polly colours', colours(i)
 			
 	def NextPolygon(self, step=1):
 		self.polyDict[self.currentID].SelectNext(step)
@@ -108,7 +97,6 @@ class PolygonGroup(object):
 		mesh = np.transpose(np.reshape(np.meshgrid(np.arange(masksize[1]), np.arange(masksize[0])),
 			(2, masksize[0] * masksize[1])))
 		testp = []
-		print 'mask!'
 		for ii in self.polygonList:
 			testp.append(np.reshape(path.Path(ii.get_xy()).contains_points(mesh), (masksize[0], masksize[1])))
 		mask = np.sum(testp, axis = 0).astype(bool)

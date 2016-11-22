@@ -30,7 +30,7 @@ class CLDataSet(object):
 	    includes survey image, SEM image, and spectrum image"""
 	def __init__(self, SI = np.array([]), Wavelengths = np.array([]), SEM=np.array([]), survey=np.array([]), fuzzing=False):
 		self.fuzzing = fuzzing
-		self.SI = SpectrumImage.CLSpectrumImage(SI, Wavelengths*1e9)
+		self.SI = SpectrumImage.CLSpectrumImage(SI, Wavelengths)
 		self.SEM = Image(SEM)
 		self.survey = Image(survey)
 
@@ -38,4 +38,4 @@ class CLDataSet(object):
 	def LoadFromFile(cls, filename):
 		SI, Wavelengths, SEM, survey, fuzzing = Readh5SI(filename)
 		SI = np.transpose(np.squeeze(SI), (1, 2, 0))
-		return cls(SI=SI, Wavelengths = Wavelengths, SEM=SEM, survey=survey, fuzzing=fuzzing)
+		return cls(SI=SI, Wavelengths = Wavelengths*1e9, SEM=SEM, survey=survey, fuzzing=fuzzing)
