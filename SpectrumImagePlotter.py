@@ -8,8 +8,9 @@ import collections
 
 '''Things to do:
 Add vertex addition and deletion after creation for patches
-Why doesn't it work in multiple figures?
+Why doesn't it work in multiple figures? --need to keep a reference to each one
 Save extracted patches and spectrum and image
+Figure out changing contrast of extracted patch with spectrum spanselector
 '''
 
 class SpectrumImagePlotter(object):
@@ -38,14 +39,16 @@ class SpectrumImagePlotter(object):
 		self.contrastbins = 256
 		
 		# Image axis plotting and interactive patches
-		self.summedim = np.sum(self.SI.data[:, :, self.Emin_i:self.Emax_i], axis = 2)
+		self.summedim = Image.Image(np.sum(self.SI.data[:, :, self.Emin_i:self.Emax_i], axis = 2))
 
-		self.cmin = np.min(np.min(self.summedim))
-		self.cmax = np.max(np.max(self.summedim))
-		self.ImagePlot = ImagePlotter.ImagePlotter(Image.Image(self.summedim), self.image_ax)
+#		self.cmin = np.min(np.min(self.summedim))
+#		self.cmax = np.max(np.max(self.summedim))
+		self.cmin = self.summedim.Imglim[0]
+		self.cmax = self.summedim.Imglim[1]
+		self.ImagePlot = ImagePlotter.ImagePlotter(self.summedim, self.image_ax)
 		self.PlotImage()
 		self.PlotContrastHistogram()
-		self.extractedim = Image.Image(np.ma.masked_array(self.summedim, np.invert(self.extracted_mask)))
+		self.extractedim = Image.Image(np.ma.masked_array(self.summedim.data, np.invert(self.extracted_mask)))
 		self.ExtractedImagePlot = collections.OrderedDict()
 		self.PlotExtractedImage()
 		self.connect()
@@ -59,11 +62,11 @@ class SpectrumImagePlotter(object):
 			if event.key == 'enter':
 				MaskState = self.ImagePlot.PolygonGroups.ToggleActiveMask()
 				if MaskState:
-					mask = self.ImagePlot.PolygonGroups.GetActiveMask(np.shape(self.summedim))
+					mask = self.ImagePlot.PolygonGroups.GetActiveMask(self.summedim.size)
 					mask3D = np.reshape(mask, 
 						(self.SI.size[0], self.SI.size[1], 1)) * np.ones((
 						self.SI.size[0], self.SI.size[1], self.SI.size[2])).astype(bool)
-					self.extractedim = Image.Image(np.ma.masked_array(self.summedim, np.invert(mask)))
+					self.extractedim = Image.Image(np.ma.masked_array(self.summedim.data, np.invert(mask)))
 					self.AddExtractedImagePatch(self.ImagePlot.PolygonGroups.currentID)
 					self.extracted_spectrum = self.SI.ExtractSpectrum(np.invert(mask3D))
 					self.SpectrumPlot.update_spectrum(self.extracted_spectrum, 
@@ -72,6 +75,11 @@ class SpectrumImagePlotter(object):
 				else:
 					self.SpectrumPlot.make_invisible(self.ImagePlot.PolygonGroups.currentID)
 					self.RemoveExtractedImagePatch(self.ImagePlot.PolygonGroups.currentID)
+			elif event.key == 'e':
+				self.summedim.SaveImgAsPNG('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/Image'+
+					str(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emin_i])+'to'+
+					str(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emax_i])+
+					self.SpectrumPlot.SpectrumPlot.spectrum.units+'.png', self.summedim.Imglim)
 		elif event.inaxes == self.extracted_ax:
 			if event.key == 'e':
 				self.extractedim.SaveImgAsPNG('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/Patch'+
@@ -80,7 +88,7 @@ class SpectrumImagePlotter(object):
 					self.SpectrumPlot.SpectrumPlot.spectrum.units+'.png', self.extractedim.Imglim)
 		elif event.inaxes == self.spectrum_ax:
 			if event.key == 'e':
-				filename = raw_input('Please enter the filepath and name to save your spectrum: ')
+#				filename = raw_input('Please enter the filepath and name to save your spectrum: ')
 				self.extracted_spectrum.SaveSpectrumAsCSV('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/testSpec.csv')
 #		elif event.key == 'delete':
 #			
@@ -91,7 +99,7 @@ class SpectrumImagePlotter(object):
 		return SpectrumPlot
 	
 	def PlotContrastHistogram(self):
-		self.summedimhist, self.summedimbins = np.histogram(self.summedim, bins = self.contrastbins)
+		self.summedimhist, self.summedimbins = np.histogram(self.summedim.data, bins = self.contrastbins)
 		self.contrast_ax.cla()
 		self.contrast_ax.plot(self.summedimbins[:-1], self.summedimhist, color = 'k')
 		self.contrast_ax.set_axis_off()
@@ -100,14 +108,14 @@ class SpectrumImagePlotter(object):
 	
 	def PlotImage(self):
 		self.ImagePlot.RemoveImage()
-		self.ImagePlot.ReplotImage(Image.Image(self.summedim))
+		self.ImagePlot.ReplotImage(self.summedim)
 		self.ImagePlot.PlottedImage.set_clim(vmin = self.cmin, vmax = self.cmax)
 		self.image_ax.set_axis_off()
 	
 	def PlotExtractedImage(self):
 		self.extracted_ax.cla()
 		self.extracted_ax.set_axis_off()
-		self.extracted_ax.imshow(self.summedim, interpolation = 'none',
+		self.extracted_ax.imshow(self.summedim.data, interpolation = 'none',
 			cmap = 'gray', alpha = 0.1)
 	
 	def AddExtractedImagePatch(self, ID):
@@ -130,9 +138,11 @@ class SpectrumImagePlotter(object):
 		self.Emax_i = np.where(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange == Emax)[0]
 		self.Emin_i = np.searchsorted(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange, Emin)
 		self.Emax_i = np.searchsorted(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange, Emax)
-		self.summedim = np.sum(self.SI.data[:, :, self.Emin_i:self.Emax_i], axis = 2)
-		self.cmin = np.min(np.min(self.summedim))
-		self.cmax = np.max(np.max(self.summedim))
+		self.summedim = Image.Image(np.sum(self.SI.data[:, :, self.Emin_i:self.Emax_i], axis = 2))
+		self.cmin = self.summedim.Imglim[0]
+		self.cmax = self.summedim.Imglim[1]
+#		self.cmin = np.min(np.min(self.summedim))
+#		self.cmax = np.max(np.max(self.summedim))
 		self.PlotImage()
 		self.PlotContrastHistogram()
 		

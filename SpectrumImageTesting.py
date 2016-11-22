@@ -32,20 +32,20 @@ Copy colour scheme over from patches to spectra and extracted image
 #plotter=SpectrumImagePlotter.SpectrumImagePlotter(SI)
 #plt.show()
 
-###Testing SIPlotter with real data!
-folder = '/home/isobel/Documents/McMaster/EELS/2016-07-29/SI1/'
-filebase = 'EELS Spectrum Image (aligned) (aligned).dm3'
-s = hp.load(folder+filebase)
-eels = SpectrumImage.EELSSpectrumImage(s.data)
-SpectrumImagePlotter.SpectrumImagePlotter(eels)
-plt.show()
-
-#folderCL = '/home/isobel/Documents/McMaster/CL/T9-3_Sq1A_(1,3)/'
-#fileCL = 'T9-3_Sq1A_(1,3)h_Gr800at750_30keV_Ap3Spot4_2s_noQWP_noPol_SiN.h5'
-#cl = CLSpectrumData.CLDataSet.LoadFromFile(folderCL + fileCL)
-
-#plotter = SpectrumImagePlotter.SpectrumImagePlotter(cl.SI)
-
+####Testing SIPlotter with real data!
+#folder = '/home/isobel/Documents/McMaster/EELS/2016-07-29/SI1/'
+#filebase = 'EELS Spectrum Image (aligned) (aligned).dm3'
+#s = hp.load(folder+filebase)
+#eels = SpectrumImage.EELSSpectrumImage(s.data)
+#SpectrumImagePlotter.SpectrumImagePlotter(eels)
 #plt.show()
+
+folderCL = '/home/isobel/Documents/McMaster/CL/T9-3_Sq1A_(1,3)/'
+fileCL = 'T9-3_Sq1A_(1,3)h_Gr800at750_30keV_Ap3Spot4_2s_noQWP_noPol_full2.h5'
+cl = CLSpectrumData.CLDataSet.LoadFromFile(folderCL + fileCL)
+
+plotter = SpectrumImagePlotter.SpectrumImagePlotter(cl.SI)
+
+plt.show()
 #plotter.extractedim.SaveImgAsPNG('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/testIm.png', plotter.extractedim.Imglim)
 #print type(plotter.extractedim.data)==np.ma.MaskedArray
