@@ -55,24 +55,33 @@ class SpectrumImagePlotter(object):
 			self.keyboard_press)
 	
 	def keyboard_press(self, event):
-		if event.inaxes != self.image_ax:
-			return
-		if event.key == 'enter':
-			MaskState = self.ImagePlot.PolygonGroups.ToggleActiveMask()
-			if MaskState:
-				mask = self.ImagePlot.PolygonGroups.GetActiveMask(np.shape(self.summedim))
-				mask3D = np.reshape(mask, 
-					(self.SI.size[0], self.SI.size[1], 1)) * np.ones((
-					self.SI.size[0], self.SI.size[1], self.SI.size[2])).astype(bool)
-				self.extractedim = Image.Image(np.ma.masked_array(self.summedim, np.invert(mask)))
-				self.AddExtractedImagePatch(self.ImagePlot.PolygonGroups.currentID)
-				self.extracted_spectrum = self.SI.ExtractSpectrum(np.invert(mask3D))
-				self.SpectrumPlot.update_spectrum(self.extracted_spectrum, 
-					self.ImagePlot.PolygonGroups.currentID)
-				self.SpectrumPlot.make_visible(self.ImagePlot.PolygonGroups.currentID)
-			else:
-				self.SpectrumPlot.make_invisible(self.ImagePlot.PolygonGroups.currentID)
-				self.RemoveExtractedImagePatch(self.ImagePlot.PolygonGroups.currentID)
+		if event.inaxes == self.image_ax:
+			if event.key == 'enter':
+				MaskState = self.ImagePlot.PolygonGroups.ToggleActiveMask()
+				if MaskState:
+					mask = self.ImagePlot.PolygonGroups.GetActiveMask(np.shape(self.summedim))
+					mask3D = np.reshape(mask, 
+						(self.SI.size[0], self.SI.size[1], 1)) * np.ones((
+						self.SI.size[0], self.SI.size[1], self.SI.size[2])).astype(bool)
+					self.extractedim = Image.Image(np.ma.masked_array(self.summedim, np.invert(mask)))
+					self.AddExtractedImagePatch(self.ImagePlot.PolygonGroups.currentID)
+					self.extracted_spectrum = self.SI.ExtractSpectrum(np.invert(mask3D))
+					self.SpectrumPlot.update_spectrum(self.extracted_spectrum, 
+						self.ImagePlot.PolygonGroups.currentID)
+					self.SpectrumPlot.make_visible(self.ImagePlot.PolygonGroups.currentID)
+				else:
+					self.SpectrumPlot.make_invisible(self.ImagePlot.PolygonGroups.currentID)
+					self.RemoveExtractedImagePatch(self.ImagePlot.PolygonGroups.currentID)
+		elif event.inaxes == self.extracted_ax:
+			if event.key == 'e':
+				self.extractedim.SaveImgAsPNG('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/Patch'+
+					str(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emin_i])+'to'+
+					str(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emax_i])+
+					self.SpectrumPlot.SpectrumPlot.spectrum.units+'.png', self.extractedim.Imglim)
+		elif event.inaxes == self.spectrum_ax:
+			if event.key == 'e':
+				filename = raw_input('Please enter the filepath and name to save your spectrum: ')
+				self.extracted_spectrum.SaveSpectrumAsCSV('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/testSpec.csv')
 #		elif event.key == 'delete':
 #			
 	
