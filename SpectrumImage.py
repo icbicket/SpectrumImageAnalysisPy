@@ -1,6 +1,8 @@
 import numpy as np
 import Spectrum
 import csv
+from scipy import signal
+from scipy.ndimage.filters import median_filter
 
 class SpectrumImage(object):
 	"""Class for spectrum image data set, must be 3d numpy array
@@ -35,9 +37,39 @@ class CLSpectrumImage(SpectrumImage):
 			units = self.spectrum_units)
 		return extractedspectrum
 		
-#	def SystemCorrection(self):
-		
-				
+	def SpikeRemoval(self, threshold):
+#		median = np.median(self.data, axis=2, keepdims=True)
+#		d = np.abs(self.data - median)
+#		median_d = np.median(d)
+#		s = d/median_d if median_d else 0.
+#		i = np.where(s>20)
+#		print i
+#		self.data[i] = np.mean([self.data[(i[0]-1, i[1], i[2])], 
+#								  self.data[(i[0]+1, i[1], i[2])], 
+#								  self.data[(i[0], i[1]-1, i[2])], 
+#								  self.data[(i[0], i[1]+1, i[2])]], axis=0)
+
+		grad = np.abs(np.gradient(self.data.astype(float)))
+		mask0 = np.zeros(np.shape(grad[0]))
+		mask0[grad[0] > threshold] = 1.
+		mask1 = np.zeros(np.shape(grad[1]))
+		mask1[grad[1] > threshold] = 1.
+		mask2 = np.zeros(np.shape(grad[2]))
+		mask2[grad[2] > threshold] = 1.
+		mask = np.logical_or(mask0, mask1).astype(float)
+#		convolutionmask = np.reshape(np.array([[0,1,0],[1,0,1],[0,1,0]]), (3,3,1))
+		convolutionmask = np.array([[[0,0,0],[0,1,0],[0,0,0]],[[0,1,0],[1,0,1],[0,1,0]],[[0,0,0],[0,1,0],[0,0,0]]])
+		convolved = signal.convolve(mask, convolutionmask, mode='same')
+
+		print np.unique(convolved, return_counts=True), np.shape(convolved)
+		filtercopy = median_filter(np.copy(self.data), footprint=convolutionmask)
+		spike_free = filtercopy*(convolved > 3) + self.data*(convolved <= 2)
+		i = np.where(convolved > 3)
+
+		return spike_free, convolved
+
+
+
 class EELSSpectrumImage(SpectrumImage):
 	def __init__(self, SI, dispersion=0.005, spectrum_units='eV', calibration=0):
 		super(EELSSpectrumImage, self).__init__(SI, spectrum_units, calibration)

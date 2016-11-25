@@ -29,6 +29,13 @@ class CLSpectrum(Spectrum):
 		self.secondary_units = 'eV'
 		self.secondary_unit_label = 'Energy'
 		
+#	def SpikeRemoval(self, threshold):
+#		median = np.median(self.intensity)
+#		d = np.abs(self.intensity - median)
+#		median_d = np.median(d)
+#		s = d/median_d if median_d else 0.
+#		print s
+		
 class EELSSpectrum(Spectrum):
 	def __init__(self, intensity, dispersion=0.005, units='eV'):
 		super(EELSSpectrum, self).__init__(intensity, units)

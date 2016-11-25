@@ -77,14 +77,14 @@ class SpectrumImagePlotter(object):
 					self.RemoveExtractedImagePatch(self.ImagePlot.PolygonGroups.currentID)
 			elif event.key == 'e':
 				self.summedim.SaveImgAsPNG('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/Image'+
-					str(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emin_i])+'to'+
-					str(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emax_i])+
+					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emin_i])+'to'+
+					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emax_i])+
 					self.SpectrumPlot.SpectrumPlot.spectrum.units+'.png', self.summedim.Imglim)
 		elif event.inaxes == self.extracted_ax:
 			if event.key == 'e':
 				self.extractedim.SaveImgAsPNG('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/Patch'+
-					str(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emin_i])+'to'+
-					str(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emax_i])+
+					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emin_i])+'to'+
+					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emax_i])+
 					self.SpectrumPlot.SpectrumPlot.spectrum.units+'.png', self.extractedim.Imglim)
 		elif event.inaxes == self.spectrum_ax:
 			if event.key == 'e':
