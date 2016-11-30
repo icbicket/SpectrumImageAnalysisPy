@@ -21,6 +21,7 @@ class SpectrumImagePlotter(object):
 		self.extracted_ax = plt.axes([0.525, 0.475, 0.45, 0.45])
 		self.spectrum_ax = plt.axes([0.075, 0.07, 0.9, 0.35])
 		self.contrast_ax = plt.axes([0.075, 0.925, 0.9, 0.075])
+		
 		self.cmap = plt.get_cmap('brg')
 
 		# Spectrum axis plotting and interactive span
@@ -76,20 +77,20 @@ class SpectrumImagePlotter(object):
 					self.SpectrumPlot.make_invisible(self.ImagePlot.PolygonGroups.currentID)
 					self.RemoveExtractedImagePatch(self.ImagePlot.PolygonGroups.currentID)
 			elif event.key == 'e':
-				self.summedim.SaveImgAsPNG('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/Image'+
+				self.summedim.SaveImgAsPNG('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/Image_'+
 					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emin_i])+'to'+
 					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emax_i])+
 					self.SpectrumPlot.SpectrumPlot.spectrum.units+'.png', self.summedim.Imglim)
 		elif event.inaxes == self.extracted_ax:
 			if event.key == 'e':
-				self.extractedim.SaveImgAsPNG('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/Patch'+
+				self.extractedim.SaveImgAsPNG('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/Patch_'+
 					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emin_i])+'to'+
 					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emax_i])+
 					self.SpectrumPlot.SpectrumPlot.spectrum.units+'.png', self.extractedim.Imglim)
 		elif event.inaxes == self.spectrum_ax:
 			if event.key == 'e':
 #				filename = raw_input('Please enter the filepath and name to save your spectrum: ')
-				self.extracted_spectrum.SaveSpectrumAsCSV('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/testSpec.csv')
+				self.extracted_spectrum.SaveSpectrumAsCSV('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/Spectrum_.csv')
 #		elif event.key == 'delete':
 #			
 	

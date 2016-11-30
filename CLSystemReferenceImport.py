@@ -52,9 +52,9 @@ class SystemCorrectionFactor(object):
 		correction_spectrum = Spectrum.CLSpectrum(spectrum_interp, wavelengths)
 		return correction_spectrum
 		
-wvls = np.linspace(400, 980)
-p = SystemCorrectionFactor(800, 750, wvls)
+#wvls = np.linspace(400, 980)
+#p = SystemCorrectionFactor(800, 750, wvls)
 
-print np.shape(p.correction_spectrum.SpectrumRange)
-plt.plot(p.correction_spectrum.SpectrumRange, p.correction_spectrum.intensity)
-plt.show()
+#print np.shape(p.correction_spectrum.SpectrumRange)
+#plt.plot(p.correction_spectrum.SpectrumRange, p.correction_spectrum.intensity)
+#plt.show()

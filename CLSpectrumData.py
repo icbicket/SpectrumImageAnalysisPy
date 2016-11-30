@@ -9,18 +9,20 @@ def Readh5SI(filename):
 	print 'Loading...', filename
 	data = h5py.File(filename, 'r')
 	for kk in data.keys()[:4]:
-		AcqData = data[kk]['ImageData']['Image']
-		DataShape = np.shape(AcqData)
-		if DataShape[0] != 1:
-			SI = np.array(AcqData)
-			Wavelengths = np.array(data[kk]['ImageData']['DimensionScaleC'])
-		elif DataShape[1] != 1:
-			_ = AcqData # Drift image
-		elif DataShape[3] == DataShape[4] == 512:
-			survey = AcqData
-		else:
-			SEM = AcqData	
-	if np.shape(SEM)[3] == 4 * np.shape(SI)[3]:
+		if 'Acquisition' in kk:
+			AcqData = data[kk]['ImageData']['Image']
+			DataShape = np.shape(AcqData)
+			if DataShape[0] != 1:
+				SI = np.squeeze(np.array(AcqData))
+				Wavelengths = np.array(data[kk]['ImageData']['DimensionScaleC'])
+			elif DataShape[1] != 1:
+				_ = AcqData # Drift image
+			elif DataShape[3] == DataShape[4] == 512:
+				survey = Image(np.squeeze(AcqData), calibration=np.array(data[kk]['ImageData']['DimensionScaleX']))
+			else:
+				SEM = Image(np.squeeze(AcqData), calibration=np.array(data[kk]['ImageData']['DimensionScaleX']))
+	print np.shape(SEM.data), np.shape(SI)
+	if np.shape(SEM.data)[-1] == 4 * np.shape(SI)[-1]:
 		fuzzing = True
 	return SI, Wavelengths, SEM, survey, fuzzing
 
@@ -31,8 +33,13 @@ class CLDataSet(object):
 	def __init__(self, SI = np.array([]), Wavelengths = np.array([]), SEM=np.array([]), survey=np.array([]), fuzzing=False):
 		self.fuzzing = fuzzing
 		self.SI = SpectrumImage.CLSpectrumImage(SI, Wavelengths)
-		self.SEM = Image(SEM)
-		self.survey = Image(survey)
+		self.SEM = SEM
+		self.survey = survey
+		if self.fuzzing:
+			reshapedSEM = np.reshape(self.SEM.data, [self.SEM.size[0]/4, 4, self.SEM.size[1]/4, 4])
+			self.unfuzzedSEM = Image(np.sum(np.sum(reshapedSEM, axis=1), axis=-1), calibration=self.SEM.calibration)
+		else:
+			self.unfuzzedSEM = self.SEM
 
 	@classmethod
 	def LoadFromFile(cls, filename):

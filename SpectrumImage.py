@@ -12,7 +12,7 @@ class SpectrumImage(object):
 	def __init__(self, SI, spectrum_units, calibration=0):
 		if len(np.shape(SI)) != 3:
 			raise ValueError('That was not a 3D spectrum image!')
-		self.data = np.ma.array(SI)
+		self.data = np.ma.array(SI.astype(float))
 		self.size = np.shape(SI)
 		self.calibration = calibration
 		self.spectrum_units = spectrum_units
@@ -31,7 +31,7 @@ class CLSpectrumImage(SpectrumImage):
 
 	def ExtractSpectrum(self, mask3D):
 		extractedspectrum = Spectrum.CLSpectrum(
-			np.sum(np.sum(
+			np.mean(np.mean(
 			np.ma.masked_array(self.data, mask3D), 
 			axis = 0), axis = 0), self.SpectrumRange, 
 			units = self.spectrum_units)
@@ -57,16 +57,18 @@ class CLSpectrumImage(SpectrumImage):
 		mask2 = np.zeros(np.shape(grad[2]))
 		mask2[grad[2] > threshold] = 1.
 		mask = np.logical_or(mask0, mask1).astype(float)
-#		convolutionmask = np.reshape(np.array([[0,1,0],[1,0,1],[0,1,0]]), (3,3,1))
+
 		convolutionmask = np.array([[[0,0,0],[0,1,0],[0,0,0]],[[0,1,0],[1,0,1],[0,1,0]],[[0,0,0],[0,1,0],[0,0,0]]])
 		convolved = signal.convolve(mask, convolutionmask, mode='same')
-
+		filtermask = np.reshape(np.array([[0,1,0],[1,0,1],[0,1,0]]), (3,3,1))
 		print np.unique(convolved, return_counts=True), np.shape(convolved)
-		filtercopy = median_filter(np.copy(self.data), footprint=convolutionmask)
-		spike_free = filtercopy*(convolved > 3) + self.data*(convolved <= 2)
+		filtercopy = median_filter(np.copy(self.data), footprint=filtermask)
+#		print 'unique', np.unique(filtercopy, return_counts=True)
+		spike_free = filtercopy*(convolved >= 3) + self.data*(convolved < 3)
+		spike_free = CLSpectrumImage(spike_free, self.SpectrumRange, self.spectrum_units, self.calibration)
 		i = np.where(convolved > 3)
 
-		return spike_free, convolved
+		return spike_free
 
 
 
@@ -87,7 +89,7 @@ class EELSSpectrumImage(SpectrumImage):
 		
 	def ExtractSpectrum(self, mask3D):
 		extractedspectrum = Spectrum.EELSSpectrum(
-			np.sum(np.sum(
+			np.mean(np.mean(
 			np.ma.masked_array(self.data, mask3D), 
 			axis = 0), axis = 0), 
 			dispersion = self.dispersion,

@@ -8,7 +8,7 @@ def AlignCrop(images, offsets):
 		maxcorners = np.append(maxcorners, ii.size[:2])
 	maxcorners = np.roll(np.reshape(maxcorners, 
 		(2, len(maxcorners)/2), order = 'F'), 1, axis = 0)
-	overlapcorners = (np.max(offsets, axis = 1), np.min(maxcorners + offsets, axis = 1))
+	overlapcorners = (np.max(offsets, axis = 1).astype(int), np.min(maxcorners + offsets, axis = 1).astype(int))
 	index = 0
 	for ii in images:
 		ii.data = ii.data[overlapcorners[0][1] - offsets[1][index]:

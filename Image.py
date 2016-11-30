@@ -23,8 +23,10 @@ class Image(object):
 			writeImage = np.empty((self.size[0], self.size[1]*2))
 			writeImage[:, 0::2] = np.round(255*(self.data.data.astype(float) - r_min)/float((r_max - r_min)))*np.invert(self.data.mask)
 			writeImage[:, 1::2] = np.invert(self.data.mask)*255
+			alph = True
 		else:
 			writeImage = np.round(255*(self.data.astype(float) - r_min)/float((r_max - r_min)))
-		writer = png.Writer(size = self.size[::-1], greyscale = True, alpha = True)
+			alph = False
+		writer = png.Writer(size = self.size[::-1], greyscale = True, alpha = alph)
 		writer.write(writefile, writeImage)
 		writefile.close()

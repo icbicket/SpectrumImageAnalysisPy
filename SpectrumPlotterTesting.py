@@ -19,17 +19,15 @@ import SpectrumImage
 ### Spike removal testing
 
 folder = '/home/isobel/Documents/McMaster/CL/T9-3_Sq1A_(1,3)/'
-filebase = 'T9-3_Sq1A_(1,3)v_Gr800at750_30keV_Ap3Spot4_2s_noQWP_noPol_full.h5'
+filebase = 'T9-3_Sq1A_(1,3)v_Gr800at750_30keV_Ap3Spot4_2s_noQWP_noPol_SiN.h5'
 cl = CLSpectrumData.CLDataSet.LoadFromFile(folder + filebase)
 S1 = SpectrumImagePlotter.SpectrumImagePlotter(cl.SI)
-g, grad = cl.SI.SpikeRemoval(2000)
-g = SpectrumImage.CLSpectrumImage(g, cl.SI.SpectrumRange)
+g, c = cl.SI.SpikeRemoval(100)
+#g = SpectrumImage.CLSpectrumImage(g.SI, cl.SI.SpectrumRange)
 S2 = SpectrumImagePlotter.SpectrumImagePlotter(g)
+
 fig = plt.figure()
-ax = fig.add_subplot(121)
-ax2 = fig.add_subplot(122)
-grad[grad<4]=0.
-ax.imshow(np.sum(grad,axis=2), interpolation='none', cmap='gray')
-ax2.imshow(grad[:,:,174], interpolation='none', cmap='gray')
-print cl.SI.SpectrumRange[174]
+ax = fig.add_subplot(111)
+ax.imshow(c[:,:,158],interpolation='none',cmap='gray')
+
 plt.show()

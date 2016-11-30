@@ -71,6 +71,8 @@ class ImagePlotter(object):
 			'''Provide movement handles on active polygon vertices'''
 			self.mover = PolygonMover.PolygonMover(
 				self.PolygonGroups.GetActivePolygon(), self.axis)
+		elif event.key == 'e':
+			self.Image.SaveImgAsPNG('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/Image_.png', self.Image.Imglim)
 #		elif event.key == 'enter':
 #			self.axis.autoscale(tight=True)
 #			self.mask = self.PolygonGroups.GetActiveMask(self.Image.size).astype(bool)
