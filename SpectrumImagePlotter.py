@@ -17,11 +17,11 @@ class SpectrumImagePlotter(object):
 	def __init__(self, SI):
 		self.SI = SI
 		self.fig = plt.figure(figsize = (9,9))
-		self.image_ax = plt.axes([0.075, 0.475, 0.45, 0.45])
-		self.extracted_ax = plt.axes([0.525, 0.475, 0.45, 0.45])
+		self.image_ax = plt.axes([0., 0.475, 0.45, 0.45])
+		self.extracted_ax = plt.axes([0.45, 0.475, 0.45, 0.45])
 		self.spectrum_ax = plt.axes([0.075, 0.07, 0.9, 0.35])
 		self.contrast_ax = plt.axes([0.075, 0.925, 0.9, 0.075])
-		
+		self.colourbar_ax = plt.axes([0.9, 0.475, 0.05, 0.45]) 
 		self.cmap = plt.get_cmap('brg')
 
 		# Spectrum axis plotting and interactive span
@@ -40,13 +40,13 @@ class SpectrumImagePlotter(object):
 		self.contrastbins = 256
 		
 		# Image axis plotting and interactive patches
-		self.summedim = Image.Image(np.sum(self.SI.data[:, :, self.Emin_i:self.Emax_i], axis = 2))
+		self.summedim = Image.Image(np.mean(self.SI.data[:, :, self.Emin_i:self.Emax_i], axis = 2))
 
 #		self.cmin = np.min(np.min(self.summedim))
 #		self.cmax = np.max(np.max(self.summedim))
 		self.cmin = self.summedim.Imglim[0]
 		self.cmax = self.summedim.Imglim[1]
-		self.ImagePlot = ImagePlotter.ImagePlotter(self.summedim, self.image_ax)
+		self.ImagePlot = ImagePlotter.ImagePlotter(self.summedim, self.image_ax, self.colourbar_ax)
 		self.PlotImage()
 		self.PlotContrastHistogram()
 		self.extractedim = Image.Image(np.ma.masked_array(self.summedim.data, np.invert(self.extracted_mask)))
@@ -119,6 +119,9 @@ class SpectrumImagePlotter(object):
 		self.extracted_ax.imshow(self.summedim.data, interpolation = 'none',
 			cmap = 'gray', alpha = 0.1)
 	
+#	def AddColourbar(self):
+#		self.colourbar = plt.colorbar(mappable=self.ImagePlot.PlottedImage, cax=self.colourbar_ax)
+	
 	def AddExtractedImagePatch(self, ID):
 		self.ExtractedImagePlot[self.ImagePlot.PolygonGroups.currentID] = ImagePlotter.ImagePlotter(self.extractedim, self.extracted_ax)
 			
@@ -139,7 +142,7 @@ class SpectrumImagePlotter(object):
 		self.Emax_i = np.where(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange == Emax)[0]
 		self.Emin_i = np.searchsorted(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange, Emin)
 		self.Emax_i = np.searchsorted(self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange, Emax)
-		self.summedim = Image.Image(np.sum(self.SI.data[:, :, self.Emin_i:self.Emax_i], axis = 2))
+		self.summedim = Image.Image(np.mean(self.SI.data[:, :, self.Emin_i:self.Emax_i], axis = 2))
 		self.cmin = self.summedim.Imglim[0]
 		self.cmax = self.summedim.Imglim[1]
 #		self.cmin = np.min(np.min(self.summedim))

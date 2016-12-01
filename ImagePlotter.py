@@ -8,12 +8,15 @@ import PolygonMover
 
 
 class ImagePlotter(object):
-	def __init__(self, image, axis):
+	def __init__(self, image, axis, colourbar_axis = None):
 		'''For plotting Image as an image'''
 		self.axis = axis
+		self.colourbar_axis = colourbar_axis
 		self.Image = image
 		self.axis.set_axis_off()
 		self.PlottedImage = self.axis.imshow(self.Image.data, cmap = 'gray', interpolation = 'none')
+		if self.colourbar_axis:
+			self.cbar = self.AddColourbar()
 		if image.calibration != 0:
 			self.scalebar = ScaleBar(self.Image.calibration)
 			self.scalebar.box_alpha = 0.5
@@ -31,6 +34,13 @@ class ImagePlotter(object):
 	def ReplotImage(self, image):
 		self.Image = image
 		self.PlottedImage = self.axis.imshow(self.Image.data, cmap = 'gray', interpolation = 'none')
+		if self.colourbar_axis:
+			self.colourbar_axis.cla()
+			self.cbar = self.AddColourbar()
+	
+	def AddColourbar(self):
+		cbar = plt.colorbar(mappable=self.PlottedImage, cax=self.colourbar_axis)
+		return cbar
 	
 	def connect(self):
 		self.cidkey = self.canvas.mpl_connect('key_press_event', 

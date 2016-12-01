@@ -37,7 +37,7 @@ class CLDataSet(object):
 		self.survey = survey
 		if self.fuzzing:
 			reshapedSEM = np.reshape(self.SEM.data, [self.SEM.size[0]/4, 4, self.SEM.size[1]/4, 4])
-			self.unfuzzedSEM = Image(np.sum(np.sum(reshapedSEM, axis=1), axis=-1), calibration=self.SEM.calibration)
+			self.unfuzzedSEM = Image(np.sum(np.sum(reshapedSEM, axis=1), axis=-1), calibration=self.SEM.calibration*4)
 		else:
 			self.unfuzzedSEM = self.SEM
 
