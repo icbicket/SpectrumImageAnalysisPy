@@ -61,10 +61,14 @@ class CLSpectrumImage(SpectrumImage):
 		convolutionmask = np.array([[[0,0,0],[0,1,0],[0,0,0]],[[0,1,0],[1,0,1],[0,1,0]],[[0,0,0],[0,1,0],[0,0,0]]])
 		convolved = signal.convolve(mask, convolutionmask, mode='same')
 		filtermask = np.reshape(np.array([[0,1,0],[1,0,1],[0,1,0]]), (3,3,1))
-		print np.unique(convolved, return_counts=True), np.shape(convolved)
+		filtermaskcorner = np.reshape(np.array([[1,1,1],[1,1,1],[1,1,1]]), (3,3,1))
 		filtercopy = median_filter(np.copy(self.data), footprint=filtermask)
-#		print 'unique', np.unique(filtercopy, return_counts=True)
+		corners = [(0, 0), (0, -1), (-1, -1), (-1, 0)]
+		for cc in corners:
+			filtercopy[cc][convolved[cc] >= 2] = median_filter(np.copy(self.data), footprint=filtermaskcorner)
+			convolved[cc][convolved[cc] >= 2] = 4
 		spike_free = filtercopy*(convolved >= 3) + self.data*(convolved < 3)
+
 		spike_free = CLSpectrumImage(spike_free, self.SpectrumRange, self.spectrum_units, self.calibration)
 		i = np.where(convolved > 3)
 
