@@ -5,6 +5,7 @@ import SpectrumPlotter
 import ImagePlotter
 import Image
 import collections
+import os
 
 '''Things to do:
 Add vertex addition and deletion after creation for patches
@@ -14,7 +15,26 @@ Figure out changing contrast of extracted patch with spectrum spanselector
 '''
 
 class SpectrumImagePlotter(object):
-	def __init__(self, SI):
+	def __init__(self, SI, filepath=os.getcwd()):
+		'''Plot a 3D spectrum image array
+		Input: 3D numpy array
+		Optional argument: filepath to save spectra and images to
+		Interactive commands on image axis: 
+			enter: plot spectrum underneath current patch mask
+			e: save image (not including contrast limits)
+			n: start new polygon
+			+: make new polygon group (for new spectrum)
+			up, down arrow keys: move active polygon selection between groups
+			left, right arrow keys: move active polygon selection to next polygon inside group
+			m: provide handles on the vertices to adjust the polygon shape
+		Interactive commands on spectrum axis:
+			Click and drag over the spectrum to plot the slice in the image axis
+			e: save spectrum as csv
+		Interactive commands on contrast axis:
+			Click and drag to select contrast range
+		Interactive commands on extracted image axis:
+			e: Save current patch to png'''
+		self.filepath = filepath
 		self.SI = SI
 		self.fig = plt.figure(figsize = (9,9))
 		self.image_ax = plt.axes([0., 0.475, 0.45, 0.45])
@@ -77,20 +97,23 @@ class SpectrumImagePlotter(object):
 					self.SpectrumPlot.make_invisible(self.ImagePlot.PolygonGroups.currentID)
 					self.RemoveExtractedImagePatch(self.ImagePlot.PolygonGroups.currentID)
 			elif event.key == 'e':
-				self.summedim.SaveImgAsPNG('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/Image_'+
+				filename = os.path.join(self.filepath, 'Image_')
+				self.summedim.SaveImgAsPNG(filename+
 					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emin_i])+'to'+
 					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emax_i])+
 					self.SpectrumPlot.SpectrumPlot.spectrum.units+'.png', self.summedim.Imglim)
 		elif event.inaxes == self.extracted_ax:
 			if event.key == 'e':
-				self.extractedim.SaveImgAsPNG('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/Patch_'+
+				filename = os.path.join(self.filepath, 'Patch_')
+				self.extractedim.SaveImgAsPNG(filename+
 					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emin_i])+'to'+
 					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emax_i])+
 					self.SpectrumPlot.SpectrumPlot.spectrum.units+'.png', self.extractedim.Imglim)
 		elif event.inaxes == self.spectrum_ax:
 			if event.key == 'e':
+				filename = os.path.join(self.filepath, 'Spectrum_.csv')
 #				filename = raw_input('Please enter the filepath and name to save your spectrum: ')
-				self.extracted_spectrum.SaveSpectrumAsCSV('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/Spectrum_.csv')
+				self.extracted_spectrum.SaveSpectrumAsCSV(filename)
 #		elif event.key == 'delete':
 #			
 	

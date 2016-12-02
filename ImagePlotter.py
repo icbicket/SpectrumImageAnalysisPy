@@ -5,15 +5,18 @@ import PolygonGrouper
 import PolygonCreator
 from matplotlib.patches import Polygon
 import PolygonMover
-
+import os
 
 class ImagePlotter(object):
-	def __init__(self, image, axis, colourbar_axis = None):
-		'''For plotting Image as an image'''
+	def __init__(self, image, axis, colourbar_axis = None, filepath=os.getcwd()):
+		'''For plotting Image as an image
+		Input a 2D array to plot as an image, and an axis to plot the image on
+		Optional arguments: define an axis to put a colourbar in, define the filepath to save images to'''
 		self.axis = axis
 		self.colourbar_axis = colourbar_axis
 		self.Image = image
 		self.axis.set_axis_off()
+		self.filepath = filepath
 		self.PlottedImage = self.axis.imshow(self.Image.data, cmap = 'gray', interpolation = 'none')
 		if self.colourbar_axis:
 			self.cbar = self.AddColourbar()
@@ -82,7 +85,9 @@ class ImagePlotter(object):
 			self.mover = PolygonMover.PolygonMover(
 				self.PolygonGroups.GetActivePolygon(), self.axis)
 		elif event.key == 'e':
-			self.Image.SaveImgAsPNG('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/Image_.png', self.Image.Imglim)
+			filename = os.path.join(self.filepath, 'Image_.png')
+			self.Image.SaveImgAsPNG(filename, self.Image.Imglim)
+			print 'Saved image to...', filename
 #		elif event.key == 'enter':
 #			self.axis.autoscale(tight=True)
 #			self.mask = self.PolygonGroups.GetActiveMask(self.Image.size).astype(bool)
