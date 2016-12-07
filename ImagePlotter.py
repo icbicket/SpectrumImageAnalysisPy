@@ -53,46 +53,55 @@ class ImagePlotter(object):
 		self.canvas.mpl_disconnect(self.cidkey)
 		
 	def keyboard_press(self, event):
-		if event.inaxes != self.axis:
-			return
-
-		if self.mover:
-			self.mover.disconnect()
-			self.mover = None
-		if event.key == 'n':
-			''' Start new polygon in current group and make it active polygon'''
-			if self.creator:
-				self.creator.abort()
-			self.creator = PolygonCreator.PolygonCreator(
-				self.axis, self.add_polygon_callback)
-		elif event.key == '+':
-			''' Make new polygon group and make it current active group'''
-			self.PolygonGroups.NewGroup()
-		elif event.key == 'up':
-			'''Move active selection to next group'''
-			self.PolygonGroups.NextGroup(step=1)
-		elif event.key == 'down':
-			'''Move active selection to previous group'''
-			self.PolygonGroups.NextGroup(step=-1)
-		elif event.key == 'right':
-			'''Move active selection to next polygon'''
-			self.PolygonGroups.NextPolygon(step=1)
-		elif event.key == 'left':
-			'''Move active selection to previous polygon'''
-			self.PolygonGroups.NextPolygon(step=-1)
-		elif event.key == 'm':
-			'''Provide movement handles on active polygon vertices'''
-			self.mover = PolygonMover.PolygonMover(
-				self.PolygonGroups.GetActivePolygon(), self.axis)
-		elif event.key == 'e':
-			filename = os.path.join(self.filepath, 'Image_.png')
-			self.Image.SaveImgAsPNG(filename, self.Image.Imglim)
-			print 'Saved image to...', filename
-#		elif event.key == 'enter':
-#			self.axis.autoscale(tight=True)
-#			self.mask = self.PolygonGroups.GetActiveMask(self.Image.size).astype(bool)
-		plt.draw()
-		
+		if event.inaxes == self.axis:
+			if self.mover:
+				self.mover.disconnect()
+				self.mover = None
+			if event.key == 'n':
+				''' Start new polygon in current group and make it active polygon'''
+				if self.creator:
+					self.creator.abort()
+				self.creator = PolygonCreator.PolygonCreator(
+					self.axis, self.add_polygon_callback)
+			elif event.key == '+':
+				''' Make new polygon group and make it current active group'''
+				self.PolygonGroups.NewGroup()
+			elif event.key == 'up':
+				'''Move active selection to next group'''
+				self.PolygonGroups.NextGroup(step=1)
+			elif event.key == 'down':
+				'''Move active selection to previous group'''
+				self.PolygonGroups.NextGroup(step=-1)
+			elif event.key == 'right':
+				'''Move active selection to next polygon'''
+				self.PolygonGroups.NextPolygon(step=1)
+			elif event.key == 'left':
+				'''Move active selection to previous polygon'''
+				self.PolygonGroups.NextPolygon(step=-1)
+			elif event.key == 'm':
+				'''Provide movement handles on active polygon vertices'''
+				self.mover = PolygonMover.PolygonMover(
+					self.PolygonGroups.GetActivePolygon(), self.axis)
+			elif event.key == 'e':
+				filename = os.path.join(self.filepath, 'Image_.png')
+				self.Image.SaveImgAsPNG(filename, self.Image.Imglim)
+				print 'Saved image to...', filename
+	#		elif event.key == 'enter':
+	#			self.axis.autoscale(tight=True)
+	#			self.mask = self.PolygonGroups.GetActiveMask(self.Image.size).astype(bool)
+			plt.draw()
+		elif event.inaxes == self.colourbar_axis:
+			if event.key == 'e':
+				filename = os.path.join(self.filepath, 'Colourbar_.png')
+				extent_colourbar = self.colourbar_axis.get_window_extent().transformed(plt.gcf().dpi_scale_trans.inverted())
+				extent_toptick = self.colourbar_axis.yaxis.get_ticklabels()[0].get_window_extent().transformed(plt.gcf().dpi_scale_trans.inverted())
+				extent_bottomtick = self.colourbar_axis.yaxis.get_ticklabels()[-1].get_window_extent().transformed(plt.gcf().dpi_scale_trans.inverted())
+				new_extent = np.array([np.min((extent_colourbar.get_points()[0,:], extent_toptick.get_points()[0,:], extent_bottomtick.get_points()[0,:]), axis=0),
+					np.max((extent_colourbar.get_points()[1,:], extent_toptick.get_points()[1,:], extent_bottomtick.get_points()[1,:]), axis=0)])
+				extent_colourbar.set_points(new_extent)
+				plt.gcf().savefig(filename, bbox_inches=extent_colourbar, transparent=True)
+				
+				
 	def add_polygon_callback(self, polygon):
 		self.creator = None
 		self.PolygonGroups.AddPolygon(polygon)

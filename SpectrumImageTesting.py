@@ -46,6 +46,6 @@ cl = CLSpectrumData.CLDataSet.LoadFromFile(folderCL + fileCL)
 
 plotter = SpectrumImagePlotter.SpectrumImagePlotter(cl.SI)
 
-plt.show()
+#plt.show()
 #plotter.extractedim.SaveImgAsPNG('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/testIm.png', plotter.extractedim.Imglim)
 #print type(plotter.extractedim.data)==np.ma.MaskedArray

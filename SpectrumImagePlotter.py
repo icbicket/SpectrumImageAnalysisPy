@@ -36,10 +36,11 @@ class SpectrumImagePlotter(object):
 			e: Save current patch to png'''
 		self.filepath = filepath
 		self.SI = SI
-		self.fig = plt.figure(figsize = (9,9))
+		self.fig = plt.figure(figsize = (9,9), facecolor=[0.9, 0.9, 1])
 		self.image_ax = plt.axes([0., 0.475, 0.45, 0.45])
 		self.extracted_ax = plt.axes([0.45, 0.475, 0.45, 0.45])
 		self.spectrum_ax = plt.axes([0.075, 0.07, 0.9, 0.35])
+		self.spectrum_ax.patch.set_facecolor([0.9, 0.9, 1])
 		self.contrast_ax = plt.axes([0.075, 0.925, 0.9, 0.075])
 		self.colourbar_ax = plt.axes([0.9, 0.475, 0.05, 0.45]) 
 		self.cmap = plt.get_cmap('brg')
@@ -109,6 +110,7 @@ class SpectrumImagePlotter(object):
 					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emin_i])+'to'+
 					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emax_i])+
 					self.SpectrumPlot.SpectrumPlot.spectrum.units+'.png', self.extractedim.Imglim)
+
 		elif event.inaxes == self.spectrum_ax:
 			if event.key == 'e':
 				filename = os.path.join(self.filepath, 'Spectrum_.csv')

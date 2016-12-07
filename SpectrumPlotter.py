@@ -18,6 +18,7 @@ class SpectrumPlotter(object):
 		self.line_colour = colour
 		self.linked_axis = self.main_axis.twiny()
 		self.spectrum = spectrum
+		self.label = ''
 		self.main_axis.set_xlabel(r"%s (%s)" % (spectrum.unit_label, spectrum.units))
 		self.main_axis.set_ylabel(r"Intensity (a.u.)")
 		self.setup_linked_axis(self.spectrum.SpectrumRange, 
@@ -38,15 +39,17 @@ class SpectrumPlotter(object):
 	    	self.spectrum.secondary_unit_label, float(nmtoeV(x)), 
 	    	self.spectrum.secondary_units, y) ## Using nmtoeV! not CL friendly?
 
-	def add_spectrum(self, spectrum):
+	def add_spectrum(self, spectrum, label=''):
+		self.label = label
 		plotted_spectrum = self.main_axis.plot(spectrum.SpectrumRange, 
-				spectrum.intensity)
+				spectrum.intensity, label=self.label)
+		
 		return plotted_spectrum
 		
 	def update_spectrum(self, line, spectrum):
 		line[0].remove()
 		plotted_spectrum = self.main_axis.plot(spectrum.SpectrumRange, 
-			spectrum.intensity)
+			spectrum.intensity, label=self.label)
 		return plotted_spectrum
 
 def eVtonm(eV, pos=None):
@@ -59,8 +62,8 @@ def nmtoeV(nm, pos=None):
 	return "%.3g" % eV
 
 class SpectrumManager(object):
-	def __init__(self, spectrum, axis, cmap=plt.get_cmap('brg')):
-		self.currentID = 0
+	def __init__(self, spectrum, axis, cmap=plt.get_cmap('brg'), currentID=0):
+		self.currentID = currentID
 		self.cmap = cmap
 		self.axis = axis
 		self.spectrumDict = collections.OrderedDict()
@@ -69,10 +72,10 @@ class SpectrumManager(object):
 		self.SpectrumPlot = SpectrumPlotter(self.spectrumDict[self.currentID], 
 			self.axis, self.cmap)
 		self.lineDict[self.currentID] = self.SpectrumPlot.add_spectrum(
-			self.spectrumDict[self.currentID])
+			self.spectrumDict[self.currentID], label=str(self.currentID))
 		self.colourDict = collections.OrderedDict()
 		self.colourDict[self.currentID] = self.cmap(0)
-		
+
 	def make_colour_list(self):
 		colour_callers = np.linspace(0, 1, len(self.lineDict.keys()))
 		for cc, ll in zip(colour_callers, self.lineDict.keys()):
@@ -103,7 +106,7 @@ class SpectrumManager(object):
 			self.lineDict[self.currentID][0].set_color(self.colourDict[self.currentID])
 		else:
 			self.lineDict[self.currentID] = self.SpectrumPlot.add_spectrum(
-				self.spectrumDict[self.currentID])
+				self.spectrumDict[self.currentID], label=str(self.currentID))
 			self.make_colour_list()
 			for ll in self.lineDict.keys():
 				self.lineDict[ll][0].set_color(self.colourDict[ll])
@@ -114,3 +117,8 @@ class SpectrumManager(object):
 		
 	def make_invisible(self, ID):
 		self.lineDict[ID][0].set_visible(False)
+	
+	def add_legend(self):
+		legend = self.axis.legend(loc='best', framealpha=0.5)
+		if legend:
+			legend.draggable(state=True)

@@ -66,7 +66,7 @@ class CLSet(object):
 
 class PolarimetrySet(object):
 	"""Polarimetry set takes in a set of six polarimetry data sets to calculate the Stokes parameters and degrees of polarization"""
-	def __init__(self, PolSetData):
+	def __init__(self, PolSetData, SI_name='SampleSI'):
 		self.QWP0Pol0 = PolSetData['QWP0_Pol0']
 		self.QWP315Pol45 = PolSetData['QWP315_Pol45']
 		self.QWP270Pol45 = PolSetData['QWP270_Pol45']
@@ -75,12 +75,12 @@ class PolarimetrySet(object):
 		self.QWP45Pol135 = PolSetData['QWP45_Pol135']
 
 		'''Stokes parameters calculation'''
-		self.S0_total = self.QWP270Pol90.SampleSI.SI.data + self.QWP0Pol0.SampleSI.SI.data
+		self.S0_total = getattr(self.QWP270Pol90, SI_name).SI.data + getattr(self.QWP0Pol0, SI_name).SI.data
 		self.S0_total = self.S0_total.astype(float)
 
-		self.S1 = self.QWP270Pol90.SampleSI.SI.data - self.QWP0Pol0.SampleSI.SI.data
-		self.S2 = self.QWP45Pol135.SampleSI.SI.data - self.QWP315Pol45.SampleSI.SI.data
-		self.S3 = self.QWP270Pol135.SampleSI.SI.data - self.QWP270Pol45.SampleSI.SI.data
+		self.S1 = getattr(self.QWP270Pol90, SI_name).SI.data - getattr(self.QWP0Pol0, SI_name).SI.data
+		self.S2 = getattr(self.QWP45Pol135, SI_name).SI.data - getattr(self.QWP315Pol45, SI_name).SI.data
+		self.S3 = getattr(self.QWP270Pol135, SI_name).SI.data - getattr(self.QWP270Pol45, SI_name).SI.data
 
 		self.DoP = np.sqrt(self.S1**2 + self.S2**2 + self.S3**2)/self.S0_total
 		self.DoLP = np.sqrt(self.S1**2 + self.S2**2)/self.S0_total
