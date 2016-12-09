@@ -15,4 +15,5 @@ def AlignCrop(images, offsets):
 			            overlapcorners[1][1] - offsets[1][index], 
 			            overlapcorners[0][0] - offsets[0][index]:
 			            overlapcorners[1][0] - offsets[0][index]] #Maybe fix this to make new set of aligned images
+		ii.size = np.shape(ii.data)
 		index += 1
