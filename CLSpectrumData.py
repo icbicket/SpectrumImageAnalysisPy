@@ -8,6 +8,8 @@ def Readh5SI(filename):
 	fuzzing = False
 	print 'Loading...', filename
 	data = h5py.File(filename, 'r')
+	SEM = np.array([])
+	survey = np.array([])
 	for kk in data.keys()[:4]:
 		if 'Acquisition' in kk:
 			AcqData = data[kk]['ImageData']['Image']
@@ -21,7 +23,7 @@ def Readh5SI(filename):
 				survey = Image(np.squeeze(AcqData), calibration=np.array(data[kk]['ImageData']['DimensionScaleX']))
 			else:
 				SEM = Image(np.squeeze(AcqData), calibration=np.array(data[kk]['ImageData']['DimensionScaleX']))
-	print np.shape(SEM.data), np.shape(SI)
+
 	if np.shape(SEM.data)[-1] == 4 * np.shape(SI)[-1]:
 		fuzzing = True
 	return SI, Wavelengths, SEM, survey, fuzzing

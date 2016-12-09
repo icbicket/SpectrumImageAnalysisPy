@@ -41,7 +41,7 @@ class SpectrumImagePlotter(object):
 		self.extracted_ax = plt.axes([0.45, 0.475, 0.45, 0.45])
 		self.spectrum_ax = plt.axes([0.075, 0.07, 0.9, 0.35])
 		self.spectrum_ax.patch.set_facecolor([0.9, 0.9, 1])
-		self.contrast_ax = plt.axes([0.075, 0.925, 0.9, 0.075])
+		self.contrast_ax = plt.axes([0.075, 0.925, 0.8, 0.075])
 		self.colourbar_ax = plt.axes([0.9, 0.475, 0.05, 0.45]) 
 		self.cmap = plt.get_cmap('brg')
 
