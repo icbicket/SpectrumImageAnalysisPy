@@ -2,7 +2,11 @@ import numpy as np
 import Spectrum
 import csv
 from scipy import signal
+from scipy import stats
 from scipy.ndimage.filters import median_filter
+import handythread
+import multiprocessing
+from functools import partial
 
 class SpectrumImage(object):
 	"""Class for spectrum image data set, must be 3d numpy array
@@ -88,7 +92,7 @@ class EELSSpectrumImage(SpectrumImage):
 
 	@staticmethod		
 	def FindZLP(data):
-		ZLP = int(np.average(np.argmax(data, axis = -1)))
+		ZLP = int(stats.mode(np.argmax(data, axis = -1), axis=None)[0])
 		return ZLP
 		
 	def ExtractSpectrum(self, mask3D):
@@ -99,3 +103,46 @@ class EELSSpectrumImage(SpectrumImage):
 			dispersion = self.dispersion,
 			units = self.spectrum_units)
 		return extractedspectrum
+		
+	def Threshold(self, threshold):
+		'''To mask out pixels with very little signal'''
+		self.data.mask=np.where(self.data.data>threshold)
+
+		
+	def Normalize(self):
+		'''Normalize data to integral'''
+		normfactor = np.sum(self.data, axis=2, keepdims=True)
+		data_norm = self.data/normfactor
+		return data_norm
+	
+	def RLDeconvolution(self, RLiterations, PSF, threads=multiprocessing.cpu_count()):
+		'''Input: RLiterations=number of iterations to perform
+			PSF=point spread function (an EELS spectrum object)
+		Optional argument: 
+			threads=number of computer's CPUs to use while deconvolving, default is all of them'''
+		print 'Beginning deconvolution...'
+		loopyP = partial(loopy, iterations=RLiterations, PSF=PSF.SymmetrizeAroundZLP().Normalize().intensity)
+		x_deconv = np.array(handythread.parallel_map(loopyP, self.Normalize(), 
+			threads = threads))
+		print 'Done %s iterations!' %RLiterations
+		return EELSSpectrumImage(x_deconv, self.dispersion)
+
+		
+		
+#Richardson-Lucy algorithm
+def RL(iterations, PSF_norm, Spec):
+    RL4 = np.copy(Spec)
+    for ii in range(iterations):
+        RL1 = np.convolve(PSF_norm, RL4, 'same')
+        RL2 = Spec/RL1
+        RL3 = np.convolve(PSF_norm, RL2, 'same')
+        RL4 *= RL3
+    return RL4
+
+#Looping function for deconvolution of spectrum images
+def loopy(SIline, iterations, PSF):
+    xloop = np.shape(SIline)[0]
+    SIline_deconv = np.zeros([xloop, np.shape(SIline)[1]])
+    for xx in range(xloop):
+        SIline_deconv[xx,:] = RL(iterations, PSF, SIline[xx, :])
+    return SIline_deconv

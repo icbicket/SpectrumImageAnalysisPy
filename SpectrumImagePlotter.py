@@ -55,7 +55,7 @@ class SpectrumImagePlotter(object):
 		self.E_span = SpanSelector(self.SpectrumPlot.SpectrumPlot.linked_axis, self.SpectrumSpan, 'horizontal', 
 			span_stays = True)
 		self.Emin_i = 0
-		self.Emax_i = 1
+		self.Emax_i = len(self.extracted_spectrum.intensity)
 		
 		# Contrast histogram plotting and interactive span
 		self.contrastbins = 256
@@ -180,3 +180,5 @@ class SpectrumImagePlotter(object):
 		self.cmax = cmax
 		self.PlotImage()
 
+	def ShowPlot(self):
+		plt.show()
