@@ -1,7 +1,7 @@
 import h5py
 import numpy as np
 
-def SaveCL_SI(SI, filename, survey=None, SEM=None):
+def SaveSI_h5(SI, filename, survey=None, SEM=None):
 	print 'Saving to...', filename
 	with h5py.File(filename, 'w') as hf:
 		if survey:

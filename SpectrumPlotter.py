@@ -62,7 +62,7 @@ def nmtoeV(nm, pos=None):
 	return "%.3g" % eV
 
 class SpectrumManager(object):
-	def __init__(self, spectrum, axis, cmap=plt.get_cmap('brg'), currentID=0):
+	def __init__(self, spectrum, axis, cmap=plt.get_cmap('cool'), currentID=0):
 		self.currentID = currentID
 		self.cmap = cmap
 		self.axis = axis

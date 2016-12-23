@@ -8,16 +8,17 @@ import PolygonMover
 import os
 
 class ImagePlotter(object):
-	def __init__(self, image, axis, colourbar_axis = None, filepath=os.getcwd()):
+	def __init__(self, image, axis, colourbar_axis = None, cmap='gray', filepath=os.getcwd()):
 		'''For plotting Image as an image
 		Input a 2D array to plot as an image, and an axis to plot the image on
 		Optional arguments: define an axis to put a colourbar in, define the filepath to save images to'''
 		self.axis = axis
 		self.colourbar_axis = colourbar_axis
+		self.cmap = cmap
 		self.Image = image
 		self.axis.set_axis_off()
 		self.filepath = filepath
-		self.PlottedImage = self.axis.imshow(self.Image.data, cmap = 'gray', interpolation = 'none')
+		self.PlottedImage = self.axis.imshow(self.Image.data, cmap = self.cmap, interpolation = 'none')
 		if self.colourbar_axis:
 			self.cbar = self.AddColourbar()
 		if image.calibration != 0:

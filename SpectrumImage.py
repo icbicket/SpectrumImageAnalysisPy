@@ -106,14 +106,20 @@ class EELSSpectrumImage(SpectrumImage):
 		
 	def Threshold(self, threshold):
 		'''To mask out pixels with very little signal'''
-		self.data.mask=np.where(self.data.data>threshold)
-
+		thrmask = np.less(self.data.data[:, :, self.ZLP], threshold)
+#		self.thrmask = np.reshape(thrmask, (np.append(np.shape(thrmask), 1))) * np.ones(np.shape(self.data))
+		self.data.mask = np.reshape(thrmask, (np.append(np.shape(thrmask), 1))) * np.ones(np.shape(self.data))
+#		print np.shape(self.data.mask)
+#		print np.shape(self.thrmask)
 		
 	def Normalize(self):
 		'''Normalize data to integral'''
-		normfactor = np.sum(self.data, axis=2, keepdims=True)
-		data_norm = self.data/normfactor
+		self.normfactor = np.sum(self.data, axis=2, keepdims=True)
+
+		data_norm = self.data/self.normfactor
 		return data_norm
+
+
 	
 	def RLDeconvolution(self, RLiterations, PSF, threads=multiprocessing.cpu_count()):
 		'''Input: RLiterations=number of iterations to perform
@@ -121,23 +127,28 @@ class EELSSpectrumImage(SpectrumImage):
 		Optional argument: 
 			threads=number of computer's CPUs to use while deconvolving, default is all of them'''
 		print 'Beginning deconvolution...'
+		
 		loopyP = partial(loopy, iterations=RLiterations, PSF=PSF.SymmetrizeAroundZLP().Normalize().intensity)
-		x_deconv = np.array(handythread.parallel_map(loopyP, self.Normalize(), 
+		x_deconv = np.array(handythread.parallel_map(loopyP, abs(self.Normalize()), 
 			threads = threads))
+#		x_deconv = np.array(handythread.parallel_map(loopyP, self.Normalize(), 
+#			threads = threads))
+		x_deconv = np.ma.array(x_deconv, mask = self.data.mask)
 		print 'Done %s iterations!' %RLiterations
+
 		return EELSSpectrumImage(x_deconv, self.dispersion)
 
 		
 		
 #Richardson-Lucy algorithm
 def RL(iterations, PSF_norm, Spec):
-    RL4 = np.copy(Spec)
-    for ii in range(iterations):
-        RL1 = np.convolve(PSF_norm, RL4, 'same')
-        RL2 = Spec/RL1
-        RL3 = np.convolve(PSF_norm, RL2, 'same')
-        RL4 *= RL3
-    return RL4
+	RL4 = Spec.copy()
+	for ii in range(iterations):
+		RL1 = np.convolve(PSF_norm, RL4, 'same')
+		RL2 = Spec/RL1
+		RL3 = np.convolve(PSF_norm, RL2, 'same')
+		RL4 *= RL3
+	return RL4
 
 #Looping function for deconvolution of spectrum images
 def loopy(SIline, iterations, PSF):

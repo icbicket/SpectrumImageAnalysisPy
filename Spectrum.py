@@ -49,11 +49,21 @@ class CLSpectrum(Spectrum):
 
 		
 class EELSSpectrum(Spectrum):
-	def __init__(self, intensity, dispersion=0.005, units='eV'):
+	def __init__(self, intensity, SpectrumRange=None, dispersion=0.005, ZLP=True, units='eV'):
 		super(EELSSpectrum, self).__init__(intensity, units)
 		self.dispersion = dispersion
-		self.ZLP = SpectrumImage.EELSSpectrumImage.FindZLP(self.intensity)
-		self.SpectrumRange = np.arange(0 - self.ZLP, self.length - self.ZLP) * self.dispersion
+		if ZLP == True:
+			self.ZLP = SpectrumImage.EELSSpectrumImage.FindZLP(self.intensity)
+			if SpectrumRange is not None:
+				self.SpectrumRange = SpectrumRange
+			else:
+				self.SpectrumRange = np.arange(0 - self.ZLP, self.length - self.ZLP) * self.dispersion
+		else:
+			self.ZLP = None
+			if SpectrumRange is not None:
+				self.SpectrumRange = SpectrumRange
+			else:
+				raise ValueError('You need to input the energy range!')
 		self.unit_label = 'Energy'
 		self.secondary_units = 'nm'
 		self.secondary_unit_label = 'Wavelength'
@@ -73,6 +83,38 @@ class EELSSpectrum(Spectrum):
 		data_sym = np.delete(self.intensity, np.s_[2*self.ZLP:-1], axis = -1)
 		data_sym[data_sym<0] = 0
 		return EELSSpectrum(data_sym, dispersion=self.dispersion, units=self.units)
+		
+	def FindFW(self, intensityfraction):
+#		intensity_norm = self.intensity.Normalize().intensity
+		lefttail = self.intensity[:self.ZLP][::-1]
+		diff1 = lefttail - intensityfraction*self.intensity[self.ZLP]
+		left_index_1 = np.argmax(np.diff(np.sign(diff1)) != 0)
+		left_index_2 = left_index_1 + 1
+		left_energy = self.dispersion * np.interp(
+			intensityfraction*self.intensity[self.ZLP], 
+			[lefttail[left_index_2], lefttail[left_index_1]], 
+			[left_index_2, left_index_1])+self.dispersion
+		
+		righttail = self.intensity[self.ZLP:]
+		diff2 = righttail - intensityfraction*self.intensity[self.ZLP]
+		right_index_1 = np.argmax(np.diff(np.sign(diff2)) != 0) 
+		right_index_2 = right_index_1 + 1
+		right_energy = self.dispersion * np.interp(
+			intensityfraction*self.intensity[self.ZLP], 
+			[righttail[right_index_2], righttail[right_index_1]], 
+			[right_index_2, right_index_1])
+		
+		FW = left_energy + right_energy
+		return FW
+#		
+#		L_ene = dispersion * np.interp(I, [lefttail[Lind2], lefttail[Lind1]], [Lind2, Lind1])
+#		righttail = spec[ZLPind:]
+#		diff2 = righttail - I
+#		Rind1 = np.argmax(np.diff(np.sign(diff2)) != 0)
+#		Rind2 = Rind1 + 1
+#		R_ene = dispersion * np.interp(I, [righttail[Rind2], righttail[Rind1]], [Rind2, Rind1])
+#		FW = L_ene + R_ene
+#		return FW
 #	@staticmethod		
 #	def FindZLP(spectrum):
 #		ZLP = np.argmax(spectrum)
