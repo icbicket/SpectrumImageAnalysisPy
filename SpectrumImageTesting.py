@@ -33,15 +33,15 @@ Copy colour scheme over from patches to spectra and extracted image
 #plt.show()
 
 ###Testing SIPlotter with real data!
-folder = '/home/isobel/Documents/McMaster/EELS/2016-07-27/SI3/'
+folder = '/home/isobel/Documents/McMaster/EELS/2016-07-27 - Sierpinski Ag/SI3/'
 filebase = 'EELS Spectrum Image (dark ref corrected).dm3'
 s = hp.load(folder+filebase)
 eels = SpectrumImage.EELSSpectrumImage(s.data)
-PSF = Spectrum.EELSSpectrum.LoadFromCSV('/home/isobel/Documents/McMaster/EELS/2016-07-27/SI3/Processed/Spectrum_ZLP.csv')
-print np.shape(PSF.intensity)
+#PSF = Spectrum.EELSSpectrum.LoadFromCSV('/home/isobel/Documents/McMaster/EELS/2016-07-27/SI3/Processed/Spectrum_ZLP.csv')
+#print np.shape(PSF.intensity)
 p1=SpectrumImagePlotter.SpectrumImagePlotter(eels)
-eels2 = eels.RLDeconvolution(2, PSF)
-p2 = SpectrumImagePlotter.SpectrumImagePlotter(eels2)
+#eels2 = eels.RLDeconvolution(2, PSF)
+#p2 = SpectrumImagePlotter.SpectrumImagePlotter(eels2)
 p1.ShowPlot()
 
 

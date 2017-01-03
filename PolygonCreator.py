@@ -25,7 +25,6 @@ class PolygonCreator(object):
 			self.polygon.remove()
 		plt.draw()
 
-
 	def mouse_click(self, event):
 		if event.inaxes != self.axis:
 			return

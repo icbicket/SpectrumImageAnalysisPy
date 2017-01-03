@@ -90,6 +90,10 @@ class ImagePlotter(object):
 	#		elif event.key == 'enter':
 	#			self.axis.autoscale(tight=True)
 	#			self.mask = self.PolygonGroups.GetActiveMask(self.Image.size).astype(bool)
+			elif event.key == 'a':
+				self.PolygonGroups.ToggleGroupActive()
+			elif event.key == 'delete':
+				self.PolygonGroups.DeleteActivePolygon()
 			plt.draw()
 		elif event.inaxes == self.colourbar_axis:
 			if event.key == 'e':

@@ -103,6 +103,8 @@ class SpectrumImagePlotter(object):
 					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emin_i])+'to'+
 					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emax_i])+
 					self.SpectrumPlot.SpectrumPlot.spectrum.units+'.png', self.summedim.Imglim)
+			
+				
 		elif event.inaxes == self.extracted_ax:
 			if event.key == 'e':
 				filename = os.path.join(self.filepath, 'Patch_')

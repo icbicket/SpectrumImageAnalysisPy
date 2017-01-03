@@ -43,6 +43,9 @@ class PolygonGroupManager(object):
 	def GetActivePolygon(self):
 		return self.polyDict[self.currentID].GetActivePolygon()
 		
+	def DeleteActivePolygon(self):
+		self.polyDict[self.currentID].DeleteSelectedPolygon()
+		
 	def GetActiveMask(self, masksize):
 		mask = self.polyDict[self.currentID].GetMask(masksize)
 		return mask
@@ -50,6 +53,13 @@ class PolygonGroupManager(object):
 	def ToggleActiveMask(self):
 		self.polyDict[self.currentID].MaskOn = not self.polyDict[self.currentID].MaskOn
 		return self.polyDict[self.currentID].MaskOn
+		
+	def ToggleGroupActive(self):
+		if not self.polyDict[self.currentID].IsActive:
+			self.polyDict[self.currentID].Activate()
+		else:
+			self.polyDict[self.currentID].Deactivate()
+
 
 class PolygonGroup(object):
 	def __init__(self, axis, colour):
@@ -59,6 +69,7 @@ class PolygonGroup(object):
 		self.axis = axis
 		self.polygonList = []
 		self.selected = None
+		self.IsActive = True
 		self.MaskOn = False
 		
 	def AddPolygon(self, polygon):
@@ -66,11 +77,27 @@ class PolygonGroup(object):
 		polygon.set_facecolor(self.colour)
 		self.Select(len(self.polygonList)-1)
 		
+	def DeleteSelectedPolygon(self):
+		self.polygonList[self.selected].remove()
+		del self.polygonList[self.selected]
+		if self.selected == len(self.polygonList):
+			self.selected = 0
+		
 	def SetColour(self, colour):
 		self.colour = colour
 		for p in self.polygonList:
 			p.set_facecolor(colour)
 			
+	def Deactivate(self):
+		self.IsActive = False
+		for p in self.polygonList:
+			p.set_alpha(0.05)
+		
+	def Activate(self):
+		self.IsActive = True
+		for p in self.polygonList:
+			p.set_alpha(0.2)
+		
 	def Select(self, i):
 		self.Deselect()
 		self.selected = i

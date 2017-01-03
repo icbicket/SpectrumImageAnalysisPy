@@ -32,6 +32,7 @@ class SpectrumPlotter(object):
 		self.linked_axis.clear()
 		self.linked_axis.xaxis.set_major_formatter(FuncFormatter(FormatFunction))
 		self.linked_axis.set_xlabel(label)
+#		plt.xticks(rotation=25)
 		
 	def axis_display(self, x, y):
 	    return '%s = %0.4g %s, %s = %0.3g %s, I = %0.5g' % (
@@ -55,11 +56,11 @@ class SpectrumPlotter(object):
 def eVtonm(eV, pos=None):
     nm = h*c/(eC*abs(eV))*1e9
     if np.isfinite(nm): nm = int(nm)
-    return "%.3g" % nm
+    return "%.0f" % nm
 
 def nmtoeV(nm, pos=None):
 	eV = h*c/(eC*abs(nm))*1e9
-	return "%.3g" % eV
+	return "%.0f" % eV
 
 class SpectrumManager(object):
 	def __init__(self, spectrum, axis, cmap=plt.get_cmap('cool'), currentID=0):
