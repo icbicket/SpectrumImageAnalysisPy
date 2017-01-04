@@ -55,7 +55,7 @@ class SpectrumImagePlotter(object):
 		self.E_span = SpanSelector(self.SpectrumPlot.SpectrumPlot.linked_axis, self.SpectrumSpan, 'horizontal', 
 			span_stays = True)
 		self.Emin_i = 0
-		self.Emax_i = len(self.extracted_spectrum.intensity)
+		self.Emax_i = len(self.extracted_spectrum.intensity)-1
 		
 		# Contrast histogram plotting and interactive span
 		self.contrastbins = 256
@@ -102,7 +102,7 @@ class SpectrumImagePlotter(object):
 				self.summedim.SaveImgAsPNG(filename+
 					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emin_i])+'to'+
 					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emax_i])+
-					self.SpectrumPlot.SpectrumPlot.spectrum.units+'.png', self.summedim.Imglim)
+					self.SpectrumPlot.SpectrumPlot.spectrum.units+'.png', [self.cmin, self.cmax])
 			
 				
 		elif event.inaxes == self.extracted_ax:
@@ -136,8 +136,7 @@ class SpectrumImagePlotter(object):
 	
 	def PlotImage(self):
 		self.ImagePlot.RemoveImage()
-		self.ImagePlot.ReplotImage(self.summedim)
-		self.ImagePlot.PlottedImage.set_clim(vmin = self.cmin, vmax = self.cmax)
+		self.ImagePlot.ReplotImage(self.summedim, clim=[self.cmin, self.cmax])
 		self.image_ax.set_axis_off()
 	
 	def PlotExtractedImage(self):
@@ -159,7 +158,7 @@ class SpectrumImagePlotter(object):
 	def AdjustContrastExtractedImage(self):
 		for (ID, image) in self.ExtractedImagePlot.items():
 			image.PlottedImage.set_clim(vmin = self.cmin, vmax = self.cmax)
-	
+
 	def SpectrumSpan(self, Emin, Emax): ##Note: draws sub-pixel Espan, fix?
 		Emin = np.max((np.round(Emin/self.SI.dispersion) * self.SI.dispersion, 
 			self.SI.SpectrumRange[0]))
@@ -178,8 +177,8 @@ class SpectrumImagePlotter(object):
 		self.PlotContrastHistogram()
 		
 	def ContrastSpan(self, cmin, cmax):
-		self.cmin = cmin
-		self.cmax = cmax
+		self.cmin = np.max((cmin, self.ImagePlot.Image.Imglim[0]))
+		self.cmax = np.min((cmax, self.ImagePlot.Image.Imglim[1]))
 		self.PlotImage()
 
 	def ShowPlot(self):

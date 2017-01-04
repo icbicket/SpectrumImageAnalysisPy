@@ -35,15 +35,31 @@ class ImagePlotter(object):
 	def RemoveImage(self):
 		self.PlottedImage.remove()
 		
-	def ReplotImage(self, image):
+	def ReplotImage(self, image, clim=None):
 		self.Image = image
 		self.PlottedImage = self.axis.imshow(self.Image.data, cmap = 'gray', interpolation = 'none')
+		if clim is not None:
+			self.PlottedImage.set_clim(vmin = clim[0], vmax = clim[1])
 		if self.colourbar_axis:
 			self.colourbar_axis.cla()
 			self.cbar = self.AddColourbar()
+
 	
 	def AddColourbar(self):
-		cbar = plt.colorbar(mappable=self.PlottedImage, cax=self.colourbar_axis)
+		'''Check for comparison of the image contrast limits vs the image data contrast
+		limits to indicate this on the colourbar as appropriate'''
+		cbar_limit_test = np.equal(self.PlottedImage.get_clim(), self.Image.Imglim)
+		if not np.any(cbar_limit_test):
+			cbar_extend = 'both'
+		elif np.all(cbar_limit_test):
+			cbar_extend = 'neither'
+		else:
+			if cbar_limit_test[0]:
+				cbar_extend = 'max'
+			else:
+				cbar_extend = 'min'
+		'''Plot colourbar'''
+		cbar = plt.colorbar(mappable=self.PlottedImage, cax=self.colourbar_axis, extend=cbar_extend)
 		return cbar
 	
 	def connect(self):
@@ -85,7 +101,7 @@ class ImagePlotter(object):
 					self.PolygonGroups.GetActivePolygon(), self.axis)
 			elif event.key == 'e':
 				filename = os.path.join(self.filepath, 'Image_.png')
-				self.Image.SaveImgAsPNG(filename, self.Image.Imglim)
+				self.Image.SaveImgAsPNG(filename, self.PlottedImage.get_clim())
 				print 'Saved image to...', filename
 	#		elif event.key == 'enter':
 	#			self.axis.autoscale(tight=True)

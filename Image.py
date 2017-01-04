@@ -27,6 +27,8 @@ class Image(object):
 		else:
 			writeImage = np.round(255*(self.data.astype(float) - r_min)/float((r_max - r_min)))
 			alph = False
+		writeImage[writeImage < 0] = 0
+		writeImage[writeImage > 255] = 255
 		writer = png.Writer(size = self.size[::-1], greyscale = True, alpha = alph)
 		writer.write(writefile, writeImage)
 		writefile.close()
