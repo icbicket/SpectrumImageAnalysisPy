@@ -10,7 +10,6 @@ import os
 '''Things to do:
 Add vertex addition and deletion after creation for patches
 Why doesn't it work in multiple figures? --need to keep a reference to each one
-Save extracted patches and spectrum and image
 Figure out changing contrast of extracted patch with spectrum spanselector
 '''
 
