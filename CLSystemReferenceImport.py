@@ -14,14 +14,14 @@ def ReadCSVRef(filename):
 	data = np.array(data)
 	data[data == ''] = np.nan
 	data = data.astype(float)
-	print np.shape(headers), np.shape(data)
 	dataDict = {}
 	i = 0
 	columns_per_data = np.shape(data[0])[0]/np.shape(headers)[0]
-	for hh in headers[:-1]:
+	for hh in headers:
 		label = tuple(map(int, re.findall(r'\d+', hh)))
 		dataDict[label] = data[:, i:i+columns_per_data]
-		i+= 2
+		data[:, i:i+columns_per_data]
+		i+= columns_per_data
 	return dataDict
 
 
@@ -57,9 +57,9 @@ class WavelengthCorrectionFactor(object):
 	def __init__(self, grating, center_wavelength):
 		self.grating = grating
 		self.center_wavelength = center_wavelength
-		if grating == (1250 or 1600 or 2000):
+		if self.grating in (1250, 1600, 2000):
 			self.wavelength = self.importIRwavelengths()
-		elif grating == (500 or 800):
+		elif self.grating in (500, 800):
 			self.wavelength = self.importVISwavelengths()
 		else:
 			print 'No valid reference for wavelength correction!'
@@ -70,11 +70,11 @@ class WavelengthCorrectionFactor(object):
 		correction_spectrum = dataDict[self.grating, self.center_wavelength]
 		return correction_spectrum
 		
-	def importIRwavelengths(self):
-		filename = '/home/isobel/Documents/McMaster/CL/SystemResponseFcns/WinspecCorrWavelengthsVIS20150428.csv'
+	def importVISwavelengths(self):
+		filename = '/home/isobel/Documents/McMaster/CL/SystemResponseFcns/WinspecCorrWavelengthsVis20150309.csv'
 		dataDict = ReadCSVRef(filename)
-		correction_spectrum = dataDict[self.grating, self.center_wavelength]
-		return correction_spectrum
+		wavelengths = dataDict[self.grating, self.center_wavelength]
+		return wavelengths
 
 #wvls = np.linspace(400, 980)
 #p = SystemCorrectionFactor(800, 750, wvls)

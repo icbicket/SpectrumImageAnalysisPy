@@ -60,7 +60,7 @@ def eVtonm(eV, pos=None):
 
 def nmtoeV(nm, pos=None):
 	eV = h*c/(eC*abs(nm))*1e9
-	return "%.0f" % eV
+	return "%.3g" % eV
 
 class SpectrumManager(object):
 	def __init__(self, spectrum, axis, cmap=plt.get_cmap('cool'), currentID=0):
