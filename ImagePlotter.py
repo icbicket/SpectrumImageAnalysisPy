@@ -8,7 +8,7 @@ import PolygonMover
 import os
 
 class ImagePlotter(object):
-	def __init__(self, image, axis, colourbar_axis = None, cmap='gray', filepath=os.getcwd()):
+	def __init__(self, image, axis, colourbar_axis = None, cmap='gray', filepath=os.getcwd(), polygoncallback = None):
 		'''For plotting Image as an image
 		Input a 2D array to plot as an image, and an axis to plot the image on
 		Optional arguments: define an axis to put a colourbar in, define the filepath to save images to'''
@@ -25,6 +25,10 @@ class ImagePlotter(object):
 			self.scalebar = ScaleBar(self.Image.calibration)
 			self.scalebar.box_alpha = 0.5
 			self.axis.add_artist(self.scalebar)
+		if polygoncallback:
+			self.polygoncallback = polygoncallback
+		else:
+			self.polygoncallback = self.keyboard_press
 		self.PolygonGroups = PolygonGrouper.PolygonGroupManager(self.axis)
 		self.canvas = self.axis.figure.canvas
 		self.connect()
@@ -44,7 +48,6 @@ class ImagePlotter(object):
 			self.colourbar_axis.cla()
 			self.cbar = self.AddColourbar()
 
-	
 	def AddColourbar(self):
 		'''Check for comparison of the image contrast limits vs the image data contrast
 		limits to indicate this on the colourbar as appropriate'''
@@ -64,7 +67,7 @@ class ImagePlotter(object):
 	
 	def connect(self):
 		self.cidkey = self.canvas.mpl_connect('key_press_event', 
-			self.keyboard_press)
+			self.polygoncallback)
 		
 	def disconnect(self):
 		self.canvas.mpl_disconnect(self.cidkey)
@@ -74,55 +77,60 @@ class ImagePlotter(object):
 			if self.mover:
 				self.mover.disconnect()
 				self.mover = None
-			if event.key == 'n':
-				''' Start new polygon in current group and make it active polygon'''
-				if self.creator:
-					self.creator.abort()
-				self.creator = PolygonCreator.PolygonCreator(
-					self.axis, self.add_polygon_callback)
-			elif event.key == '+':
-				''' Make new polygon group and make it current active group'''
-				self.PolygonGroups.NewGroup()
-			elif event.key == 'up':
-				'''Move active selection to next group'''
-				self.PolygonGroups.NextGroup(step=1)
-			elif event.key == 'down':
-				'''Move active selection to previous group'''
-				self.PolygonGroups.NextGroup(step=-1)
-			elif event.key == 'right':
-				'''Move active selection to next polygon'''
-				self.PolygonGroups.NextPolygon(step=1)
-			elif event.key == 'left':
-				'''Move active selection to previous polygon'''
-				self.PolygonGroups.NextPolygon(step=-1)
-			elif event.key == 'm':
-				'''Provide movement handles on active polygon vertices'''
-				self.mover = PolygonMover.PolygonMover(
-					self.PolygonGroups.GetActivePolygon(), self.axis)
-			elif event.key == 'e':
-				filename = os.path.join(self.filepath, 'Image_.png')
-				self.Image.SaveImgAsPNG(filename, self.PlottedImage.get_clim())
-				print 'Saved image to...', filename
-	#		elif event.key == 'enter':
-	#			self.axis.autoscale(tight=True)
-	#			self.mask = self.PolygonGroups.GetActiveMask(self.Image.size).astype(bool)
-			elif event.key == 'a':
-				self.PolygonGroups.ToggleGroupActive()
-			elif event.key == 'delete':
-				self.PolygonGroups.DeleteActivePolygon()
-			plt.draw()
+			self.image_key_commands(event.key)
 		elif event.inaxes == self.colourbar_axis:
 			if event.key == 'e':
-				filename = os.path.join(self.filepath, 'Colourbar_.png')
-				extent_colourbar = self.colourbar_axis.get_window_extent().transformed(plt.gcf().dpi_scale_trans.inverted())
-				extent_toptick = self.colourbar_axis.yaxis.get_ticklabels()[0].get_window_extent().transformed(plt.gcf().dpi_scale_trans.inverted())
-				extent_bottomtick = self.colourbar_axis.yaxis.get_ticklabels()[-1].get_window_extent().transformed(plt.gcf().dpi_scale_trans.inverted())
-				new_extent = np.array([np.min((extent_colourbar.get_points()[0,:], extent_toptick.get_points()[0,:], extent_bottomtick.get_points()[0,:]), axis=0),
-					np.max((extent_colourbar.get_points()[1,:], extent_toptick.get_points()[1,:], extent_bottomtick.get_points()[1,:]), axis=0)])
-				extent_colourbar.set_points(new_extent)
-				plt.gcf().savefig(filename, bbox_inches=extent_colourbar, transparent=True)
-				
-				
+				self.save_colourbar(filename='Colourbar_.png')
+	
+	def image_key_commands(self, key):
+		if key == 'n':
+			''' Start new polygon in current group and make it active polygon'''
+			if self.creator:
+				self.creator.abort()
+			self.creator = PolygonCreator.PolygonCreator(
+				self.axis, self.add_polygon_callback)
+		elif key == '+':
+			''' Make new polygon group and make it current active group'''
+			self.PolygonGroups.NewGroup()
+		elif key == 'up':
+			'''Move active selection to next group'''
+			self.PolygonGroups.NextGroup(step=1)
+		elif key == 'down':
+			'''Move active selection to previous group'''
+			self.PolygonGroups.NextGroup(step=-1)
+		elif key == 'right':
+			'''Move active selection to next polygon'''
+			self.PolygonGroups.NextPolygon(step=1)
+		elif key == 'left':
+			'''Move active selection to previous polygon'''
+			self.PolygonGroups.NextPolygon(step=-1)
+		elif key == 'm':
+			'''Provide movement handles on active polygon vertices'''
+			self.mover = PolygonMover.PolygonMover(
+				self.PolygonGroups.GetActivePolygon(), self.axis)
+		elif key == 'e':
+			self.save_image('Image_.png')
+		elif key == 'a':
+			self.PolygonGroups.ToggleGroupActive()
+		elif key == 'delete':
+			self.PolygonGroups.DeleteActivePolygon()
+		plt.draw()
+
+	def save_colourbar(self, filename):
+		filename = os.path.join(self.filepath, filename)
+		extent_colourbar = self.colourbar_axis.get_window_extent().transformed(plt.gcf().dpi_scale_trans.inverted())
+		extent_toptick = self.colourbar_axis.yaxis.get_ticklabels()[0].get_window_extent().transformed(plt.gcf().dpi_scale_trans.inverted())
+		extent_bottomtick = self.colourbar_axis.yaxis.get_ticklabels()[-1].get_window_extent().transformed(plt.gcf().dpi_scale_trans.inverted())
+		new_extent = np.array([np.min((extent_colourbar.get_points()[0,:], extent_toptick.get_points()[0,:], extent_bottomtick.get_points()[0,:]), axis=0),
+			np.max((extent_colourbar.get_points()[1,:], extent_toptick.get_points()[1,:], extent_bottomtick.get_points()[1,:]), axis=0)])
+		extent_colourbar.set_points(new_extent)
+		plt.gcf().savefig(filename, bbox_inches=extent_colourbar, transparent=True)
+		print 'Saved colourbar to...', filename
+	
+	def save_image(self, filename):
+		self.Image.SaveImgAsPNG(filename, self.PlottedImage.get_clim())
+		print 'Saved image to...', filename
+	
 	def add_polygon_callback(self, polygon):
 		self.creator = None
 		self.PolygonGroups.AddPolygon(polygon)

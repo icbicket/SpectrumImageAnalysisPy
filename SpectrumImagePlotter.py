@@ -62,11 +62,13 @@ class SpectrumImagePlotter(object):
 		# Image axis plotting and interactive patches
 		self.summedim = Image.Image(np.mean(self.SI.data[:, :, self.Emin_i:self.Emax_i], axis = 2))
 
-#		self.cmin = np.min(np.min(self.summedim))
-#		self.cmax = np.max(np.max(self.summedim))
 		self.cmin = self.summedim.Imglim[0]
 		self.cmax = self.summedim.Imglim[1]
-		self.ImagePlot = ImagePlotter.ImagePlotter(self.summedim, self.image_ax, self.colourbar_ax)
+		self.ImagePlot = ImagePlotter.ImagePlotter(self.summedim, 
+		    self.image_ax, 
+		    self.colourbar_ax,
+		    filepath=self.filepath,
+		    polygoncallback=self.ImageKeyCommands)
 		self.PlotImage()
 		self.PlotContrastHistogram()
 		self.extractedim = Image.Image(np.ma.masked_array(self.summedim.data, np.invert(self.extracted_mask)))
@@ -80,45 +82,49 @@ class SpectrumImagePlotter(object):
 	
 	def keyboard_press(self, event):
 		if event.inaxes == self.image_ax:
-			if event.key == 'enter':
-				MaskState = self.ImagePlot.PolygonGroups.ToggleActiveMask()
-				if MaskState:
-					mask = self.ImagePlot.PolygonGroups.GetActiveMask(self.summedim.size)
-					mask3D = np.reshape(mask, 
-						(self.SI.size[0], self.SI.size[1], 1)) * np.ones((
-						self.SI.size[0], self.SI.size[1], self.SI.size[2])).astype(bool)
-					self.extractedim = Image.Image(np.ma.masked_array(self.summedim.data, np.invert(mask)))
-					self.AddExtractedImagePatch(self.ImagePlot.PolygonGroups.currentID)
-					self.extracted_spectrum = self.SI.ExtractSpectrum(np.invert(mask3D))
-					self.SpectrumPlot.update_spectrum(self.extracted_spectrum, 
-						self.ImagePlot.PolygonGroups.currentID)
-					self.SpectrumPlot.make_visible(self.ImagePlot.PolygonGroups.currentID)
-				else:
-					self.SpectrumPlot.make_invisible(self.ImagePlot.PolygonGroups.currentID)
-					self.RemoveExtractedImagePatch(self.ImagePlot.PolygonGroups.currentID)
-			elif event.key == 'e':
-				filename = os.path.join(self.filepath, 'Image_')
-				self.summedim.SaveImgAsPNG(filename+
-					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emin_i])+'to'+
-					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emax_i])+
-					self.SpectrumPlot.SpectrumPlot.spectrum.units+'.png', [self.cmin, self.cmax])
-			
-				
-		elif event.inaxes == self.extracted_ax:
-			if event.key == 'e':
-				filename = os.path.join(self.filepath, 'Patch_')
-				self.extractedim.SaveImgAsPNG(filename+
-					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emin_i])+'to'+
-					'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emax_i])+
-					self.SpectrumPlot.SpectrumPlot.spectrum.units+'.png', self.extractedim.Imglim)
-
-		elif event.inaxes == self.spectrum_ax:
-			if event.key == 'e':
-				filename = os.path.join(self.filepath, 'Spectrum_.csv')
-#				filename = raw_input('Please enter the filepath and name to save your spectrum: ')
-				self.extracted_spectrum.SaveSpectrumAsCSV(filename)
-#		elif event.key == 'delete':
-#			
+			self.ImageKeyCommands(event.key)
+		elif event.inaxes == self.extracted_ax or event.inaxes == self.spectrum_ax:
+			self.ExtractedImageKeyCommands(event.key)
+	
+	def ExtractedImageKeyCommands(self, key):
+		if key == 'e':
+			self.SaveSpectrumAndPatch()
+	
+	def SaveSpectrumAndPatch(self):
+		spectrumID = self.ImagePlot.PolygonGroups.currentID
+		filename_spectrum = os.path.join(self.filepath, 'Spectrum_'+str(spectrumID)+'.csv')
+		self.extracted_spectrum.SaveSpectrumAsCSV(filename_spectrum)	
+		filename_patch = os.path.join(self.filepath, 'Patch_'+str(spectrumID)+'.png')
+		print self.ExtractedImagePlot.keys()
+		self.ExtractedImagePlot[self.ImagePlot.PolygonGroups.currentID].save_image(filename_patch)
+	
+	def ImageKeyCommands(self, key):
+		if key == 'enter':
+			MaskState = self.ImagePlot.PolygonGroups.ToggleActiveMask()
+			if MaskState:
+				mask = self.ImagePlot.PolygonGroups.GetActiveMask(self.summedim.size)
+				mask3D = np.reshape(mask, 
+					(self.SI.size[0], self.SI.size[1], 1)) * np.ones((
+					self.SI.size[0], self.SI.size[1], self.SI.size[2])).astype(bool)
+				self.extractedim = Image.Image(np.ma.masked_array(self.summedim.data, np.invert(mask)))
+				self.AddExtractedImagePatch(self.ImagePlot.PolygonGroups.currentID)
+				self.extracted_spectrum = self.SI.ExtractSpectrum(np.invert(mask3D))
+				self.SpectrumPlot.update_spectrum(self.extracted_spectrum, 
+					self.ImagePlot.PolygonGroups.currentID)
+				self.SpectrumPlot.make_visible(self.ImagePlot.PolygonGroups.currentID)
+			else:
+				self.SpectrumPlot.make_invisible(self.ImagePlot.PolygonGroups.currentID)
+				self.RemoveExtractedImagePatch(self.ImagePlot.PolygonGroups.currentID)
+		elif key == 'e':
+			filename_addon = ('%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emin_i])+'to'+
+				'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emax_i])+
+				self.SpectrumPlot.SpectrumPlot.spectrum.units)
+			filename_image = ('Image_' + filename_addon + '.png')
+			filename_colourbar = ('Colourbar_' + filename_addon + '.png')
+			self.ImagePlot.save_image(filename_image)
+			self.ImagePlot.save_colourbar(filename_colourbar)
+		else:
+			self.ImagePlot.image_key_commands(key)
 	
 	def PlotSpectrum(self):
 		SpectrumPlot = SpectrumPlotter.SpectrumManager(
@@ -141,14 +147,11 @@ class SpectrumImagePlotter(object):
 	def PlotExtractedImage(self):
 		self.extracted_ax.cla()
 		self.extracted_ax.set_axis_off()
-		self.extracted_ax.imshow(self.summedim.data, interpolation = 'none',
-			cmap = 'gray', alpha = 0.1)
-	
-#	def AddColourbar(self):
-#		self.colourbar = plt.colorbar(mappable=self.ImagePlot.PlottedImage, cax=self.colourbar_ax)
+		self.ExtractedImagePlot[self.ImagePlot.PolygonGroups.currentID] = ImagePlotter.ImagePlotter(self.summedim, self.extracted_ax, polygoncallback=self.ExtractedImageKeyCommands)
+		self.ExtractedImagePlot[self.ImagePlot.PolygonGroups.currentID].PlottedImage.set_alpha(0.1)
 	
 	def AddExtractedImagePatch(self, ID):
-		self.ExtractedImagePlot[self.ImagePlot.PolygonGroups.currentID] = ImagePlotter.ImagePlotter(self.extractedim, self.extracted_ax)
+		self.ExtractedImagePlot[self.ImagePlot.PolygonGroups.currentID] = ImagePlotter.ImagePlotter(self.extractedim, self.extracted_ax, polygoncallback=self.ExtractedImageKeyCommands)
 			
 	def RemoveExtractedImagePatch(self, ID):
 		self.ExtractedImagePlot[ID].PlottedImage.remove()
@@ -170,8 +173,6 @@ class SpectrumImagePlotter(object):
 		self.summedim = Image.Image(np.mean(self.SI.data[:, :, self.Emin_i:self.Emax_i], axis = 2))
 		self.cmin = self.summedim.Imglim[0]
 		self.cmax = self.summedim.Imglim[1]
-#		self.cmin = np.min(np.min(self.summedim))
-#		self.cmax = np.max(np.max(self.summedim))
 		self.PlotImage()
 		self.PlotContrastHistogram()
 		

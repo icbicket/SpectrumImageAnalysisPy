@@ -20,7 +20,6 @@ class PolygonGroupManager(object):
 	def AddPolygon(self, polygon):
 		self.polyDict[self.currentID].AddPolygon(polygon)
 		
-		
 	def NewGroup(self):
 		self.polyDict[self.currentID].Deselect()
 		self.currentID = max(self.polyDict.keys()) + 1
