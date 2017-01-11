@@ -22,6 +22,8 @@ class SpectrumImage(object):
 		self.spectrum_units = spectrum_units
 		## Add calibration for x, y, E/wavelength
 		
+#	def SpatialFilter(self):
+#		kernel = np.array(
 
 		
 class CLSpectrumImage(SpectrumImage):

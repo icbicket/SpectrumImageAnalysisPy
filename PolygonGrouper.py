@@ -32,7 +32,7 @@ class PolygonGroupManager(object):
 		self.polyDict[self.currentID].SelectNext()
 		
 	def RecolourGroups(self):
-		colours = plt.get_cmap('brg')
+		colours = plt.get_cmap('Dark2')
 		for i, (j,g) in zip(np.linspace(0,1,len(self.polyDict.keys())), self.polyDict.items()):
 			g.SetColour(colours(i))
 			

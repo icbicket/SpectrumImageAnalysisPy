@@ -74,15 +74,15 @@ class ImagePlotter(object):
 		
 	def keyboard_press(self, event):
 		if event.inaxes == self.axis:
-			if self.mover:
-				self.mover.disconnect()
-				self.mover = None
 			self.image_key_commands(event.key)
 		elif event.inaxes == self.colourbar_axis:
 			if event.key == 'e':
 				self.save_colourbar(filename='Colourbar_.png')
 	
 	def image_key_commands(self, key):
+		if self.mover:
+			self.mover.disconnect()
+			self.mover = None
 		if key == 'n':
 			''' Start new polygon in current group and make it active polygon'''
 			if self.creator:
@@ -117,7 +117,6 @@ class ImagePlotter(object):
 		plt.draw()
 
 	def save_colourbar(self, filename):
-		filename = os.path.join(self.filepath, filename)
 		extent_colourbar = self.colourbar_axis.get_window_extent().transformed(plt.gcf().dpi_scale_trans.inverted())
 		extent_toptick = self.colourbar_axis.yaxis.get_ticklabels()[0].get_window_extent().transformed(plt.gcf().dpi_scale_trans.inverted())
 		extent_bottomtick = self.colourbar_axis.yaxis.get_ticklabels()[-1].get_window_extent().transformed(plt.gcf().dpi_scale_trans.inverted())

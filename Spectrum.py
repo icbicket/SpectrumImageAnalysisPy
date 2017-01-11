@@ -1,6 +1,7 @@
 import numpy as np
 import SpectrumImage
 import csv
+from scipy.ndimage.filters import gaussian_filter1d
 
 def ImportCSV(filename):
     x = np.genfromtxt(filename,
@@ -26,6 +27,13 @@ class Spectrum(object):
 			writer.writerow(ExportHeaders)
 			writer.writerows(ExportData)
 			
+	def SmoothingFilter1D(self, sigma=2):
+		kernel = np.array([1, 1, 2, 1, 1])/6.
+		intensity = np.append(self.intensity[4::-1], np.append(self.intensity, self.intensity[-5::]))
+		smoothed = np.convolve(intensity, kernel, mode='same')
+		smoothed = gaussian_filter1d(self.intensity, sigma)
+#		smoothed[self.intensity > (0.01*np.max(self.intensity))] = self.intensity[self.intensity > (0.01*np.max(self.intensity))]
+		return smoothed
 		
 class CLSpectrum(Spectrum):
 	def __init__(self, intensity, WavelengthRange, units='nm'):

@@ -42,7 +42,7 @@ class SpectrumImagePlotter(object):
 		self.spectrum_ax.patch.set_facecolor([0.9, 0.9, 1])
 		self.contrast_ax = plt.axes([0.075, 0.925, 0.8, 0.075])
 		self.colourbar_ax = plt.axes([0.9, 0.475, 0.05, 0.45]) 
-		self.cmap = plt.get_cmap('brg')
+		self.cmap = plt.get_cmap('Dark2')
 
 		# Spectrum axis plotting and interactive span
 		self.extracted_mask = np.zeros(self.SI.size[:2]).astype(bool)
@@ -121,8 +121,8 @@ class SpectrumImagePlotter(object):
 				self.SpectrumPlot.SpectrumPlot.spectrum.units)
 			filename_image = ('Image_' + filename_addon + '.png')
 			filename_colourbar = ('Colourbar_' + filename_addon + '.png')
-			self.ImagePlot.save_image(filename_image)
-			self.ImagePlot.save_colourbar(filename_colourbar)
+			self.ImagePlot.save_image(os.path.join(self.filepath, filename_image))
+			self.ImagePlot.save_colourbar(os.path.join(self.filepath, filename_colourbar))
 		else:
 			self.ImagePlot.image_key_commands(key)
 	
