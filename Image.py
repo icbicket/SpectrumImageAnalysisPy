@@ -1,5 +1,6 @@
 import numpy as np
 import png
+import os
 
 class Image(object):
 	def __init__(self, Img, calibration=0):
@@ -18,6 +19,8 @@ class Image(object):
 	def SaveImgAsPNG(self, filename, clim):
 		r_min = max(clim[0], self.Imglim[0])
 		r_max = min(clim[1], self.Imglim[1])
+		if os.path.exists(filename):
+			filename = filename[:-4] + '-1' + filename[-4:]
 		writefile = open(filename, 'wb')
 		if type(self.data)==np.ma.MaskedArray:
 			writeImage = np.empty((self.size[0], self.size[1]*2))

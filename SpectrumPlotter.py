@@ -4,6 +4,7 @@ from matplotlib.widgets import SpanSelector
 from matplotlib.ticker import FuncFormatter
 import collections
 from matplotlib.lines import Line2D
+import Spectrum
 
 h = 6.626070040e-34
 c = 299792458
@@ -44,23 +45,53 @@ class SpectrumPlotter(object):
 		self.label = label
 		plotted_spectrum = self.main_axis.plot(spectrum.SpectrumRange, 
 				spectrum.intensity, label=self.label)
-		
 		return plotted_spectrum
+		
+	def add_spectrum_linked_axis(self, spectrum, label=''):
+		self.label = label
+		plotted_spectrum = self.linked_axis.plot(spectrum.SpectrumRange, 
+				spectrum.intensity, label=self.label)
+		return plotted_spectrum
+		
 		
 	def update_spectrum(self, line, spectrum):
 		line[0].remove()
 		plotted_spectrum = self.main_axis.plot(spectrum.SpectrumRange, 
 			spectrum.intensity, label=self.label)
 		return plotted_spectrum
+		
+	def update_spectrum_linked_axis(self, line, spectrum):
+		line[0].remove()
+		plotted_spectrum = self.linked_axis.plot(spectrum.SpectrumRange,
+		    spectrum.intensity, label=self.label)
+		return plotted_spectrum
 
 def eVtonm(eV, pos=None):
-    nm = h*c/(eC*abs(eV))*1e9
+    nm = h*c/(eC*np.abs(eV))*1e9
     if np.isfinite(nm): nm = int(nm)
-    return "%.0f" % nm
-
+    if nm/1e4 > 1:
+    	value = "%.0f" % nm
+    else:
+    	value = "%.1f" %nm
+    return value
+    
+def eVtonm_array(eV, pos=None):
+    nm = h*c/(eC*np.abs(eV))*1e9
+    return nm
+    
 def nmtoeV(nm, pos=None):
-	eV = h*c/(eC*abs(nm))*1e9
-	return "%.3g" % eV
+	eV = h*c/(eC*np.abs(nm))*1e9
+	if eV/1e4 > 1:
+		value = "%.3g" % eV
+	elif eV/1e3 > 1:
+		value = "%.4g" % eV
+	else:
+		value = "%.3g" % eV
+	return value
+	
+def nmtoeV_array(nm):
+	eV = h*c/(eC * np.abs(nm)) * 1e9
+	return eV
 
 class SpectrumManager(object):
 	def __init__(self, spectrum, axis, cmap=plt.get_cmap('cool'), currentID=0):
@@ -100,13 +131,24 @@ class SpectrumManager(object):
 
 	def update_spectrum(self, spectrum, ID):
 		self.currentID = ID
-		self.spectrumDict[ID] = spectrum
+		if self.SpectrumPlot.main_axis.get_xlabel() != r"%s (%s)" % (spectrum.unit_label, spectrum.units):
+			print 'oh no!', spectrum.units
+			if spectrum.units == 'nm':
+				spectrum_rangemod = nmtoeV_array(spectrum.SpectrumRange)			
+				spectrum_match = Spectrum.Spectrum(spectrum.intensity, units='eV', SpectrumRange=spectrum_rangemod)
+			elif spectrum.units == 'eV':
+				spectrum_rangemod = eVtonm_array(spectrum.SpectrumRange)
+				spectrum_match = Spectrum.Spectrum(spectrum.intensity, units='nm', SpectrumRange=spectrum_rangemod)
+		else:
+			spectrum_match = spectrum
+		self.spectrumDict[ID] = spectrum_match
+			
 		if self.currentID in self.lineDict.keys():
 			self.lineDict[self.currentID] = self.SpectrumPlot.update_spectrum(
 				self.lineDict[self.currentID], self.spectrumDict[self.currentID])
 			self.lineDict[self.currentID][0].set_color(self.colourDict[self.currentID])
 		else:
-			self.lineDict[self.currentID] = self.SpectrumPlot.add_spectrum(
+			self.lineDict[self.currentID] = add_function = self.SpectrumPlot.add_spectrum(
 				self.spectrumDict[self.currentID], label=str(self.currentID))
 			self.make_colour_list()
 			for ll in self.lineDict.keys():

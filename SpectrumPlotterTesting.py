@@ -17,13 +17,14 @@ Spectrumsmooth = Spectrum.EELSSpectrum(spectrum.SmoothingFilter1D(sigma=2))
 #PSF = Spectrum.EELSSpectrum.LoadFromCSV(os.path.join(PSFfolder, PSFfilename))
 #PSFsmooth = Spectrum.EELSSpectrum(PSF.SmoothingFilter1D())
 
-#s = np.random.random(100)
-#wvl = np.arange(500, 600)
-#S = Spectrum.CLSpectrum(s, wvl)
+s = np.random.random(100)*0.00003
+wvl = np.arange(500, 600)
+SCL = Spectrum.CLSpectrum(s, wvl)
 fig = plt.figure()
 ax = plt.axes()
 s = SpectrumPlotter.SpectrumManager(spectrum, ax)
 s.update_spectrum(Spectrumsmooth, 1)
+s.update_spectrum(SCL, 'CL')
 plt.show()
 #S.SaveSpectrumAsCSV('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/test.csv')
 

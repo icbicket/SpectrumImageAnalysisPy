@@ -109,7 +109,7 @@ class ImagePlotter(object):
 			self.mover = PolygonMover.PolygonMover(
 				self.PolygonGroups.GetActivePolygon(), self.axis)
 		elif key == 'e':
-			self.save_image('Image_.png')
+			self.save_image(os.path.join(self.filepath, 'Image_.png'))
 		elif key == 'a':
 			self.PolygonGroups.ToggleGroupActive()
 		elif key == 'delete':

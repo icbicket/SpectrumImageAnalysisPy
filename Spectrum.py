@@ -2,6 +2,7 @@ import numpy as np
 import SpectrumImage
 import csv
 from scipy.ndimage.filters import gaussian_filter1d
+import os
 
 def ImportCSV(filename):
     x = np.genfromtxt(filename,
@@ -9,12 +10,15 @@ def ImportCSV(filename):
     return x
     
 class Spectrum(object):
-	def __init__(self, intensity, units):
+	def __init__(self, intensity, units, SpectrumRange=None):
 		self.intensity = intensity
 		self.units = units
 		self.length = len(self.intensity)
+		self.SpectrumRange = SpectrumRange
 		
 	def SaveSpectrumAsCSV(self,filename):
+		if os.path.exists(filename):
+			filename = filename[:-4] + '-1' + filename[-4:]
 		print 'Saving...', filename
 		ExportSpectrumRange = np.copy(self.SpectrumRange)
 		ExportIntensity = np.copy(self.intensity)
