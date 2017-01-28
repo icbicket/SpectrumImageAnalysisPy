@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib_scalebar.scalebar import ScaleBar
+from matplotlib.ticker import NullLocator
 import PolygonGrouper
 import PolygonCreator
 from matplotlib.patches import Polygon
@@ -110,6 +111,8 @@ class ImagePlotter(object):
 				self.PolygonGroups.GetActivePolygon(), self.axis)
 		elif key == 'e':
 			self.save_image(os.path.join(self.filepath, 'Image_.png'))
+		elif key == 'E':
+			self.save_image_scale(os.path.join(self.filepath, 'Image_scale_.png'))
 		elif key == 'a':
 			self.PolygonGroups.ToggleGroupActive()
 		elif key == 'delete':
@@ -129,6 +132,15 @@ class ImagePlotter(object):
 	def save_image(self, filename):
 		self.Image.SaveImgAsPNG(filename, self.PlottedImage.get_clim())
 		print 'Saved image to...', filename
+		
+	def save_image_scale(self, filename):
+		if self.Image.calibration==0:
+			print "You gave me no scale! I can't do it!"
+			return
+		self.axis.yaxis.set_major_locator(NullLocator())
+		self.axis.xaxis.set_major_locator(NullLocator())
+		plt.savefig(filename, transparent=True, bbox_inches='tight', pad_inches=0)
+		print 'Saved scalebar figure to...', filename
 	
 	def add_polygon_callback(self, polygon):
 		self.creator = None

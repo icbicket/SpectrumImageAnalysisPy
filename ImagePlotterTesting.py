@@ -7,7 +7,7 @@ import PolygonCreator
 import matplotlib.artist as artst
 from matplotlib.patches import Polygon
 
-im = Image.Image(data.chelsea()[:, :, 2])
+im = Image.Image(data.chelsea()[:, :, 2], calibration=3)
 
 fig = plt.figure()
 ax = plt.axes([0,0,1,1])

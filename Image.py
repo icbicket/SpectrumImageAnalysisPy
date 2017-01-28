@@ -35,3 +35,4 @@ class Image(object):
 		writer = png.Writer(size = self.size[::-1], greyscale = True, alpha = alph)
 		writer.write(writefile, writeImage)
 		writefile.close()
+		
