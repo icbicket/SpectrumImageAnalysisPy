@@ -63,7 +63,10 @@ class CLSpectrum(Spectrum):
 class EELSSpectrum(Spectrum):
 	def __init__(self, intensity, SpectrumRange=None, dispersion=0.005, ZLP=True, units='eV'):
 		super(EELSSpectrum, self).__init__(intensity, units)
-		self.dispersion = dispersion
+		if SpectrumRange is not None:
+			self.dispersion = SpectrumRange[1] - SpectrumRange[0]
+		else:
+			self.dispersion = dispersion
 		if ZLP == True:
 			self.ZLP = SpectrumImage.EELSSpectrumImage.FindZLP(self.intensity)
 			if SpectrumRange is not None:
