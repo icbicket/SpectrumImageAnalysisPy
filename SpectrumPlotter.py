@@ -76,11 +76,11 @@ def eVtonm(eV, pos=None):
     return value
     
 def eVtonm_array(eV, pos=None):
-    nm = h*c/(eC*np.abs(eV))*1e9
+    nm = h*c/(eC*eV)*1e9
     return nm
     
 def nmtoeV(nm, pos=None):
-	eV = h*c/(eC*np.abs(nm))*1e9
+	eV = h*c/(eC*nm)*1e9
 	if eV/1e4 > 1:
 		value = "%.3g" % eV
 	elif eV/1e3 > 1:
