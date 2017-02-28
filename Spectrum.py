@@ -99,6 +99,15 @@ class EELSSpectrum(Spectrum):
 		data_sym[data_sym<0] = 0
 		return EELSSpectrum(data_sym, dispersion=self.dispersion, units=self.units)
 		
+	def PadSpectrum(self, pad_length, pad_value=0, pad_side='left'):
+		if pad_side == 'left':
+			padded = np.append(np.ones((pad_length, )) * pad_value, self.intensity)
+		elif pad_side == 'right':
+			padded = np.append(self.intensity, np.ones((pad_length, 1)) * pad_value)
+		else:
+			padded = np.append(np.ones((pad_length, 1)) * pad_value, self.intensity, np.ones((pad_length, 1)))
+		return EELSSpectrum(padded, dispersion=self.dispersion, units=self.units)
+		
 	def FindFW(self, intensityfraction):
 #		intensity_norm = self.intensity.Normalize().intensity
 		lefttail = self.intensity[:self.ZLP][::-1]

@@ -67,7 +67,7 @@ class PolygonMover(object):
 		if d2[index][0] >= self.epsilon**2:
 			index = None
 		return index
-		
+
 	def mouse_release(self, event):
 		if not self.showverts:
 			return

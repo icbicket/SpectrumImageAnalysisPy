@@ -33,7 +33,7 @@ Copy colour scheme over from patches to spectra and extracted image
 #plt.show()
 
 ###Testing SIPlotter with real data!
-folder = '/home/isobel/Documents/McMaster/EELS/2016-07-27 - Sierpinski Ag/SI3/'
+folder = '/home/isobel/Documents/McMaster/EELS/2016-07-28/Sq2R_(1,7)/'
 filebase = 'EELS Spectrum Image (dark ref corrected).dm3'
 s = hp.load(folder+filebase)
 eels = SpectrumImage.EELSSpectrumImage(s.data)

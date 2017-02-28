@@ -120,17 +120,24 @@ class EELSSpectrumImage(SpectrumImage):
 
 		data_norm = self.data/self.normfactor
 		return data_norm
-
-
 	
-	def RLDeconvolution(self, RLiterations, PSF, threads=multiprocessing.cpu_count()):
+	def RLDeconvolution(self, RLiterations, PSF, threads=multiprocessing.cpu_count(), PSF_pad=0):
 		'''Input: RLiterations=number of iterations to perform
 			PSF=point spread function (an EELS spectrum object)
 		Optional argument: 
-			threads=number of computer's CPUs to use while deconvolving, default is all of them'''
+			threads=number of computer's CPUs to use while deconvolving, default is all of them
+			PSF_pad=value to pad PSF with (or None to not pad PSF)'''
+		PSF_sym = PSF.SymmetrizeAroundZLP()
+		if PSF_pad is not None:
+			data_length = np.size(self.SpectrumRange)
+			PSF_length = np.size(PSF_sym.intensity)
+			pad_length = data_length/2 - (1 + data_length) % 2 - (PSF_length-(PSF_length % 2))/2
+			if PSF_sym.ZLP < data_length/2:
+				PSF_sym = PSF.PadSpectrum(pad_length, pad_value=PSF_pad, pad_side='left').SymmetrizeAroundZLP()
+			elif PSF_sym.ZLP > data_length/2:
+				PSF_sym = PSF_sym.PadSpectrum(pad_length, pad_value=PSF_pad, pad_side='right')
 		print 'Beginning deconvolution...'
-		
-		loopyP = partial(loopy, iterations=RLiterations, PSF=PSF.SymmetrizeAroundZLP().Normalize().intensity)
+		loopyP = partial(loopy, iterations=RLiterations, PSF=PSF_sym.Normalize().intensity)
 		x_deconv = np.array(handythread.parallel_map(loopyP, abs(self.Normalize()), 
 			threads = threads))
 #		x_deconv = np.array(handythread.parallel_map(loopyP, self.Normalize(), 
