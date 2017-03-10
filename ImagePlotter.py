@@ -12,7 +12,7 @@ from skimage.measure import profile_line
 import LineDraw
 
 class ImagePlotter(object):
-	def __init__(self, image, axis, colourbar_axis = None, cmap='gray', filepath=os.getcwd(), polygoncallback = None):
+	def __init__(self, image, axis, colourbar_axis = None, cmap=plt.get_cmap('gray'), filepath=os.getcwd(), polygoncallback = None):
 		'''For plotting Image as an image
 		Input a 2D array to plot as an image, and an axis to plot the image on
 		Optional arguments: define an axis to put a colourbar in, define the filepath to save images to'''
@@ -46,7 +46,7 @@ class ImagePlotter(object):
 		
 	def ReplotImage(self, image, clim=None):
 		self.Image = image
-		self.PlottedImage = self.axis.imshow(self.Image.data, cmap = 'gray', interpolation = 'none')
+		self.PlottedImage = self.axis.imshow(self.Image.data, cmap = self.cmap, interpolation = 'none')
 		if clim is not None:
 			self.PlottedImage.set_clim(vmin = clim[0], vmax = clim[1])
 		if self.colourbar_axis:
@@ -156,7 +156,7 @@ class ImagePlotter(object):
 		print 'Saved colourbar to...', filename
 	
 	def save_image(self, filename):
-		self.Image.SaveImgAsPNG(filename, self.PlottedImage.get_clim())
+		self.Image.SaveImgAsPNG(filename, self.PlottedImage.get_clim(), cmap=self.cmap)
 		print 'Saved image to...', filename
 		
 	def save_image_scale(self, filename):

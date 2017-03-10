@@ -16,7 +16,8 @@ class Image(object):
 		#Pad image, input pad = 2x2 array/tuple ((axis0_before, axis0_after), (axis1_before, axis1_after))
 		self.data = np.pad(self.data.astype(float), pad, 'constant', constant_values = (np.nan,))
 		
-	def SaveImgAsPNG(self, filename, clim):
+	def SaveImgAsPNG(self, filename, clim, cmap=None):
+		print cmap, (cmap(np.linspace(0, 1, 256))*256).astype(int)
 		r_min = max(clim[0], self.Imglim[0])
 		r_max = min(clim[1], self.Imglim[1])
 		if os.path.exists(filename):
@@ -32,7 +33,11 @@ class Image(object):
 			alph = False
 		writeImage[writeImage < 0] = 0
 		writeImage[writeImage > 255] = 255
-		writer = png.Writer(size = self.size[::-1], greyscale = True, alpha = alph)
+		if cmap is not None:
+			colours = (cmap(np.linspace(0, 1, 256))*255).astype(int)
+			writer = png.Writer(size = self.size[::-1], palette=colours)
+		else:
+			writer = png.Writer(size = self.size[::-1], greyscale = True, alpha = alph)
 		writer.write(writefile, writeImage)
 		writefile.close()
 		

@@ -11,7 +11,7 @@ im = Image.Image(data.camera(), calibration=3)
 
 fig = plt.figure()
 ax = plt.axes([0,0,1,1])
-implot = ImagePlotter.ImagePlotter(im, ax)
+implot = ImagePlotter.ImagePlotter(im, ax, cmap=plt.get_cmap('hot'))
 #creator = PolygonCreator.PolygonCreator(ax)
 
 plt.show()

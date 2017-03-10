@@ -15,6 +15,8 @@ class LineDraw(object):
 		self.line = None
 		self.Dragging = False
 		self.vertex = 1
+		self.width = 1
+		self.WidthData = self.WidthDataCoords()
 		
 	def ConnectDraw(self):
 		print 'draw a line!'
@@ -41,6 +43,9 @@ class LineDraw(object):
 			self.DrawLine)
 		self.cidendrelease = self.canvas.mpl_connect('button_release_event',
 			self.MoveLineUpdate)
+		self.cidwidth = self.canvas.mpl_connect('scroll_event', 
+			self.ChangeWidth)
+		self.cidenddraw = self.canvas.mpl_connect('draw_event', self.DrawCanvas)
 			
 	def DisconnectMove(self):
 		self.canvas.mpl_disconnect(self.cidendpick)
@@ -50,15 +55,16 @@ class LineDraw(object):
 	def LineStart(self, event):
 		self.LineCoords[0] = [event.xdata, event.ydata]
 		self.line = mlines.Line2D(self.LineCoords[:, 0], self.LineCoords[:, 0], 
-			lw=1, c='r', animated=True)
+			lw=self.WidthData, c='r', animated=True)
 		self.axis.add_line(self.line)
 		self.background = self.canvas.copy_from_bbox(self.axis.bbox)
 
-		
 	def LineEnd(self, event):
 		self.LineCoords[1] = [event.xdata, event.ydata]
+		self.CoordTransform = self.axis.transData.inverted()
+		self.WidthData = self.WidthDataCoords()
 		self.line = mlines.Line2D(self.LineCoords[:, 0], self.LineCoords[:, 1],
-			lw=1, c='r', marker='o')
+			lw=self.WidthData, c='r', marker='o', alpha=0.5, solid_capstyle='butt')
 		self.axis.add_line(self.line)
 		self.Dragging = True
 		self.DisconnectDraw()
@@ -88,17 +94,38 @@ class LineDraw(object):
 		self.background = self.canvas.copy_from_bbox(self.axis.bbox)
 		if self.line is not None:
 			self.axis.draw_artist(self.line)
+			self.WidthData = self.WidthDataCoords()
+			self.line.set_linewidth(self.WidthData)
 		self.canvas.blit(self.axis.bbox)
+		print 'new sketch!'
 		
 	def MoveLinePress(self, event):
 		self.vertex = self.GetPoint(event)
-		print self.vertex
+		#print self.vertex
 	
 	def MoveLineUpdate(self, event):
 		if self.vertex is not None:
 			self.LineCoords[self.vertex] = [event.xdata, event.ydata]
 			self.line.set_data(self.LineCoords[:, 0], self.LineCoords[:, 1])
 			self.canvas.draw()
+	
+	def WidthDataCoords(self):
+		diff0 = self.axis.transData.inverted().transform((1,0))
+		diff1 = self.axis.transData.inverted().transform((2,0))
+		diff = (diff1 - diff0) * self.width
+		print diff
+		return diff[0]
+	
+	def ChangeWidth(self, event):
+		if event.button == 'up':
+			self.width += 1
+		elif event.button == 'down' and self.width > 1:
+			self.width -= 1
+		else:
+			return
+		self.WidthData = self.WidthDataCoords()
+		self.line.set_linewidth(self.WidthData)
+		self.canvas.draw()
 	
 	def GetPoint(self, event):
 		delta2 = np.sum((self.LineCoords - [event.xdata, event.ydata])**2, axis = 1)
