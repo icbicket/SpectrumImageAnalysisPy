@@ -22,7 +22,8 @@ DataAnalysis code was written in **Python 2.7**. The following Python packages a
 	* https://pythonhosted.org/pypng/
 * scipy 0.13.3
 	* https://www.scipy.org/
-* skimage 0.11.3
+* scikit-image 0.11.3
+	* http://scikit-image.org/
 
 ### From the Python Standard Library (comes with installation of Python):
 * argparse 1.1
