@@ -12,11 +12,14 @@ from skimage.measure import profile_line
 import LineDraw
 
 class ImagePlotter(object):
-	def __init__(self, image, axis, colourbar_axis = None, cmap=plt.get_cmap('gray'), filepath=os.getcwd(), polygoncallback = None):
+	def __init__(self, image, axis=None, colourbar_axis = None, cmap=plt.get_cmap('gray'), filepath=os.getcwd(), polygoncallback = None):
 		'''For plotting Image as an image
 		Input a 2D array to plot as an image, and an axis to plot the image on
 		Optional arguments: define an axis to put a colourbar in, define the filepath to save images to'''
-		self.axis = axis
+		if axis is not None:
+			self.axis = axis
+		else:
+			self.axis = plt.figure().add_subplot(111)
 		self.colourbar_axis = colourbar_axis
 		self.cmap = cmap
 		self.Image = image
