@@ -95,7 +95,8 @@ class EELSSpectrum(Spectrum):
 		return EELSSpectrum(data_norm, dispersion=self.dispersion, units=self.units)
 		
 	def SymmetrizeAroundZLP(self):
-		data_sym = np.delete(self.intensity, np.s_[2*self.ZLP:-1], axis = -1)
+		data_sym = np.delete(self.intensity, np.s_[2*self.ZLP:self.length], axis = -1)
+		data_sym = np.delete(data_sym, np.s_[:np.maximum(2*self.ZLP-self.length, 0)], axis = -1)
 		data_sym[data_sym<0] = 0
 		return EELSSpectrum(data_sym, dispersion=self.dispersion, units=self.units)
 		

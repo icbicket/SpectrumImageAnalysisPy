@@ -94,7 +94,7 @@ def nmtoeV_array(nm):
 	return eV
 
 class SpectrumManager(object):
-	def __init__(self, spectrum, axis, cmap=plt.get_cmap('cool'), currentID=0):
+	def __init__(self, spectrum, axis=plt.figure().add_subplot(111), cmap=plt.get_cmap('cool'), currentID=0):
 		self.currentID = currentID
 		self.cmap = cmap
 		self.axis = axis
@@ -165,3 +165,6 @@ class SpectrumManager(object):
 		legend = self.axis.legend(loc='best', framealpha=0.5)
 		if legend:
 			legend.draggable(state=True)
+			
+	def ShowPlot(self):
+		plt.show()
