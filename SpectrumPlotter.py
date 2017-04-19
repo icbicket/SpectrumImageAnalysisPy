@@ -94,10 +94,13 @@ def nmtoeV_array(nm):
 	return eV
 
 class SpectrumManager(object):
-	def __init__(self, spectrum, axis=plt.figure().add_subplot(111), cmap=plt.get_cmap('cool'), currentID=0):
+	def __init__(self, spectrum, axis=None, cmap=plt.get_cmap('cool'), currentID=0):
 		self.currentID = currentID
 		self.cmap = cmap
-		self.axis = axis
+		if axis is not None:
+			self.axis = axis
+		else:
+			self.axis = plt.figure().add_subplot(111)
 		self.spectrumDict = collections.OrderedDict()
 		self.spectrumDict[self.currentID] = spectrum
 		self.lineDict = collections.OrderedDict()

@@ -96,6 +96,14 @@ class EELSSpectrumImage(SpectrumImage):
 	def FindZLP(data):
 		ZLP = int(stats.mode(np.argmax(data, axis = -1), axis=None)[0])
 		return ZLP
+	
+	def FindZLPArray(self):
+		ZLParray = np.argmax(self.data, axis=2)
+		return ZLParray
+	
+	def AlignZLP(self):
+		aligned = self.AlignChannel(self.FindZLPArray())
+		return aligned
 		
 	def ExtractSpectrum(self, mask3D):
 		extractedspectrum = Spectrum.EELSSpectrum(
@@ -120,6 +128,21 @@ class EELSSpectrumImage(SpectrumImage):
 
 		data_norm = self.data/self.normfactor
 		return data_norm
+	
+	def AlignChannel(self, indices):
+		''' Input: indices=a 2D array of the same shape as the image dimensions
+		containing the indices of where the desired channel is currently in the SI'''
+		channelmax = np.max(np.max(indices))
+		channelmin = np.min(np.min(indices))
+		index1, index2 = np.meshgrid(range(self.size[0]), range(self.size[1]))
+		index1 = np.expand_dims(np.transpose(index1), axis=2)
+		index2 = np.expand_dims(np.transpose(index2), axis=2)
+		index3 = np.expand_dims(np.expand_dims(range(self.size[2]) + channelmax, 
+			axis=0), axis=0) - np.expand_dims(indices, axis=2)
+		aligned_data = np.zeros((self.size[0], self.size[1], self.size[2] + channelmax - channelmin))
+		aligned_data[index1, index2, index3] = self.data
+		return EELSSpectrumImage(aligned_data, dispersion=self.dispersion, spectrum_units = self.spectrum_units, calibration=self.calibration)
+		
 	
 	def RLDeconvolution(self, RLiterations, PSF, threads=multiprocessing.cpu_count(), PSF_pad=0):
 		'''Input: RLiterations=number of iterations to perform
