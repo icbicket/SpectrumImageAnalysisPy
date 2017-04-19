@@ -3,6 +3,7 @@ import Spectrum
 import csv
 from scipy import signal
 from scipy import stats
+#from scipy import interpolate
 from scipy.ndimage.filters import median_filter
 import handythread
 import multiprocessing
@@ -170,6 +171,41 @@ class EELSSpectrumImage(SpectrumImage):
 
 		return EELSSpectrumImage(x_deconv, self.dispersion)
 
+	def FindFW(self, intensityfraction):
+		'''Finds the full width of the ZLP at the requested fraction of intensity
+		(for full width at half max, intensityfraction=0.5'''
+		lefttail = self.data[:,:,:self.ZLP][:,:,::-1]
+		diff1 = lefttail - intensityfraction*np.expand_dims(self.data[:,:,self.ZLP], axis=2)
+		left_index_1 = np.argmax(np.diff(np.sign(diff1)) != 0, axis=2)
+		left_index_2 = left_index_1 + 1
+		index1, index2 = np.meshgrid(range(self.size[0]), range(self.size[1]))
+		index1 = np.transpose(index1)
+		index2 = np.transpose(index2)
+		left_energy = self.dispersion * self.SpectrumInterpolation(
+				left_index_1,
+				left_index_2,
+				lefttail[index1, index2, left_index_1],
+				lefttail[index1, index2, left_index_2], 
+				intensityfraction*self.data[:,:,self.ZLP])+self.dispersion
+	
+		righttail = self.data[:,:,self.ZLP:]
+		diff2 = righttail - intensityfraction*np.expand_dims(self.data[:,:,self.ZLP], axis=-1)
+		right_index_1 = np.argmax(np.diff(np.sign(diff2)) != 0, axis=2) 
+		right_index_2 = right_index_1 + 1
+		right_energy = self.dispersion * self.SpectrumInterpolation(
+				right_index_1,
+				right_index_2,
+				righttail[index1, index2, right_index_1],
+				righttail[index1, index2, right_index_2], 
+				intensityfraction*self.data[:,:,self.ZLP])
+				
+		FW = left_energy + right_energy
+		return FW
+	
+	def SpectrumInterpolation(self, E1, E2, I1, I2, I_interp):
+		'''Linear interpolation given two data points and the mid-value'''
+		interpvalue = E1 + (E2 - E1)/(I2 - I1) * (I_interp-I1)
+		return interpvalue
 		
 		
 #Richardson-Lucy algorithm
