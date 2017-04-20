@@ -131,16 +131,33 @@ class EELSSpectrum(Spectrum):
 		
 		FW = left_energy + right_energy
 		return FW
-#		
-#		L_ene = dispersion * np.interp(I, [lefttail[Lind2], lefttail[Lind1]], [Lind2, Lind1])
-#		righttail = spec[ZLPind:]
-#		diff2 = righttail - I
-#		Rind1 = np.argmax(np.diff(np.sign(diff2)) != 0)
-#		Rind2 = Rind1 + 1
-#		R_ene = dispersion * np.interp(I, [righttail[Rind2], righttail[Rind1]], [Rind2, Rind1])
-#		FW = L_ene + R_ene
-#		return FW
-#	@staticmethod		
-#	def FindZLP(spectrum):
-#		ZLP = np.argmax(spectrum)
-#		return ZLP
+		
+	def RLDeconvolution(self, RLiterations, PSF, PSF_pad=0):
+		'''Input: RLiterations=number of iterations to perform
+			PSF=point spread function (an EELS spectrum object)
+		Optional argument: 
+			PSF_pad=value to pad PSF with (or None to not pad PSF)'''
+		PSF_sym = PSF.SymmetrizeAroundZLP()
+		if PSF_pad is not None:
+			data_length = np.size(self.SpectrumRange)
+			PSF_length = np.size(PSF_sym.intensity)
+			pad_length = data_length/2 - (1 + data_length) % 2 - (PSF_length-(PSF_length % 2))/2
+			if PSF_sym.ZLP < data_length/2:
+				PSF_sym = PSF.PadSpectrum(pad_length, pad_value=PSF_pad, pad_side='left').SymmetrizeAroundZLP()
+			elif PSF_sym.ZLP > data_length/2:
+				PSF_sym = PSF_sym.PadSpectrum(pad_length, pad_value=PSF_pad, pad_side='right')
+		print 'Beginning deconvolution...'
+		x_deconv = RL(RLiterations, PSF_sym.Normalize().intensity, self.Normalize().intensity)
+		print 'Done %s iterations!' %RLiterations
+		return EELSSpectrum(x_deconv, dispersion=self.dispersion)
+		
+#Richardson-Lucy algorithm
+def RL(iterations, PSF_norm, Spec):
+	RL4 = Spec.copy()
+	for ii in range(iterations):
+		RL1 = np.convolve(PSF_norm, RL4, 'same')
+		RL2 = Spec/RL1
+		RL3 = np.convolve(PSF_norm, RL2, 'same')
+		RL4 *= RL3
+	return RL4
+
