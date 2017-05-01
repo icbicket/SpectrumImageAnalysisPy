@@ -144,6 +144,11 @@ class EELSSpectrumImage(SpectrumImage):
 		aligned_data[index1, index2, index3] = self.data
 		return EELSSpectrumImage(aligned_data, dispersion=self.dispersion, spectrum_units = self.spectrum_units, calibration=self.calibration)
 		
+	def eVSlice(self, starteV, stopeV):
+		startchannel = int(starteV / self.dispersion + self.ZLP)
+		stopchannel = int(stopeV / self.dispersion + self.ZLP)
+		sliced = self.data[:, :, startchannel:stopchannel]
+		return sliced
 	
 	def RLDeconvolution(self, RLiterations, PSF, threads=multiprocessing.cpu_count(), PSF_pad=0):
 		'''Input: RLiterations=number of iterations to perform

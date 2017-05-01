@@ -10,7 +10,7 @@ import SpectrumImage
 Rectangle = namedtuple('Rectangle', 'xmin, ymin, xmax, ymax')
 p1shaped = np.reshape(data.camera(), (1,1,1,512,512))
 
-p1 = Image.Image(p1shaped)
+p1 = Image.Image(data.camera())
 p2 = Image.Image(data.coins())
 p3 = Image.Image(data.chelsea()[:, :, 0])
 p4 = Image.Image(data.astronaut()[:, :, 0])
@@ -43,7 +43,7 @@ def FindRectangleIntersectionWillsWay(r1, r2):
 #overlapcorners = (np.max(offsets, axis = 1), np.min(maxcorners+offsets, axis = 1))
 #p2_alignedtest = p2.data[overlapcorners[0][1] - offsets[1][1]:overlapcorners[1][1]-offsets[1][1], overlapcorners[0][0] - offsets[0][1]:overlapcorners[1][0] - offsets[0][1]]
 print (offsets)
-AlignCrop.AlignCrop((p1, p2, SpectrumImage.SpectrumImage(data.chelsea()), SpectrumImage.SpectrumImage(data.astronaut())), offsets)
+AlignCrop.AlignCrop((p1, p2, SpectrumImage.SpectrumImage(data.chelsea(), 'nm'), SpectrumImage.SpectrumImage(data.astronaut(), 'nm')), offsets)
 
 
 

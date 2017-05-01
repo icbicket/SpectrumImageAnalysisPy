@@ -19,6 +19,7 @@ class Image(object):
 	def SaveImgAsPNG(self, filename, clim, cmap=None):
 		r_min = max(clim[0], self.Imglim[0])
 		r_max = min(clim[1], self.Imglim[1])
+		print cmap
 		if os.path.exists(filename):
 			filename = filename[:-4] + '-1' + filename[-4:]
 		writefile = open(filename, 'wb')
@@ -30,17 +31,25 @@ class Image(object):
 		else:
 			writeImage = np.round(255*(self.data.astype(float) - r_min)/float((r_max - r_min)))
 			alph = False
-		writeImage[writeImage < 0] = 0
-		writeImage[writeImage > 255] = 255
-
 		if cmap is not None:
-			colours = (cmap(np.linspace(0, 1, 256))*255).astype(int)
-			if np.all(np.equal(colours[:,0],colours[:,1], colours[:,2])):
+			colours = (cmap(np.arange(0,256))*255).astype(int)
+			colourstuple = map(tuple, colours)
+			if np.all(np.equal(np.array(colours[:,0]),np.array(colours[:,1]), np.array(colours[:,2]))):
 				writer = png.Writer(size = self.size[::-1], greyscale = True, alpha = alph)
+				print 'I am so gray...'
 			else:
-				writer = png.Writer(size = self.size[::-1], palette=colours)
+				writer = png.Writer(size = self.size[::-1], palette=colourstuple, bitdepth=8)
+
+				if type(self.data) == np.ma.MaskedArray:
+					writeImage = np.round(255*(self.data.data.astype(float) - r_min)/float((r_max - r_min)))*np.invert(self.data.mask)
+				else:
+					writeImage = np.round(255*(self.data.astype(float) - r_min)/float((r_max - r_min)))
+				print 'Well, colour me pink!'
 		else:
 			writer = png.Writer(size = self.size[::-1], greyscale = True, alpha = alph)
+		writeImage[writeImage < 0] = 0
+		writeImage[writeImage > 255] = 255
+		
 		writer.write(writefile, writeImage)
 		writefile.close()
 		
