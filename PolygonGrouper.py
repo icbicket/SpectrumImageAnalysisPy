@@ -100,7 +100,9 @@ class PolygonGroup(object):
 	def Select(self, i):
 		self.Deselect()
 		self.selected = i
+		self.polygonList[self.selected].set_edgecolor((1, 1, 0))
 		self.polygonList[self.selected].set_linewidth(3)
+
 		
 	def SelectNext(self, step=1):
 		if not self.polygonList:
@@ -113,6 +115,7 @@ class PolygonGroup(object):
 	def Deselect(self):
 		if self.selected is not None:
 			self.polygonList[self.selected].set_linewidth(1)
+			self.polygonList[self.selected].set_edgecolor([0, 0, 0, 0.2])
 		self.selected = None
 		
 	def GetActivePolygon(self):

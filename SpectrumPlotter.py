@@ -69,7 +69,7 @@ class SpectrumPlotter(object):
 def eVtonm(eV, pos=None):
     nm = h*c/(eC*np.abs(eV))*1e9
     if np.isfinite(nm): nm = int(nm)
-    if nm/1e4 > 1:
+    if np.abs(nm/1e4) > 1:
     	value = "%.0f" % nm
     else:
     	value = "%.1f" %nm
@@ -81,9 +81,9 @@ def eVtonm_array(eV, pos=None):
     
 def nmtoeV(nm, pos=None):
 	eV = h*c/(eC*nm)*1e9
-	if eV/1e4 > 1:
+	if np.abs(eV/1e4) > 1:
 		value = "%.3g" % eV
-	elif eV/1e3 > 1:
+	elif np.abs(eV/1e3) > 1:
 		value = "%.4g" % eV
 	else:
 		value = "%.3g" % eV
