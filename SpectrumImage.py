@@ -123,6 +123,9 @@ class EELSSpectrumImage(SpectrumImage):
 #		print np.shape(self.data.mask)
 #		print np.shape(self.thrmask)
 		
+	def InvertThreshold(self):
+		self.data.mask = np.invert(self.data.mask)
+		
 	def Normalize(self):
 		'''Normalize data to integral'''
 		self.normfactor = np.sum(self.data, axis=2, keepdims=True)

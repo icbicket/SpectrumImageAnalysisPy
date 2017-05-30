@@ -17,8 +17,10 @@ class Image(object):
 		self.data = np.pad(self.data.astype(float), pad, 'constant', constant_values = (np.nan,))
 		
 	def SaveImgAsPNG(self, filename, clim, cmap=None):
-		r_min = max(clim[0], self.Imglim[0])
-		r_max = min(clim[1], self.Imglim[1])
+#		r_min = max(clim[0], self.Imglim[0])
+#		r_max = min(clim[1], self.Imglim[1])
+		r_min = clim[0]
+		r_max = clim[1]
 		print cmap
 		if os.path.exists(filename):
 			filename = filename[:-4] + '-1' + filename[-4:]

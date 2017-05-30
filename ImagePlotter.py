@@ -20,14 +20,20 @@ class ImagePlotter(object):
 			self.axis = axis
 		else:
 			self.axis = plt.figure().add_subplot(111)
-		self.colourbar_axis = colourbar_axis
+
 		self.cmap = cmap
 		self.Image = image
 		self.axis.set_axis_off()
 		self.filepath = filepath
 		self.PlottedImage = self.axis.imshow(self.Image.data, cmap = self.cmap, interpolation = 'none')
-		if self.colourbar_axis:
+		if colourbar_axis is True:
+			self.colourbar_axis = None
 			self.cbar = self.AddColourbar()
+			self.colourbar_axis = plt.gcf().axes[-1]
+		elif colourbar_axis is not None:
+			self.colourbar_axis = colourbar_axis
+			self.cbar = self.AddColourbar()
+			
 		if image.calibration != 0:
 			self.scalebar = ScaleBar(self.Image.calibration)
 			self.scalebar.box_alpha = 0.5
@@ -65,10 +71,12 @@ class ImagePlotter(object):
 		elif np.all(cbar_limit_test):
 			cbar_extend = 'neither'
 		else:
-			if cbar_limit_test[0]:
+			if cbar_limit_test[0] and self.PlottedImage.get_clim()[0] > self.Image.Imglim[0]:
 				cbar_extend = 'max'
-			else:
+			elif cbar_limit_test[1] and self.PlottedImage.get_clim()[1] < self.Image.Imglim[0]:
 				cbar_extend = 'min'
+			else:
+				cbar_extend = 'neither'
 		'''Plot colourbar'''
 		cbar = plt.colorbar(mappable=self.PlottedImage, cax=self.colourbar_axis, extend=cbar_extend)
 		return cbar
@@ -161,7 +169,7 @@ class ImagePlotter(object):
 		print 'Saved colourbar to...', filename
 	
 	def save_image(self, filename):
-		self.Image.SaveImgAsPNG(filename, self.PlottedImage.get_clim(), cmap=self.cmap)
+		self.Image.SaveImgAsPNG(filename, self.PlottedImage.get_clim(), cmap=plt.get_cmap(self.cmap))
 		print 'Saved image to...', filename
 		
 	def save_image_scale(self, filename):

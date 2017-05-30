@@ -95,7 +95,6 @@ class SpectrumImagePlotter(object):
 		filename_spectrum = os.path.join(self.filepath, 'Spectrum_'+str(spectrumID)+'.csv')
 		self.extracted_spectrum.SaveSpectrumAsCSV(filename_spectrum)	
 		filename_patch = os.path.join(self.filepath, 'Patch_'+str(spectrumID)+'.png')
-		print self.ExtractedImagePlot.keys()
 		self.ExtractedImagePlot[self.ImagePlot.PolygonGroups.currentID].save_image(filename_patch)
 	
 	def ImageKeyCommands(self, key):
