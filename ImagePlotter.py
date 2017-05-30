@@ -148,13 +148,10 @@ class ImagePlotter(object):
 
 	def LineProfileStart(self, event):
 		self.LineStart = (event.x, event.y)
-		print self.LineStart
 		
 	def LineProfileEnd(self, event):
 		self.LineEnd = (event.x, event.y)
 		self.LineProfile = LineProfile.LineProfilePlot(self.Image, self.LineStart, self.LineEnd)
-		print self.LineEnd
-		print self.LineProfile
 
 	def save_colourbar(self, filename):
 		extent_colourbar = self.colourbar_axis.get_window_extent().transformed(plt.gcf().dpi_scale_trans.inverted())

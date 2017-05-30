@@ -27,7 +27,7 @@ class LineDraw(object):
 		self.cidrelease = self.canvas.mpl_connect('button_release_event', 
 			self.LineEnd)
 		self.ciddraw = self.canvas.mpl_connect('draw_event', self.DrawCanvas)
-		print self.LineStart
+		#print self.LineStart
 			
 	def DisconnectDraw(self):
 		self.canvas.mpl_disconnect(self.cidclick)
@@ -113,7 +113,7 @@ class LineDraw(object):
 		diff0 = self.axis.transData.inverted().transform((1,0))
 		diff1 = self.axis.transData.inverted().transform((2,0))
 		diff = (diff1 - diff0) * self.width
-		print diff
+		#print diff
 		return diff[0]
 	
 	def ChangeWidth(self, event):

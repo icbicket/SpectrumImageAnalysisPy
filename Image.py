@@ -21,7 +21,6 @@ class Image(object):
 #		r_max = min(clim[1], self.Imglim[1])
 		r_min = clim[0]
 		r_max = clim[1]
-		print cmap
 		if os.path.exists(filename):
 			filename = filename[:-4] + '-1' + filename[-4:]
 		writefile = open(filename, 'wb')
