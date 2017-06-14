@@ -1,4 +1,4 @@
-# DataAnalysis
+# SpectrumImageAnalysisPy
 Python code to analyze 3D spectrum images obtained with electron energy loss spectroscopy or cathodoluminscence. Routines include navigation of the 3D dataset and extraction of either spectra or energy selected maps, Richardson-Lucy deconvolution of EELS data, spectrum and image alignment.
 
 Please reference as:
