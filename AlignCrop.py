@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 
 def AlignCrop(images, offsets):
@@ -7,7 +8,9 @@ def AlignCrop(images, offsets):
 	for ii in images:
 		maxcorners = np.append(maxcorners, ii.size[:2])
 	maxcorners = np.roll(np.reshape(maxcorners, 
-		(2, len(maxcorners)/2), order = 'F'), 1, axis = 0)
+		(2, int(len(maxcorners)/2)), order = 'F'), 1, axis = 0)
+	print(maxcorners)
+	print('offsets', offsets)
 	overlapcorners = (np.max(offsets, axis = 1).astype(int), np.min(maxcorners + offsets, axis = 1).astype(int))
 	index = 0
 	for ii in images:

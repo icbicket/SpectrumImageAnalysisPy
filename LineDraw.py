@@ -1,3 +1,4 @@
+from __future__ import print_function
 import matplotlib.lines as mlines
 import matplotlib.pyplot as plt
 import numpy as np
@@ -19,7 +20,7 @@ class LineDraw(object):
 		self.WidthData = self.WidthDataCoords()
 		
 	def ConnectDraw(self):
-		print 'draw a line!'
+		print('draw a line!')
 		self.cidclick = self.canvas.mpl_connect('button_press_event',
 			self.LineStart)
 		self.cidmotion = self.canvas.mpl_connect('motion_notify_event',
@@ -27,7 +28,7 @@ class LineDraw(object):
 		self.cidrelease = self.canvas.mpl_connect('button_release_event', 
 			self.LineEnd)
 		self.ciddraw = self.canvas.mpl_connect('draw_event', self.DrawCanvas)
-		#print self.LineStart
+		#print(self.LineStart)
 			
 	def DisconnectDraw(self):
 		self.canvas.mpl_disconnect(self.cidclick)
@@ -36,7 +37,7 @@ class LineDraw(object):
 		self.canvas.mpl_disconnect(self.cidmotion)
 		
 	def ConnectMove(self):
-		print 'move your line!'
+		print('move your line!')
 		self.cidendpick = self.canvas.mpl_connect('button_press_event',
 			self.MoveLinePress)
 		self.cidenddrag = self.canvas.mpl_connect('motion_notify_event',
@@ -97,11 +98,11 @@ class LineDraw(object):
 			self.WidthData = self.WidthDataCoords()
 			self.line.set_linewidth(self.WidthData)
 		self.canvas.blit(self.axis.bbox)
-		print 'new sketch!'
+		print('new sketch!')
 		
 	def MoveLinePress(self, event):
 		self.vertex = self.GetPoint(event)
-		#print self.vertex
+		#print(self.vertex)
 	
 	def MoveLineUpdate(self, event):
 		if self.vertex is not None:
@@ -113,7 +114,7 @@ class LineDraw(object):
 		diff0 = self.axis.transData.inverted().transform((1,0))
 		diff1 = self.axis.transData.inverted().transform((2,0))
 		diff = (diff1 - diff0) * self.width
-		#print diff
+		#print(diff)
 		return diff[0]
 	
 	def ChangeWidth(self, event):

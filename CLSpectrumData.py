@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np		
 import SpectrumImage
 from Image import Image
@@ -6,11 +7,13 @@ import h5py
 def Readh5SI(filename):
 	""" Read hdf5 data file (written for CL data from Odemis)"""
 	fuzzing = False
-	print 'Loading...', filename
+	print('Loading...', filename)
 	data = h5py.File(filename, 'r')
 	SEM = np.array([])
 	survey = np.array([])
-	for kk in data.keys()[:4]:
+	for kk in list(data)[:4]:
+		print (kk)
+#	for kk in data.keys()[:4]:
 		if 'Acquisition' in kk:
 			AcqData = data[kk]['ImageData']['Image']
 			DataShape = np.shape(AcqData)
@@ -38,7 +41,8 @@ class CLDataSet(object):
 		self.SEM = SEM
 		self.survey = survey
 		if self.fuzzing:
-			reshapedSEM = np.reshape(self.SEM.data, [self.SEM.size[0]/4, 4, self.SEM.size[1]/4, 4])
+			print(self.SEM.size[0]/4)
+			reshapedSEM = np.reshape(self.SEM.data, [int(self.SEM.size[0]/4), 4, int(self.SEM.size[1]/4), 4])
 			self.unfuzzedSEM = Image(np.sum(np.sum(reshapedSEM, axis=1), axis=-1), calibration=self.SEM.calibration*4)
 		else:
 			self.unfuzzedSEM = self.SEM

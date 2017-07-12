@@ -1,3 +1,4 @@
+from __future__ import print_function
 from matplotlib.patches import Polygon
 import matplotlib.pyplot as plt
 
@@ -9,7 +10,7 @@ class PolygonCreator(object):
 		self.connect()
 		self.polygon = []
 		self.callback = callback
-		print 'hi'
+		print('hi')
 
 	def connect(self):
 		self.cidbutton = self.canvas.mpl_connect('button_press_event', 
@@ -19,7 +20,7 @@ class PolygonCreator(object):
 		self.canvas.mpl_disconnect(self.cidbutton)
 		
 	def abort(self):
-		print "WE'RE GOING DOWN!!!"
+		print("WE'RE GOING DOWN!!!")
 		self.disconnect()
 		if self.polygon:
 			self.polygon.remove()

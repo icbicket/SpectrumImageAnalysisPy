@@ -1,3 +1,4 @@
+from __future__ import print_function
 import hyperspy.api as hp
 import numpy as np
 import matplotlib.pyplot as plt
@@ -38,7 +39,7 @@ filebase = 'EELS Spectrum Image (dark ref corrected).dm3'
 s = hp.load(folder+filebase)
 eels = SpectrumImage.EELSSpectrumImage(s.data)
 #PSF = Spectrum.EELSSpectrum.LoadFromCSV('/home/isobel/Documents/McMaster/EELS/2016-07-27/SI3/Processed/Spectrum_ZLP.csv')
-#print np.shape(PSF.intensity)
+#print(np.shape(PSF.intensity))
 p1=SpectrumImagePlotter.SpectrumImagePlotter(eels, filepath=folder)
 #eels2 = eels.RLDeconvolution(2, PSF)
 #p2 = SpectrumImagePlotter.SpectrumImagePlotter(eels2)
@@ -53,4 +54,4 @@ plotter = SpectrumImagePlotter.SpectrumImagePlotter(cl.SI)
 
 plt.show()
 #plotter.extractedim.SaveImgAsPNG('/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/testIm.png', plotter.extractedim.Imglim)
-#print type(plotter.extractedim.data)==np.ma.MaskedArray
+#print(type(plotter.extractedim.data)==np.ma.MaskedArray)

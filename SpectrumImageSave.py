@@ -1,8 +1,9 @@
+from __future__ import print_function
 import h5py
 import numpy as np
 
 def SaveSI_h5(SI, filename, survey=None, SEM=None):
-	print 'Saving to...', filename
+	print('Saving to...', filename)
 	with h5py.File(filename, 'w') as hf:
 		if survey:
 			g0_1 = hf.create_group('Acquisition0/ImageData') # survey image

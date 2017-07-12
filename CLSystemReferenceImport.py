@@ -1,3 +1,4 @@
+from __future__ import print_function
 import csv
 import numpy as np
 import re
@@ -6,17 +7,18 @@ import Spectrum
 
 def ReadCSVRef(filename):
 	with open(filename) as csvfile:
-		 reader = csv.reader(csvfile, delimiter=',')
-		 headers = filter(None, reader.next())
-		 data = []
-		 for row in reader:
+		reader = csv.reader(csvfile, delimiter=',')
+		headers = list(filter(None, next(reader)))
+		data = []
+		for row in reader:
 			data.append(row[:-1])
 	data = np.array(data)
 	data[data == ''] = np.nan
 	data = data.astype(float)
 	dataDict = {}
 	i = 0
-	columns_per_data = np.shape(data[0])[0]/np.shape(headers)[0]
+	columns_per_data = int(np.shape(data[0])[0]/np.shape(headers)[0])
+	print(columns_per_data)
 	for hh in headers:
 		label = tuple(map(int, re.findall(r'\d+', hh)))
 		dataDict[label] = data[:, i:i+columns_per_data]
@@ -36,7 +38,7 @@ class SystemCorrectionFactor(object):
 		elif wavelengths is not None:
 			self.correction_spectrum = self.ImportVis(wavelengths)
 		else:
-			print 'No valid reference for system correction!'
+			print('No valid reference for system correction!')
 		
 	def ImportIR(self):
 		filename = '/home/isobel/Documents/McMaster/CL/SystemResponseFcns/CorrectionFactorSCAlIRCamera_2015_02_26.csv'
@@ -62,7 +64,7 @@ class WavelengthCorrectionFactor(object):
 		elif self.grating in (500, 800):
 			self.wavelength = self.importVISwavelengths()
 		else:
-			print 'No valid reference for wavelength correction!'
+			print('No valid reference for wavelength correction!')
 			
 	def importIRwavelengths(self):
 		filename = '/home/isobel/Documents/McMaster/CL/SystemResponseFcns/WinspecCorrWavelengthsIR20150428.csv'
@@ -79,6 +81,6 @@ class WavelengthCorrectionFactor(object):
 #wvls = np.linspace(400, 980)
 #p = SystemCorrectionFactor(800, 750, wvls)
 
-#print np.shape(p.correction_spectrum.SpectrumRange)
+#print(np.shape(p.correction_spectrum.SpectrumRange))
 #plt.plot(p.correction_spectrum.SpectrumRange, p.correction_spectrum.intensity)
 #plt.show()

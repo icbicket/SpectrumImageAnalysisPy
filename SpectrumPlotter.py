@@ -1,3 +1,4 @@
+from __future__ import print_function
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.widgets import SpanSelector
@@ -129,13 +130,13 @@ class SpectrumManager(object):
 #	def AddSpectrum(self, spectrum):
 #		'''Adds spectrum to spectrum dictionary to be plotted'''
 #		self.currentID = (self.currentID + step) % (max(self.spectrumDict.keys()) + 1)
-#		print "I added a new spectrum for you!"
+#		print("I added a new spectrum for you!")
 #		self.spectrumDict[self.currentID] = spectrum
 
 	def update_spectrum(self, spectrum, ID):
 		self.currentID = ID
 		if self.SpectrumPlot.main_axis.get_xlabel() != r"%s (%s)" % (spectrum.unit_label, spectrum.units):
-			print 'oh no!', spectrum.units
+			print('oh no!', spectrum.units)
 			if spectrum.units == 'nm':
 				spectrum_rangemod = nmtoeV_array(spectrum.SpectrumRange)			
 				spectrum_match = Spectrum.Spectrum(spectrum.intensity, units='eV', SpectrumRange=spectrum_rangemod)

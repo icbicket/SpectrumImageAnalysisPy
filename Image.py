@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 import png
 import os
@@ -37,7 +38,7 @@ class Image(object):
 			colourstuple = map(tuple, colours)
 			if np.all(np.equal(np.array(colours[:,0]),np.array(colours[:,1]), np.array(colours[:,2]))):
 				writer = png.Writer(size = self.size[::-1], greyscale = True, alpha = alph)
-				print 'I am so gray...'
+				print('I am so gray...')
 			else:
 				writer = png.Writer(size = self.size[::-1], palette=colourstuple, bitdepth=8)
 
@@ -45,7 +46,7 @@ class Image(object):
 					writeImage = np.round(255*(self.data.data.astype(float) - r_min)/float((r_max - r_min)))*np.invert(self.data.mask)
 				else:
 					writeImage = np.round(255*(self.data.astype(float) - r_min)/float((r_max - r_min)))
-				print 'Well, colour me pink!'
+				print('Well, colour me pink!')
 		else:
 			writer = png.Writer(size = self.size[::-1], greyscale = True, alpha = alph)
 		writeImage[writeImage < 0] = 0

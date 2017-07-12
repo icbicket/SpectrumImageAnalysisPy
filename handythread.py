@@ -1,7 +1,11 @@
+
 import sys
 import time
 import threading
-from itertools import izip, count
+import itertools
+
+zip = getattr(itertools, 'izip', zip)
+#from itertools import izip, count
 
 #http://wiki.scipy.org/Cookbook/Multithreading
 #https://github.com/scipy/scipy-cookbook/blob/master/ipython/attachments/Multithreading/handythread.py
@@ -17,7 +21,7 @@ def foreach(f,l,threads=3,return_=False):
         if return_:
             n = 0
             d = {}
-            i = izip(count(),l.__iter__())
+            i = zip(itertools.count(),l.__iter__())
         else:
             i = l.__iter__()
 
@@ -29,7 +33,7 @@ def foreach(f,l,threads=3,return_=False):
                     try:
                         if exceptions:
                             return
-                        v = i.next()
+                        v = next(i)#.next()
                     finally:
                         iteratorlock.release()
                 except StopIteration:
@@ -48,17 +52,17 @@ def foreach(f,l,threads=3,return_=False):
                     finally:
                         iteratorlock.release()
         
-        threadlist = [threading.Thread(target=runall) for j in xrange(threads)]
+        threadlist = [threading.Thread(target=runall) for j in range(threads)]
         for t in threadlist:
             t.start()
         for t in threadlist:
             t.join()
         if exceptions:
             a, b, c = exceptions[0]
-            raise a, b, c
+            raise(a, b, c)
         if return_:
-            r = d.items()
-            r.sort()
+            r = sorted(d.items())
+#            r.sort()
             return [v for (n,v) in r]
     else:
         if return_:

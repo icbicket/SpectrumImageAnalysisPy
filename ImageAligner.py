@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 import Image
 import sys
@@ -13,7 +14,7 @@ class ImageAligner(object):
 		self.ymax = max(i.size[1] for i in self.Images)
 		
 		for ii in self.Images:
-			print ii.size
+			print(ii.size)
 			sizediff = np.subtract((self.xmax, self.ymax), ii.size)
 			pad = ((0, sizediff[0]), (0, sizediff[1]))
 			ii.PadImg(pad)

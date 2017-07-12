@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib_scalebar.scalebar import ScaleBar
@@ -163,20 +164,20 @@ class ImagePlotter(object):
 		if os.path.exists(filename):
 			filename = filename[:-4] + '-1' + filename[-4:]
 		plt.gcf().savefig(filename, bbox_inches=extent_colourbar, transparent=True)
-		print 'Saved colourbar to...', filename
+		print('Saved colourbar to...', filename)
 	
 	def save_image(self, filename):
 		self.Image.SaveImgAsPNG(filename, self.PlottedImage.get_clim(), cmap=plt.get_cmap(self.cmap))
-		print 'Saved image to...', filename
+		print('Saved image to...', filename)
 		
 	def save_image_scale(self, filename):
 		if self.Image.calibration==0:
-			print "You gave me no scale! I can't do it!"
+			print("You gave me no scale! I can't do it!")
 			return
 		self.axis.yaxis.set_major_locator(NullLocator())
 		self.axis.xaxis.set_major_locator(NullLocator())
 		plt.savefig(filename, transparent=True, bbox_inches='tight', pad_inches=0)
-		print 'Saved scalebar figure to...', filename
+		print('Saved scalebar figure to...', filename)
 	
 	def add_polygon_callback(self, polygon):
 		self.creator = None

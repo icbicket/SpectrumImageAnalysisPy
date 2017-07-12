@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 import Spectrum
 import csv
@@ -50,7 +51,7 @@ class CLSpectrumImage(SpectrumImage):
 #		median_d = np.median(d)
 #		s = d/median_d if median_d else 0.
 #		i = np.where(s>20)
-#		print i
+#		print(i)
 #		self.data[i] = np.mean([self.data[(i[0]-1, i[1], i[2])], 
 #								  self.data[(i[0]+1, i[1], i[2])], 
 #								  self.data[(i[0], i[1]-1, i[2])], 
@@ -120,8 +121,8 @@ class EELSSpectrumImage(SpectrumImage):
 		thrmask = np.less(self.data.data[:, :, self.ZLP], threshold)
 #		self.thrmask = np.reshape(thrmask, (np.append(np.shape(thrmask), 1))) * np.ones(np.shape(self.data))
 		self.data.mask = np.reshape(thrmask, (np.append(np.shape(thrmask), 1))) * np.ones(np.shape(self.data))
-#		print np.shape(self.data.mask)
-#		print np.shape(self.thrmask)
+#		print(np.shape(self.data.mask))
+#		print(np.shape(self.thrmask))
 		
 	def InvertThreshold(self):
 		self.data.mask = np.invert(self.data.mask)
@@ -163,19 +164,19 @@ class EELSSpectrumImage(SpectrumImage):
 		if PSF_pad is not None:
 			data_length = np.size(self.SpectrumRange)
 			PSF_length = np.size(PSF_sym.intensity)
-			pad_length = data_length/2 - (1 + data_length) % 2 - (PSF_length-(PSF_length % 2))/2
+			pad_length = int(data_length/2 - (1 + data_length) % 2 - (PSF_length-(PSF_length % 2))/2)
 			if PSF_sym.ZLP < data_length/2:
 				PSF_sym = PSF.PadSpectrum(pad_length, pad_value=PSF_pad, pad_side='left').SymmetrizeAroundZLP()
 			elif PSF_sym.ZLP > data_length/2:
 				PSF_sym = PSF_sym.PadSpectrum(pad_length, pad_value=PSF_pad, pad_side='right')
-		print 'Beginning deconvolution...'
+		print('Beginning deconvolution...')
 		loopyP = partial(loopy, iterations=RLiterations, PSF=PSF_sym.Normalize().intensity)
 		x_deconv = np.array(handythread.parallel_map(loopyP, abs(self.Normalize()), 
 			threads = threads))
 #		x_deconv = np.array(handythread.parallel_map(loopyP, self.Normalize(), 
 #			threads = threads))
 		x_deconv = np.ma.array(x_deconv, mask = self.data.mask)
-		print 'Done %s iterations!' %RLiterations
+		print('Done %s iterations!' %RLiterations)
 
 		return EELSSpectrumImage(x_deconv, self.dispersion)
 

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 import SpectrumImage
 import csv
@@ -19,7 +20,7 @@ class Spectrum(object):
 	def SaveSpectrumAsCSV(self,filename):
 		if os.path.exists(filename):
 			filename = filename[:-4] + '-1' + filename[-4:]
-		print 'Saving...', filename
+		print('Saving...', filename)
 		ExportSpectrumRange = np.copy(self.SpectrumRange)
 		ExportIntensity = np.copy(self.intensity)
 		ExportSpectrumRange.resize(len(ExportSpectrumRange), 1)
@@ -52,7 +53,7 @@ class CLSpectrum(Spectrum):
 #		d = np.abs(self.intensity - median)
 #		median_d = np.median(d)
 #		s = d/median_d if median_d else 0.
-#		print s
+#		print(s)
 		
 	@classmethod
 	def LoadFromCSV(cls, filename):
@@ -146,9 +147,9 @@ class EELSSpectrum(Spectrum):
 				PSF_sym = PSF.PadSpectrum(pad_length, pad_value=PSF_pad, pad_side='left').SymmetrizeAroundZLP()
 			elif PSF_sym.ZLP > data_length/2:
 				PSF_sym = PSF_sym.PadSpectrum(pad_length, pad_value=PSF_pad, pad_side='right')
-		print 'Beginning deconvolution...'
+		print('Beginning deconvolution...')
 		x_deconv = RL(RLiterations, PSF_sym.Normalize().intensity, self.Normalize().intensity)
-		print 'Done %s iterations!' %RLiterations
+		print('Done %s iterations!' %RLiterations)
 		return EELSSpectrum(x_deconv, dispersion=self.dispersion)
 		
 #Richardson-Lucy algorithm

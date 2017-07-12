@@ -1,3 +1,4 @@
+from __future__ import print_function
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from matplotlib.widgets import Button, SpanSelector
@@ -78,7 +79,7 @@ class ImageDisplay(object):
 		plt.show()
 
 	def test(self, event):
-		print event
+		print(event)
 		
 	# Button to open colourmap selection window
 	def ColourmapButton(self, event):
