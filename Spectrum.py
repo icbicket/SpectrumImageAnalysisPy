@@ -152,6 +152,12 @@ class EELSSpectrum(Spectrum):
 		print('Done %s iterations!' %RLiterations)
 		return EELSSpectrum(x_deconv, dispersion=self.dispersion)
 		
+	def eVSlice(self, starteV, stopeV):
+		startchannel = int(starteV / self.dispersion + self.ZLP)
+		stopchannel = int(stopeV / self.dispersion + self.ZLP)
+		sliced = self.data[startchannel:stopchannel]
+		return sliced
+		
 #Richardson-Lucy algorithm
 def RL(iterations, PSF_norm, Spec):
 	RL4 = Spec.copy()
