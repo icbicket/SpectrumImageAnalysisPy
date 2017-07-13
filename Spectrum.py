@@ -62,12 +62,20 @@ class CLSpectrum(Spectrum):
 
 		
 class EELSSpectrum(Spectrum):
-	def __init__(self, intensity, SpectrumRange=None, dispersion=0.005, ZLP=True, units='eV'):
+	def __init__(self, intensity, SpectrumRange=None, channel_eV = None, dispersion=0.005, ZLP=True, units='eV'):
 		super(EELSSpectrum, self).__init__(intensity, units)
+		'''intensity: 1D array
+		   SpectrumRange: 1D array
+		   channel_eV: 2 element array [channel #, eV value]
+		   dispersion: float, width of each channel, must be provided if SpectrumRange is not, default is 5meV
+		   ZLP: Boolean - True=ZLP is present
+		   units: string, for plot axis
+		   '''
 		if SpectrumRange is not None:
 			self.dispersion = SpectrumRange[1] - SpectrumRange[0]
 		else:
 			self.dispersion = dispersion
+		
 		if ZLP == True:
 			self.ZLP = SpectrumImage.EELSSpectrumImage.FindZLP(self.intensity)
 			if SpectrumRange is not None:
@@ -78,6 +86,16 @@ class EELSSpectrum(Spectrum):
 			self.ZLP = None
 			if SpectrumRange is not None:
 				self.SpectrumRange = SpectrumRange
+			elif channel_eV is not None:
+				if len(channel_eV) == 2:
+					eV0 = channel_eV[1] - channel_eV[0] * dispersion
+					self.SpectrumRange = np.linspace(
+						eV0, 
+						eV0 + len(intensity) * dispersion,
+						len(intensity)
+						)
+				else:
+					raise ValueError('You need to define the channel and the energy!')
 			else:
 				raise ValueError('You need to input the energy range!')
 		self.unit_label = 'Energy'
