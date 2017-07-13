@@ -91,8 +91,8 @@ class EELSSpectrum(Spectrum):
 					eV0 = channel_eV[1] - channel_eV[0] * dispersion
 					self.SpectrumRange = np.linspace(
 						eV0, 
-						eV0 + len(intensity) * dispersion,
-						len(intensity)
+						eV0 + self.length * dispersion,
+						self.length
 						)
 				else:
 					raise ValueError('You need to define the channel and the energy!')

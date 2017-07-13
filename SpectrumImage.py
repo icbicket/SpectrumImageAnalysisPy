@@ -85,11 +85,49 @@ class CLSpectrumImage(SpectrumImage):
 
 
 class EELSSpectrumImage(SpectrumImage):
-	def __init__(self, SI, dispersion=0.005, spectrum_units='eV', calibration=0):
+	def __init__(self, SI, SpectrumRange=None, channel_eV=None, dispersion=0.005, ZLP=True, spectrum_units='eV', calibration=0):
 		super(EELSSpectrumImage, self).__init__(SI, spectrum_units, calibration)
+		'''intensity: 3D array
+		   SpectrumRange: 1D array
+		   channel_eV: 2 element array [channel #, eV value]
+		   dispersion: float, width of each channel, must be provided if SpectrumRange is not, default is 5meV
+		   ZLP: Boolean - True=ZLP is present
+		   units: string, for plot axis
+		   '''
+		if SpectrumRange is not None:
+			self.dispersion = SpectrumRange[:, :, 1] - SpectrumRange[:, :, 0]
+		else:
+			self.dispersion = dispersion
+		
+		if ZLP == True:
+			self.ZLP = self.FindZLP(self.data)
+			if SpectrumRange is not None:
+				self.SpectrumRange = SpectrumRange
+			else:
+				self.SpectrumRange = np.arange(0 - self.ZLP, self.size[2] - self.ZLP) * self.dispersion
+		else:
+			self.ZLP = None
+			if SpectrumRange is not None:
+				self.SpectrumRange = SpectrumRange
+			elif channel_eV is not None:
+				if len(channel_eV) == 2:
+					eV0 = channel_eV[1] - channel_eV[0] * dispersion
+					self.SpectrumRange = np.linspace(
+						eV0, 
+						eV0 + self.size[2] * dispersion,
+						self.size[2]
+						)
+				else:
+					raise ValueError('You need to define the channel and the energy!')
+			else:
+				raise ValueError('You need to input the energy range!')
+		self.unit_label = 'Energy'
+		self.secondary_units = 'nm'
+		self.secondary_unit_label = 'Wavelength'
+		
 		self.dispersion = dispersion
-		self.ZLP = self.FindZLP(self.data)
-		self.SpectrumRange = np.arange(0 - self.ZLP, self.size[-1] - self.ZLP) * self.dispersion
+#		self.ZLP = self.FindZLP(self.data)
+#		self.SpectrumRange = np.arange(0 - self.ZLP, self.size[-1] - self.ZLP) * self.dispersion
 		self.spectrum_unit_label = 'Energy'
 		self.spectrum_secondary_units = 'nm'
 		self.spectrum_secondary_unit_label = 'Wavelength'
@@ -112,7 +150,7 @@ class EELSSpectrumImage(SpectrumImage):
 			np.mean(np.mean(
 			np.ma.masked_array(self.data, mask3D), 
 			axis = 0), axis = 0), 
-			dispersion = self.dispersion,
+			SpectrumRange = self.SpectrumRange,
 			units = self.spectrum_units)
 		return extractedspectrum
 		
