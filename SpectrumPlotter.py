@@ -2,7 +2,7 @@ from __future__ import print_function
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.widgets import SpanSelector
-from matplotlib.ticker import FuncFormatter
+from matplotlib.ticker import FuncFormatter, MaxNLocator
 import collections
 from matplotlib.lines import Line2D
 import Spectrum
@@ -34,6 +34,8 @@ class SpectrumPlotter(object):
 		self.linked_axis.clear()
 		self.linked_axis.xaxis.set_major_formatter(FuncFormatter(FormatFunction))
 		self.linked_axis.set_xlabel(label)
+		linked_locator = MaxNLocator(steps=[1, 2, 5, 10])
+		self.linked_axis.xaxis.set_major_locator(linked_locator)
 #		plt.xticks(rotation=25)
 		
 	def axis_display(self, x, y):

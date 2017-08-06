@@ -103,7 +103,7 @@ class ImagePlotter(object):
 			self.image_key_commands(event.key)
 		elif event.inaxes == self.colourbar_axis:
 			if event.key == 'e':
-				self.save_colourbar(filename='Colourbar_.png')
+				self.save_colourbar(filename=(os.path.join(self.filepath, 'Colourbar_.png')))
 	
 	def image_key_commands(self, key):
 		if self.mover:

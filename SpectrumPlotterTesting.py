@@ -8,7 +8,7 @@ import SpectrumImage
 import os
 
 #### Testing Spectrum and SpectrumPlotter
-PSFfolder = '/home/isobel/Documents/McMaster/EELS/2016-04-18/Sq1A_(1,8)'
+PSFfolder = '/home/isobel/Documents/McMaster/EELS/2016-04-18 T9-3/Sq1A_(1,8)'
 PSFfilename = 'Spectrum_ZLP.csv'
 Spectrumfilename = 'Processed/Spectrum_1.csv'
 spectrum = Spectrum.EELSSpectrum.LoadFromCSV(os.path.join(PSFfolder, Spectrumfilename))

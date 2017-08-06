@@ -2,13 +2,40 @@ from __future__ import print_function
 import numpy as np
 import Spectrum
 import csv
+import sys
 from scipy import signal
 from scipy import stats
-#from scipy import interpolate
 from scipy.ndimage.filters import median_filter
 import handythread
 import multiprocessing
 from functools import partial
+import dm3_lib as DM3
+import numbers
+
+def make_dict_from_tags(iterables):
+	d = {}
+	for ii in iterables:
+		splitted = ii.split(' = ')
+		keys = list(splitted[:-1][0].split('.'))
+		value = splitted[-1]
+		tempD = d
+
+		for tt in keys[:-1]:
+			tempD = tempD.setdefault(tt, {})
+
+		if keys[-1] in tempD:
+			# duplicate tag
+			print('You have two tags in your DM3 file which are the same! ' + keys[-1], file=sys.stderr)
+		else:
+			tempD[keys[-1]] = value
+	return d
+
+def import_EELS_dm3(filename):
+	data = DM3.DM3(filename)
+	
+	tags = make_dict_from_tags(data._storedTags)
+	imagedata = np.transpose(data.imagedata, axes=(1, 2, 0))
+	return imagedata, tags
 
 class SpectrumImage(object):
 	"""Class for spectrum image data set, must be 3d numpy array
@@ -85,52 +112,70 @@ class CLSpectrumImage(SpectrumImage):
 
 
 class EELSSpectrumImage(SpectrumImage):
-	def __init__(self, SI, SpectrumRange=None, channel_eV=None, dispersion=0.005, ZLP=True, spectrum_units='eV', calibration=0):
+	def __init__(self, SI, SpectrumRange=None, channel_eV=None, dispersion=0.005, ZLP=True, spectrum_units='eV', calibration=0, metadata=None):
 		super(EELSSpectrumImage, self).__init__(SI, spectrum_units, calibration)
 		'''intensity: 3D array
-		   SpectrumRange: 1D array
+		   SpectrumRange: 1D array of same length as energy axis
 		   channel_eV: 2 element array [channel #, eV value]
-		   dispersion: float, width of each channel, must be provided if SpectrumRange is not, default is 5meV
+		   dispersion: real number, width of each channel, must be provided if SpectrumRange is not, default is 5meV
 		   ZLP: Boolean - True=ZLP is present
 		   units: string, for plot axis
 		   '''
-		if SpectrumRange is not None:
-			self.dispersion = SpectrumRange[:, :, 1] - SpectrumRange[:, :, 0]
-		else:
-			self.dispersion = dispersion
 		
-		if ZLP == True:
+		if ZLP:
+			if not isinstance(dispersion, numbers.Real):
+				raise ValueError('Dispersion needs to be a real number!')
+			if SpectrumRange is not None:
+				raise ValueError("You don't need to define a SpectrumRange and ZLP/dispersion!")
 			self.ZLP = self.FindZLP(self.data)
-			if SpectrumRange is not None:
-				self.SpectrumRange = SpectrumRange
-			else:
-				self.SpectrumRange = np.arange(0 - self.ZLP, self.size[2] - self.ZLP) * self.dispersion
-		else:
-			self.ZLP = None
-			if SpectrumRange is not None:
-				self.SpectrumRange = SpectrumRange
-			elif channel_eV is not None:
-				if len(channel_eV) == 2:
-					eV0 = channel_eV[1] - channel_eV[0] * dispersion
-					self.SpectrumRange = np.linspace(
+			self.dispersion = dispersion
+			self.SpectrumRange = np.arange(0 - self.ZLP, self.size[2] - self.ZLP) * self.dispersion
+		elif SpectrumRange is not None:
+			if len(SpectrumRange) != self.size[2]:
+				raise ValueError("Your SpectrumRange is not the same size as your energy axis!")
+			self.SpectrumRange = SpectrumRange
+			self.dispersion = SpectrumRange[1] - SpectrumRange[0]
+		elif channel_eV:
+			if len(channel_eV) != 2:
+				raise ValueError('channel_eV must have length 2!')
+			if not isinstance(dispersion, numbers.Real):
+				raise ValueError('Dispersion needs to be a real number!')
+			eV0 = channel_eV[1] - channel_eV[0] * dispersion
+			self.SpectrumRange = np.linspace(
 						eV0, 
-						eV0 + self.size[2] * dispersion,
+						eV0 + (self.size[2] - 1) * dispersion,
 						self.size[2]
 						)
-				else:
-					raise ValueError('You need to define the channel and the energy!')
-			else:
-				raise ValueError('You need to input the energy range!')
+			self.dispersion = dispersion
+		else:
+			raise ValueError('You need to input an energy calibration!')
+		
+		self.metadata = metadata
 		self.unit_label = 'Energy'
 		self.secondary_units = 'nm'
 		self.secondary_unit_label = 'Wavelength'
 		
-		self.dispersion = dispersion
-#		self.ZLP = self.FindZLP(self.data)
-#		self.SpectrumRange = np.arange(0 - self.ZLP, self.size[-1] - self.ZLP) * self.dispersion
 		self.spectrum_unit_label = 'Energy'
 		self.spectrum_secondary_units = 'nm'
 		self.spectrum_secondary_unit_label = 'Wavelength'
+
+	@classmethod
+	def LoadFromDM3(cls, filename, spectrum_calibrated = True):
+		SI, metadata = import_EELS_dm3(filename)
+		dispersion = float(metadata['root']['ImageList']['1']['ImageData']['Calibrations']['Dimension']['2']['Scale'])
+		drifttube = float(metadata['root']['ImageList']['1']['ImageTags']['EELS']['Acquisition']['Spectrometer']['Energy loss (eV)'])
+		zero = float(metadata['root']['ImageList']['1']['ImageData']['Calibrations']['Dimension']['2']['Origin'])
+		print(dispersion, drifttube, zero)
+		if zero >= 0:
+			ZLP = True
+		else: 
+			ZLP = False
+		if spectrum_calibrated is True:
+			channel_eV = [0, -zero * dispersion]
+		else:
+			channel_eV = None
+		print((dispersion), channel_eV)
+		return cls(SI = SI, dispersion = dispersion, ZLP = ZLP, channel_eV = channel_eV, metadata = metadata)
 
 	@staticmethod		
 	def FindZLP(data):
@@ -216,7 +261,7 @@ class EELSSpectrumImage(SpectrumImage):
 		x_deconv = np.ma.array(x_deconv, mask = self.data.mask)
 		print('Done %s iterations!' %RLiterations)
 
-		return EELSSpectrumImage(x_deconv, self.dispersion)
+		return EELSSpectrumImage(x_deconv, dispersion=self.dispersion)
 
 	def FindFW(self, intensityfraction):
 		'''Finds the full width of the ZLP at the requested fraction of intensity
