@@ -1,9 +1,11 @@
 from __future__ import print_function
+from __future__ import division
 import numpy as np
 import SpectrumImage
 import csv
 from scipy.ndimage.filters import gaussian_filter1d
 import os
+
 
 def ImportCSV(filename):
     x = np.genfromtxt(filename,
@@ -112,22 +114,30 @@ class EELSSpectrum(Spectrum):
 		normfactor = np.sum(self.intensity, keepdims=True)
 		data_norm = self.intensity/normfactor
 		return EELSSpectrum(data_norm, dispersion=self.dispersion, units=self.units)
-		
+
 	def SymmetrizeAroundZLP(self):
-		data_sym = np.delete(self.intensity, np.s_[2*self.ZLP:self.length], axis = -1)
-		data_sym = np.delete(data_sym, np.s_[:np.maximum(2*self.ZLP-self.length, 0)], axis = -1)
+		if self.ZLP < (self.length-1)/2.:
+			data_sym = np.delete(self.intensity, np.s_[(2*self.ZLP+1):self.length], axis = -1)			
+		elif self.ZLP > (self.length-1)/2.:
+			data_sym = np.delete(self.intensity, np.s_[:np.maximum(2*self.ZLP+1-self.length, 0)], axis = -1)
+		else:
+			data_sym = self.intensity
 		data_sym[data_sym<0] = 0
 		return EELSSpectrum(data_sym, dispersion=self.dispersion, units=self.units)
-		
+
 	def PadSpectrum(self, pad_length, pad_value=0, pad_side='left'):
 		if pad_side == 'left':
 			padded = np.append(np.ones((pad_length, )) * pad_value, self.intensity)
 		elif pad_side == 'right':
 			padded = np.append(self.intensity, np.ones((pad_length, 1)) * pad_value)
 		else:
-			padded = np.append(np.ones((pad_length, 1)) * pad_value, self.intensity, np.ones((pad_length, 1)))
+			padded = np.append(
+					np.append(
+						np.ones((pad_length, 1)) * pad_value, 
+						self.intensity), 
+					np.ones((pad_length, 1)) * pad_value)
 		return EELSSpectrum(padded, dispersion=self.dispersion, units=self.units)
-		
+
 	def FindFW(self, intensityfraction):
 #		intensity_norm = self.intensity.Normalize().intensity
 		lefttail = self.intensity[:self.ZLP][::-1]

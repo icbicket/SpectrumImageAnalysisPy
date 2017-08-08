@@ -229,7 +229,10 @@ class EELSSpectrumImage(SpectrumImage):
 			axis=0), axis=0) - np.expand_dims(indices, axis=2)
 		aligned_data = np.zeros((self.size[0], self.size[1], self.size[2] + channelmax - channelmin))
 		aligned_data[index1, index2, index3] = self.data
-		return EELSSpectrumImage(aligned_data, dispersion=self.dispersion, spectrum_units = self.spectrum_units, calibration=self.calibration)
+		return EELSSpectrumImage(aligned_data, 
+			dispersion=self.dispersion, 
+			spectrum_units = self.spectrum_units, 
+			calibration=self.calibration)
 		
 	def eVSlice(self, starteV, stopeV):
 		startchannel = int(starteV / self.dispersion + self.ZLP)
@@ -244,10 +247,11 @@ class EELSSpectrumImage(SpectrumImage):
 			threads=number of computer's CPUs to use while deconvolving, default is all of them
 			PSF_pad=value to pad PSF with (or None to not pad PSF)'''
 		PSF_sym = PSF.SymmetrizeAroundZLP()
+		del PSF
 		if PSF_pad is not None:
-			data_length = np.size(self.SpectrumRange)
+			data_length = np.size(self.SpectrumRange) ##replace w/ self.size[2]
 			PSF_length = np.size(PSF_sym.intensity)
-			pad_length = int(data_length/2 - (1 + data_length) % 2 - (PSF_length-(PSF_length % 2))/2)
+			pad_length = int(data_length/2 - (1 + data_length) % 2 - PSF_length//2)
 			if PSF_sym.ZLP < data_length/2:
 				PSF_sym = PSF.PadSpectrum(pad_length, pad_value=PSF_pad, pad_side='left').SymmetrizeAroundZLP()
 			elif PSF_sym.ZLP > data_length/2:
@@ -265,7 +269,7 @@ class EELSSpectrumImage(SpectrumImage):
 
 	def FindFW(self, intensityfraction):
 		'''Finds the full width of the ZLP at the requested fraction of intensity
-		(for full width at half max, intensityfraction=0.5'''
+		(for full width at half max, intensityfraction=0.5)'''
 		lefttail = self.data[:,:,:self.ZLP][:,:,::-1]
 		diff1 = lefttail - intensityfraction*np.expand_dims(self.data[:,:,self.ZLP], axis=2)
 		left_index_1 = np.argmax(np.diff(np.sign(diff1)) != 0, axis=2)
