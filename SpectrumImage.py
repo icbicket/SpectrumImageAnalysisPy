@@ -165,7 +165,6 @@ class EELSSpectrumImage(SpectrumImage):
 		dispersion = float(metadata['root']['ImageList']['1']['ImageData']['Calibrations']['Dimension']['2']['Scale'])
 		drifttube = float(metadata['root']['ImageList']['1']['ImageTags']['EELS']['Acquisition']['Spectrometer']['Energy loss (eV)'])
 		zero = float(metadata['root']['ImageList']['1']['ImageData']['Calibrations']['Dimension']['2']['Origin'])
-		print(dispersion, drifttube, zero)
 		if zero >= 0:
 			ZLP = True
 		else: 
@@ -174,7 +173,6 @@ class EELSSpectrumImage(SpectrumImage):
 			channel_eV = [0, -zero * dispersion]
 		else:
 			channel_eV = None
-		print((dispersion), channel_eV)
 		return cls(SI = SI, dispersion = dispersion, ZLP = ZLP, channel_eV = channel_eV, metadata = metadata)
 
 	@staticmethod		
@@ -247,7 +245,6 @@ class EELSSpectrumImage(SpectrumImage):
 			threads=number of computer's CPUs to use while deconvolving, default is all of them
 			PSF_pad=value to pad PSF with (or None to not pad PSF)'''
 		PSF_sym = PSF.SymmetrizeAroundZLP()
-		del PSF
 		if PSF_pad is not None:
 			data_length = np.size(self.SpectrumRange) ##replace w/ self.size[2]
 			PSF_length = np.size(PSF_sym.intensity)
