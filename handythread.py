@@ -48,6 +48,7 @@ def foreach(f,l,threads=3,return_=False):
                     e = sys.exc_info()
                     iteratorlock.acquire()
                     try:
+                    	print(e)
                         exceptions.append(e)
                     finally:
                         iteratorlock.release()

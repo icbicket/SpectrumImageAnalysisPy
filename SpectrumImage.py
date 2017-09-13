@@ -264,6 +264,31 @@ class EELSSpectrumImage(SpectrumImage):
 
 		return EELSSpectrumImage(x_deconv, dispersion=self.dispersion)
 
+	def RLDeconvolution_Adaptive(self, RLiterations, PSF, threads=multiprocessing.cpu_count(), PSF_pad=0):
+		PSF_sym = PSF.SymmetrizeAroundZLP()
+		data_sym = self.SymmetrizeAroundZLP()
+		if PSF_pad is not None:
+			data_length = np.size(self.SpectrumRange) ##replace w/ self.size[2]
+			PSF_length = np.shape(PSF_sym.data)[2]
+			pad_length = int(data_length/2 - (1 + data_length) % 2 - PSF_length//2)
+			if PSF_sym.ZLP < data_length/2:
+				PSF_sym = PSF.PadSpectrum(pad_length, pad_value=PSF_pad, pad_side='left').SymmetrizeAroundZLP()
+			elif PSF_sym.ZLP > data_length/2:
+				PSF_sym = PSF_sym.PadSpectrum(pad_length, pad_value=PSF_pad, pad_side='right')
+			
+			if data_sym.ZLP < data_length/2:
+				data_sym = self.PadSpectrum(pad_length, pad_value=PSF_pad+1, pad_side='left').SymmetrizeAroundZLP()
+			elif PSF_sym.ZLP > data_length/2:
+				data_sym = self.PadSpectrum(pad_length, pad_value=PSF_pad+1, pad_side='right')
+		print('Beginning deconvolution...')
+		loopyP_adapt = partial(loopy_adapt, iterations=RLiterations)
+		deconvolution_arrays = np.append(np.expand_dims(data_sym.Normalize(), axis=-1), 
+			np.expand_dims(PSF_sym.Normalize(), axis=-1), axis=-1)
+		x_deconv = np.array(handythread.parallel_map(loopyP_adapt, deconvolution_arrays, threads = threads))
+		x_deconv = np.ma.array(x_deconv, mask = self.data.mask)
+		print('Done %s iterations!' %RLiterations)
+		return EELSSpectrumImage(x_deconv, dispersion=self.dispersion)
+
 	def FindFW(self, intensityfraction):
 		'''Finds the full width of the ZLP at the requested fraction of intensity
 		(for full width at half max, intensityfraction=0.5)'''
@@ -295,12 +320,35 @@ class EELSSpectrumImage(SpectrumImage):
 		FW = left_energy + right_energy
 		return FW
 	
+	def SymmetrizeAroundZLP(self):
+		if self.ZLP < (self.size[2]-1)/2.:
+			data_sym = np.delete(self.data, np.s_[(2*self.ZLP+1):self.size[2]], axis = -1)			
+		elif self.ZLP > (self.size[2]-1)/2.:
+			data_sym = np.delete(self.data, np.s_[:np.maximum(2*self.ZLP+1-self.size[2], 0)], axis = -1)
+		else:
+			data_sym = self.data
+		data_sym[data_sym<0] = 0
+		return EELSSpectrumImage(data_sym, dispersion=self.dispersion, spectrum_units=self.spectrum_units)
+	
+	def PadSpectrum(self, pad_length, pad_value=0, pad_side='left'):
+		if pad_side == 'left':
+			padded = np.append(np.ones((self.size[0], self.size[1], pad_length)) * pad_value, self.data, axis=2)
+		elif pad_side == 'right':
+			padded = np.append(self.data, np.ones((self.size[0], self.size[1], pad_length)) * pad_value, axis=2)
+		else:
+			padded = np.append(
+					np.append(
+						np.ones((self.size[0], self.size[1], pad_length)) * pad_value, 
+						self.data), 
+					np.ones((self.size[0], self.size[1], pad_length)) * pad_value, axis=2)
+		return EELSSpectrumImage(padded, dispersion=self.dispersion, spectrum_units=self.spectrum_units)
+	
 	def SpectrumInterpolation(self, E1, E2, I1, I2, I_interp):
 		'''Linear interpolation given two data points and the mid-value'''
 		interpvalue = E1 + (E2 - E1)/(I2 - I1) * (I_interp-I1)
 		return interpvalue
 		
-		
+
 #Richardson-Lucy algorithm
 def RL(iterations, PSF_norm, Spec):
 	RL4 = Spec.copy()
@@ -310,6 +358,16 @@ def RL(iterations, PSF_norm, Spec):
 		RL3 = np.convolve(PSF_norm, RL2, 'same')
 		RL4 *= RL3
 	return RL4
+
+#Looping function for deconvolution of spectrum images
+def loopy_adapt(SI_PSFline, iterations):
+    xloop = np.shape(SI_PSFline)[0]
+    SIline = SI_PSFline[:, :, 0]
+    PSFline = SI_PSFline[:, :, 1]
+    SIline_deconv = np.zeros([xloop, np.shape(SIline)[1]])
+    for xx in range(xloop):
+        SIline_deconv[xx,:] = RL(iterations, PSFline[xx, :], SIline[xx, :])
+    return SIline_deconv
 
 #Looping function for deconvolution of spectrum images
 def loopy(SIline, iterations, PSF):
