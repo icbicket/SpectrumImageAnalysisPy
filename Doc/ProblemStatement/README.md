@@ -2,13 +2,8 @@
 
 The folders and files for this folder are as follows:
 
-Document:  
+The [Problem Statement](ProblemStatement.pdf) document contains a general description of the purpose and intended use of the software.
 
-* [ProblemStatement.pdf](ProblemStatement.pdf)
+LaTex file:  
 
-LaTex files:  
-
-* [ProblemStatement.tex](ProblemStatement.tex)  
-* [ProblemStatement.syntex.gz](ProblemStatement.syntex.gz)  
-* [ProblemStatement.log](ProblemStatement.log)  
-* [ProblemStatement.aux](ProblemStatement.aux)  
+* [ProblemStatement.tex](ProblemStatement.tex)   
