@@ -11,6 +11,7 @@ import os
 from skimage.measure import profile_line
 #import LineProfile
 import LineDraw
+import FileNamer
 
 class ImagePlotter(object):
 	def __init__(self, image, axis=None, colourbar_axis = None, cmap=plt.get_cmap('gray'), filepath=os.getcwd(), polygoncallback = None):
@@ -161,14 +162,11 @@ class ImagePlotter(object):
 		new_extent = np.array([np.min((extent_colourbar.get_points()[0,:], extent_toptick.get_points()[0,:], extent_bottomtick.get_points()[0,:]), axis=0),
 			np.max((extent_colourbar.get_points()[1,:], extent_toptick.get_points()[1,:], extent_bottomtick.get_points()[1,:]), axis=0)])
 		extent_colourbar.set_points(new_extent)
-		if os.path.exists(filename):
-			filename = filename[:-4] + '-1' + filename[-4:]
+		filename = FileNamer.NameFile(filename)
 		plt.gcf().savefig(filename, bbox_inches=extent_colourbar, transparent=True)
-		print('Saved colourbar to...', filename)
 	
 	def save_image(self, filename):
 		self.Image.SaveImgAsPNG(filename, self.PlottedImage.get_clim(), cmap=plt.get_cmap(self.cmap))
-		print('Saved image to...', filename)
 		
 	def save_image_scale(self, filename):
 		if self.Image.calibration==0:

@@ -2,6 +2,7 @@ from __future__ import print_function
 import numpy as np
 import png
 import os
+import FileNamer
 
 class Image(object):
 	def __init__(self, Img, calibration=0):
@@ -22,8 +23,7 @@ class Image(object):
 #		r_max = min(clim[1], self.Imglim[1])
 		r_min = clim[0]
 		r_max = clim[1]
-		if os.path.exists(filename):
-			filename = filename[:-4] + '-1' + filename[-4:]
+		filename = FileNamer.NameFile(filename)
 		writefile = open(filename, 'wb')
 		if type(self.data)==np.ma.MaskedArray:
 			writeImage = np.empty((self.size[0], self.size[1]*2))

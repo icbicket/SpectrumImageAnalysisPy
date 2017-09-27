@@ -163,7 +163,7 @@ class EELSSpectrumImage(SpectrumImage):
 	def LoadFromDM3(cls, filename, spectrum_calibrated = True):
 		SI, metadata = import_EELS_dm3(filename)
 		dispersion = float(metadata['root']['ImageList']['1']['ImageData']['Calibrations']['Dimension']['2']['Scale'])
-		drifttube = float(metadata['root']['ImageList']['1']['ImageTags']['EELS']['Acquisition']['Spectrometer']['Energy loss (eV)'])
+#		drifttube = float(metadata['root']['ImageList']['1']['ImageTags']['EELS']['Acquisition']['Spectrometer']['Energy loss (eV)'])
 		zero = float(metadata['root']['ImageList']['1']['ImageData']['Calibrations']['Dimension']['2']['Origin'])
 		if zero >= 0:
 			ZLP = True
