@@ -4,10 +4,8 @@ import glob
 
 def NameFile(filepath):
 	if os.path.exists(filepath):
-		print('it ainnot new...', filepath)
 		newname = FindLatestFilename(filepath)
 	else:
-		print('it is new!')
 		newname = filepath
 	print('Saved file as...', newname)
 	return newname
@@ -17,7 +15,6 @@ def FindLatestFilename(filepath):
 		foldername = filepath.rsplit('/', 1)[0] # Split out folder path
 		filename = filepath.rsplit('/', 1)[-1] # retrieve filename
 		filelist = glob.glob((foldername + '/' + filename.rsplit('.', 1)[0] + '*.' + filename.rsplit('.')[-1])) # find list of files within folder
-		print('list of files', filelist)
 		nums = []
 		lastfile = None
 		for filen in filelist:
@@ -29,7 +26,6 @@ def FindLatestFilename(filepath):
 				lastfile = lastfile
 			else:
 				lastfile = filen.rsplit('.', 1)[-2] + '.' + filen.rsplit('.', 1)[-1]
-			print('last one', lastfile)
 		newfilename = NumberFileNames(lastfile)
 	else:
 		foldername = ''
