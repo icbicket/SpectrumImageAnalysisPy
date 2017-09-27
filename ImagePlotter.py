@@ -16,11 +16,11 @@ import FileNamer
 def cbarextensionfinder(clim, imglim):
 	cbar_top_test = clim[1] >= imglim[1]
 	cbar_bottom_test = clim[0] <= imglim[0]
-	if cbar_top_test is True and cbar_bottom_test is True:
+	if cbar_top_test and cbar_bottom_test:
 		cbar_extend = 'neither'
-	elif cbar_top_test is False and cbar_bottom_test is True:
+	elif not cbar_top_test and cbar_bottom_test:
 		cbar_extend = 'max'
-	elif cbar_top_test is True and cbar_bottom_test is False:
+	elif cbar_top_test and not cbar_bottom_test:
 		cbar_extend = 'min'
 	else:
 		cbar_extend = 'both'
@@ -81,18 +81,6 @@ class ImagePlotter(object):
 		'''Check for comparison of the image contrast limits vs the image data contrast
 		limits to indicate this on the colourbar as appropriate'''
 		cbar_extend = cbarextensionfinder(self.PlottedImage.get_clim(), self.Image.Imglim)
-#		cbar_limit_test = np.equal(self.PlottedImage.get_clim(), self.Image.Imglim)
-#		if not np.any(cbar_limit_test):
-#			cbar_extend = 'both'
-#		elif np.all(cbar_limit_test):
-#			cbar_extend = 'neither'
-#		else:
-#			if cbar_limit_test[0] and self.PlottedImage.get_clim()[0] > self.Image.Imglim[0]:
-#				cbar_extend = 'max'
-#			elif cbar_limit_test[1] and self.PlottedImage.get_clim()[1] < self.Image.Imglim[0]:
-#				cbar_extend = 'min'
-#			else:
-#				cbar_extend = 'neither'
 		'''Plot colourbar'''
 		cbar = plt.colorbar(mappable=self.PlottedImage, cax=self.colourbar_axis, extend=cbar_extend)
 		return cbar
