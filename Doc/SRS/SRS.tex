@@ -84,7 +84,23 @@
 	
 \maketitle
 
+~\newpage
+
 \pagenumbering{roman}
+
+
+\section{Revision History}
+
+\begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
+\toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
+\midrule
+Date 1 & 1.0 & Notes\\
+Date 2 & 1.1 & Notes\\
+\bottomrule
+\end{tabularx}
+
+~\newpage
+
 \tableofcontents
 
 \begin{table}[bp]
@@ -220,19 +236,20 @@ describes the user characteristics and lists the system constraints.
 Use of the software \progname{} infers the following responsibilities on the part of the user, and confers the following responsibilities from the program.
 
 \begin{itemize}
-\item User Responsibilities:
-\begin{itemize}
-\item Provide the correct input data to the program
-\item Be capable of interacting with the software via a mouse and keyboard
-\item Have the necessary dependencies for the program installed
-\end{itemize}
-\item \progname{} Responsibilities:
-\begin{itemize}
-\item Check the inputs for the correct data type and size
-\item Display the data and graphical user interface for the user to interact with
-\item Respond to user commands as appropriate, including visualization and data processing commands
-\item Export data in the correct file format(s)
-\end{itemize}
+	\item User Responsibilities:
+	\begin{itemize}
+		\item Provide the correct input data to the program;
+		\item Be capable of interacting with the software via a mouse and keyboard;
+		\item Have the necessary dependencies for the program installed;
+		\item Judge the quality of the output data is sufficient for the application, or change the processing steps performed;
+	\end{itemize}
+	\item \progname{} Responsibilities:
+	\begin{itemize}
+		\item Check the inputs for the correct data type and size
+		\item Display the data and graphical user interface for the user to interact with
+		\item Respond to user commands as appropriate, including visualization and data processing commands
+		\item Export data in the correct file format(s)
+	\end{itemize}
 \end{itemize}
 
 \subsection{User Characteristics} \label{SecUserCharacteristics}
@@ -266,11 +283,9 @@ sections and their meaning, with the purpose of reducing ambiguity and making it
 easier to correctly understand the requirements:
 
 \begin{itemize}
-
-\item Spectrum Image
-\item Point Spread Function (PSF)
-\item Sample
-
+	\item Spectrum Image
+	\item Point Spread Function (PSF)
+	\item Sample
 \end{itemize}
 
 \subsubsection{Physical System Description}
@@ -280,15 +295,11 @@ includes the following elements:
 
 \begin{itemize}
 
-\item[PS1:] Sample under study.
-
-\item[PS2:] STEM equipped with EEL spectrometer.
-
-\an{Find an image/schematic of Titan}
-
-\item[PS3:] SEM or STEM equipped with CL collection system.
-
-\an{Find an image/schematic of SEM-CL system}
+	\item[PS1:] Sample under study.
+	\item[PS2:] STEM equipped with EEL spectrometer.
+	\an{Find an image/schematic of Titan}
+	\item[PS3:] SEM or STEM equipped with CL collection system.
+	\an{Find an image/schematic of SEM-CL system}
 
 %\item[PS1:] Three dimensional dataset, including two spatial dimensions and one spectral dimension (eg, EELS: energy loss in \si{\electronvolt}, CL: wavelength in \si{\nano\metre}). The sample under study is represented in projection in the two spatial dimensions, while the third dimension represents the response of the sample to an external stimulus; for both EELS and CL, the external stimulus is a beam of fast electrons.
 %
@@ -317,10 +328,10 @@ includes the following elements:
 
 \begin{itemize}
 
-\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_meaningfulLabel}:] Read in a three-dimensional dataset
-\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_meaningfulLabel}:] Display a three-dimensional dataset to allow the user to interact with it and navigate all three dimensions
-\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_meaningfulLabel}:] Provide processing options including: normalization and deconvolution for EELS SI; normalization and background subtraction for a CL SI
-\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_meaningfulLabel}:] Extract slices from the dataset as desired by the user and communicated through the user interface
+	\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_meaningfulLabel}:] Read in a three-dimensional dataset
+	\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_meaningfulLabel}:] Display a three-dimensional dataset to allow the user to interact with it and navigate all three dimensions
+	\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_meaningfulLabel}:] Provide processing options including: normalization and deconvolution for EELS SI; normalization and background subtraction for a CL SI
+	\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_meaningfulLabel}:] Extract slices from the dataset as desired by the user and communicated through the user interface
 
 \end{itemize}
 
@@ -341,11 +352,13 @@ likely change [LC], in which the respective assumption is used.
 
 \begin{itemize}
 
-\item[A\refstepcounter{assumpnum}\theassumpnum \label{EELS System Response}:] The EELS data can be described as the convolution of the ``real'' spectrum of the sample with the response of the microscope and spectrometer system function. The microscope and spectrometer system typically causes broadening in the peaks of the ``real'' spectrum.
-
-\item[A\refstepcounter{assumpnum}\theassumpnum \label{EELS Intensity Fluctuations}:] Fluctuations in the intensity of the EELS signal are due to changes in the beam current as collected by the spectrometer.
-
-\item[A\refstepcounter{assumpnum}\theassumpnum \label{CL Background}:] A subtraction can be performed to remove the contributions of the dark signal and the substrate signal from the sample signal.
+	\item[A\refstepcounter{assumpnum}\theassumpnum \label{EELS System Response}:] The EELS data can be described as the convolution of the ``real'' spectrum of the sample with the response of the microscope and spectrometer system function. The microscope and spectrometer system typically causes broadening in the peaks of the ``real'' spectrum.
+	
+	\item[A\refstepcounter{assumpnum}\theassumpnum \label{EELS Intensity Fluctuations}:] Fluctuations in the intensity of the EELS signal are due to changes in the beam current as collected by the spectrometer.
+	
+	\item[A\refstepcounter{assumpnum}\theassumpnum \label{CL Background}:] A subtraction can be performed to remove the contributions of the dark signal and the substrate signal from the sample signal.
+	
+	\item[A\refstepcounter{assumpnum}\theassumpnum \label{CL System Response}:] The spectrometer wavelength sensitivity can be accurately modelled by experimental reference data.
 
 \end{itemize}
 
@@ -359,34 +372,34 @@ on.  \wss{Modify the examples below for your problem, and add additional models
 
 \noindent
 \begin{minipage}{\textwidth}
-\renewcommand*{\arraystretch}{1.5}
-\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-  \hline
-  \rowcolor[gray]{0.9}
-  Number& T\refstepcounter{theorynum}\thetheorynum \label{T_COE}\\
-  \hline
-  Label&\bf Conservation of thermal energy\\
-  \hline
-  Equation&  $-{\bf \nabla \cdot q} + g$ = $\rho C \frac{\partial T}{\partial t}$\\
-  \hline
-  Description & 
-                The above equation gives the conservation of energy for transient heat transfer in a material
-                of specific heat capacity $C$ (\si{\joule\per\kilogram\per\celsius}) and density $\rho$ 
-                (\si{\kilogram\per\cubic\metre}), where $\bf q$ is the thermal flux vector (\si{\watt\per\square\metre}),
-                $g$ is the volumetric heat generation
-                (\si{\watt\per\cubic\metre}), $T$ is the temperature
-                (\si{\celsius}),  $t$ is time (\si{\second}), and $\nabla$ is
-                the gradient operator.  For this equation to apply, other forms
-                of energy, such as mechanical energy, are assumed to be negligible in the
-                system (\aref{A_OnlyThermalEnergy}).  In general, the material properties ($\rho$ and $C$) depend on temperature.\\
-  \hline
-  Source &
-           \url{http://www.efunda.com/formulae/heat_transfer/conduction/overview_cond.cfm}\\
-  % The above web link should be replaced with a proper citation to a publication
-  \hline
-  Ref.\ By & \dref{ROCT}\\
-  \hline
-\end{tabular}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		  \hline
+		  \rowcolor[gray]{0.9}
+		  Number& T\refstepcounter{theorynum}\thetheorynum \label{T_COE}\\
+		  \hline
+		  Label&\bf Conservation of thermal energy\\
+		  \hline
+		  Equation&  $-{\bf \nabla \cdot q} + g$ = $\rho C \frac{\partial T}{\partial t}$\\
+		  \hline
+		  Description & 
+		                The above equation gives the conservation of energy for transient heat transfer in a material
+		                of specific heat capacity $C$ (\si{\joule\per\kilogram\per\celsius}) and density $\rho$ 
+		                (\si{\kilogram\per\cubic\metre}), where $\bf q$ is the thermal flux vector (\si{\watt\per\square\metre}),
+		                $g$ is the volumetric heat generation
+		                (\si{\watt\per\cubic\metre}), $T$ is the temperature
+		                (\si{\celsius}),  $t$ is time (\si{\second}), and $\nabla$ is
+		                the gradient operator.  For this equation to apply, other forms
+		                of energy, such as mechanical energy, are assumed to be negligible in the
+		                system (\aref{A_OnlyThermalEnergy}).  In general, the material properties ($\rho$ and $C$) depend on temperature.\\
+		  \hline
+		  Source &
+		           \url{http://www.efunda.com/formulae/heat_transfer/conduction/overview_cond.cfm}\\
+		  % The above web link should be replaced with a proper citation to a publication
+		  \hline
+		  Ref.\ By & \dref{ROCT}\\
+		  \hline
+	\end{tabular}
 \end{minipage}\\
 
 ~\newline
@@ -403,37 +416,37 @@ data definitions, which in turn are used to build the instance models.
 
 \noindent
 \begin{minipage}{\textwidth}
-\renewcommand*{\arraystretch}{1.5}
-\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-\hline
-\rowcolor[gray]{0.9}
-Number& GD\refstepcounter{defnum}\thedefnum \label{NL}\\
-\hline
-Label &\bf Newton's law of cooling \\
-\hline
-% Units&$MLt^{-3}T^0$\\
-% \hline
-SI Units&\si{\watt\per\square\metre}\\
-\hline
-Equation&$ q(t) = h \Delta T(t)$  \\
-\hline
-Description &
-Newton's law of cooling describes convective cooling from a surface.  The law is
-stated as: the rate of heat loss from a body is proportional to the difference
-in temperatures between the body and its surroundings.
-\\
-& $q(t)$ is the thermal flux (\si{\watt\per\square\metre}).\\
-& $h$ is the heat transfer coefficient, assumed independent of $T$ (\aref{A_hcoeff})
-	(\si{\watt\per\square\metre\per\celsius}).\\
-&$\Delta T(t)$= $T(t) - T_{\text{env}}(t)$ is the time-dependent thermal gradient
-between the environment and the object (\si{\celsius}).
-\\
-\hline
-  Source &~\cite[p.\ 8]{Incropera2007}\\
-  \hline
-  Ref.\ By & \ddref{FluxCoil}, \ddref{FluxPCM}\\
-  \hline
-\end{tabular}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& GD\refstepcounter{defnum}\thedefnum \label{NL}\\
+		\hline
+		Label &\bf Newton's law of cooling \\
+		\hline
+		% Units&$MLt^{-3}T^0$\\
+		% \hline
+		SI Units&\si{\watt\per\square\metre}\\
+		\hline
+		Equation&$ q(t) = h \Delta T(t)$  \\
+		\hline
+		Description &
+		Newton's law of cooling describes convective cooling from a surface.  The law is
+		stated as: the rate of heat loss from a body is proportional to the difference
+		in temperatures between the body and its surroundings.
+		\\
+		& $q(t)$ is the thermal flux (\si{\watt\per\square\metre}).\\
+		& $h$ is the heat transfer coefficient, assumed independent of $T$ (\aref{A_hcoeff})
+			(\si{\watt\per\square\metre\per\celsius}).\\
+		&$\Delta T(t)$= $T(t) - T_{\text{env}}(t)$ is the time-dependent thermal gradient
+		between the environment and the object (\si{\celsius}).
+		\\
+		\hline
+		  Source &~\cite[p.\ 8]{Incropera2007}\\
+		  \hline
+		  Ref.\ By & \ddref{FluxCoil}, \ddref{FluxPCM}\\
+		  \hline
+	\end{tabular}
 \end{minipage}\\
 
 \subsubsection*{Detailed derivation of simplified rate of change of temperature}
@@ -451,39 +464,39 @@ models. The dimension of each quantity is also given.  \wss{Modify the examples
 
 \noindent
 \begin{minipage}{\textwidth}
-\renewcommand*{\arraystretch}{1.5}
-\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-\hline
-\rowcolor[gray]{0.9}
-Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{FluxCoil}\\
-\hline
-Label& \bf Heat flux out of coil\\
-\hline
-Symbol &$q_C$\\
-\hline
-% Units& $Mt^{-3}$\\
-% \hline
-  SI Units & \si{\watt\per\square\metre}\\
-  \hline
-  Equation&$q_C(t) = h_C (T_C - T_W(t))$, over area $A_C$\\
-  \hline
-  Description & 
-                $T_C$ is the temperature of the coil (\si{\celsius}).  $T_W$ is the temperature of the water (\si{\celsius}).  
-                The heat flux out of the coil, $q_C$ (\si{\watt\per\square\metre}), is found by
-                assuming that Newton's Law 
-                of Cooling applies (\aref{A_Newt_coil}).  This law (\dref{NL}) is used on the surface of
-                the coil, which has area $A_C$ (\si{\square\metre}) and heat 
-                transfer coefficient $h_C$
-                (\si{\watt\per\square\metre\per\celsius}).  This equation
-                assumes that the temperature of the coil is constant over time (\aref{A_tcoil}) and that it does not vary along the length
-                of the coil (\aref{A_tlcoil}).
-  \\
-  \hline
-  Sources&~\cite{Lightstone2012}  \\
-  \hline
-  Ref.\ By & \iref{ewat}\\
-  \hline
-\end{tabular}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{FluxCoil}\\
+		\hline
+		Label& \bf Heat flux out of coil\\
+		\hline
+		Symbol &$q_C$\\
+		\hline
+		% Units& $Mt^{-3}$\\
+		% \hline
+		  SI Units & \si{\watt\per\square\metre}\\
+		  \hline
+		  Equation&$q_C(t) = h_C (T_C - T_W(t))$, over area $A_C$\\
+		  \hline
+		  Description & 
+		                $T_C$ is the temperature of the coil (\si{\celsius}).  $T_W$ is the temperature of the water (\si{\celsius}).  
+		                The heat flux out of the coil, $q_C$ (\si{\watt\per\square\metre}), is found by
+		                assuming that Newton's Law 
+		                of Cooling applies (\aref{A_Newt_coil}).  This law (\dref{NL}) is used on the surface of
+		                the coil, which has area $A_C$ (\si{\square\metre}) and heat 
+		                transfer coefficient $h_C$
+		                (\si{\watt\per\square\metre\per\celsius}).  This equation
+		                assumes that the temperature of the coil is constant over time (\aref{A_tcoil}) and that it does not vary along the length
+		                of the coil (\aref{A_tlcoil}).
+		  \\
+		  \hline
+		  Sources&~\cite{Lightstone2012}  \\
+		  \hline
+		  Ref.\ By & \iref{ewat}\\
+		  \hline
+	\end{tabular}
 \end{minipage}\\
 
 \subsubsection{Instance Models} \label{sec_instance}    
@@ -504,37 +517,66 @@ The goals \wss{reference your goals} are solved by \wss{reference your instance
 
 \noindent
 \begin{minipage}{\textwidth}
-\renewcommand*{\arraystretch}{1.5}
-\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-  \hline
-  \rowcolor[gray]{0.9}
-  Number& IM\refstepcounter{instnum}\theinstnum \label{ewat}\\
-  \hline
-  Label& \bf Energy balance on water to find $T_W$\\
-  \hline
-  Input&$m_W$, $C_W$, $h_C$, $A_C$, $h_P$, $A_P$, $t_\text{final}$, $T_C$, 
-  $T_\text{init}$, $T_P(t)$ from \iref{epcm}\\
-  & The input is constrained so that $T_\text{init} \leq T_C$ (\aref{A_charge})\\
-  \hline
-  Output&$T_W(t)$, $0\leq t \leq t_\text{final}$, such that\\
-  &$\frac{dT_W}{dt} = \frac{1}{\tau_W}[(T_C - T_W(t)) + {\eta}(T_P(t) - T_W(t))]$,\\
-  &$T_W(0) = T_P(0) = T_\text{init}$ (\aref{A_InitTemp}) and $T_P(t)$ from \iref{epcm} \\
-  \hline
-  Description&$T_W$ is the water temperature (\si{\celsius}).\\
-  &$T_P$ is the PCM temperature (\si{\celsius}).\\
-  &$T_C$ is the coil temperature (\si{\celsius}).\\
-  &$\tau_W = \frac{m_W C_W}{h_C A_C}$ is a constant (\si{\second}).\\
-  &$\eta = \frac{h_P A_P}{h_C A_C}$ is a constant (dimensionless).\\
-  & The above equation applies as long as the water is in liquid form,
-  $0<T_W<100^o\text{C}$, where $0^o\text{C}$ and $100^o\text{C}$ are the melting
-  and boiling points of water, respectively (\aref{A_OpRange}, \aref{A_Pressure}).
-  \\
-  \hline
-  Sources&~\cite{Lightstone2012} \ \\
-  \hline
-  Ref.\ By & \iref{epcm}\\
-  \hline
-\end{tabular}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		  \hline
+		  \rowcolor[gray]{0.9}
+		  Number& IM\refstepcounter{instnum}\theinstnum \label{ewat}\\
+		  \hline
+		  Label& \bf Normalization to the integral\\
+		  \hline
+		  Input& $k_1$\\
+		  & $k_2$\\
+		  & $I(x_i,y_j,E_k)$\\
+		  & The input is constrained such that $k_1 >= 0$, and $k_2 <= N$\\
+		  \hline
+		  Output& $I_{norm}(x_i,y_j,E_k)=\frac{I(x_i,y_j,E_k)}{\sum_{E_{k=k_1}}^{E_{k=k_2}} I(x_i,y_j,E_k)}$\\
+		  \hline
+		  Description&$I(x_i,y_j,E_k)$ is the 3D spectrum image, user input\\
+		  &$k_1$: Index of beginning of spectrum range (spectrum axis), user input\\
+		  &$k_2$: Index of end of spectrum range (spectrum axis), user input\\
+		  &$K$: Last index along the spectral axis\\
+		  &$x_i$: Pixel index along first spatial axis\\
+		  &$y_j$: Pixel index along second spatial axis\\
+		  &$I_{norm}(x_i,y_j,E_k)$: Spectrum image with each individual pixel normalized independently along the spectral axis\\
+		  \hline
+		  Sources&~\cite{Lightstone2012} \ \\
+		  \hline
+		  Ref.\ By & \iref{epcm}\\
+		  \hline
+	\end{tabular}
+\end{minipage}\\
+
+~\newline
+
+%Instance Model 2
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& IM\refstepcounter{instnum}\theinstnum \label{ewat}\\
+		\hline
+		Label& \bf Normalization to one channel\\
+		\hline
+		Input& $k_1$\\
+		& $I(x_i,y_j,E_k)$\\
+		\hline
+		Output& $I_{norm}(x_i,y_j,E_k)=\frac{I(x_i,y_j,E_k)}{I(x_i,y_j,E_{k=k_0})}$\\
+		\hline
+		Description&$I(x_i,y_j,E_k)$ is the 3D spectrum image, user input\\
+		&$k_0$: Index of the channel to normalize the spectrum to, user input\\
+		&$x_i$: Pixel index along first spatial axis\\
+		&$y_j$: Pixel index along second spatial axis\\
+		&$I_{norm}(x_i,y_j,E_k)$: Spectrum image with each individual pixel normalized to one channel (eg, a peak maximum) independently along the spectral axis\\
+		\hline
+		Sources&~\cite{Lightstone2012} \ \\
+		\hline
+		Ref.\ By & \iref{epcm}\\
+		\hline
+	\end{tabular}
 \end{minipage}\\
 
 %~\newline
@@ -560,17 +602,17 @@ The specification parameters in Table~\ref{TblInputVar} are listed in
 Table~\ref{TblSpecParams}.
 
 \begin{table}[!h]
-  \caption{Input Variables} \label{TblInputVar}
-  \renewcommand{\arraystretch}{1.2}
-\noindent \begin{longtable*}{l l l l c} 
-  \toprule
-  \textbf{Var} & \textbf{Physical Constraints} & \textbf{Software Constraints} &
-                             \textbf{Typical Value} & \textbf{Uncertainty}\\
-  \midrule 
-  $L$ & $L > 0$ & $L_{\text{min}} \leq L \leq L_{\text{max}}$ & 1.5 \si[per-mode=symbol] {\metre} & 10\%
-  \\
-  \bottomrule
-\end{longtable*}
+	  \caption{Input Variables} \label{TblInputVar}
+	  \renewcommand{\arraystretch}{1.2}
+	\noindent \begin{longtable*}{l l l l c} 
+		  \toprule
+		  \textbf{Var} & \textbf{Physical Constraints} & \textbf{Software Constraints} &
+		                             \textbf{Typical Value} & \textbf{Uncertainty}\\
+		  \midrule 
+		  $L$ & $L > 0$ & $L_{\text{min}} \leq L \leq L_{\text{max}}$ & 1.5 \si[per-mode=symbol] {\metre} & 10\%
+		  \\
+		  \bottomrule
+	\end{longtable*}
 \end{table}
 
 \noindent 
@@ -618,9 +660,30 @@ qualities that the software is expected to exhibit.
 
 \noindent \begin{itemize}
 
-\item[R\refstepcounter{reqnum}\thereqnum \label{R_Inputs}:] \wss{Requirements
-    for the inputs that are supplied by the user.  This information has to be
-    explicit.}
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_Inputs}:] Accept and read the following as Spectrum Image inputs:
+
+\begin{itemize}
+	\item 3D data array
+	\item File in format *.dm3 containing 3D data array
+	\item File in format *.h5 containing 3D data array
+\end{itemize}
+
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_Inputs}:] Accept and read the following as Spectrum inputs:
+
+\begin{itemize}
+	\item 1D data array
+	\item File containing 1D data array in *.csv format
+\end{itemize}
+
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_Inputs}:] Verify that the data input is of the correct dimensionality and composed of Real numbers
+
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_Inputs}:] Accept user input to select a spectral range and extract (x,y) slices averaged over the selected spectral range and display the (x,y) slice as an image. The software should also export this image to an image file, as desired by the user.
+
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_Inputs}:] Accept user input to define an area on an (x,y) image display and extract a spectrum averaged over selected pixels. The software should also export this spectrum as a *.csv file, as desired by the user.
+
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_Inputs}:] Given a 1D spectrum array and an integer number, the software should perform that number of deconvolution iterations on a 3D EELS dataset using the 1D spectrum array as a reference of the system response. The software should display the output of the deconvolution for navigation by the user. Output of the deconvolution algorithm will be validated by an expert user. 
+
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_Inputs}:] The software should be able to normalize a 3D spectrum image upon user command: either to an integrated portion of a chosen range along the spectral axis or to a single chosen channel.
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_OutputInputs}:] \wss{It isn't
     always required, but often echoing the inputs as part of the output is a
