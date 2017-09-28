@@ -92,9 +92,9 @@ class SpectrumImagePlotter(object):
 	
 	def SaveSpectrumAndPatch(self):
 		spectrumID = self.ImagePlot.PolygonGroups.currentID
-		filename_spectrum = os.path.join(self.filepath, 'Spectrum_'+str(spectrumID)+'.csv')
+		filename_spectrum = os.path.join(self.filepath, self.fig.canvas.get_window_title() + '_Spectrum_'+str(spectrumID)+'.csv')
 		self.extracted_spectrum.SaveSpectrumAsCSV(filename_spectrum)
-		filename_patch = os.path.join(self.filepath, 'Patch_'+str(spectrumID)+'.png')
+		filename_patch = os.path.join(self.filepath, self.fig.canvas.get_window_title() + '_Patch_'+str(spectrumID)+'.png')
 		self.ExtractedImagePlot[self.ImagePlot.PolygonGroups.currentID].save_image(filename_patch)
 	
 	def ImageKeyCommands(self, key):
@@ -118,8 +118,8 @@ class SpectrumImagePlotter(object):
 			filename_addon = ('%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emin_i])+'to'+
 				'%.4g' % (self.SpectrumPlot.SpectrumPlot.spectrum.SpectrumRange[self.Emax_i])+
 				self.SpectrumPlot.SpectrumPlot.spectrum.units)
-			filename_image = ('Image_' + filename_addon + '.png')
-			filename_colourbar = ('Colourbar_' + filename_addon + '.png')
+			filename_image = (self.fig.canvas.get_window_title() + '_Image_' + filename_addon + '.png')
+			filename_colourbar = (self.fig.canvas.get_window_title() + '_Colourbar_' + filename_addon + '.png')
 			self.ImagePlot.save_image(os.path.join(self.filepath, filename_image))
 			self.ImagePlot.save_colourbar(os.path.join(self.filepath, filename_colourbar))
 		else:
