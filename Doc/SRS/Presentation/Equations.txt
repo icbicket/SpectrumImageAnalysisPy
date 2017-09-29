@@ -1,0 +1,10 @@
+%Normalization
+%$$I(x_i,y_j,E_k)=\frac{I(x_i,y_j,E_k)}{\sum_{E_{k=n_1}}^{E_{k=n_2}} I(x_i,y_j,E_k)}$$ sum over integral
+$$I(x_i,y_j,E_k)=\frac{I(x_i,y_j,E_k)}{max( I(x_i,y_j,E_k), axis=E)}$$
+
+Deconvolution
+$$O_{(b)}^{c+1}=O_{(b)}^c\sum_a{\frac{P({a}/{b})D(a)}{\sum_d{P({a}/{b})O_{(d)}^c}}}$$
+
+CL
+$$I_{sample}=I_{collected}-I_{substrate}$$
+$$I_{corrected}=\frac{I_{sample}}{\gamma_{spectrometer}}$$
