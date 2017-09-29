@@ -17,8 +17,6 @@
 \usepackage{pdflscape}
 \usepackage{afterpage}
 
-\usepackage[round]{natbib}
-
 %\usepackage{refcheck}
 
 \hypersetup{
@@ -77,7 +75,7 @@
 \usepackage{fullpage}
 
 \begin{document}
-
+\bibliographystyle{ieeetr}
 \title{SpectrumImageAnalysisPy} 
 \author{Isobel Bicket}
 \date{\today}
@@ -91,12 +89,11 @@
 
 \section{Revision History}
 
-\begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
-\toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
-\midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
-\bottomrule
+\begin{tabularx}{\textwidth}{p{4cm}p{2cm}X}
+	\toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
+	\midrule
+	\today & 1.0 & First draft\\
+	\bottomrule
 \end{tabularx}
 
 ~\newpage
@@ -104,14 +101,14 @@ Date 2 & 1.1 & Notes\\
 \tableofcontents
 
 \begin{table}[bp]
-\caption{\bf Revision History}
-\begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
-\toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
-\midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
-\bottomrule
-\end{tabularx}
+	\caption{\bf Revision History}
+	\begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
+		\toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
+		\midrule
+		Date 1 & 1.0 & Notes\\
+		Date 2 & 1.1 & Notes\\
+		\bottomrule
+	\end{tabularx}
 \end{table}
 
 \section{Reference Material}
@@ -199,7 +196,7 @@ which heat is transferred in
 
 \section{Introduction}
 
-\wss{This SRS template is based on \citet{SmithAndLai2005, SmithEtAl2007}.  It
+\wss{This SRS template is based on SmithAndLai2005, SmithEtAl2007.  It
   will get you started, but you will have to make changes.  Any changes to
   section headings should be approved by the instructor, since that implies a
   deviation from the template.  Although the bits shown below do not include
@@ -376,28 +373,48 @@ on.  \wss{Modify the examples below for your problem, and add additional models
 	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
 		  \hline
 		  \rowcolor[gray]{0.9}
-		  Number& T\refstepcounter{theorynum}\thetheorynum \label{T_COE}\\
+		  Number& T\refstepcounter{theorynum}\thetheorynum \label{intensity}\\
 		  \hline
-		  Label&\bf Conservation of thermal energy\\
+		  Label&\bf Intensity \\
 		  \hline
-		  Equation&  $-{\bf \nabla \cdot q} + g$ = $\rho C \frac{\partial T}{\partial t}$\\
+		  Equation& $I(k) = g(k) S(k) + b(k) + N(k)$ \\
 		  \hline
-		  Description & 
-		                The above equation gives the conservation of energy for transient heat transfer in a material
-		                of specific heat capacity $C$ (\si{\joule\per\kilogram\per\celsius}) and density $\rho$ 
-		                (\si{\kilogram\per\cubic\metre}), where $\bf q$ is the thermal flux vector (\si{\watt\per\square\metre}),
-		                $g$ is the volumetric heat generation
-		                (\si{\watt\per\cubic\metre}), $T$ is the temperature
-		                (\si{\celsius}),  $t$ is time (\si{\second}), and $\nabla$ is
-		                the gradient operator.  For this equation to apply, other forms
-		                of energy, such as mechanical energy, are assumed to be negligible in the
-		                system (\aref{A_OnlyThermalEnergy}).  In general, the material properties ($\rho$ and $C$) depend on temperature.\\
+		  Description & $I(k)$ is the intensity output from the detector at each pixel $k$\\
+		  & $g(k)$ is the gain of the detector at each pixel $k$\\
+		  & $S(k)$ is the signal coming from the microscope at each pixel $k$\\
+		  & $b(k)$ is the background signal at each pixel $k$\\
+		  & $N(k)$ is the noise at each pixel $k$\\
 		  \hline
-		  Source &
-		           \url{http://www.efunda.com/formulae/heat_transfer/conduction/overview_cond.cfm}\\
+		  Source & \cite{zuo_electron_2000}
+		           \\
 		  % The above web link should be replaced with a proper citation to a publication
 		  \hline
-		  Ref.\ By & \dref{ROCT}\\
+		  Ref.\ By & \dref{}\\
+		  \hline
+	\end{tabular}
+\end{minipage}\\
+
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		  \hline
+		  \rowcolor[gray]{0.9}
+		  Number& T\refstepcounter{theorynum}\thetheorynum \label{signal}\\
+		  \hline
+		  Label&\bf Signal \\
+		  \hline
+		  Equation& $S(k)=\int_{pixel}d\rho \lfloor \int f(\rho') h(\rho, \rho') d\rho' \rfloor$ \\
+		  & $ S(k)=\sum_{k'} f(k') h(k, k')$\\
+		  \hline
+		  Description & \\
+		  \hline
+		  Source & \cite{zuo_electron_2000}\\
+		  % The above web link should be replaced with a proper citation to a publication
+		  \hline
+		  Ref.\ By & \dref{}\\
 		  \hline
 	\end{tabular}
 \end{minipage}\\
@@ -420,36 +437,30 @@ data definitions, which in turn are used to build the instance models.
 	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
 		\hline
 		\rowcolor[gray]{0.9}
-		Number& GD\refstepcounter{defnum}\thedefnum \label{NL}\\
+		Number& GD\refstepcounter{defnum}\thedefnum \label{}\\
 		\hline
-		Label &\bf Newton's law of cooling \\
+		Label &\bf  \\
 		\hline
 		% Units&$MLt^{-3}T^0$\\
 		% \hline
-		SI Units&\si{\watt\per\square\metre}\\
+		SI Units&\\
 		\hline
-		Equation&$ q(t) = h \Delta T(t)$  \\
+		Equation& \\
 		\hline
 		Description &
-		Newton's law of cooling describes convective cooling from a surface.  The law is
-		stated as: the rate of heat loss from a body is proportional to the difference
-		in temperatures between the body and its surroundings.
 		\\
-		& $q(t)$ is the thermal flux (\si{\watt\per\square\metre}).\\
-		& $h$ is the heat transfer coefficient, assumed independent of $T$ (\aref{A_hcoeff})
-			(\si{\watt\per\square\metre\per\celsius}).\\
-		&$\Delta T(t)$= $T(t) - T_{\text{env}}(t)$ is the time-dependent thermal gradient
-		between the environment and the object (\si{\celsius}).
-		\\
+		& \\
+		& \\
+		&\\
 		\hline
-		  Source &~\cite[p.\ 8]{Incropera2007}\\
+		  Source &~\\
 		  \hline
-		  Ref.\ By & \ddref{FluxCoil}, \ddref{FluxPCM}\\
+		  Ref.\ By & \ddref{}, \ddref{}\\
 		  \hline
 	\end{tabular}
 \end{minipage}\\
 
-\subsubsection*{Detailed derivation of simplified rate of change of temperature}
+\subsubsection*{}
 
 \wss{This may be necessary when the necessary information does not fit in the
   description field.} 
@@ -468,31 +479,84 @@ models. The dimension of each quantity is also given.  \wss{Modify the examples
 	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
 		\hline
 		\rowcolor[gray]{0.9}
-		Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{FluxCoil}\\
+		Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{Spectrum}\\
 		\hline
-		Label& \bf Heat flux out of coil\\
+		Label& \bf Spectrum\\
 		\hline
-		Symbol &$q_C$\\
+		Symbol &\\
 		\hline
-		% Units& $Mt^{-3}$\\
+		% Units& $Electron counts$ (EELS)\\
 		% \hline
-		  SI Units & \si{\watt\per\square\metre}\\
+		Units & Electron counts (EELS)\\
+		& Photons (CL)\\
+		& or arbitrary units (a.u.) for EELS or CL\\
 		  \hline
-		  Equation&$q_C(t) = h_C (T_C - T_W(t))$, over area $A_C$\\
+		  Equation&\\
 		  \hline
-		  Description & 
-		                $T_C$ is the temperature of the coil (\si{\celsius}).  $T_W$ is the temperature of the water (\si{\celsius}).  
-		                The heat flux out of the coil, $q_C$ (\si{\watt\per\square\metre}), is found by
-		                assuming that Newton's Law 
-		                of Cooling applies (\aref{A_Newt_coil}).  This law (\dref{NL}) is used on the surface of
-		                the coil, which has area $A_C$ (\si{\square\metre}) and heat 
-		                transfer coefficient $h_C$
-		                (\si{\watt\per\square\metre\per\celsius}).  This equation
-		                assumes that the temperature of the coil is constant over time (\aref{A_tcoil}) and that it does not vary along the length
-		                of the coil (\aref{A_tlcoil}).
+		  Description & \\
+		  \hline
+		  Sources&~\cite{zuo_electron_2000}  \\
+		  \hline
+		  Ref.\ By & \iref{}\\
+		  \hline
+	\end{tabular}
+\end{minipage}\\
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{SI}\\
+		\hline
+		Label& \bf Spectrum Image\\
+		\hline
+		Symbol &$I(x_i, y_j, E_k)$\\
+		\hline
+		% Units& $Electron counts$ (EELS)\\
+		% \hline
+		Units & Electron counts (EELS)\\
+		& Photons (CL)\\
+		& or arbitrary units (a.u.) for EELS or CL\\
+		  \hline
+		  Equation&\\
+		  \hline
+		  Description & $I(x_i, y_j, E_k)$ is the intensity collected by the detector at each ($x_i$, $y_j$) pixel as a function of ($E_k$) energy.
 		  \\
 		  \hline
-		  Sources&~\cite{Lightstone2012}  \\
+		  Sources&~\cite{jeanguillaume_spectrum-image:_1989}  \\
+		  \hline
+		  Ref.\ By & \iref{ewat}\\
+		  \hline
+	\end{tabular}
+\end{minipage}\\
+
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{PSF}\\
+		\hline
+		Label& \bf Point Spread Function\\
+		\hline
+		Symbol &$PSF(E_k)$\\
+		\hline
+		% Units& $Electron counts$ (EELS)\\
+		% \hline
+		Units & Electron counts or arbitrary units (a.u.) (EELS)\\
+		  \hline
+		  Equation&\\
+		  \hline
+		  Description & 
+		               $PSF(E_k)$ is a reference spectrum representing the effect of the TEM on the collected spectra in the spectrum image. It is a spectrum collected, ideally, with no interaction with a sample.
+		  \\
+		  \hline
+		  Sources&~\cite{jeanguillaume_spectrum-image:_1989}  \\
 		  \hline
 		  Ref.\ By & \iref{ewat}\\
 		  \hline
@@ -621,28 +685,28 @@ Table~\ref{TblSpecParams}.
 \end{description}
 
 \begin{table}[!h]
-\caption{Specification Parameter Values} \label{TblSpecParams}
-\renewcommand{\arraystretch}{1.2}
-\noindent \begin{longtable*}{l l} 
-  \toprule
-  \textbf{Var} & \textbf{Value} \\
-  \midrule 
-  $L_\text{min}$ & 0.1 \si{\metre}\\
-  \bottomrule
-\end{longtable*}
+	\caption{Specification Parameter Values} \label{TblSpecParams}
+	\renewcommand{\arraystretch}{1.2}
+	\noindent \begin{longtable*}{l l} 
+	  \toprule
+	  \textbf{Var} & \textbf{Value} \\
+	  \midrule 
+	  $L_\text{min}$ & 0.1 \si{\metre}\\
+	  \bottomrule
+	\end{longtable*}
 \end{table}
 
 \begin{table}[!h]
-\caption{Output Variables} \label{TblOutputVar}
-\renewcommand{\arraystretch}{1.2}
-\noindent \begin{longtable*}{l l} 
-  \toprule
-  \textbf{Var} & \textbf{Physical Constraints} \\
-  \midrule 
-  $T_W$ & $T_\text{init} \leq T_W \leq T_C$ (by~\aref{A_charge})
-  \\
-  \bottomrule
-\end{longtable*}
+	\caption{Output Variables} \label{TblOutputVar}
+	\renewcommand{\arraystretch}{1.2}
+	\noindent \begin{longtable*}{l l} 
+	  \toprule
+	  \textbf{Var} & \textbf{Physical Constraints} \\
+	  \midrule 
+	  $T_W$ & $T_\text{init} \leq T_W \leq T_C$ (by~\aref{A_charge})
+	  \\
+	  \bottomrule
+	\end{longtable*}
 \end{table}
 
 \subsubsection{Properties of a Correct Solution} \label{sec_CorrectSolution}
@@ -731,36 +795,36 @@ the assumptions.
 
 \afterpage{
 \begin{landscape}
-\begin{table}[h!]
-\centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
-\hline
-	& \aref{A_OnlyThermalEnergy}& \aref{A_hcoeff}& \aref{A_mixed}& \aref{A_tpcm}& \aref{A_const_density}& \aref{A_const_C}& \aref{A_Newt_coil}& \aref{A_tcoil}& \aref{A_tlcoil}& \aref{A_Newt_pcm}& \aref{A_charge}& \aref{A_InitTemp}& \aref{A_OpRangePCM}& \aref{A_OpRange}& \aref{A_htank}& \aref{A_int_heat}& \aref{A_vpcm}& \aref{A_PCM_state}& \aref{A_Pressure} \\
-\hline
-\tref{T_COE}        & X& & & & & & & & & & & & & & & & & & \\ \hline
-\tref{T_SHE}        & & & & & & & & & & & & & & & & & & & \\ \hline
-\tref{T_LHE}        & & & & & & & & & & & & & & & & & & & \\ \hline
-\dref{NL}           & & X& & & & & & & & & & & & & & & & & \\ \hline
-\dref{ROCT}         & & & X& X& X& X& & & & & & & & & & & & & \\ \hline
-\ddref{FluxCoil}    & & & & & & & X& X& X& & & & & & & & & & \\ \hline
-\ddref{FluxPCM}     & & & X& X& & & & & & X& & & & & & & & & \\ \hline
-\ddref{D_HOF}       & & & & & & & & & & & & & & & & & & & \\ \hline
-\ddref{D_MF}        & & & & & & & & & & & & & & & & & & & \\ \hline
-\iref{ewat}         & & & & & & & & & & & X& X& & X& X& X& & & X \\ \hline
-\iref{epcm}         & & & & & & & & & & & & X& X& & & X& X& X& \\ \hline
-\iref{I_HWAT}       & & & & & & & & & & & & & & X& & & & & X \\ \hline
-\iref{I_HPCM}       & & & & & & & & & & & & & X& & & & & X & \\ \hline
-\lcref{LC_tpcm}     & & & & X& & & & & & & & & & & & & & & \\ \hline
-\lcref{LC_tcoil}    & & & & & & & & X& & & & & & & & & & & \\ \hline
-\lcref{LC_tlcoil}   & & & & & & & & & X& & & & & & & & & & \\ \hline
-\lcref{LC_charge}   & & & & & & & & & & & X& & & & & & & & \\ \hline
-\lcref{LC_InitTemp} & & & & & & & & & & & & X& & & & & & & \\ \hline
-\lcref{LC_htank}    & & & & & & & & & & & & & & & X& & & & \\
-\hline
-\end{tabular}
-\caption{Traceability Matrix Showing the Connections Between Assumptions and Other Items}
-\label{Table:A_trace}
-\end{table}
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+			& \aref{A_OnlyThermalEnergy}& \aref{A_hcoeff}& \aref{A_mixed}& \aref{A_tpcm}& \aref{A_const_density}& \aref{A_const_C}& \aref{A_Newt_coil}& \aref{A_tcoil}& \aref{A_tlcoil}& \aref{A_Newt_pcm}& \aref{A_charge}& \aref{A_InitTemp}& \aref{A_OpRangePCM}& \aref{A_OpRange}& \aref{A_htank}& \aref{A_int_heat}& \aref{A_vpcm}& \aref{A_PCM_state}& \aref{A_Pressure} \\
+		\hline
+		\tref{T_COE}        & X& & & & & & & & & & & & & & & & & & \\ \hline
+		\tref{T_SHE}        & & & & & & & & & & & & & & & & & & & \\ \hline
+		\tref{T_LHE}        & & & & & & & & & & & & & & & & & & & \\ \hline
+		\dref{NL}           & & X& & & & & & & & & & & & & & & & & \\ \hline
+		\dref{ROCT}         & & & X& X& X& X& & & & & & & & & & & & & \\ \hline
+		\ddref{FluxCoil}    & & & & & & & X& X& X& & & & & & & & & & \\ \hline
+		\ddref{FluxPCM}     & & & X& X& & & & & & X& & & & & & & & & \\ \hline
+		\ddref{D_HOF}       & & & & & & & & & & & & & & & & & & & \\ \hline
+		\ddref{D_MF}        & & & & & & & & & & & & & & & & & & & \\ \hline
+		\iref{ewat}         & & & & & & & & & & & X& X& & X& X& X& & & X \\ \hline
+		\iref{epcm}         & & & & & & & & & & & & X& X& & & X& X& X& \\ \hline
+		\iref{I_HWAT}       & & & & & & & & & & & & & & X& & & & & X \\ \hline
+		\iref{I_HPCM}       & & & & & & & & & & & & & X& & & & & X & \\ \hline
+		\lcref{LC_tpcm}     & & & & X& & & & & & & & & & & & & & & \\ \hline
+		\lcref{LC_tcoil}    & & & & & & & & X& & & & & & & & & & & \\ \hline
+		\lcref{LC_tlcoil}   & & & & & & & & & X& & & & & & & & & & \\ \hline
+		\lcref{LC_charge}   & & & & & & & & & & & X& & & & & & & & \\ \hline
+		\lcref{LC_InitTemp} & & & & & & & & & & & & X& & & & & & & \\ \hline
+		\lcref{LC_htank}    & & & & & & & & & & & & & & & X& & & & \\
+		\hline
+		\end{tabular}
+		\caption{Traceability Matrix Showing the Connections Between Assumptions and Other Items}
+		\label{Table:A_trace}
+	\end{table}
 \end{landscape}
 }
 
@@ -849,8 +913,7 @@ instance models, requirements, and data constraints on each other.
 
 \newpage
 
-\bibliographystyle {plainnat}
-\bibliography {../../ReferenceMaterial/References}
+\bibliography {SRS}
 
 \newpage
 
