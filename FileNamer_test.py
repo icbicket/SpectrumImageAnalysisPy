@@ -1,22 +1,52 @@
 import unittest
 import FileNamer
+import unittest.mock as mock
 
 class FindLastFilenameTest(unittest.TestCase):
-	def testfilenumber0(self):
+	@mock.patch.object(FileNamer.glob, 'glob')
+	@mock.patch.object(FileNamer.os.path, 'exists')
+	def testfilenumber0(self, mock_exists, mock_glob):
+		mock_exists.return_value = True
+		mock_glob.return_value = ['testfolder/test/testfile.csv']
 		filename = 'testfolder/test/testfile.csv'
 		new_filename = FileNamer.NameFile(filename)
-		self.assertEqual('testfolder/test/testfile-11.csv', new_filename)
+		self.assertEqual('testfolder/test/testfile-1.csv', new_filename)
 
-	def testdifffile(self):
+	@mock.patch.object(FileNamer.glob, 'glob')
+	@mock.patch.object(FileNamer.os.path, 'exists')
+	def testdifffile(self, mock_exists, mock_glob):
+		mock_exists.return_value = False
+		mock_glob.return_value = []
 		filename = 'testfolder/test/differentname.csv'
 		new_filename = FileNamer.NameFile(filename)
 		self.assertEqual('testfolder/test/differentname.csv', new_filename)
 
-	def testfilenumber1(self):
+	@mock.patch.object(FileNamer.glob, 'glob')
+	@mock.patch.object(FileNamer.os.path, 'exists')
+	def testfilenumber1(self, mock_exists, mock_glob):
+		mock_exists.return_value = True
+		mock_glob.return_value = ['testfolder/test/testfile1.csv']
 		filename = 'testfolder/test/testfile1.csv'
 		new_filename = FileNamer.NameFile(filename)
 		self.assertEqual('testfolder/test/testfile1-1.csv', new_filename)
 
+	@mock.patch.object(FileNamer.glob, 'glob')
+	@mock.patch.object(FileNamer.os.path, 'exists')
+	def testfileorder1(self, mock_exists, mock_glob):
+		mock_exists.return_value = True
+		mock_glob.return_value=['testfolder/test/testfile.csv', 'testfolder/test/testfile-1.csv']
+		filename = 'testfolder/test/testfile.csv'
+		new_filename = FileNamer.NameFile(filename)
+		self.assertEqual('testfolder/test/testfile-2.csv', new_filename)
+	
+	@mock.patch.object(FileNamer.glob, 'glob')
+	@mock.patch.object(FileNamer.os.path, 'exists')
+	def testfileorder2(self, mock_exists, mock_glob):
+		mock_exists.return_value = True
+		mock_glob.return_value=['testfolder/test/testfile-1.csv', 'testfolder/test/testfile.csv']
+		filename = 'testfolder/test/testfile.csv'
+		new_filename = FileNamer.NameFile(filename)
+		self.assertEqual('testfolder/test/testfile-2.csv', new_filename)
 
 class NumberFileNamesTest(unittest.TestCase):
 	def testfilenumber1(self):
