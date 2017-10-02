@@ -7,7 +7,7 @@ def NameFile(filepath):
 		newname = FindLatestFilename(filepath)
 	else:
 		newname = filepath
-	print('Saved file as...', newname)
+	print('Saving file as...', newname)
 	return newname
 
 def FindLatestFilename(filepath):

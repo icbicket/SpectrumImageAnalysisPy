@@ -106,7 +106,7 @@ class ImagePlotter(object):
 			self.image_key_commands(event.key)
 		elif event.inaxes == self.colourbar_axis:
 			if event.key == 'e':
-				self.save_colourbar(filename=(os.path.join(self.filepath, 'Colourbar_.png')))
+				self.save_colourbar(filename=(os.path.join(self.filepath, self.fig.canvas.get_window_title() + 'Colourbar_.png')))
 	
 	def image_key_commands(self, key):
 		if self.mover:
@@ -138,9 +138,9 @@ class ImagePlotter(object):
 			self.mover = PolygonMover.PolygonMover(
 				self.PolygonGroups.GetActivePolygon(), self.axis)
 		elif key == 'e':
-			self.save_image(os.path.join(self.filepath, 'Image_.png'))
+			self.save_image(os.path.join(self.filepath, self.canvas.get_window_title() + '_Image.png'))
 		elif key == 'E':
-			self.save_image_scale(os.path.join(self.filepath, 'Image_scale_.png'))
+			self.save_image_scale(os.path.join(self.filepath, self.canvas.get_window_title() + '_Image_scale.png'))
 		elif key == 'a':
 			self.PolygonGroups.ToggleGroupActive()
 		elif key == 'delete':
@@ -176,8 +176,8 @@ class ImagePlotter(object):
 			return
 		self.axis.yaxis.set_major_locator(NullLocator())
 		self.axis.xaxis.set_major_locator(NullLocator())
+		filename = FileNamer.NameFile(filename)
 		plt.savefig(filename, transparent=True, bbox_inches='tight', pad_inches=0)
-		print('Saved scalebar figure to...', filename)
 	
 	def add_polygon_callback(self, polygon):
 		self.creator = None
