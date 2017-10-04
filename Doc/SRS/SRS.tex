@@ -100,34 +100,22 @@
 
 \tableofcontents
 
-\begin{table}[bp]
-	\caption{\bf Revision History}
-	\begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
-		\toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
-		\midrule
-		Date 1 & 1.0 & Notes\\
-		Date 2 & 1.1 & Notes\\
-		\bottomrule
-	\end{tabularx}
-\end{table}
-
 \section{Reference Material}
 
 This section records information for easy reference.
 
 \subsection{Table of Units}
 
-Throughout this document SI (Syst\`{e}me International d'Unit\'{e}s) is employed
-as the unit system.  In addition to the basic units, several derived units are
-used as described below.  For each unit, the symbol is given followed by a
-description of the unit and the SI name.
+Throughout this document the system of units standard to the field of electron microscopy is used
+as the unit system, for consistency with relevant literature and practices. For each unit, the symbol is given followed by a
+description of the quantity described by the symbol and the unit name.
 ~\newline
 
 \renewcommand{\arraystretch}{1.2}
 %\begin{table}[ht]
   \noindent \begin{tabular}{l l l} 
     \toprule		
-    \textbf{symbol} & \textbf{unit} & \textbf{SI}\\
+    \textbf{symbol} & \textbf{quantity} & \textbf{unit name}\\
     \midrule 
     \si{\nano\metre} & length & nanometre\\
     \si{\electronvolt} & energy	& electron volt\\
@@ -136,29 +124,20 @@ description of the unit and the SI name.
   %	\caption{Provide a caption}
 %\end{table}
 
-\wss{Only include the units that your SRS actually uses}
-
 \subsection{Table of Symbols}
 
 The table that follows summarizes the symbols used in this document along with
-their units.  The choice of symbols was made to be consistent with the heat
-transfer literature and with existing documentation for solar water heating
-systems.  The symbols are listed in alphabetical order.
+their units. The symbols are listed in alphabetical order.
 
 \renewcommand{\arraystretch}{1.2}
 %\noindent \begin{tabularx}{1.0\textwidth}{l l X}
 \noindent \begin{longtable*}{l l p{12cm}} \toprule
 \textbf{symbol} & \textbf{unit} & \textbf{description}\\
 \midrule 
-$A_C$ & \si[per-mode=symbol] {\square\metre} & coil surface area
-\\
-$A_\text{in}$ & \si[per-mode=symbol] {\square\metre} & surface area over 
-which heat is transferred in
-\\ 
+$I$ &  & Intensity\\
+$$ &  & \\ 
 \bottomrule
 \end{longtable*}
-\wss{Use your problems actual symbols.  The si package is a good idea to use for
-  units.}
 
 \subsection{Abbreviations and Acronyms}
 
@@ -169,6 +148,7 @@ which heat is transferred in
   \midrule 
   3D & Three-dimensional\\
   A & Assumption\\
+  CCD & Charge-Coupled Device\\
   CL & Cathodoluminescence Spectroscopy\\
   DD & Data Definition\\
   EELS & Electron Energy Loss\\
@@ -223,6 +203,8 @@ The reader of this document should have an understanding of spectrum imaging tec
 
 \subsection{Organization of Document}
 
+The document follows the organizational scheme laid out by Smith \textit{et al} \cite{SmithAndLai2005, smith_requirements_2007}.
+
 \section{General System Description}
 
 This section identifies the interfaces between the system and its environment,
@@ -238,11 +220,11 @@ Use of the software \progname{} infers the following responsibilities on the par
 		\item Provide the correct input data to the program;
 		\item Be capable of interacting with the software via a mouse and keyboard;
 		\item Have the necessary dependencies for the program installed;
-		\item Judge the quality of the output data is sufficient for the application, or change the processing steps performed;
+		\item Possess sufficient knowledge on what processing steps need to be performed and be able to judge that the quality of the output data is sufficient for the application, or change the processing steps performed;
 	\end{itemize}
 	\item \progname{} Responsibilities:
 	\begin{itemize}
-		\item Check the inputs for the correct data type and size
+		\item Read inputs (either files or data arrays) and check the inputs for the correct data type and size
 		\item Display the data and graphical user interface for the user to interact with
 		\item Respond to user commands as appropriate, including visualization and data processing commands
 		\item Export data in the correct file format(s)
@@ -259,7 +241,7 @@ be beneficial, but is not strictly required.
 
 \subsection{System Constraints}
 
-The software must be able to read .dm3 and .dm4 files for EELS data import, and .h5 files for CL data import.
+The software must be able to read .dm3 files for EELS data import, and .h5 files for CL data import to be able to interface with output from the data acquisition software.
 
 \section{Specific System Description}
 
@@ -280,6 +262,7 @@ sections and their meaning, with the purpose of reducing ambiguity and making it
 easier to correctly understand the requirements:
 
 \begin{itemize}
+	\item Charge-Coupled Device: the camera used in the spectrometer to collect signal and output to the microscope acquisition software
 	\item Spectrum Image
 	\item Point Spread Function (PSF)
 	\item Sample
@@ -325,10 +308,9 @@ includes the following elements:
 
 \begin{itemize}
 
-	\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_meaningfulLabel}:] Read in a three-dimensional dataset
-	\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_meaningfulLabel}:] Display a three-dimensional dataset to allow the user to interact with it and navigate all three dimensions
-	\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_meaningfulLabel}:] Provide processing options including: normalization and deconvolution for EELS SI; normalization and background subtraction for a CL SI
-	\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_meaningfulLabel}:] Extract slices from the dataset as desired by the user and communicated through the user interface
+	\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_ImportDisplay}:] Import a 3D dataset and display it such that the user can interact with it and navigate all three dimensions
+	\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_Processing}:] Provide processing options including: normalization and deconvolution for EELS SI; normalization and background subtraction for a CL SI
+	\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_Extraction}:] Extract slices from the dataset as desired by the user and communicated through the user interface, export these as desired by the user
 
 \end{itemize}
 
@@ -349,13 +331,15 @@ likely change [LC], in which the respective assumption is used.
 
 \begin{itemize}
 
-	\item[A\refstepcounter{assumpnum}\theassumpnum \label{EELS System Response}:] The EELS data can be described as the convolution of the ``real'' spectrum of the sample with the response of the microscope and spectrometer system function. The microscope and spectrometer system typically causes broadening in the peaks of the ``real'' spectrum.
+	\item[A\refstepcounter{assumpnum}\theassumpnum \label{EELS_System_Response}:] The EELS data can be described as the convolution of the ``real'' spectrum of the sample with the response of the microscope and spectrometer system function. The microscope and spectrometer system typically causes broadening in the peaks of the ``real'' spectrum;
 	
-	\item[A\refstepcounter{assumpnum}\theassumpnum \label{EELS Intensity Fluctuations}:] Fluctuations in the intensity of the EELS signal are due to changes in the beam current as collected by the spectrometer.
+	\item[A\refstepcounter{assumpnum}\theassumpnum \label{EELS_PSF_variability}:] The same PSF is valid for all pixels in the EELS spectrum image;
 	
-	\item[A\refstepcounter{assumpnum}\theassumpnum \label{CL Background}:] A subtraction can be performed to remove the contributions of the dark signal and the substrate signal from the sample signal.
+	\item[A\refstepcounter{assumpnum}\theassumpnum \label{EELS_Intensity_Fluctuations}:] Fluctuations in the intensity of the EELS signal are due to changes in the beam current as collected by the spectrometer;
 	
-	\item[A\refstepcounter{assumpnum}\theassumpnum \label{CL System Response}:] The spectrometer wavelength sensitivity can be accurately modelled by experimental reference data.
+	\item[A\refstepcounter{assumpnum}\theassumpnum \label{CL_Background}:] A subtraction is sufficient remove the contributions of the dark signal and the substrate signal from the CL sample signal;
+	
+	\item[A\refstepcounter{assumpnum}\theassumpnum \label{CL_System_Response}:] The CL spectrometer wavelength sensitivity can be accurately modelled by experimental reference data.
 
 \end{itemize}
 
@@ -377,19 +361,20 @@ on.  \wss{Modify the examples below for your problem, and add additional models
 		  \hline
 		  Label&\bf Intensity \\
 		  \hline
-		  Equation& $I(k) = g(k) S(k) + b(k) + N(k)$ \\
+		  Equation& $\zeta(k) = g(k) S(k) + b(k) + N(k)$ \\
 		  \hline
-		  Description & $I(k)$ is the intensity output from the detector at each pixel $k$\\
-		  & $g(k)$ is the gain of the detector at each pixel $k$\\
-		  & $S(k)$ is the signal coming from the microscope at each pixel $k$\\
-		  & $b(k)$ is the background signal at each pixel $k$\\
-		  & $N(k)$ is the noise at each pixel $k$\\
+		  Description & The signal, $\zeta(k)$ (\tref{signal}), obtained from each pixel, $k$, on the CCD detector can be considered as a sum of several different contributions: 
+		  \begin{itemize}
+			\item the signal obtained from the microscope $S(k)$, which is multiplied by the gain factor $g(k)$ of the pixel; 
+			\item the background signal of each pixel $b(k)$; 
+			\item and the noise present at each pixel $N(k)$.
+		  \end{itemize}\\
 		  \hline
 		  Source & \cite{zuo_electron_2000}
 		           \\
 		  % The above web link should be replaced with a proper citation to a publication
 		  \hline
-		  Ref.\ By & \dref{}\\
+		  Ref.\ By & \\
 		  \hline
 	\end{tabular}
 \end{minipage}\\
@@ -409,12 +394,13 @@ on.  \wss{Modify the examples below for your problem, and add additional models
 		  Equation& $S(k)=\int_{pixel}d\rho \lfloor \int f(\rho') h(\rho, \rho') d\rho' \rfloor$ \\
 		  & $ S(k)=\sum_{k'} f(k') h(k, k')$\\
 		  \hline
-		  Description & \\
+		  Description & The signal ($S(k)$) from the microscope, as read at one pixel on the CCD ($k$), is an integral over the area of one pixel. Inside the integral is the probability ($f(\rho')$) of an electron landing at position $\rho'$ on the detector given the interaction of the beam with the sample, multiplied by the probability ($h(\rho, \rho')$) of detecting an electron at location $\rho$ if the electron arrives at position $\rho'$ on the detector. The probability $h(\rho, \rho')$ of detecting an electron at one location after it hits the detector at another location is the point spread function (PSF: \ddref{PSF}).\\
+		  & The second equation is the discretized version of the first. The signal $S(k)$ is the sum over all pixels $k'$ of the probability ($f(k')$) of an electron hitting pixel $k'$ multiplied by the probability ($h(k, k')$) of detecting an electron at $k$ after it hits pixel $k'$.\\
 		  \hline
 		  Source & \cite{zuo_electron_2000}\\
 		  % The above web link should be replaced with a proper citation to a publication
 		  \hline
-		  Ref.\ By & \dref{}\\
+		  Ref.\ By & \tref{intensity}\\
 		  \hline
 	\end{tabular}
 \end{minipage}\\
@@ -437,33 +423,21 @@ data definitions, which in turn are used to build the instance models.
 	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
 		\hline
 		\rowcolor[gray]{0.9}
-		Number& GD\refstepcounter{defnum}\thedefnum \label{}\\
+		Number& GD\refstepcounter{defnum}\thedefnum \label{grid}\\
 		\hline
-		Label &\bf  \\
+		Label & Scanning grid  \\
 		\hline
-		% Units&$MLt^{-3}T^0$\\
-		% \hline
-		SI Units&\\
+		Units& \si{\nano\metre}\\
 		\hline
-		Equation& \\
+		Equation& $P(x,y) = \{\langle x, y \rangle \in A^2 \mid x \in \{0..X\}, y \in \{0..Y\} \}$\\
 		\hline
-		Description &
+		Description & $P(x,y)$ is a set of position coordinates describing the possible locations of the beam in two spatial coordinates $(x, y)$ during a raster scan across the sample in a rectangular grid pattern across the area on the sample, $A^2$. The limits on $(x,y)$ are set by the operator on the instrument, ranging from 0 to the maximum $(X,Y)$.
 		\\
-		& \\
-		& \\
-		&\\
-		\hline
-		  Source &~\\
 		  \hline
-		  Ref.\ By & \ddref{}, \ddref{}\\
+		  Ref.\ By & \ddref{SI}\\
 		  \hline
 	\end{tabular}
 \end{minipage}\\
-
-\subsubsection*{}
-
-\wss{This may be necessary when the necessary information does not fit in the
-  description field.} 
 
 \subsubsection{Data Definitions}\label{sec_datadef}
 
@@ -483,53 +457,52 @@ models. The dimension of each quantity is also given.  \wss{Modify the examples
 		\hline
 		Label& \bf Spectrum\\
 		\hline
-		Symbol &\\
+		Symbol & $I(E)$\\
 		\hline
-		% Units& $Electron counts$ (EELS)\\
-		% \hline
 		Units & Electron counts (EELS)\\
-		& Photons (CL)\\
+		& Photon counts (CL)\\
 		& or arbitrary units (a.u.) for EELS or CL\\
 		  \hline
-		  Equation&\\
+		  Equation & $E = f(k)$\\
+		  & $I(E) = \zeta(k=0..K)$\\
 		  \hline
-		  Description & \\
+		  Description & Each pixel ($k$) on the spectrometer CCD has an energy loss (EELS) or wavelength (CL) value associated with it ($E$), obtained from the spectrometer acquisition settings (denoted here by $f(k)$), and a collected signal ($\zeta(k)$, \tref{signal}). The intensity of the spectrum ($I(E)$) is obtained from the collected signal over the whole CCD, from the 0th pixel to the final ($K$th) pixel.\\
 		  \hline
-		  Sources&~\cite{zuo_electron_2000}  \\
+		  Sources & \cite{egerton_introduction_2011} \\
 		  \hline
-		  Ref.\ By & \iref{}\\
+		  Ref.\ By & \ddref{SI}\\
 		  \hline
 	\end{tabular}
 \end{minipage}\\
 
+~\newline
+
 \noindent
 \begin{minipage}{\textwidth}
-	\renewcommand*{\arraystretch}{1.5}
-	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-		\hline
-		\rowcolor[gray]{0.9}
-		Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{SI}\\
-		\hline
-		Label& \bf Spectrum Image\\
-		\hline
-		Symbol &$I(x_i, y_j, E_k)$\\
-		\hline
-		% Units& $Electron counts$ (EELS)\\
-		% \hline
-		Units & Electron counts (EELS)\\
-		& Photons (CL)\\
-		& or arbitrary units (a.u.) for EELS or CL\\
-		  \hline
-		  Equation&\\
-		  \hline
-		  Description & $I(x_i, y_j, E_k)$ is the intensity collected by the detector at each ($x_i$, $y_j$) pixel as a function of ($E_k$) energy.
-		  \\
-		  \hline
-		  Sources&~\cite{jeanguillaume_spectrum-image:_1989}  \\
-		  \hline
-		  Ref.\ By & \iref{ewat}\\
-		  \hline
-	\end{tabular}
+\renewcommand*{\arraystretch}{1.5}
+\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+	\hline
+	\rowcolor[gray]{0.9}
+	Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{SI}\\
+	\hline
+	Label& \bf Spectrum Image\\
+	\hline
+	Symbol &$I(x, y, E)$\\
+	\hline
+	Units & Electron counts (EELS)\\
+	& Photons (CL)\\
+	& or arbitrary units (a.u.) for EELS or CL\\
+	\hline
+	Equation& $I(x, y, E): \forall \langle x, y \rangle \in P(x,y), \exists I(E)$ \\
+	\hline
+	Description & $I(x, y, E)$ is a dataset composed of Spectra (\ddref{Spectrum}) collected by the spectrometer detector at each value of $P(x,y)$ (\dref{grid}).
+	\\
+	\hline
+	Sources&~\cite{jeanguillaume_spectrum-image:_1989}  \\
+	\hline
+	Ref.\ By & \\
+	\hline
+\end{tabular}
 \end{minipage}\\
 
 ~\newline
@@ -544,19 +517,17 @@ models. The dimension of each quantity is also given.  \wss{Modify the examples
 		\hline
 		Label& \bf Point Spread Function\\
 		\hline
-		Symbol &$PSF(E_k)$\\
+		Symbol &$I_PSF(E)$\\
 		\hline
-		% Units& $Electron counts$ (EELS)\\
-		% \hline
 		Units & Electron counts or arbitrary units (a.u.) (EELS)\\
 		  \hline
-		  Equation&\\
+		  Equation&$I(E) = \zeta(k={0..K}) = g(k) S'(k) + b(k) + N(k)$\\
 		  \hline
 		  Description & 
-		               $PSF(E_k)$ is a reference spectrum representing the effect of the TEM on the collected spectra in the spectrum image. It is a spectrum collected, ideally, with no interaction with a sample.
+		               $I_PSF(E)$ is a reference spectrum ($I(E)$, \ddref{Spectrum}) representing the effect of the point spread function (see \tref{signal}) on the collected spectra in the spectrum image (\ddref{SI}). It is a spectrum collected, ideally, with no interaction with a sample; the variables in the equation are defined as in \tref{intensity}, with the exception of $S'(k)$, which is an example of $S(k)$ with no sample interaction with the beam.
 		  \\
 		  \hline
-		  Sources&~\cite{jeanguillaume_spectrum-image:_1989}  \\
+		  Sources&~\cite{zuo_electron_2000, jeanguillaume_spectrum-image:_1989, gloter_improving_2003}  \\
 		  \hline
 		  Ref.\ By & \iref{ewat}\\
 		  \hline
@@ -585,28 +556,28 @@ The goals \wss{reference your goals} are solved by \wss{reference your instance
 	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
 		  \hline
 		  \rowcolor[gray]{0.9}
-		  Number& IM\refstepcounter{instnum}\theinstnum \label{ewat}\\
+		  Number& IM\refstepcounter{instnum}\theinstnum \label{normalization}\\
 		  \hline
 		  Label& \bf Normalization to the integral\\
 		  \hline
 		  Input& $k_1$\\
 		  & $k_2$\\
-		  & $I(x_i,y_j,E_k)$\\
+		  & $I(x,y,E_k)$\\
 		  & The input is constrained such that $k_1 >= 0$, and $k_2 <= N$\\
 		  \hline
-		  Output& $I_{norm}(x_i,y_j,E_k)=\frac{I(x_i,y_j,E_k)}{\sum_{E_{k=k_1}}^{E_{k=k_2}} I(x_i,y_j,E_k)}$\\
+		  Output& $I_{norm}(x,y,E_k)=\frac{I(x,y,E_k)}{\sum_{E_{k=k_1}}^{E_{k=k_2}} I(x,y,E_k)}$\\
 		  \hline
-		  Description&$I(x_i,y_j,E_k)$ is the 3D spectrum image, user input\\
+		  Description&$I(x,y,E_k)$ is the 3D spectrum image, user input\\
 		  &$k_1$: Index of beginning of spectrum range (spectrum axis), user input\\
 		  &$k_2$: Index of end of spectrum range (spectrum axis), user input\\
 		  &$K$: Last index along the spectral axis\\
-		  &$x_i$: Pixel index along first spatial axis\\
-		  &$y_j$: Pixel index along second spatial axis\\
-		  &$I_{norm}(x_i,y_j,E_k)$: Spectrum image with each individual pixel normalized independently along the spectral axis\\
+		  &$x$: Pixel index along first spatial axis\\
+		  &$y$: Pixel index along second spatial axis\\
+		  &$I_{norm}(x,y,E_k)$: Spectrum image with each individual pixel normalized independently along the spectral axis\\
 		  \hline
-		  Sources&~\cite{Lightstone2012} \ \\
+		  Sources&\\
 		  \hline
-		  Ref.\ By & \iref{epcm}\\
+		  Ref.\ By &\\
 		  \hline
 	\end{tabular}
 \end{minipage}\\
@@ -621,24 +592,24 @@ The goals \wss{reference your goals} are solved by \wss{reference your instance
 	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
 		\hline
 		\rowcolor[gray]{0.9}
-		Number& IM\refstepcounter{instnum}\theinstnum \label{ewat}\\
+		Number& IM\refstepcounter{instnum}\theinstnum \label{deconvolution}\\
 		\hline
-		Label& \bf Normalization to one channel\\
+		Label& \bf Richardson-Lucy Deconvolution\\
 		\hline
-		Input& $k_1$\\
-		& $I(x_i,y_j,E_k)$\\
+		Input& $I_PSF(E)$ is the point spread function of the instrument (see \ddref{PSF})\\
+		& $I_{real}^0(x,y,E)$ is the initial guess for the ``real'' spectrum (\ddref{Spectrum})\\
+		& $I_{measured}(x,y,E)$ is the measured spectrum, as obtained from the spectrometer software (\ddref{Spectrum})\\
+		& $R$ is the number of iterations of the deconvolution algorithm applied to the spectrum \\
 		\hline
-		Output& $I_{norm}(x_i,y_j,E_k)=\frac{I(x_i,y_j,E_k)}{I(x_i,y_j,E_{k=k_0})}$\\
+		Equation & $I_{real (b)}^{c+1}(E)=I_{real (b)}^c(E)\sum_a{\frac{I_{PSF}(E)I_{measured}(E)}{\sum_d{I_{PSF}(E)I_{real (d)}^c(E)}}}, while\ c < R$\\
 		\hline
-		Description&$I(x_i,y_j,E_k)$ is the 3D spectrum image, user input\\
-		&$k_0$: Index of the channel to normalize the spectrum to, user input\\
-		&$x_i$: Pixel index along first spatial axis\\
-		&$y_j$: Pixel index along second spatial axis\\
-		&$I_{norm}(x_i,y_j,E_k)$: Spectrum image with each individual pixel normalized to one channel (eg, a peak maximum) independently along the spectral axis\\
+		Output& $I_{deconvolved}(E_k)=I_{real (b)}^{R}(E)$\\
 		\hline
-		Sources&~\cite{Lightstone2012} \ \\
+		Description & The purpose of the RL deconvolution algorithm is to separate the effects of the spectrometer point spread function from the ``real'' signal of the sample. \textit{I.e.} In \tref{signal}, the signal is described as the convolution of the point spread function with the signal from the microscope.\\
 		\hline
-		Ref.\ By & \iref{epcm}\\
+		Sources&~\cite{gloter_improving_2003, bellido_toward_2014} \ \\
+		\hline
+		Ref.\ By & \\
 		\hline
 	\end{tabular}
 \end{minipage}\\
@@ -673,7 +644,7 @@ Table~\ref{TblSpecParams}.
 		  \textbf{Var} & \textbf{Physical Constraints} & \textbf{Software Constraints} &
 		                             \textbf{Typical Value} & \textbf{Uncertainty}\\
 		  \midrule 
-		  $L$ & $L > 0$ & $L_{\text{min}} \leq L \leq L_{\text{max}}$ & 1.5 \si[per-mode=symbol] {\metre} & 10\%
+		  && &
 		  \\
 		  \bottomrule
 	\end{longtable*}
@@ -691,7 +662,7 @@ Table~\ref{TblSpecParams}.
 	  \toprule
 	  \textbf{Var} & \textbf{Value} \\
 	  \midrule 
-	  $L_\text{min}$ & 0.1 \si{\metre}\\
+	   & \\
 	  \bottomrule
 	\end{longtable*}
 \end{table}
@@ -703,7 +674,7 @@ Table~\ref{TblSpecParams}.
 	  \toprule
 	  \textbf{Var} & \textbf{Physical Constraints} \\
 	  \midrule 
-	  $T_W$ & $T_\text{init} \leq T_W \leq T_C$ (by~\aref{A_charge})
+	   & 
 	  \\
 	  \bottomrule
 	\end{longtable*}
@@ -712,7 +683,7 @@ Table~\ref{TblSpecParams}.
 \subsubsection{Properties of a Correct Solution} \label{sec_CorrectSolution}
 
 \noindent
-A correct solution must exhibit \wss{fill in the details}
+A correct solution must be acceptable to a user experienced with EELS and/or CL data processing, as is relevant to the EELS/CL data being processed.
 
 \section{Requirements}
 
