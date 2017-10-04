@@ -135,7 +135,6 @@ their units. The symbols are listed in alphabetical order.
 \textbf{symbol} & \textbf{unit} & \textbf{description}\\
 \midrule 
 $I$ &  & Intensity\\
-$$ &  & \\ 
 \bottomrule
 \end{longtable*}
 
@@ -175,21 +174,7 @@ $$ &  & \\
 \pagenumbering{arabic}
 
 \section{Introduction}
-
-\wss{This SRS template is based on SmithAndLai2005, SmithEtAl2007.  It
-  will get you started, but you will have to make changes.  Any changes to
-  section headings should be approved by the instructor, since that implies a
-  deviation from the template.  Although the bits shown below do not include
-  type information, you may need to add this information for your problem.}
-
-\wss{Feel free to change the appearance of the report by modifying the LaTeX
-  commands.}
-
-\wss{If you are documenting a family of models, you can start from this same
-  template, but you will have to add a section for variabilities.  For program
-  families you should look at \cite{Smith2006, SmithMcCutchanAndCarette2017}.
-  You should be able to do one document that captures the commonality analysis
-  and the requirements.}
+T
 
 \subsection{Purpose of Document}
 
@@ -398,7 +383,6 @@ on.  \wss{Modify the examples below for your problem, and add additional models
 		  & The second equation is the discretized version of the first. The signal $S(k)$ is the sum over all pixels $k'$ of the probability ($f(k')$) of an electron hitting pixel $k'$ multiplied by the probability ($h(k, k')$) of detecting an electron at $k$ after it hits pixel $k'$.\\
 		  \hline
 		  Source & \cite{zuo_electron_2000}\\
-		  % The above web link should be replaced with a proper citation to a publication
 		  \hline
 		  Ref.\ By & \tref{intensity}\\
 		  \hline
@@ -409,11 +393,7 @@ on.  \wss{Modify the examples below for your problem, and add additional models
 
 \subsubsection{General Definitions}\label{sec_gendef}
 
-This section collects the laws and equations that will be used in deriving the
-data definitions, which in turn are used to build the instance models.
-\wss{Some projects may not have any content for this section, but the section
-  heading should be kept.}  \wss{Modify the examples below for your problem, and
-  add additional definitions as appropriate.}
+This section provides a definition beneficial to understanding the data definitions.
 
 ~\newline
 
@@ -493,7 +473,7 @@ models. The dimension of each quantity is also given.  \wss{Modify the examples
 	& Photons (CL)\\
 	& or arbitrary units (a.u.) for EELS or CL\\
 	\hline
-	Equation& $I(x, y, E): \forall \langle x, y \rangle \in P(x,y), \exists I(E)$ \\
+	Equation& $I(x, y, E): \forall \langle x, y \rangle \in P(x,y), \exists I(x,y,E) \in \mathbb{R}$\\
 	\hline
 	Description & $I(x, y, E)$ is a dataset composed of Spectra (\ddref{Spectrum}) collected by the spectrometer detector at each value of $P(x,y)$ (\dref{grid}).
 	\\
@@ -517,7 +497,7 @@ models. The dimension of each quantity is also given.  \wss{Modify the examples
 		\hline
 		Label& \bf Point Spread Function\\
 		\hline
-		Symbol &$I_PSF(E)$\\
+		Symbol &$I_{PSF}(E)$\\
 		\hline
 		Units & Electron counts or arbitrary units (a.u.) (EELS)\\
 		  \hline
@@ -560,20 +540,20 @@ The goals \wss{reference your goals} are solved by \wss{reference your instance
 		  \hline
 		  Label& \bf Normalization to the integral\\
 		  \hline
-		  Input& $k_1$\\
-		  & $k_2$\\
-		  & $I(x,y,E_k)$\\
+		  Input& $k_1$  is the index of beginning of spectrum range (spectrum axis), user input\\
+		  & $k_2$ is the index of end of spectrum range (spectrum axis), user input\\
+		  & $I(E_k)$ is the 3D spectrum image, user input\\
 		  & The input is constrained such that $k_1 >= 0$, and $k_2 <= N$\\
 		  \hline
-		  Output& $I_{norm}(x,y,E_k)=\frac{I(x,y,E_k)}{\sum_{E_{k=k_1}}^{E_{k=k_2}} I(x,y,E_k)}$\\
+		  Output& $I_{norm}(E_k)=\frac{I(E_k)}{\sum_{E_{k=k_1}}^{E_{k=k_2}} I(x,y,E_k)}$\\
 		  \hline
-		  Description&$I(x,y,E_k)$ is the 3D spectrum image, user input\\
+		  Description&$I(E_k)$ is the 3D spectrum image, user input\\
 		  &$k_1$: Index of beginning of spectrum range (spectrum axis), user input\\
 		  &$k_2$: Index of end of spectrum range (spectrum axis), user input\\
 		  &$K$: Last index along the spectral axis\\
 		  &$x$: Pixel index along first spatial axis\\
 		  &$y$: Pixel index along second spatial axis\\
-		  &$I_{norm}(x,y,E_k)$: Spectrum image with each individual pixel normalized independently along the spectral axis\\
+		  &$I_{norm}(E_k)$: Spectrum image with each $(x,y)$ pixel normalized independently along the spectral axis\\
 		  \hline
 		  Sources&\\
 		  \hline
@@ -592,9 +572,9 @@ The goals \wss{reference your goals} are solved by \wss{reference your instance
 	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
 		\hline
 		\rowcolor[gray]{0.9}
-		Number& IM\refstepcounter{instnum}\theinstnum \label{deconvolution}\\
+		Number & IM\refstepcounter{instnum}\theinstnum \label{deconvolution}\\
 		\hline
-		Label& \bf Richardson-Lucy Deconvolution\\
+		Label & \bf Richardson-Lucy Deconvolution\\
 		\hline
 		Input& $I_PSF(E)$ is the point spread function of the instrument (see \ddref{PSF})\\
 		& $I_{real}^0(x,y,E)$ is the initial guess for the ``real'' spectrum (\ddref{Spectrum})\\
@@ -614,71 +594,77 @@ The goals \wss{reference your goals} are solved by \wss{reference your instance
 	\end{tabular}
 \end{minipage}\\
 
-%~\newline
+~\newline
 
-\subsubsection*{Derivation of ...}
+%Instance Model 3
 
-\wss{May be necessary to include this subsection in some cases.}
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& IM\refstepcounter{instnum}\theinstnum \label{background}\\
+		\hline
+		Label& \bf Background subtraction\\
+		\hline
+		Input & $I_{collected}$ is the  (see \ddref{PSF})\\
+		& $I_{real}^0(x,y,E)$ is the initial guess for the ``real'' spectrum (\ddref{Spectrum})\\
+		\hline
+		Equation & $I_{sample}=I_{collected}-I_{background}$\\
+		\hline
+		Output& $I_{sample}(E)$\\
+		\hline
+		Description & This model addresses the removal of background contributions to the signal ($b(k)$ in \tref{intensity}), where $b(k)$ is transformed to a spectrum (\ddref{Spectrum}).\\
+		\hline
+		Sources & \\
+		\hline
+		Ref.\ By & \\
+		\hline
+	\end{tabular}
+\end{minipage}\\
+
+~\newline
+
+%Instance Model 4
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& IM\refstepcounter{instnum}\theinstnum \label{gain}\\
+		\hline
+		Label& \bf Gain correction\\
+		\hline
+		Input & $I_{collected}$ is the spectrum (\ddref{Spectrum}) of the signal as collected by the spectrometer (see \tref{intensity}).\\
+		& $g(E)$ is the gain ``spectrum'' of the spectrometer $g(k)$ transformed into a function of energy (\ddref{Spectrum})\\
+		\hline
+		Equation & $I_{corrected}(E)=\frac{I_{collected}(E)}{g_{E}}$\\
+		\hline
+		Output& $I_{corrected}(E)$ is the spectrum after the gain correction from the spectrometer CCD is applied.\\
+		\hline
+		Description & This model addresses the removal of the gain ($g(k)$ in \tref{intensity}) from the collected signal, where $g(k)$ is transformed to a ``spectrum'' (\ddref{Spectrum}) as a function of energy.\\
+		\hline
+		Sources & \\
+		\hline
+		Ref.\ By & \\
+		\hline
+	\end{tabular}
+\end{minipage}\\
 
 \subsubsection{Data Constraints} \label{sec_DataConstraints}    
+This section details the constraints on the data that the software must process, including the input, processing steps, and output from the software. Physical constraints based on the expectations of the dataset are left out to allow the user more freedom in the input.
 
-Tables~\ref{TblInputVar} and \ref{TblOutputVar} show the data constraints on the
-input and output variables, respectively.  The column for physical constraints gives
-the physical limitations on the range of values that can be taken by the
-variable.  The column for software constraints restricts the range of inputs to
-reasonable values.  The constraints are conservative, to give the user of the
-model the flexibility to experiment with unusual situations.  The column of
-typical values is intended to provide a feel for a common scenario.  The
-uncertainty column provides an estimate of the confidence with which the
-physical quantities can be measured.  This information would be part of the
-input if one were performing an uncertainty quantification exercise.
-
-The specification parameters in Table~\ref{TblInputVar} are listed in
-Table~\ref{TblSpecParams}.
-
-\begin{table}[!h]
-	  \caption{Input Variables} \label{TblInputVar}
-	  \renewcommand{\arraystretch}{1.2}
-	\noindent \begin{longtable*}{l l l l c} 
-		  \toprule
-		  \textbf{Var} & \textbf{Physical Constraints} & \textbf{Software Constraints} &
-		                             \textbf{Typical Value} & \textbf{Uncertainty}\\
-		  \midrule 
-		  && &
-		  \\
-		  \bottomrule
-	\end{longtable*}
-\end{table}
-
-\noindent 
-\begin{description}
-\item[(*)] \wss{you might need to add some notes or clarifications}
-\end{description}
-
-\begin{table}[!h]
-	\caption{Specification Parameter Values} \label{TblSpecParams}
-	\renewcommand{\arraystretch}{1.2}
-	\noindent \begin{longtable*}{l l} 
-	  \toprule
-	  \textbf{Var} & \textbf{Value} \\
-	  \midrule 
-	   & \\
-	  \bottomrule
-	\end{longtable*}
-\end{table}
-
-\begin{table}[!h]
-	\caption{Output Variables} \label{TblOutputVar}
-	\renewcommand{\arraystretch}{1.2}
-	\noindent \begin{longtable*}{l l} 
-	  \toprule
-	  \textbf{Var} & \textbf{Physical Constraints} \\
-	  \midrule 
-	   & 
-	  \\
-	  \bottomrule
-	\end{longtable*}
-\end{table}
+\begin{itemize}
+	\item The input spectrum image (\ddref{SI}) must be a 3D structure, or a 3D structure contained within a .dm3 or .h5 file;
+	\item The user input number of iterations to use for the deconvolution algorithm must be an integer number greater than or equal to 0;
+	\item For the normalization model, the user input of the number of bins to normalize must not be empty;
+	\item The user input of the background signal (\iref{background}) must be of the same length along the spectral axis as the spectrum image it will be applied to;
+	\item The user input of the gain signal (\iref{gain}) must be of the same length along the spectral axis as the spectrum image it will be applied to;
+	\item The normalization ({\iref{normalization}}) and deconvolution ({\iref{deconvolution}}) data processing algorithms both include a division by experimentally-derived values. The denominator in these steps must not be 0.
+\end{itemize}
 
 \subsubsection{Properties of a Correct Solution} \label{sec_CorrectSolution}
 
@@ -698,7 +684,7 @@ qualities that the software is expected to exhibit.
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_Inputs}:] Accept and read the following as Spectrum Image inputs:
 
 \begin{itemize}
-	\item 3D data array
+	\item 3D data array (eg, already stored in computer memory)
 	\item File in format *.dm3 containing 3D data array
 	\item File in format *.h5 containing 3D data array
 \end{itemize}
@@ -737,17 +723,25 @@ qualities that the software is expected to exhibit.
 
 \subsection{Nonfunctional Requirements}
 
-\wss{List your nonfunctional requirements.  You may consider using a fit
-  criterion to make them verifiable.}
+The nonfunctional priorities for the software are the useability, speed, maintainability, expandability, and understandability. The user must be able to easily use the software to extract the data that they want and do the processing operations that they want, given the user characteristics defined elsewhere. In addition, a more advanced user may wish to add their own functions into the software data processing algorithms; the software should be written in such a way to make this simple and understandable. The speed of performance is of interest in the interactive display of the 3D datasets and in the data processing operations, which can be computationally heavy with large datasets. To improve the software over time and add new functionality as the data processing field expands, the software must be both maintainable and understandable by the original programmer and future programmers. A user may wish to perform their own tests of the software functions, emphasizing the need to have transparent and understandable software. To reach a wide user base, the program should be usable on many different operating systems. The nonfunctional requirements are listed below:
 
-\section{Likely Changes}    
-
-\noindent \begin{itemize}
-
-\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_meaningfulLabel}:] \wss{Give
-    the likely changes, with a reference to the related assumption (aref), as appropriate.}
-
+\begin{itemize}
+	\item The software should be maintainable by the original programmer or future programmers to keep up to date with advances in data processing practices;
+	\item The software should allow the addition of more data processing functions as required by an advanced user experienced in programming;
+	\item The software should not display significant lag when interacting with the user, except in the case of data processing steps, which may be computationally expensive;
+	\item Use of the interactive display and of data processing functions should be intuitive for a user experienced with the processing techniques for 3D datasets;
+	\item The coding practices for the software should be open and transparent to facilitate inspection by an experienced user to encourage trust in the data processing steps performed;
+	\item The display for the user to interact with should be readable: \textit{i.e.} the text should be large enough to read by a user with average eyesight, with high contrast against the background for visibility;
+	\item The colours used in the display should be clearly distinguishable from each other;
+	\item The software should function on multiple operating systems, including Windows, Linux, and MacOS, in a laptop or desktop environment.
 \end{itemize}
+
+\section{Likely Changes}
+	This section details some changes which are likely to be made to the software once the initial requirements are met, in the interests of continuous improvement of the software's capabilities.
+	\noindent \begin{itemize}
+		\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_identicalPSF}:] A PSF unique to each pixel in the spectrum image (\ddref{SI}) will be used instead of assuming one PSF is valid for all pixels within a spectrum image (\aref{EELS_PSF_variability})
+		\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_identicalPSF}:] Cosmic rays appear as high intensity single pixel spikes in a spectrum and can be removed via 3D image filtering techniques. A future change will implement this filtering option for the user. 
+	\end{itemize}
 
 \section{Traceability Matrices and Graphs}
 
