@@ -134,12 +134,44 @@ their units. The symbols are listed in alphabetical order.
 \noindent \begin{longtable*}{l l p{12cm}} \toprule
 \textbf{symbol} & \textbf{unit} & \textbf{description}\\
 \midrule 
-$I$ & counts & Intensity\\
+$A^2$ & \si{\nano\metre^2} & Area of interest on the sample\\
 $b(k)$ & counts & Background signal on a detector\\
-$g(k)$ & None & Gain value at each pixel\\
-$k$ & None & pixel index\\
+$c$ & -- & Index of the current iteration in deconvolution \\
+$E$ & \si{\nano\metre} or \si{\electronvolt} & Energy of the collected particle, represented by wavelength (CL) or energy loss (EELS)\\
+$f(\rho')$ & -- & Probability of an electron landing on the detector at position $\rho'$\\
+$f(k')$ & -- & Probability of an electron landing on the detector at pixel $k'$\\
+$g(k)$ & -- & Gain value at each pixel\\
+$h(\rho, \rho')$ & -- & Probability of detecting an electron at position $\rho$ if it hits position $\rho'$\\
+$h(k, k')$ & -- & Probability of detecting an electron at pixel $k$ if it hits pixel $k'$\\
+$i$ & -- & Index for pixel number in a spectrum\\
+$I(E)$ & counts & Intensity of a spectrum as a function of energy\\
+$I_{background}(E)$ & counts & Intensity of the background contribution to the spectrum (from the spectrometer, as a function of energy\\
+$I_{collected}(E)$ & counts & Intensity of the spectrum as received from the spectrometer, as a function of energy\\
+$I_{corrected}(E)$ & counts & Intensity of the spectrum from the sample with gain artifacts removed as a function of energy\\
+$I_{deconvolved}(E)$ & counts & Intensity of the deconvolved spectrum as a function of energy\\
+$I_{measured}(E)$ & counts & Intensity of the measured spectrum as a function of energy\\
+$I_{norm}(E)$ & counts & Intensity of a normalized spectrum as a function of energy\\
+$I_{PSF}(E)$ & counts & Intensity of a reference point spread function (spectrum) as a function of energy\\
+$I_{real}^0(E)$ & counts & Initial guess for the ``real'' spectrum for deconvolution, as a function of energy\\
+$I_{real (j)}^R(E)$ & counts & Intensity for the deconvolved spectrum after R deconvolution iterations\\
+$I_{sample}(E)$ & counts & Intensity of the spectrum from the sample with background artifacts removed as a function of energy\\
+$j$ & -- & Index for pixel number in a spectrum\\
+$k$ & -- & Pixel (index) on a spectrometer\\
+$k_1$ & -- & First pixel (index) on a spectrometer (user selected)\\
+$k_2$ & -- & Second pixel (index) on a spectrometer (user selected)\\
+$K$ & -- & Maximum pixel (index) on a spectrometer\\
+$l$ & -- & Index for pixel number in a spectrum\\
 $N(k)$ & counts & Noise signal from the detector\\
+$P(x,y)$ & \si{\nano\metre} & Position coordinates describing possible locations of the electron beam on the sample\\
+$R$ & -- & Integer number of deconvolution iterations the user desires the software to perform\\
 $S(k)$ & counts & Signal entering the detector\\
+$S'(k)$ & counts & Signal entering the detector, resulting from a beam which has not interacted with the sample\\
+$x$ & \si{\nano\metre} & Displacement of the beam in one spatial dimension\\
+$X$ & \si{\nano\metre} & Maximum displacement of the beam in one spatial dimension\\
+$y$ & \si{\nano\metre} & Displacement of the beam in one spatial dimension, perpendicular to $x$\\
+$Y$ & \si{\nano\metre} & Maximum displacement of the beam in one spatial dimension, perpendicular to $x$\\
+$\rho$ & -- & Location of detection of an electron hitting a detector\\
+$\rho'$ & -- & Location of an electron hitting a detector\\
 $\zeta(k)$ & counts & Signal at each pixel as read out by a detector\\
 \bottomrule
 \end{longtable*}
@@ -422,7 +454,7 @@ models.
 		& Photon counts (CL)\\
 		& or arbitrary units (a.u.) for EELS or CL\\
 		  \hline
-		  Equation & $E = f(k)$\\
+		  Equation & $E = E(k)$\\
 		  & $I(E) = \zeta(k=0..K)$\\
 		  \hline
 		  Description & Each pixel ($k$) on the spectrometer CCD has an energy loss (EELS) or wavelength (CL) value associated with it ($E$), obtained from the spectrometer acquisition settings (denoted here by $f(k)$), and a collected signal ($\zeta(k)$, \tref{signal}). The intensity of the spectrum ($I(E)$) is obtained from the collected signal over the whole CCD, from the 0th pixel to the final ($K$th) pixel.\\
@@ -519,10 +551,12 @@ The data processing goal \gsref{G_Processing} is solved by the following instanc
 		  \hline
 		  Input& $k_1$  is the index of beginning of spectrum range (spectrum axis), user input\\
 		  & $k_2$ is the index of end of spectrum range (spectrum axis), user input\\
-		  & $I(E_k)$ is the 3D spectrum image, user input\\
+		  & $I(E)$ is the spectrum, user input\\
 		  & The input is constrained such that $k_1 >= 0$, and $k_2 <= N$\\
 		  \hline
-		  Output& $I_{norm}(E_k)=\frac{I(E_k)}{\sum_{E_{k=k_1}}^{E_{k=k_2}} I(E_k)}$\\
+		  Equation & $I_{norm}(E)=\frac{I(E)}{\sum_{E_{k=k_1}}^{E_{k=k_2}} I(E_k)}$\\
+		  \hline
+		  Output & Normalized spectrum\\
 		  \hline
 		  Description&$I(E_k)$ is a spectrum (\ddref{Spectrum}), user input\\
 		  &$k_1$: Index of beginning of spectrum range (spectrum axis), user input\\
@@ -530,7 +564,7 @@ The data processing goal \gsref{G_Processing} is solved by the following instanc
 		  &$K$: Last index along the spectral axis\\
 		  &$x$: Location along first spatial axis\\
 		  &$y$: Location along second spatial axis\\
-		  &$I_{norm}(E_k)$: Spectrum normalized along the spectral axis to the integral defined by a user\\
+		  &$I_{norm}(E)$: Spectrum normalized along the spectral axis to the integral defined by a user\\
 		  & Note that this algorithm can be applied to a 3D spectrum image (\ddref{SI}) by applying the algorithm to each $(x,y)$ pixel independently.\\
 		  \hline
 		  Sources & -- \\
@@ -797,41 +831,8 @@ the assumptions.
 \label{Table:R_trace}
 \end{table}
 
-% \begin{figure}[h!]
-% 	\begin{center}
-% 		%\rotatebox{-90}
-% 		{
-% 			\includegraphics[width=\textwidth]{ATrace.png}
-% 		}
-% 		\caption{\label{Fig_ATrace} Traceability Matrix Showing the Connections Between Items of Different Sections}
-% 	\end{center}
-% \end{figure}
-
-
-% \begin{figure}[h!]
-% 	\begin{center}
-% 		%\rotatebox{-90}
-% 		{
-% 			\includegraphics[width=0.7\textwidth]{RTrace.png}
-% 		}
-% 		\caption{\label{Fig_RTrace} Traceability Matrix Showing the Connections Between Requirements, Instance Models, and Data Constraints}
-% 	\end{center}
-% \end{figure}
-
 \newpage
 
 \bibliography {SRS}
-
-\newpage
-
-\section{Appendix}
-
-\wss{Your report may require an appendix.  For instance, this is a good point to
-show the values of the symbolic parameters introduced in the report.}
-
-\subsection{Symbolic Parameters}
-
-\wss{The definition of the requirements will likely call for SYMBOLIC\_CONSTANTS.
-Their values are defined in this section for easy maintenance.}
 
 \end{document}
