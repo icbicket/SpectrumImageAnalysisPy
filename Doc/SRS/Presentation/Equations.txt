@@ -6,5 +6,5 @@ Deconvolution
 $$O_{(b)}^{c+1}=O_{(b)}^c\sum_a{\frac{P({a}/{b})D(a)}{\sum_d{P({a}/{b})O_{(d)}^c}}}$$
 
 CL
-$$I_{sample}=I_{collected}-I_{substrate}$$
+$	$I_{sample}=I_{collected}-I_{substrate}$$
 $$I_{corrected}=\frac{I_{sample}}{\gamma_{spectrometer}}$$
