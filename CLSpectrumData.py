@@ -12,7 +12,6 @@ def Readh5SI(filename):
 	SEM = np.array([])
 	survey = np.array([])
 	for kk in list(data)[:4]:
-		print (kk)
 #	for kk in data.keys()[:4]:
 		if 'Acquisition' in kk:
 			AcqData = data[kk]['ImageData']['Image']
@@ -41,7 +40,6 @@ class CLDataSet(object):
 		self.SEM = SEM
 		self.survey = survey
 		if self.fuzzing:
-			print(self.SEM.size[0]/4)
 			reshapedSEM = np.reshape(self.SEM.data, [int(self.SEM.size[0]/4), 4, int(self.SEM.size[1]/4), 4])
 			self.unfuzzedSEM = Image(np.sum(np.sum(reshapedSEM, axis=1), axis=-1), calibration=self.SEM.calibration*4)
 		else:
