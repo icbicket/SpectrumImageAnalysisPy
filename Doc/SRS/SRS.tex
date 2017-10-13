@@ -129,6 +129,10 @@ description of the quantity described by the symbol and the unit name.
   %	\caption{Provide a caption}
 %\end{table}
 
+\wss{Is ``number of particles'' a standard measure of intensity?  I did a quick
+  google search and I did not see any examples of intensity measured by the
+  number of particles.}
+
 \subsection{Table of Symbols}
 
 The table that follows summarizes the symbols used in this document along with
@@ -256,7 +260,7 @@ the software must satisfy are explicitly detailed.
 \subsection{Scope of Requirements} 
 The scope of the requirements for the software \progname{} is limited to the
 import; removal of instrumentation artifacts; visualization and navigation
-through; and the export of EELS and CL spectrum imaging data.
+through \wss{Do you want the word through here?}; and the export of EELS and CL spectrum imaging data.
 
 \subsection{Characteristics of Intended Reader} 
 The reader of this document should have an understanding of spectrum imaging
@@ -264,7 +268,9 @@ techniques, particularly EELS and CL, and the data processing methods used to
 remove effects of the acquisition system from the data acquired. A basic
 knowledge of convolution theory will be helpful to the reader and an
 understanding of the characteristics of 3D datasets. The reader should
-understand EELS and CL, as relevant to the sections of the document.
+understand EELS and CL, as relevant to the sections of the document.  \wss{Can
+  you also relate these characteristics to a standard degree and level?  For
+  instance, are you assuming an undergraduate degree in physics?}
 
 \subsection{Organization of Document}
 
@@ -327,7 +333,7 @@ be beneficial, but is not strictly required.
 
 The software must be able to read .dm3 files for EELS data import, and .h5 files
 for CL data import to be able to interface with output from the data acquisition
-software.
+software.  \wss{Great example of a constraint.}
 
 \section{Specific System Description}
 
@@ -410,6 +416,8 @@ slices and areas from the dataset as desired by the user and communicated
 through the user interface, export these as desired by the user.
 \end{itemize}
 
+\wss{Sounds good!}
+
 \subsection{Solution Characteristics Specification}
 
 The assumptions used in consideration of spectrum imaging datasets are given in
@@ -440,7 +448,7 @@ The same PSF is valid for all pixels in the EELS spectrum image;
 signal are due to changes in the beam current as collected by the spectrometer;
 	
 	\item[A\refstepcounter{assumpnum}\theassumpnum \label{CL_Background}:] A
-subtraction is sufficient remove the contributions of the dark signal and the
+subtraction is sufficient \wss{to?} remove the contributions of the dark signal and the
 substrate signal from the CL sample signal;
 	
 	\item[A\refstepcounter{assumpnum}\theassumpnum \label{CL_System_Response}:] The
@@ -501,7 +509,10 @@ the gain factor $g(k)$ of the pixel;
 		  \hline
 		  Equation& $S(k)=\int_{pixel}d\rho \lfloor \int f(\rho') h(\rho, \rho')
 d\rho' \rfloor$ \\
-		  & $ S(k)=\sum_{k'} f(k') h(k, k')$\\
+		  & $ S(k)=\sum_{k'} f(k') h(k, k')$ \wss{Maybe in brackets
+                    after each option for $S(k)$ you should mention which
+                    version it is (continuous versus discrete).  Otherwise it is
+          confusing why you define a function twice.}\\
 		  \hline
 		  Description & The signal ($S(k)$) from the microscope, as read at one pixel
 on the CCD ($k$), is an integral over the area of one pixel. Inside the integral
@@ -510,7 +521,9 @@ the detector given the interaction of the beam with the sample, multiplied by
 the probability ($h(\rho, \rho')$) of detecting an electron at location $\rho$
 if the electron arrives at position $\rho'$ on the detector. The probability
 $h(\rho, \rho')$ of detecting an electron at one location after it hits the
-detector at another location is the point spread function (PSF: \ddref{PSF}).\\
+detector at another location is the point spread function (PSF: \ddref{PSF}).
+                                \wss{When do you use the continuous versus the
+                                discrete version?}\\
 		  & The second equation is the discretized version of the first. The signal
 $S(k)$ is the sum over all pixels $k'$ of the probability ($f(k')$) of an
 electron hitting pixel $k'$ multiplied by the probability ($h(k, k')$) of
@@ -553,7 +566,8 @@ definitions.
 possible locations of the beam in two spatial coordinates $(x, y)$ during a
 raster scan across the sample in a rectangular grid pattern across the area on
 the sample, $A^2$. The limits on $(x,y)$ are set by the operator on the
-instrument, ranging from 0 to the maximum $(X,Y)$.
+instrument, ranging from 0 to the maximum $(X,Y)$. \wss{Do you really mean
+                              $A^2$?  I would have thought you just meant $A$.}
 		\\
 		  \hline
 		  Ref.\ By & \ddref{SI}\\
@@ -593,7 +607,11 @@ models.
 spectrometer acquisition settings (denoted here by $f(k)$), and a collected
 signal ($\zeta(k)$, \tref{signal}). The intensity of the spectrum ($I(E)$) is
 obtained from the collected signal over the whole CCD, from the 0th pixel to the
-final ($K$th) pixel.\\
+final ($K$th) pixel. \wss{Which count applies is not clear.  Does the user
+                                select this, or does it change depending on the
+                                type of imaging, or something else?  This might
+                                be something you can address under your
+                                requirements?}\\
 		  \hline
 		  Sources & \cite{egerton_introduction_2011} \\
 		  \hline
@@ -626,7 +644,9 @@ final ($K$th) pixel.\\
 I(x,y,E) \in \mathbb{R}$\\
 	\hline
 	Description & $I(x, y, E)$ is a dataset composed of Spectra (\ddref{Spectrum})
-collected by the spectrometer detector at each value of $P(x,y)$ (\dref{grid}).
+collected by the spectrometer detector at each value of $P(x,y)$
+                      (\dref{grid}). \wss{I suggest you restate the math from
+                      the above equation in natural language.}
 	\\
 	\hline
 	Sources&~\cite{jeanguillaume_spectrum-image:_1989}  \\
@@ -652,7 +672,11 @@ collected by the spectrometer detector at each value of $P(x,y)$ (\dref{grid}).
 		\hline
 		Units & Electron counts or arbitrary units (a.u.) (EELS)\\
 		  \hline
-		  Equation&$I_{PSF}(E) = \zeta(k={0..K}) = g(k) S'(k) + b(k) + N(k)$\\
+		  Equation&$I_{PSF}(E) = \zeta(k={0..K}) = g(k) S'(k) + b(k) +
+                            N(k)$ \wss{defining the limits on $k$ inside the
+                            function seems odd to me.  Maybe you could just say
+                            $\zeta(k)$ and then follow the equation with a comma
+          and $k \in [0..K]$?}\\
 		  \hline
 		  Description & $I_{PSF}(E)$ is a reference spectrum ($I(E)$,
 \ddref{Spectrum}) representing the point spread function (see \tref{signal}) on
@@ -701,7 +725,14 @@ input\\
 		  & $I(E)$ is the spectrum, user input\\
 		  & The input is constrained such that $k_1 >= 0$, and $k_2 <= N$\\
 		  \hline
-		  Equation & $I_{norm}(E)=\frac{I(E)}{\sum_{E(k=k_1)}^{E(k=k_2)}} I(E(k))$\\
+		  Equation &
+                             $I_{norm}(E)=\frac{I(E)}{\sum_{E(k=k_1)}^{E(k=k_2)}}
+                             I(E(k))$ \wss{Technically, LaTeX will interpret
+                             norm in the equation as n times o times r ... in
+                             terms of spacing.  You probably actually want
+                             $I_{\text{norm}}$.  Your reviewer (Keshav) noted that the
+                             denominator looks odd for this equation.  I agree.
+          :-)}\\
 		  \hline
 		  Output & Normalized spectrum\\
 		  \hline
@@ -935,6 +966,10 @@ of a spectrum or spectrum image and a background reference spectrum.
 be able to perform a gain correction, given the appropriate inputs of a spectrum
 or spectrum image and a gain reference spectrum.
 \end{itemize}
+
+\wss{Your requirements should reference explicitly the instance models that
+  apply.  This information is in your traceability matrices, but it should also
+  be explicit in the definition of the requirements themselves.}
 
 \subsection{Nonfunctional Requirements}
 
