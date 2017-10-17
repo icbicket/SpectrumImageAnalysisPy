@@ -92,6 +92,10 @@ ENV/
 # LaTex files
 *.aux
 *.synctex.gz
+*.bbl
+*.blg
+*.out
+*.toc
 
 # For Mac computers
 *.DS_Store
