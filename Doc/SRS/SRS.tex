@@ -599,19 +599,17 @@ models.
 		& Photon counts (CL)\\
 		& or arbitrary units (a.u.) for EELS or CL\\
 		  \hline
-		  Equation & $E = E(k)$\\
-		  & $I(E) = \zeta(k=0..K)$\\
+		  Equation &$I(E) = \zeta(k=0..K)$\\
 		  \hline
 		  Description & Each pixel ($k$) on the spectrometer CCD has an energy loss
-(EELS) or wavelength (CL) value associated with it ($E$), obtained from the
-spectrometer acquisition settings (denoted here by $f(k)$), and a collected
-signal ($\zeta(k)$, \tref{signal}). The intensity of the spectrum ($I(E)$) is
-obtained from the collected signal over the whole CCD, from the 0th pixel to the
-final ($K$th) pixel. \wss{Which count applies is not clear.  Does the user
-                                select this, or does it change depending on the
-                                type of imaging, or something else?  This might
-                                be something you can address under your
-                                requirements?}\\
+		  (EELS) or wavelength (CL) value associated with it ($E$, where $E$ is also
+		  function of $k$), obtained from the spectrometer acquisition settings, and a
+		  collected signal ($\zeta(k)$, \tref{signal}). The intensity of the spectrum
+		  ($I(E)$) is obtained from the collected signal over the whole CCD, from the
+		  0th pixel to the final ($K$th) pixel on the CCD. \wss{Which count applies is
+		  not clear.  Does the user select this, or does it change depending on the
+		  type of imaging, or something else?  This might be something you can address
+		  under your requirements?}\\
 		  \hline
 		  Sources & \cite{egerton_introduction_2011} \\
 		  \hline
