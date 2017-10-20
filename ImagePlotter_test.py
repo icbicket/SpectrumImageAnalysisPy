@@ -95,7 +95,7 @@ class cbarextensionfinder(unittest.TestCase):
 		clim = [2, 12]
 		imglim = [0, 10]
 		cbar_extend = ImagePlotter.cbarextensionfinder(clim, imglim)
-		self.assertEqual('min', cbar_extend)
+		self.assertEqual('max', cbar_extend)
 		
 if __name__ == '__main__':
 	unittest.main()
