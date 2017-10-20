@@ -40,7 +40,7 @@ def foreach(f,l,threads=3,return_=False):
                     return
                 try:
                     if return_:
-                        n,x = v
+                    	n,x = v
                         d[n] = f(x)
                     else:
                         f(v)
