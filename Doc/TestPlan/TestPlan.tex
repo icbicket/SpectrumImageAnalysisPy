@@ -10,39 +10,52 @@
     linkcolor=red,
     urlcolor=blue
 }
-\usepackage[round]{natbib}
 
-\title{SE 3XA3: Test Plan\\Title of Project}
-
-\author{Team \#, Team Name
-		\\ Student 1 name and macid
-		\\ Student 2 name and macid
-		\\ Student 3 name and macid
-}
-
-\date{\today}
+\newcommand{\progname}{SpectrumImageAnalysisPy}
 
 \input{../Comments}
 
 \begin{document}
-
+\bibliographystyle{ieeetr}
+\title{SpectrumImageAnalysisPy} 
+\author{Isobel Bicket}
+\date{\today}
+	
 \maketitle
 
 \pagenumbering{roman}
-\tableofcontents
-\listoftables
-\listoffigures
 
-\begin{table}[bp]
-\caption{\bf Revision History}
-\begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
+\section{Revision History}
+
+\begin{tabularx}{\textwidth}{p{4cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+\today & 1.0 & Initial draft\\
 \bottomrule
 \end{tabularx}
-\end{table}
+
+~\newpage
+
+\section{Symbols, Abbreviations and Acronyms}
+
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{l l} 
+  \toprule		
+  \textbf{symbol} & \textbf{description}\\
+  \midrule 
+  T & Test\\
+  \bottomrule
+\end{tabular}\\
+
+\wss{symbols, abbreviations or acronyms -- you can reference the SRS tables if needed}
+
+\newpage
+
+\tableofcontents
+
+\listoftables
+
+\listoffigures
 
 \newpage
 
@@ -56,36 +69,6 @@ This document ...
 
 \subsection{Scope}
 
-\subsection{Acronyms, Abbreviations, and Symbols}
-	
-\begin{table}[hbp]
-\caption{\textbf{Table of Abbreviations}} \label{Table}
-
-\begin{tabularx}{\textwidth}{p{3cm}X}
-\toprule
-\textbf{Abbreviation} & \textbf{Definition} \\
-\midrule
-Abbreviation1 & Definition1\\
-Abbreviation2 & Definition2\\
-\bottomrule
-\end{tabularx}
-
-\end{table}
-
-\begin{table}[!htbp]
-\caption{\textbf{Table of Definitions}} \label{Table}
-
-\begin{tabularx}{\textwidth}{p{3cm}X}
-\toprule
-\textbf{Term} & \textbf{Definition}\\
-\midrule
-Term1 & Definition1\\
-Term2 & Definition2\\
-\bottomrule
-\end{tabularx}
-
-\end{table}	
-
 \subsection{Overview of Document}
 
 \section{Plan}
@@ -94,49 +77,122 @@ Term2 & Definition2\\
 
 \subsection{Test Team}
 
+The test team has one member: Isobel Bicket.
+
 \subsection{Automated Testing Approach}
 
-\subsection{Testing Tools}
+Unit testing will be performed on the functions within the code, as an automated task to be done with every update of the code. The running of automated tests also provides regression testing and integration testing of new features and updates. The goal of testing is 100\% code coverage.
 
-\subsection{Testing Schedule}
+\subsection{Verification Tools}
+
+The following verification tools will be used
+\begin{itemize}
+	\item Python unittest library: for performing unit tests on the code;
+	\item Python coverage library: to determine the coverage of the tests;
+	\item Deconvo.m: a Richardson-Lucy deconvolution algorithm implementation in Matlab, written by Dr. E.P. Bellido \cite{bellido_toward_2014};
+	\item Python HypersPy library: a Python-based library for EELS and EDX spectrum processing.
+\end{itemize}
+\wss{Thoughts on what tools to use, such as the following: unit testing
+  framework, valgrind, static analyzer, make, continuous integration, test
+  coverage tool, etc.}
+
+% \subsection{Testing Schedule}
 		
-See Gantt Chart at the following url ...
+% See Gantt Chart at the following url ...
+
+\subsection{Non-Testing Based Verification}
+
+The following non-testing based verification methods will be used to assess the performance of \progname{}
+
+\begin{itemize}
+	\item Code review: a detailed code review will be performed by an external party and feedback provided;
+	\item User survey: a group of qualified users will be asked to process a sample dataset using the software and will be polled on their user experience.
+\end{itemize}
+
+\wss{List any approaches like code inspection, code walkthrough, symbolic
+  execution etc.  Enter not applicable if that is the case.}
 
 \section{System Test Description}
 	
 \subsection{Tests for Functional Requirements}
 
-\subsubsection{Area of Testing1}
+\subsubsection{Inputs}
 		
-\paragraph{Title for Test}
+\paragraph{Spectrum Image Input}
 
 \begin{enumerate}
 
-\item{test-id1\\}
+\item{SI Data array\\}
 
 Type: Functional, Dynamic, Manual, Static etc.
 					
 Initial State: 
 					
-Input: 
+Input: 3D data array, present in memory
 					
-Output: 
+Output: Spectrum Image stored within \progname{}; the first and second axes should correspond to spatial dimensions, while the third axis should correspond to a spectral dimension.
 					
-How test will be performed: 
-					
-\item{test-id2\\}
+How test will be performed: Create a 3D data array and attempt to read it with \progname{}. Check that no errors are raised. Display the spectrum image to manually check that the data was read in correctly.
+
+
+\item{SI .dm3 file\\}
+
+Type: Functional, Dynamic, Manual, Static etc.
+
+Initial State: 
+
+Input: .dm3 file, containing an acquired spectrum image
+
+Output: Spectrum Image stored within \progname{}, with metadata assigned to appropriate values
+
+How test will be performed: Read in the .dm3 file with \progname{}. Check that no errors are raised. Display the spectrum image to manually check that the data was read in correctly. Check spatial and spectral calibration to verify metadata was assigned correctly.
+
+
+\item{SI .h5 file\\}
 
 Type: Functional, Dynamic, Manual, Static etc.
 					
 Initial State: 
 					
-Input: 
+Input: .h5 file, containing an acquired spectrum image
 					
-Output: 
+Output: Spectrum Image stored within \progname, with metadata assigned to appropriate values
 					
+How test will be performed: Read in the .h5 file with \progname{}. Check that no errors are raised. Display the spectrum image to manually check that the data was read in correctly. Check spatial and spectral calibration to verify metadata was assigned correctly.
+
+\end{enumerate}
+
+\paragraph{Spectrum Input}
+
+\begin{enumerate}
+
+\item{Spectrum Data array\\}
+
+Type: Functional, Dynamic, Manual, Static etc.
+					
+Initial State: 
+					
+Input: 3D data array, present in memory
+					
+Output: Spectrum Image stored within \progname{}; the first and second axes should correspond to spatial dimensions, while the third axis should correspond to a spectral dimension.
+					
+How test will be performed: Create a 3D data array and attempt to read it with \progname{}. Check that no errors are raised. Display the spectrum image to manually check that the data was read in correctly.
+
+
+\item{Spectrum .csv file\\}
+
+Type: Functional, Dynamic, Manual, Static etc.
+
+Initial State: 
+
+Input: .dm3 file, containing an acquired spectrum image
+
+Output: Spectrum Image stored within \progname{}, with metadata assigned to appropriate values
+
 How test will be performed: 
 
 \end{enumerate}
+
 
 \subsubsection{Area of Testing2}
 
@@ -182,56 +238,50 @@ How test will be performed:
 
 \subsection{Traceability Between Test Cases and Requirements}
 
-\section{Tests for Proof of Concept}
+% \section{Tests for Proof of Concept}
 
-\subsection{Area of Testing1}
+% \subsection{Area of Testing1}
 		
-\paragraph{Title for Test}
+% \paragraph{Title for Test}
 
-\begin{enumerate}
+% \begin{enumerate}
 
-\item{test-id1\\}
+% \item{test-id1\\}
 
-Type: Functional, Dynamic, Manual, Static etc.
+% Type: Functional, Dynamic, Manual, Static etc.
 					
-Initial State: 
+% Initial State: 
 					
-Input: 
+% Input: 
 					
-Output: 
+% Output: 
 					
-How test will be performed: 
+% How test will be performed: 
 					
-\item{test-id2\\}
+% \item{test-id2\\}
 
-Type: Functional, Dynamic, Manual, Static etc.
+% Type: Functional, Dynamic, Manual, Static etc.
 					
-Initial State: 
+% Initial State: 
 					
-Input: 
+% Input: 
 					
-Output: 
+% Output: 
 					
-How test will be performed: 
+% How test will be performed: 
 
-\end{enumerate}
+% \end{enumerate}
 
-\subsection{Area of Testing2}
+% \subsection{Area of Testing2}
 
-...
-
-	
-\section{Comparison to Existing Implementation}	
+% ...
 				
 \section{Unit Testing Plan}
 		
-\subsection{Unit testing of internal functions}
-		
-\subsection{Unit testing of output files}		
+\wss{Unit testing plans for internal functions and, if appropriate, output
+  files}
 
-\bibliographystyle{plainnat}
-
-\bibliography{SRS}
+\bibliography {TestPlan}
 
 \newpage
 
