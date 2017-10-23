@@ -68,22 +68,27 @@
 
 \pagenumbering{arabic}
 
-This document outlines the different tests and assessment tools which will be used for assessing the performance of \progname{}. It begins by outlining the structure of the document, followed by an overview of the testing arrangements. Specific details follow, 
+This document outlines the different tests and assessment tools which will be used for assessing the performance of \progname{}. The testing will be done to build confidence in the performance of the program and allow the end user to use it with more assurity that it is behaving correctly and any artifacts seen in the data are either a known result of the program, or independent of the use of \progname{} to process the data.
 
 \section{General Information}
+The testing outlined in this document gives valuable contributions to the level of trust in the performance of the software. Not only will testing the software build confidence that it is performing correctly, but the results of the tests will also tell the user what to expect when running the software, for instance in terms of performance milestones. Testing not only ensures that the software will, within predictive power, fulfill its \hyperref[subsec:FR]{functional requirements}, but gives the progress and effectiveness of the software in fulfulling the \hyperref[subsec:NfR]{non-functional requirements}.
+
 
 \subsection{Purpose}
+
 
 \subsection{Scope}
 
 \subsection{Overview of Document}
+ It begins by outlining the structure of the document, followed by an overview of the testing arrangements. Specific details follow on the tests which will be performed to test whether or not \progname{} satisfies the \hyperref[subsec:FuncReqTest]{functional} and \hyperref[subsec:NonfuncReqTest]{non-functional} requirements, as well as details of the unit tests which will be written. The unit tests themselves may satisfy some of the functional requirements without needing system testing, these will be detailed under \hyperref[sec:UnitTest]{Unit Testing Plan} as appropriate.
 
 \section{Plan}
+This section details the plan to be followed when testing the software, including those involved in the testing, the testing approach, and the verification tools which will be used.
 	
 \subsection{Software Description}
+The software, \progname{}, is designed as a data analysis tool for electron energy loss spectroscopy and cathodoluminescence spectrum imaging data. It provides several data processing routines to the user and a graphical user interface to navigate the 3D data set and export desired spectra or image slices. The requirements and expectations for \progname{} are detailed in the \hyperref[doc:SRS]{Software Requirements Specification}.
 
 \subsection{Test Team}
-
 The test team has one member: Isobel Bicket.
 
 \subsection{Automated Testing Approach}
@@ -97,15 +102,11 @@ The following verification tools will be used
 	\item Python unittest library: for performing unit tests on the code;
 	\item Python coverage library: to determine the coverage of the tests;
 	\item Deconvo.m: a Richardson-Lucy deconvolution algorithm implementation in Matlab, written by Dr. E.P. Bellido \cite{bellido_toward_2014};
-	\item Python HypersPy library: a Python-based library for EELS and EDX spectrum processing.
+	\item Python HypersPy library: a Python-based library for EELS and EDX spectrum processing \cite{francisco_de_la_pena_2017_583693}.
 \end{itemize}
 \wss{Thoughts on what tools to use, such as the following: unit testing
   framework, valgrind, static analyzer, make, continuous integration, test
   coverage tool, etc.}
-
-% \subsection{Testing Schedule}
-		
-% See Gantt Chart at the following url ...
 
 \subsection{Non-Testing Based Verification}
 
@@ -120,8 +121,10 @@ The following non-testing based verification methods will be used to assess the 
   execution etc.  Enter not applicable if that is the case.}
 
 \section{System Test Description}
+\label{sec:SysTest}
 	
 \subsection{Tests for Functional Requirements}
+\label{subsec:FuncReqTest}
 
 \subsubsection{Inputs}
 		
@@ -170,6 +173,7 @@ How test will be performed:
 ...
 
 \subsection{Tests for Nonfunctional Requirements}
+\label{subsec:NonfuncReqTest}
 
 \subsubsection{Area of Testing1}
 		
@@ -248,6 +252,7 @@ How test will be performed:
 % ...
 				
 \section{Unit Testing Plan}
+\label{sec:UnitTest}
 
 \subsection{Inputs}
 		
