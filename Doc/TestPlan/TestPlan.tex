@@ -78,7 +78,7 @@ The testing outlined in this document gives valuable contributions to the level 
 The purpose of this document is to describe the tests which will be carried out on \progname{} to verify that it meets the requirements described in the \hyperref[doc:SRS]{SRS}.
 
 \subsection{Scope}
-This document will cover the verification plan for testing the software \progname{}, including the system tests towards verifying that the software meets the functional and non-functional requirements; and the unit tests, of which a non-exhaustive list is given. The document does not cover the validation of the software algorithms.
+This document will cover the verification plan for testing the software \progname{}, including the system tests towards verifying that the software meets the functional and non-functional requirements; and the unit tests, of which a non-exhaustive list is given. The document does not cover the validation of the software algorithms. 
 
 \subsection{Overview of Document}
  It begins by outlining the structure of the document, followed by an overview of the testing arrangements. Specific details follow on the tests which will be performed to test whether or not \progname{} satisfies the \hyperref[subsec:FuncReqTest]{functional} and \hyperref[subsec:NonfuncReqTest]{non-functional} requirements, as well as details of the unit tests which will be written. The unit tests themselves may satisfy some of the functional requirements without needing system testing, these will be detailed under \hyperref[sec:UnitTest]{Unit Testing Plan} as appropriate.
@@ -94,7 +94,8 @@ The test team has one member: Isobel Bicket.
 
 \subsection{Automated Testing Approach}
 
-Unit testing will be performed on the functions within the code, as an automated task to be done with every update of the code. The running of automated tests also provides regression testing and integration testing of new features and updates. The goal of testing is 100\% code coverage.
+Unit testing will be performed on the functions within the code, as an automated task to be done with every update of the code. The running of automated tests also provides regression testing and integration testing of new features and updates. The goal of testing is 100\% code coverage.\\
+The testing plan will not cover testing of the GUI, only the functions called by the GUI after user interaction. Proper user interfacing is expected to be done by the library used to build the GUI.\\
 
 \subsection{Verification Tools}
 
@@ -133,7 +134,7 @@ The following non-testing based verification methods will be used to assess the 
 
 \begin{enumerate}
 
-\item{SI Data array\\}
+\item{Deconvolution}\\}
 
 Type: Functional, Dynamic, Manual, Static etc.
 					
@@ -145,6 +146,9 @@ Output:
 					
 How test will be performed: 
 
+\an{test RL deconvolution algorithm - SNR vs # iterations}
+\an{test RL deconvolution algorithm - deviation from 'real' spectrum (simulated) vs # iterations (compare to 'real' spectrum)}
+\an{test RL deconvolution - time vs SI size, time vs # iterations (parallel processing) - non-functional req's}
 
 \end{enumerate}
 
@@ -272,7 +276,7 @@ For example, the following values might be used to create an SI:
 \begin{itemize}
 	\item $x = [0, 1]$
 	\item $y = [0, 1]$
-	\item $\text{Intensity} = \text{ones}\text{size}(2,2,10)$
+	\item $\text{Intensity} = \text{ones}(\text{size}(2,2,10))$
 	\item $\text{x calibration} = 1\ \si{\nano\metre}/\text{pixel}$
 	\item $\text{energy range} = \text{range}(0, 10)\ \si{\electronvolt}$
 \end{itemize}
@@ -293,7 +297,7 @@ For example, the following values might be used to create an SI:
 \begin{itemize}
 	\item $x = [0, 1]$
 	\item $y = [0, 1]$
-	\item $\text{Intensity} = \text{ones}\text{size}(2,2,10)$
+	\item $\text{Intensity} = \text{ones}(\text{size}(2,2,10))$
 	\item $\text{x calibration} = 1\ \si{\nano\metre}/\text{pixel}$
 	\item $\text{dispersion} = 0.01\ \si{\electronvolt}/\text{pixel}$
 	\item $E(0) = -2\ \si{\electronvolt}$
@@ -315,7 +319,7 @@ For example, the following values might be used to create an SI:
 \begin{itemize}
 	\item $x = [0, 1]$
 	\item $y = [0, 1]$
-	\item $\text{Intensity} = \text{ones}\text{size}(2,2,10)$
+	\item $\text{Intensity} = \text{ones}(\text{size}(2,2,10))$
 	\item $\text{x calibration} = 1\ \si{\nano\metre}/\text{pixel}$
 	\item $\text{wavelength range} = \text{range}(0, 10)\ \si{\nano\metre}$
 \end{itemize}
@@ -335,7 +339,7 @@ Input: A .dm3 file, containing a fabricated spectrum image. The .dm3 file will b
 \begin{itemize}
 	\item $x = [0, 1]$
 	\item $y = [0, 1]$
-	\item $\text{Intensity} = \text{ones}\text{size}(2,2,10)$
+	\item $\text{Intensity} = \text{ones}(\text{size}(2,2,10))$
 	\item $\text{x calibration} = 1\ \si{\nano\metre}/\text{pixel}$
 	\item $\text{dispersion} = 0.01\ \si{\electronvolt}/\text{pixel}$
 	\item $E(0) = -2\ \si{\electronvolt}$
@@ -358,7 +362,7 @@ Input: .h5 file, containing an acquired or fabricated spectrum image. The .h5 sp
 \begin{itemize}
 	\item $x = [0, 1]$
 	\item $y = [0, 1]$
-	\item $\text{Intensity} = \text{ones}\text{size}(2,2,10)$
+	\item $\text{Intensity} = \text{ones}(\text{size}(2,2,10))$
 	\item $\text{x calibration} = 1\ \si{\nano\metre}/\text{pixel}$
 	\item $\text{wavelength range} = \text{range}(0, 10)\ \si{\nano\metre}$
 \end{itemize}
@@ -366,7 +370,6 @@ Input: .h5 file, containing an acquired or fabricated spectrum image. The .h5 sp
 Output: CL Spectrum Image stored within \progname, with metadata assigned to appropriate values.
 					
 How test will be performed: Read in the .h5 file with \progname{}. Check that no errors are raised. Check spatial and spectral calibration to verify metadata was assigned correctly.
-
 
 \item{SI Data array with dispersion (EELS) - complex numbers}
 
@@ -379,7 +382,7 @@ For example, the following values might be used to create an SI:
 \begin{itemize}
 	\item $x = [0, 1]$
 	\item $y = [0, 1]$
-	\item $\text{Intensity} = \text{ones}\text{size}(2,2,10) + j * \text{ones}\text{size}(2,2,10)$
+	\item $\text{Intensity} = \text{ones}(\text{size}(2,2,10)) + j * \text{ones}(\text{size}(2,2,10))$
 	\item $\text{x calibration} = 1\ \si{\nano\metre}/\text{pixel}$
 	\item $\text{dispersion} = 0.01\ \si{\electronvolt}/\text{pixel}$
 	\item $E(0) = -2\ \si{\electronvolt}$
@@ -403,7 +406,7 @@ Initial State:
 					
 Input: 1D data array, present in memory. For example, the following data may be used to initialize a Spectrum:
 \begin{itemize}
-	\item $\text{intensity} = \text{ones}(size(10))\ \text{counts}$
+	\item $\text{intensity} = \text{ones}(\text{size}(10))\ \text{counts}$
 	\item $\text{energy range} = \text{range}(0, 10)\ \si{\electronvolt}$
 \end{itemize}
 
@@ -420,7 +423,7 @@ Initial State:
 
 Input: .csv file, containing a 1D spectrum. The following data may be used to create a spectrum csv file:
 \begin{itemize}
-	\item $\text{Intensity} = \text{ones}(size(10))\ \text{counts}$
+	\item $\text{Intensity} = \text{ones}(\text{size}(10))\ \text{counts}$
 	\item $\text{energy range} = \text{range}(0, 10)\ \si{\electronvolt}$
 \end{itemize}
 
@@ -461,6 +464,78 @@ Input: 2D data array, present in memory. For example, the following data may be 
 Output: Error message - input must be 1D
 
 How test will be performed: Create a 1D data array and attempt to read it with \progname{}. An error should be raised.
+
+\end{enumerate}
+
+\paragraph{Energy range slicing}
+
+The spectrum image to be used for these tests will be the same for all tests in this section and may, for example, consist of float values from 0 to 1, reshaped into the size (2,2,10), with an energy range from $0-10 \si{\electronvolt}$.
+
+\begin{enumerate}
+
+\item{Extract $(x,y)$ slice from spectrum}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: Spectrum image exists in \progname{}.
+
+Input: Two values within the spectrum range calibration values. For example, in a spectrum image with an energy range from $0-9\ \si{\electronvolt}$, the input values might be 5 and 7. the existing spectrum image must have different values of intensity at each pixel and each channel along the energy axis.
+
+Output: An $(x,y)$ image averaged over the spectral range specified by the input to the test.
+
+How test will be performed: Using a 3D dataset, such as those used in the Spectrum image 3D dataset unit test, the test will request the return value of an $(x,y)$ image averaged over the chosen spectral range. No errors should be raised. Check that the range averaged over is the same as the range selected.
+
+
+\item{Extract $(x,y)$ slice from spectrum, slice less than any value in the energy range}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: Spectrum image exists in \progname{}.
+
+Input: Two values within the spectrum range calibration values. For example, in a spectrum image with an energy range from $0-9\ \si{\electronvolt}$, the input values might be -2 and 5. the existing spectrum image must have different values of intensity at each pixel and each channel along the energy axis.
+
+Output: An $(x,y)$ image averaged over the spectral range specified by the input to the test and the minimum value of the energy range in the spectrum image.
+
+How test will be performed: Using a 3D dataset, such as those used in the Spectrum image 3D dataset unit test, the test will request the return value of an $(x,y)$ image averaged over the chosen spectral range. No errors should be raised. Check that the range averaged over is the same as the range selected within the data limits.
+
+
+\item{Extract $(x,y)$ slice from spectrum, slice more than any value in the energy range}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: Spectrum image exists in \progname{}.
+
+Input: Two values within the spectrum range calibration values. For example, in a spectrum image with an energy range from $0-9\ \si{\electronvolt}$, the input values might be 5 and 12. the existing spectrum image must have different values of intensity at each pixel and each channel along the energy axis.
+
+Output: An $(x,y)$ image averaged over the spectral range specified by the input to the test and the maximum value of the energy range in the spectrum image.
+
+How test will be performed: Using a 3D dataset, such as those used in the Spectrum image 3D dataset unit test, the test will request the return value of an $(x,y)$ image averaged over the chosen spectral range. No errors should be raised. Check that the range averaged over is the same as the range selected within the data limits.
+
+
+\item{Extract $(x,y)$ slice from spectrum, slice completely outside the energy range}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: Spectrum image exists in \progname{}.
+
+Input: Two values within the spectrum range calibration values. For example, in a spectrum image with an energy range from $0-9\ \si{\electronvolt}$, the input values might be -5 and -2. the existing spectrum image must have different values of intensity at each pixel and each channel along the energy axis.
+
+Output: A warning should be raised that the range selected is outside the range for which there is data available.
+
+How test will be performed: Using a 3D dataset, such as those used in the Spectrum image 3D dataset unit test, the test will request the return value of an $(x,y)$ image averaged over the chosen spectral range. A warning should be raised and no image returned.
+
+
+\item{Extract $(x,y)$ slice from spectrum, backwards slice}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: Spectrum image exists in \progname{}.
+
+Input: Two values within the spectrum range calibration values. For example, in a spectrum image with an energy range from $0-9\ \si{\electronvolt}$, the input values might be 7 and 5. the existing spectrum image must have different values of intensity at each pixel and each channel along the energy axis.
+
+Output: An $(x,y)$ image averaged over the spectral range specified by the input to the test.
+
+How test will be performed: Using a 3D dataset, such as those used in the Spectrum image 3D dataset unit test, the test will request the return value of an $(x,y)$ image averaged over the chosen spectral range (regardless of the order of selection, the program should behave exactly the same as if the input range was 5 to 7). No errors should be raised. Check that the range averaged over is the same as the range selected (ie, by knowing what data the spectrum image contains).
 
 \end{enumerate}
 
