@@ -75,9 +75,10 @@ The testing outlined in this document gives valuable contributions to the level 
 
 
 \subsection{Purpose}
-
+The purpose of this document is to describe the tests which will be carried out on \progname{} to verify that it meets the requirements described in the \hyperref[doc:SRS]{SRS}.
 
 \subsection{Scope}
+This document will cover the verification plan for testing the software \progname{}, including the system tests towards verifying that the software meets the functional and non-functional requirements; and the unit tests, of which a non-exhaustive list is given. The document does not cover the validation of the software algorithms.
 
 \subsection{Overview of Document}
  It begins by outlining the structure of the document, followed by an overview of the testing arrangements. Specific details follow on the tests which will be performed to test whether or not \progname{} satisfies the \hyperref[subsec:FuncReqTest]{functional} and \hyperref[subsec:NonfuncReqTest]{non-functional} requirements, as well as details of the unit tests which will be written. The unit tests themselves may satisfy some of the functional requirements without needing system testing, these will be detailed under \hyperref[sec:UnitTest]{Unit Testing Plan} as appropriate.
@@ -271,13 +272,15 @@ For example, the following values might be used to create an SI:
 \begin{itemize}
 	\item $x = [0, 1]$
 	\item $y = [0, 1]$
+	\item $\text{Intensity} = \text{ones}\text{size}(2,2,10)$
 	\item $\text{x calibration} = 1\ \si{\nano\metre}/\text{pixel}$
-	\item $\text{energy range} = range(0, 10) \si{\electronvolt}$
+	\item $\text{energy range} = \text{range}(0, 10)\ \si{\electronvolt}$
 \end{itemize}
 
 Output: Spectrum Image stored within \progname{}; the first and second axes should correspond to spatial dimensions, while the third axis should correspond to a spectral dimension.
 
-How test will be performed: Create a 3D data array and attempt to initialize a spectrum image in \progname{} using a variety of calibration possibilities. No errors should be raised. The spectrum image axes should be read in the correct order (x, y, E), and the calibrations should be applied to the correct axes.
+How test will be performed: Create a 3D data array and attempt to initialize a spectrum image in \progname{}. No errors should be raised. The spectrum image axes should be read in the correct order (x, y, E), and the calibrations should be applied to the correct axes. Addresses \hyperref[R_SI_inputs]{Functional Requirement}.
+
 
 \item{SI Data array with dispersion (EELS)}
 
@@ -290,14 +293,15 @@ For example, the following values might be used to create an SI:
 \begin{itemize}
 	\item $x = [0, 1]$
 	\item $y = [0, 1]$
+	\item $\text{Intensity} = \text{ones}\text{size}(2,2,10)$
 	\item $\text{x calibration} = 1\ \si{\nano\metre}/\text{pixel}$
 	\item $\text{dispersion} = 0.01\ \si{\electronvolt}/\text{pixel}$
-	\item $E(0) = -2 \si{\electronvolt}$
+	\item $E(0) = -2\ \si{\electronvolt}$
 \end{itemize}
 
 Output: Spectrum Image stored within \progname{}; the first and second axes should correspond to spatial dimensions, while the third axis should correspond to a spectral dimension.
 
-How test will be performed: Create a 3D data array and attempt to initialize a spectrum image in \progname{} using a variety of calibration possibilities. No errors should be raised. The spectrum image axes should be read in the correct order (x, y, E), and the calibrations should be applied to the correct axes.
+How test will be performed: Create a 3D data array and attempt to initialize a spectrum image in \progname{}. No errors should be raised. The spectrum image axes should be read in the correct order (x, y, E), and the calibrations should be applied to the correct axes.
 
 
 \item{SI Data array with wavelength range (CL)}
@@ -311,13 +315,14 @@ For example, the following values might be used to create an SI:
 \begin{itemize}
 	\item $x = [0, 1]$
 	\item $y = [0, 1]$
+	\item $\text{Intensity} = \text{ones}\text{size}(2,2,10)$
 	\item $\text{x calibration} = 1\ \si{\nano\metre}/\text{pixel}$
-	\item $\text{wavelength range} = range(0, 10) \si{\nano\metre}$
+	\item $\text{wavelength range} = \text{range}(0, 10)\ \si{\nano\metre}$
 \end{itemize}
 
 Output: Spectrum Image stored within \progname{}; the first and second axes should correspond to spatial dimensions, while the third axis should correspond to a spectral dimension.
 
-How test will be performed: Create a 3D data array and attempt to initialize a spectrum image in \progname{} using a variety of calibration possibilities. No errors should be raised. The spectrum image axes should be read in the correct order (x, y, E), and the calibrations should be applied to the correct axes.
+How test will be performed: Create a 3D data array and attempt to initialize a spectrum image in \progname{}. No errors should be raised. The spectrum image axes should be read in the correct order (x, y, E), and the calibrations should be applied to the correct axes.
 
 
 \item{SI .dm3 file}
@@ -330,9 +335,10 @@ Input: A .dm3 file, containing a fabricated spectrum image. The .dm3 file will b
 \begin{itemize}
 	\item $x = [0, 1]$
 	\item $y = [0, 1]$
+	\item $\text{Intensity} = \text{ones}\text{size}(2,2,10)$
 	\item $\text{x calibration} = 1\ \si{\nano\metre}/\text{pixel}$
 	\item $\text{dispersion} = 0.01\ \si{\electronvolt}/\text{pixel}$
-	\item $E(0) = -2 \si{\electronvolt}$
+	\item $E(0) = -2\ \si{\electronvolt}$
 \end{itemize}
 
 Output: EELS Spectrum Image stored within \progname{}, with metadata assigned to appropriate values
@@ -343,22 +349,45 @@ How test will be performed: Read in the .dm3 file with \progname{}. Check that n
 
 \item{SI .h5 file}
 
-Type: Functional, Dynamic, Manual, Static etc.
-					
+Type: Functional, Dynamic, Unit.
+
 Initial State: None
-					
+
 Input: .h5 file, containing an acquired or fabricated spectrum image. The .h5 spectrum image file originates from Odemis software \cite{bv_odemis:_nodate}, it may be possible to fabricate a spectrum image using the scripting interface, using the following values for the calibration parameters, otherwise it may be necessary to use an acquired data file.
 
 \begin{itemize}
 	\item $x = [0, 1]$
 	\item $y = [0, 1]$
+	\item $\text{Intensity} = \text{ones}\text{size}(2,2,10)$
 	\item $\text{x calibration} = 1\ \si{\nano\metre}/\text{pixel}$
-	\item $\text{wavelength range} = range(0, 10) \si{\nano\metre}$
+	\item $\text{wavelength range} = \text{range}(0, 10)\ \si{\nano\metre}$
 \end{itemize}
-					
+
 Output: CL Spectrum Image stored within \progname, with metadata assigned to appropriate values.
 					
 How test will be performed: Read in the .h5 file with \progname{}. Check that no errors are raised. Check spatial and spectral calibration to verify metadata was assigned correctly.
+
+
+\item{SI Data array with dispersion (EELS) - complex numbers}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: None
+
+Input: 3D data array, present in memory; use standard calibration variabilities\\
+For example, the following values might be used to create an SI: 
+\begin{itemize}
+	\item $x = [0, 1]$
+	\item $y = [0, 1]$
+	\item $\text{Intensity} = \text{ones}\text{size}(2,2,10) + j * \text{ones}\text{size}(2,2,10)$
+	\item $\text{x calibration} = 1\ \si{\nano\metre}/\text{pixel}$
+	\item $\text{dispersion} = 0.01\ \si{\electronvolt}/\text{pixel}$
+	\item $E(0) = -2\ \si{\electronvolt}$
+\end{itemize}
+
+Output: Spectrum Image stored within \progname{}; the first and second axes should correspond to spatial dimensions, while the third axis should correspond to a spectral dimension.
+
+How test will be performed: Create a 3D data array and attempt to initialize a spectrum image in \progname{}. No errors should be raised. The spectrum image axes should be read in the correct order (x, y, E), and the calibrations should be applied to the correct axes.
 
 \end{enumerate}
 
@@ -366,35 +395,74 @@ How test will be performed: Read in the .h5 file with \progname{}. Check that no
 
 \begin{enumerate}
 
-\item{Spectrum Data array\\}
+\item{Spectrum Data array}
 
-Type: Functional, Dynamic, Manual, Static etc.
+Type: Functional, Dynamic, Unit.
 					
 Initial State: 
 					
-Input: 3D data array, present in memory
+Input: 1D data array, present in memory. For example, the following data may be used to initialize a Spectrum:
+\begin{itemize}
+	\item $\text{intensity} = \text{ones}(size(10))\ \text{counts}$
+	\item $\text{energy range} = \text{range}(0, 10)\ \si{\electronvolt}$
+\end{itemize}
+
+Output: Spectrum stored within \progname{}, with data assigned to appropriate values.
 					
-Output: Spectrum Image stored within \progname{}; the first and second axes should correspond to spatial dimensions, while the third axis should correspond to a spectral dimension.
-					
-How test will be performed: Create a 3D data array and attempt to read it with \progname{}. Check that no errors are raised. Display the spectrum image to manually check that the data was read in correctly.
+How test will be performed: Create a 1D data array and attempt to read it with \progname{}. No errors should be raised. The unit test will check that the intensity and energy range are assigned to the appropriate variables, as well as the spectral calibration.
 
 
-\item{Spectrum .csv file\\}
+\item{Spectrum .csv file}
 
-Type: Functional, Dynamic, Manual, Static etc.
+Type: Functional, Dynamic, Unit.
 
 Initial State: 
 
-Input: .dm3 file, containing an acquired spectrum image
+Input: .csv file, containing a 1D spectrum. The following data may be used to create a spectrum csv file:
+\begin{itemize}
+	\item $\text{Intensity} = \text{ones}(size(10))\ \text{counts}$
+	\item $\text{energy range} = \text{range}(0, 10)\ \si{\electronvolt}$
+\end{itemize}
 
-Output: Spectrum Image stored within \progname{}, with metadata assigned to appropriate values
+Output: Spectrum stored within \progname{}, with data assigned to appropriate values
 
-How test will be performed: 
+How test will be performed: A csv file containing 1D spectrum data will be imported. No errors should be raised. The unit test will check that the intensity and energy range are assigned to the appropriate variables, as well as the spectral calibration.
+
+
+\item{Spectrum Data array - complex numbers}
+
+Type: Functional, Dynamic, Unit.
+
+Initial State: 
+
+Input: 1D data array, present in memory. For example, the following data may be used to initialize a Spectrum:
+\begin{itemize}
+	\item $\text{energy values} = \text{ones}(\text{size}(10)) + j*\text{ones}(\text{size}(10))\ \text{counts}$
+	\item $\text{energy range} = \text{range}(0, 10)\ \si{\electronvolt}$
+\end{itemize}
+
+Output: Error message - input must be real
+
+How test will be performed: Create a 1D data array and attempt to read it with \progname{}. An error should be raised.
+
+
+\item{Spectrum Data array - 2D array}
+
+Type: Functional, Dynamic, Unit.
+
+Initial State: 
+
+Input: 2D data array, present in memory. For example, the following data may be used to initialize a Spectrum:
+\begin{itemize}
+	\item $\text{energy values} = \text{ones}(\text{size}(2, 2))\ \text{counts}$
+	\item $\text{energy range} = \text{range}(0, 2)\ \si{\electronvolt}$
+\end{itemize}
+
+Output: Error message - input must be 1D
+
+How test will be performed: Create a 1D data array and attempt to read it with \progname{}. An error should be raised.
 
 \end{enumerate}
-
-\wss{Unit testing plans for internal functions and, if appropriate, output
-  files}
 
 \bibliography {TestPlan}
 
