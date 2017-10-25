@@ -50,6 +50,7 @@
   \toprule		
   \textbf{symbol} & \textbf{description}\\
   \midrule 
+  RMS & Root Mean Square\\
   T & Test\\
   \bottomrule
 \end{tabular}\\
@@ -72,7 +73,6 @@ This document outlines the different tests and assessment tools which will be us
 
 \section{General Information}
 The testing outlined in this document gives valuable contributions to the level of trust in the performance of the software. Not only will testing the software build confidence that it is performing correctly, but the results of the tests will also tell the user what to expect when running the software, for instance in terms of performance milestones. Testing not only ensures that the software will, within predictive power, fulfill its \hyperref[subsec:FR]{functional requirements}, but gives the progress and effectiveness of the software in fulfulling the \hyperref[subsec:NfR]{non-functional requirements}.
-
 
 \subsection{Purpose}
 The purpose of this document is to describe the tests which will be carried out on \progname{} to verify that it meets the requirements described in the \hyperref[doc:SRS]{SRS}.
@@ -128,27 +128,40 @@ The following non-testing based verification methods will be used to assess the 
 \subsection{Tests for Functional Requirements}
 \label{subsec:FuncReqTest}
 
-\subsubsection{Inputs}
+\subsubsection{Deconvolution}
 		
-\paragraph{Spectrum Image Input}
+\paragraph{}
 
 \begin{enumerate}
 
-\item{Deconvolution}\\}
+\item{Deconvolution error - blank PSF}
 
-Type: Functional, Dynamic, Manual, Static etc.
+Type: Functional, Dynamic
 					
-Initial State: 
-					
-Input: 
-					
-Output: 
-					
-How test will be performed: 
+Initial State: Spectrum loaded into \progname{}.
 
-\an{test RL deconvolution algorithm - SNR vs # iterations}
-\an{test RL deconvolution algorithm - deviation from 'real' spectrum (simulated) vs # iterations (compare to 'real' spectrum)}
-\an{test RL deconvolution - time vs SI size, time vs # iterations (parallel processing) - non-functional req's}
+Input: A known spectrum (for instance, the data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if it is available from the author). Otherwise a spectrum will be simulated. A range of integers will be used as input for the number of deconvolution iterations. The input of a point spread function to the deconvolution will be an array of ones.
+
+Output: A series of spectra deconvolved using the range of iterations given in the input, and a plot of the RMS error vs the number of iterations used.
+					
+How test will be performed: A series of deconvolutions will be run on the artificial spectrum, with varying numbers of iterations to produce a set of deconvolved spectra. The difference between the deconvolved spectra and the original simulated spectrum will be calculated and the RMS error plotted as a function of number of iterations. Ideally the deconvolved spectra will be identical to the input spectrum, because we are using a null function as the PSF reference.\\
+
+
+\item{Deconvolution error}
+
+Type: Functional, Dynamic
+					
+Initial State: Spectrum loaded into \progname{}.
+
+Input: A known spectrum convolved with a broadening function (for instance, the data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if it is available from the author). Otherwise a spectrum will be simulated and convolved with a broadening function (such as a Lorentzian peak, a Gaussian peak, or an experimental point spread function). A range of integers will be used as input for the number of deconvolution iterations. The broadening function itself is also an input to the deconvolution.
+
+Output: A series of spectra deconvolved using the range of iterations given in the input, and a plot of the RMS error vs the number of iterations used.
+					
+How test will be performed: A series of deconvolutions will be run on the artificially broadened spectrum, using the broadening function as the point spread function, with varying numbers of iterations to produce a set of deconvolved spectra. The difference between the deconvolved spectra and the original simulated spectrum (before convolution with a broadening function) will be calculated and the root mean square error plotted as a function of number of iterations.\\
+
+\an{test RL deconvolution algorithm - SNR vs number iterations}
+\an{test RL deconvolution algorithm - deviation from 'real' spectrum (simulated) vs number iterations (compare to 'real' spectrum)}
+\an{test RL deconvolution - time vs SI size, time vs number iterations (parallel processing) - non-functional req's}
 
 \end{enumerate}
 
