@@ -55,7 +55,7 @@
   \bottomrule
 \end{tabular}\\
 
-\wss{symbols, abbreviations or acronyms -- you can reference the SRS tables if needed}
+See the SRS document \hyperref[TableSymbols]{Table of Symbols} and \hyperref[TableUnits]{Table of Units} for further definitions. 
 
 \newpage
 
@@ -104,11 +104,8 @@ The following verification tools will be used
 	\item Python unittest library: for performing unit tests on the code;
 	\item Python coverage library: to determine the coverage of the tests;
 	\item Deconvo.m: a Richardson-Lucy deconvolution algorithm implementation in Matlab, written by Dr. E.P. Bellido \cite{bellido_toward_2014};
-	\item Python HypersPy library: a Python-based library for EELS and EDX spectrum processing \cite{francisco_de_la_pena_2017_583693}.
+	\item Python HyperSpy library: a Python-based library for spectrum processing for EELS and other techniques \cite{francisco_de_la_pena_2017_583693}.
 \end{itemize}
-\wss{Thoughts on what tools to use, such as the following: unit testing
-  framework, valgrind, static analyzer, make, continuous integration, test
-  coverage tool, etc.}
 
 \subsection{Non-Testing Based Verification}
 
@@ -119,22 +116,22 @@ The following non-testing based verification methods will be used to assess the 
 	\item User survey: a group of qualified users will be asked to process a sample dataset using the software and will be polled on their user experience.
 \end{itemize}
 
-\wss{List any approaches like code inspection, code walkthrough, symbolic
-  execution etc.  Enter not applicable if that is the case.}
-
 \section{System Test Description}
 \label{sec:SysTest}
-	
+This section lists the system tests to be performed to verify whether or not the program fulfills the functional requirements and to test how well it meets the non-functional requirements. Note that some of the tests for the functional requirements are unit tests and can be found in the \hyperref[sec:UnitTest]{Unit Test} section.
+
 \subsection{Tests for Functional Requirements}
 \label{subsec:FuncReqTest}
+Here the tests to verify whether or not \progname{} meets the functional requirements are listed. In addition, some of the tests validate the algorithms chosen for use in \progname{}.
 
 \subsubsection{Deconvolution}
-		
+In this subsection, the tests for the performance of the Richardson-Lucy deconvolution algorithm will be explained.
 \paragraph{}
 
 \begin{enumerate}
 
-\item{Deconvolution error - blank PSF}
+\item{Deconvolution error estimation - blank PSF}
+\label{TFR:RLblankPSF}
 
 Type: Functional, Dynamic
 					
@@ -147,7 +144,8 @@ Output: A series of spectra deconvolved using the range of iterations given in t
 How test will be performed: A series of deconvolutions will be run on the artificial spectrum, with varying numbers of iterations to produce a set of deconvolved spectra. The difference between the deconvolved spectra and the original simulated spectrum will be calculated and the RMS error plotted as a function of number of iterations. Ideally the deconvolved spectra will be identical to the input spectrum, because we are using a null function as the PSF reference.\\
 
 
-\item{Deconvolution error}
+\item{Deconvolution error estimation}
+\label{TFR:RLerror}
 
 Type: Functional, Dynamic
 					
@@ -159,69 +157,92 @@ Output: A series of spectra deconvolved using the range of iterations given in t
 					
 How test will be performed: A series of deconvolutions will be run on the artificially broadened spectrum, using the broadening function as the point spread function, with varying numbers of iterations to produce a set of deconvolved spectra. The difference between the deconvolved spectra and the original simulated spectrum (before convolution with a broadening function) will be calculated and the root mean square error plotted as a function of number of iterations.\\
 
-\an{test RL deconvolution algorithm - SNR vs number iterations}
-\an{test RL deconvolution algorithm - deviation from 'real' spectrum (simulated) vs number iterations (compare to 'real' spectrum)}
-\an{test RL deconvolution - time vs SI size, time vs number iterations (parallel processing) - non-functional req's}
+
+\item{Deconvolution signal-to-noise ratio estimation}
+\label{TFR:RLSNR}
+Type: Functional, Dynamic
+					
+Initial State: Spectrum loaded into \progname{}.
+
+Input: A known spectrum convolved with a broadening function (for instance, the data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if it is available from the author). Otherwise a spectrum will be simulated and convolved with a broadening function (such as a Lorentzian peak, a Gaussian peak, or an experimental point spread function). A range of integers will be used as input for the number of deconvolution iterations. The broadening function itself is also an input to the deconvolution.
+
+Output: A series of spectra deconvolved using the range of iterations given in the input, and a plot of the SNR vs the number of iterations used.
+					
+How test will be performed: A series of deconvolutions will be run on the artificially broadened spectrum, using the broadening function as the point spread function, with varying numbers of iterations to produce a set of deconvolved spectra. The difference between the deconvolved spectra and the original simulated spectrum (before convolution with a broadening function) will be calculated and the signal-to-noise ratio plotted as a function of number of iterations. The test will follow the SNR estimation used in \cite{bellido_toward_2014}, taking the variance of the signal every five data points.\\
 
 \end{enumerate}
-
-\paragraph{}
-
-\begin{enumerate}
-
-\item{}
-
-Type: Functional, Dynamic, Manual, Static etc.
-					
-Initial State: \ddref{Spectrum}
-					
-Input: 
-					
-Output: 
-					
-How test will be performed: 
-
-
-
-\end{enumerate}
-
-
-\subsubsection{Area of Testing2}
-
-...
 
 \subsection{Tests for Nonfunctional Requirements}
 \label{subsec:NonfuncReqTest}
 
-\subsubsection{Area of Testing1}
-		
-\paragraph{Title for Test}
+\subsubsection{Program speed}
 
 \begin{enumerate}
 
-\item{test-id1\\}
+\paragraph{Deconvolution}
+\item{Deconvolution calculation time - SI size}
 
-Type: 
+Type: Performance, Dynamic
 					
-Initial State: 
-					
-Input/Condition: 
-					
-Output/Result: 
-					
-How test will be performed: 
-					
-\item{test-id2\\}
+Initial State: Spectrum loaded into \progname{}.
 
-Type: Functional, Dynamic, Manual, Static etc.
+Input: A known spectrum convolved with a broadening function (for instance, the data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if it is available from the author), and transformed into a spectrum image data format (of 3D shape). Otherwise a spectrum will be simulated and convolved with a broadening function (such as a Lorentzian peak, a Gaussian peak, or an experimental point spread function). The broadening function itself is also an input to the deconvolution. The spectrum image size will be varied from $(1\text{ by }1\text{ by }K)$ to $(1000 \text{ by } 1000 \text{ by } K)$ with a minimum of 10 intermediate values. 25 iterations will be performed for each spectrum image size. A typical value for $K$ might be 2048 or 1024, depending on the dataset used.
+
+Output: A plot of the calculation time required vs the size of the spectrum image used.
+
+How test will be performed: The Richardson-Lucy deconvolution algorithm will be run on a series of spectrum images of varying size. 25 iterations will be run on each spectrum image and the time required to finish the calculations recorded and plotted against the number of $(x, y)$ pixels in the spectrum image.\\
+
+
+\item{Deconvolution calculation time - iterations}
+
+Type: Performance, Dynamic
 					
-Initial State: 
-					
-Input: 
-					
-Output: 
-					
-How test will be performed: 
+Initial State: Spectrum loaded into \progname{}.
+
+Input: A known spectrum convolved with a broadening function (for instance, the data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if it is available from the author), and transformed into a spectrum image data format (of 3D shape). Otherwise a spectrum will be simulated and convolved with a broadening function (such as a Lorentzian peak, a Gaussian peak, or an experimental point spread function). The broadening function itself is also an input to the deconvolution. The spectrum image size will be set at $(500 \text{ by } 500 \text{ by } E)$ and a the number of iterations will be changed from 1 to 500 with at least 10 intermediate steps. A typical value for E might be 2048 or 1024, depending on the dataset used.
+
+Output: A plot of the calculation time required vs the number of iterations used.
+
+How test will be performed: The Richardson-Lucy deconvolution algorithm will be run repeatedly on a spectrum image with varying numbers of iterations. The time required to finish the calculations will be recorded and plotted against the number of $(x, y)$ pixels in the spectrum image.\\
+
+\paragraph{Normalization}
+\item{Normalization calculation time}
+
+Type: Performance, Dynamic
+
+Initial State: Spectrum loaded into \progname{}.
+
+Input: A known spectrum (for instance, an artificially created spectrum, a range of values from 0 to the number of pixels used in the spectrum image), transformed into a spectrum image data format (of 3D shape).The spectrum image size will be varied from $(1\text{ by }1\text{ by }K)$ to $(1000 \text{ by } 1000 \text{ by }K)$ with a minimum of 10 intermediate values. A typical value for $K$ might be 2048 or 1024, depending on the dataset used.
+
+Output: A plot of the calculation time required vs the size of the spectrum image used.
+
+How test will be performed: The normalization algorithm will be run on a series of spectrum images of varying size, normalizing to the integral of the full spectrum. The time required to finish the calculations will be recorded and plotted against the number of $(x, y)$ pixels in the spectrum image.\\
+
+\paragraph{Gain Correction}
+\item{Gain correction calculation time}
+
+Type: Performance, Dynamic
+
+Initial State: Spectrum loaded into \progname{}.
+
+Input: A known spectrum (for instance, an artificially created spectrum, a range of values from 0 to the number of pixels used in the spectrum image), transformed into a spectrum image data format (of 3D shape).The spectrum image size will be varied from $(1\text{ by }1\text{ by }K)$ to $(1000 \text{ by } 1000 \text{ by }K)$ with a minimum of 10 intermediate values. A typical value for $K$ might be 2048 or 1024, depending on the dataset used. The gain correction factor will be given as a range of integers from 0 to $K-1$.
+
+Output: A plot of the calculation time required vs the size of the spectrum image used.
+
+How test will be performed: The gain correction function will be run on a series of spectrum images of varying size. The time required to finish the calculations will be recorded and plotted against the number of $(x, y)$ pixels in the spectrum image.\\
+
+\paragraph{Background subtraction}
+\item{Background subtraction calculation time}
+
+Type: Performance, Dynamic
+
+Initial State: Spectrum loaded into \progname{}.
+
+Input: A known spectrum (for instance, the data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if it is available from the author), transformed into a spectrum image data format (of 3D shape).The spectrum image size will be varied from $(1\text{ by }1\text{ by }K)$ to $(1000 \text{ by } 1000 \text{ by }K)$ with a minimum of 10 intermediate values. A typical value for $K$ might be 2048 or 1024, depending on the dataset used. The background correction will be given as a an array of ones of size $K$.
+
+Output: A plot of the calculation time required vs the size of the spectrum image used.
+
+How test will be performed: The gain correction function will be run on a series of spectrum images of varying size. The time required to finish the calculations will be recorded and plotted against the number of $(x, y)$ pixels in the spectrum image.\\ 
 
 \end{enumerate}
 
@@ -231,43 +252,36 @@ How test will be performed:
 
 \subsection{Traceability Between Test Cases and Requirements}
 
-% \section{Tests for Proof of Concept}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+		\hline 
+		& \hyperref[TFR:RLblankPSF]{1} & \hyperref[TFR:RLerror]{2} & \hyperref[TFR:RLSNR]{3} & & \hyperref[sec:UnitTest]{Unit Test} \\
+		\hline
+		\hyperref[R_SI_inputs]{SI input}     			&  &  &  &  & X \\ 
+		\hline
+		\hyperref[R_spectrum_inputs]{Spectrum input}    &  &  &  &  & X \\ 
+		\hline
+		\hyperref[R_Input_dimension]{Input dimensions}  &  &  &  &  & X \\
+		\hline
+		\hyperref[R_Input_dimension]{SI slicing}		&  &  &  &  & X \\ 
+		\hline
+		\hyperref[R_SI_area]{SI area}          			&  &  &  &  & X \\ 
+		\hline
+		\hyperref[R_deconvolution]{Deconvolution}       & X & X & X &  & X \\ 
+		\hline
+		\hyperref[R_normalization]{Normalization} 		&  &  &  &  &  \\ 
+		\hline
+		\hyperref[R_normalization]{Background} 			&  &  &  &  &  \\ 
+		\hline
+		\hyperref[R_normalization]{Gain}  				&  &  &  &  &  \\ 
+		\hline
+	\end{tabular}
+	\caption{Traceability Matrix Showing the Connections Between Test Cases and
+Requirements}
+	\label{Table:A_trace}
+\end{table}
 
-% \subsection{Area of Testing1}
-		
-% \paragraph{Title for Test}
-
-% \begin{enumerate}
-
-% \item{test-id1\\}
-
-% Type: Functional, Dynamic, Manual, Static etc.
-					
-% Initial State: 
-					
-% Input: 
-					
-% Output: 
-					
-% How test will be performed: 
-					
-% \item{test-id2\\}
-
-% Type: Functional, Dynamic, Manual, Static etc.
-					
-% Initial State: 
-
-% Input: 
-					
-% Output: 
-					
-% How test will be performed: 
-
-% \end{enumerate}
-
-% \subsection{Area of Testing2}
-
-% ...
 				
 \section{Unit Testing Plan}
 \label{sec:UnitTest}
@@ -577,6 +591,8 @@ Their values are defined in this section for easy maintenance.
 \item Are the specifications and requirements complete and correctly implemented?
 \item Is the user interface clear and easy to use?
 \item Does each unit of code have a single purpose, or can it be split into multiple functions?
+\item What is the expected memory usage for each function? Can it be reduced? (\textit{eg} are unnecessary copies of arrays being created?)
+\item Are array slicing references in the correct order? (eg, check correct dimension is used)
 \end{itemize}
 
 \end{document}
