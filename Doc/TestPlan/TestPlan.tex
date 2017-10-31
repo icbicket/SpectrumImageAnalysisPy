@@ -496,7 +496,7 @@ How test will be performed: Create a 1D data array and attempt to read it with \
 
 \paragraph{Energy range slicing}
 
-The spectrum image to be used for these tests will be the same for all tests in this section and may, for example, consist of float values from 0 to 1, reshaped into the size (2,2,10), with an energy range from $0-10 \si{\electronvolt}$.
+The spectrum image to be used for these tests will be the same for all tests in this section and may, for example, consist of float values from 0 to 1, reshaped into the size (2,2,10), with an energy range from $0-9 \si{\electronvolt}$.
 
 \begin{enumerate}
 
@@ -566,6 +566,62 @@ How test will be performed: Using a 3D dataset, such as those used in the Spectr
 
 \end{enumerate}
 
+\paragraph{Area spectrum extraction}
+
+The spectrum image to be used for these tests will be the same for all tests in this section and may, for example, consist of float values from 0 to 1, reshaped into the size (100, 100, 10), with an energy range from $0-9 \si{\electronvolt}$.
+
+\begin{enumerate}
+
+\item{Extract area - square}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: Spectrum image exists in \progname{}.
+
+Input: Four $(x,y)$ values defining the vertices of a square (for instance, $(20, 20)$, $(20, 35)$, $(35, 35)$, $(35, 20)$). A spectrum image, as defined above for this section.
+
+Output: An spectrum, averaged over the $(x,y)$ area defined.
+
+How test will be performed: Using a 3D dataset, the test will request the return value of a spectrum averaged over the chosen area. No errors should be raised. Check that the correct area was used in the average (correct solution is known by manual deduction from the spectrum image).
+
+\item{Extract area - triangle}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: Spectrum image exists in \progname{}.
+
+Input: A range of $(x,y)$ values defining a triangle (for instance, $(20, 20)$, $(35, 35)$, $(35, 20)$). A spectrum image, as defined above for this section.
+
+Output: A spectrum, averaged over the $(x,y)$ values defined.
+
+How test will be performed: Using a 3D dataset, the test will request the return value of a spectrum averaged over the chosen area. No errors should be raised. Check that the correct area was used in the average (correct solution is known by manual deduction from the spectrum image).
+
+\item{Extract area - line}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: Spectrum image exists in \progname{}.
+
+Input: A range of $(x,y)$ values defining a line (for instance, $(20, 20)$, $(35, 35)$). A spectrum image, as defined above for this section.
+
+Output: A warning that a 2D area does not exist when only two points are used to define the area.
+
+How test will be performed: Using a 3D dataset, the test will request the return value of a spectrum averaged over the chosen area. A warning should be raised and nothing returned.
+
+\item{Extract area - outside image}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: Spectrum image exists in \progname{}.
+
+Input: A range of $(x,y)$ values defining a line (for instance, $(-20, 20)$, $(35, 135)$). A spectrum image, as defined above for this section.
+
+Output: A spectrum, averaged over the $(x,y)$ values defined, within the image dimensions. Dimensions outside the image should be rounded to the closest value within the image range (0-99).
+
+How test will be performed: Using a 3D dataset, the test will request the return value of a spectrum averaged over the chosen area.  No errors should be raised. Check that the correct area was used in the average (correct solution is known by manual deduction from the spectrum image). The program should behave as though any image ranges outside the available range are at the closest border of the image (\textit{e.g.} -20 rounds to 0, 135 rounds to 99).
+
+\end{enumerate}
+
 \bibliography {TestPlan}
 
 \newpage
@@ -591,8 +647,8 @@ Their values are defined in this section for easy maintenance.
 \item Are the specifications and requirements complete and correctly implemented?
 \item Is the user interface clear and easy to use?
 \item Does each unit of code have a single purpose, or can it be split into multiple functions?
-\item What is the expected memory usage for each function? Can it be reduced? (\textit{eg} are unnecessary copies of arrays being created?)
-\item Are array slicing references in the correct order? (eg, check correct dimension is used)
+\item What is the expected memory usage for each function? Can it be reduced? (\textit{e.g.} are unnecessary copies of arrays being created?)
+\item Are array slicing references in the correct order? (\textit{e.g.}, check correct dimension is used)
 \end{itemize}
 
 \end{document}
