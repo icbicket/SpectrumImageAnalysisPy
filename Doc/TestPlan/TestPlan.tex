@@ -50,12 +50,13 @@
   \toprule		
   \textbf{symbol} & \textbf{description}\\
   \midrule 
+  GUI & Graphical User Interface\\
   RMS & Root Mean Square\\
   T & Test\\
   \bottomrule
 \end{tabular}\\
 
-See the SRS document \hyperref[TableSymbols]{Table of Symbols} and \hyperref[TableUnits]{Table of Units} for further definitions. 
+See the SRS \hyperref[SRS:RefMat]{Reference Material} for further definitions. 
 
 \newpage
 
@@ -63,69 +64,120 @@ See the SRS document \hyperref[TableSymbols]{Table of Symbols} and \hyperref[Tab
 
 \listoftables
 
-\listoffigures
-
 \newpage
 
 \pagenumbering{arabic}
 
-This document outlines the different tests and assessment tools which will be used for assessing the performance of \progname{}. The testing will be done to build confidence in the performance of the program and allow the end user to use it with more assurity that it is behaving correctly and any artifacts seen in the data are either a known result of the program, or independent of the use of \progname{} to process the data.
+This document outlines the different tests and assessment tools which will be
+used for assessing the performance of \progname{}. The testing will be done to
+build confidence in the performance of the program and allow the end user to use
+it with more assurity that it is behaving correctly and any artifacts seen in
+the data are either a known result of the program, or independent of the use of
+\progname{} to process the data.
 
 \section{General Information}
-The testing outlined in this document gives valuable contributions to the level of trust in the performance of the software. Not only will testing the software build confidence that it is performing correctly, but the results of the tests will also tell the user what to expect when running the software, for instance in terms of performance milestones. Testing not only ensures that the software will, within predictive power, fulfill its \hyperref[subsec:FR]{functional requirements}, but gives the progress and effectiveness of the software in fulfulling the \hyperref[subsec:NfR]{non-functional requirements}.
+The testing outlined in this document gives valuable contributions to the level
+of trust in the performance of the software. Not only will testing the software
+build confidence that it is performing correctly, but the results of the tests
+will also tell the user what to expect when running the software, for instance
+in terms of performance milestones. Testing not only ensures that the software
+will, within predictive power, fulfill its \hyperref[subsec:FR]{functional
+requirements}, but gives the progress and effectiveness of the software in
+fulfulling the \hyperref[subsec:NfR]{non-functional requirements}.
 
 \subsection{Purpose}
-The purpose of this document is to describe the tests which will be carried out on \progname{} to verify that it meets the requirements described in the \hyperref[doc:SRS]{SRS}.
+The purpose of this document is to describe the tests which will be carried out
+on \progname{} to verify that it meets the requirements described in the
+\hyperref[doc:SRS]{SRS}.
 
 \subsection{Scope}
-This document will cover the verification plan for testing the software \progname{}, including the system tests towards verifying that the software meets the functional and non-functional requirements; and the unit tests, of which a non-exhaustive list is given. The document does not cover the validation of the software algorithms. 
+This document will cover the verification plan for testing the software
+\progname{}, including the system tests towards verifying that the software
+meets the functional and non-functional requirements; and the unit tests, of
+which a non-exhaustive list is given. The document does not cover the validation
+of the software algorithms, but will include an estimate of the combined error
+of the software and deconvolution algorithm used. 
 
 \subsection{Overview of Document}
- It begins by outlining the structure of the document, followed by an overview of the testing arrangements. Specific details follow on the tests which will be performed to test whether or not \progname{} satisfies the \hyperref[subsec:FuncReqTest]{functional} and \hyperref[subsec:NonfuncReqTest]{non-functional} requirements, as well as details of the unit tests which will be written. The unit tests themselves may satisfy some of the functional requirements without needing system testing, these will be detailed under \hyperref[sec:UnitTest]{Unit Testing Plan} as appropriate.
+ It begins by outlining the structure of the document, followed by an overview
+of the testing arrangements. Specific details follow on the tests which will be
+performed to test whether or not \progname{} satisfies the
+\hyperref[subsec:FuncReqTest]{functional} and
+\hyperref[subsec:NonfuncReqTest]{non-functional} requirements, as well as
+details of the unit tests which will be written. The unit tests themselves may
+satisfy some of the functional requirements without needing system testing,
+these will be detailed under \hyperref[sec:UnitTest]{Unit Testing Plan} as
+appropriate.
 
 \section{Plan}
-This section details the plan to be followed when testing the software, including those involved in the testing, the testing approach, and the verification tools which will be used.
+This section details the plan to be followed when testing the software,
+including those involved in the testing, the testing approach, and the
+verification tools which will be used.
 	
 \subsection{Software Description}
-The software, \progname{}, is designed as a data analysis tool for electron energy loss spectroscopy and cathodoluminescence spectrum imaging data. It provides several data processing routines to the user and a graphical user interface to navigate the 3D data set and export desired spectra or image slices. The requirements and expectations for \progname{} are detailed in the \hyperref[doc:SRS]{Software Requirements Specification}.
+The software, \progname{}, is designed as a data analysis tool for electron
+energy loss spectroscopy and cathodoluminescence spectrum imaging data. It
+provides several data processing routines to the user and a graphical user
+interface to navigate the 3D data set and export desired spectra or image
+slices. The requirements and expectations for \progname{} are detailed in the
+\hyperref[doc:SRS]{Software Requirements Specification}.
 
 \subsection{Test Team}
 The test team has one member: Isobel Bicket.
 
 \subsection{Automated Testing Approach}
 
-Unit testing will be performed on the functions within the code, as an automated task to be done with every update of the code. The running of automated tests also provides regression testing and integration testing of new features and updates. The goal of testing is 100\% code coverage.\\
-The testing plan will not cover testing of the GUI, only the functions called by the GUI after user interaction. Proper user interfacing is expected to be done by the library used to build the GUI.\\
+Unit testing will be performed on the functions within the code, as an automated
+task to be done with every update of the code. The running of automated tests
+also provides regression testing and integration testing of new features and
+updates. The goal of testing is 100\% code coverage.\\
+The testing plan will not cover testing of the GUI, only the functions called by
+the GUI after user interaction. Proper user interfacing is expected to be done
+by the library used to build the GUI.\\
 
 \subsection{Verification Tools}
-
-The following verification tools will be used
+\label{subsec:VerificationTools}
+The following verification tools will be used:
 \begin{itemize}
 	\item Python unittest library: for performing unit tests on the code;
 	\item Python coverage library: to determine the coverage of the tests;
-	\item Deconvo.m: a Richardson-Lucy deconvolution algorithm implementation in Matlab, written by Dr. E.P. Bellido \cite{bellido_toward_2014};
-	\item Python HyperSpy library: a Python-based library for spectrum processing for EELS and other techniques \cite{francisco_de_la_pena_2017_583693}.
+	\item Deconvo.m: a Richardson-Lucy deconvolution algorithm implementation in
+Matlab, written by Dr. E.P. Bellido \cite{bellido_toward_2014};
+	\item Python HyperSpy library: a Python-based library for spectrum processing
+for EELS and other techniques \cite{francisco_de_la_pena_2017_583693}.
 \end{itemize}
 
 \subsection{Non-Testing Based Verification}
 
-The following non-testing based verification methods will be used to assess the performance of \progname{}
+The following non-testing based verification methods will be used to assess the
+performance of \progname{}
 
 \begin{itemize}
-	\item Code review: a detailed code review will be performed by an external party and feedback provided;
-	\item User survey: a group of qualified users will be asked to process a sample dataset using the software and will be polled on their user experience.
+	\item Code review: a detailed code review will be performed by an external
+party and feedback provided;
+	\item User survey: a group of qualified users will be asked to process a sample
+dataset using the software and will be polled on their user experience. The
+group should include a number of people with different levels of experience in
+data processing and programming, as well as different computer systems.
 \end{itemize}
 
 \section{System Test Description}
 \label{sec:SysTest}
-This section lists the system tests to be performed to verify whether or not the program fulfills the functional requirements and to test how well it meets the non-functional requirements. Note that some of the tests for the functional requirements are unit tests and can be found in the \hyperref[sec:UnitTest]{Unit Test} section.
+This section lists the system tests to be performed to verify whether or not the
+program fulfills the functional requirements and to test how well it meets the
+non-functional requirements. Note that some of the tests for the functional
+requirements are unit tests and can be found in the \hyperref[sec:UnitTest]{Unit
+Test} section.
 
 \subsection{Tests for Functional Requirements}
 \label{subsec:FuncReqTest}
-Here the tests to verify whether or not \progname{} meets the functional requirements are listed. In addition, some of the tests validate the algorithms chosen for use in \progname{}.
+Here the tests to verify whether or not \progname{} meets the functional
+requirements are listed. In addition, some of the tests validate the algorithms
+chosen for use in \progname{}.
 
 \subsubsection{Deconvolution}
-In this subsection, the tests for the performance of the Richardson-Lucy deconvolution algorithm will be explained.
+In this subsection, the tests for the performance of the Richardson-Lucy
+deconvolution algorithm will be explained.
 \paragraph{}
 
 \begin{enumerate}
@@ -137,11 +189,22 @@ Type: Functional, Dynamic
 					
 Initial State: Spectrum loaded into \progname{}.
 
-Input: A known spectrum (for instance, the data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if it is available from the author). Otherwise a spectrum will be simulated. A range of integers will be used as input for the number of deconvolution iterations. The input of a point spread function to the deconvolution will be an array of ones.
+Input: A known spectrum (for instance, the data used in the paper by Bellido
+\textit{et al} \cite{bellido_toward_2014}, if it is available from the author).
+Otherwise a spectrum will be simulated. A range of integers will be used as
+input for the number of deconvolution iterations. The input of a point spread
+function to the deconvolution will be an array of ones.
 
-Output: A series of spectra deconvolved using the range of iterations given in the input, and a plot of the RMS error vs the number of iterations used.
+Output: A series of spectra deconvolved using the range of iterations given in
+the input, and a plot of the RMS error vs the number of iterations used.
 					
-How test will be performed: A series of deconvolutions will be run on the artificial spectrum, with varying numbers of iterations to produce a set of deconvolved spectra. The difference between the deconvolved spectra and the original simulated spectrum will be calculated and the RMS error plotted as a function of number of iterations. Ideally the deconvolved spectra will be identical to the input spectrum, because we are using a null function as the PSF reference.\\
+How test will be performed: A series of deconvolutions will be run on the
+artificial spectrum, with varying numbers of iterations to produce a set of
+deconvolved spectra. The difference between the deconvolved spectra and the
+original simulated spectrum will be calculated and the RMS error plotted as a
+function of number of iterations. Ideally the deconvolved spectra will be
+identical to the input spectrum, because we are using a null function as the PSF
+reference.\\
 
 
 \item{Deconvolution error estimation}
@@ -151,11 +214,26 @@ Type: Functional, Dynamic
 					
 Initial State: Spectrum loaded into \progname{}.
 
-Input: A known spectrum convolved with a broadening function (for instance, the data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if it is available from the author). Otherwise a spectrum will be simulated and convolved with a broadening function (such as a Lorentzian peak, a Gaussian peak, or an experimental point spread function). A range of integers will be used as input for the number of deconvolution iterations. The broadening function itself is also an input to the deconvolution.
+Input: A known spectrum convolved with a broadening function (for instance, the
+data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if
+it is available from the author). Otherwise a spectrum will be simulated and
+convolved with a broadening function (such as a Lorentzian peak, a Gaussian
+peak, or an experimental point spread function). A range of integers will be
+used as input for the number of deconvolution iterations. The broadening
+function itself is also an input to the deconvolution.
 
-Output: A series of spectra deconvolved using the range of iterations given in the input, and a plot of the RMS error vs the number of iterations used.
+Output: A series of spectra deconvolved using the range of iterations given in
+the input, and a plot of the RMS error vs the number of iterations used.
 					
-How test will be performed: A series of deconvolutions will be run on the artificially broadened spectrum, using the broadening function as the point spread function, with varying numbers of iterations to produce a set of deconvolved spectra. The difference between the deconvolved spectra and the original simulated spectrum (before convolution with a broadening function) will be calculated and the root mean square error plotted as a function of number of iterations.\\
+How test will be performed: A series of deconvolutions will be run on the
+artificially broadened spectrum, using the broadening function as the point
+spread function, with varying numbers of iterations to produce a set of
+deconvolved spectra. The difference between the deconvolved spectra and the
+original simulated spectrum (before convolution with a broadening function) will
+be calculated and the root mean square error plotted as a function of number of
+iterations. The same data will be deconvolved using the HyperSpy toolbox and the
+Matlab code listed in the \hyperref[subsec:VerificationTools]{Verification
+Tools} section.\\
 
 
 \item{Deconvolution signal-to-noise ratio estimation}
@@ -164,13 +242,122 @@ Type: Functional, Dynamic
 					
 Initial State: Spectrum loaded into \progname{}.
 
-Input: A known spectrum convolved with a broadening function (for instance, the data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if it is available from the author). Otherwise a spectrum will be simulated and convolved with a broadening function (such as a Lorentzian peak, a Gaussian peak, or an experimental point spread function). A range of integers will be used as input for the number of deconvolution iterations. The broadening function itself is also an input to the deconvolution.
+Input: A known spectrum convolved with a broadening function (for instance, the
+data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if
+it is available from the author). Otherwise a spectrum will be simulated and
+convolved with a broadening function (such as a Lorentzian peak, a Gaussian
+peak, or an experimental point spread function). A range of integers will be
+used as input for the number of deconvolution iterations. The broadening
+function itself is also an input to the deconvolution.
 
-Output: A series of spectra deconvolved using the range of iterations given in the input, and a plot of the SNR vs the number of iterations used.
+Output: A series of spectra deconvolved using the range of iterations given in
+the input, and a plot of the SNR vs the number of iterations used.
 					
-How test will be performed: A series of deconvolutions will be run on the artificially broadened spectrum, using the broadening function as the point spread function, with varying numbers of iterations to produce a set of deconvolved spectra. The difference between the deconvolved spectra and the original simulated spectrum (before convolution with a broadening function) will be calculated and the signal-to-noise ratio plotted as a function of number of iterations. The test will follow the SNR estimation used in \cite{bellido_toward_2014}, taking the variance of the signal every five data points.\\
+How test will be performed: A series of deconvolutions will be run on the
+artificially broadened spectrum, using the broadening function as the point
+spread function, with varying numbers of iterations to produce a set of
+deconvolved spectra. The difference between the deconvolved spectra and the
+original simulated spectrum (before convolution with a broadening function) will
+be calculated and the signal-to-noise ratio plotted as a function of number of
+iterations. The test will follow the SNR estimation used in
+\cite{bellido_toward_2014}, taking the variance of the signal every five data
+points.\\
 
 \end{enumerate}
+
+\subsubsection{File Export}
+In this subsection, the tests for checking that the program writes files
+correctly will be explained.
+
+\begin{enumerate}
+
+\item{Image export}
+\label{TFR:ImgExport}
+
+Type: Functional, Dynamic, Manual
+
+Initial State: Spectrum image loaded into \progname{}. The spectrum image to be
+used for this test may, for example, consist of float values from 0 to 1,
+reshaped into the size $(2,2,10)$, with an energy range from $0-9\
+\si{\electronvolt}$.
+
+Input: A selected range in the spectrum (eg, $1$ to $2\ \si{\electronvolt}$).
+
+Output: An \textit{Image.png} image written to the filesystem corresponding to
+the signal averaged over the selected energy range for each pixel.
+
+How test will be performed: Using a 3D dataset, the test will request the return
+value of an $(x,y)$ image averaged over the chosen spectral range and export
+this to an \textit{Image.png} file. No errors should be raised. The user must
+check that the range averaged over is the same as the range selected within the
+data limits.\\
+\an{Not sure if I can change these tests into automatic tests. I could read the
+file back into the program, but then I'm testing both the export and import
+functions and can't separate errors from one, so I made the test manual.}
+\item{Image export - GUI}
+\label{TFR:ImgExportGUI}
+
+Type: Functional, Dynamic, Manual
+
+Initial State: Spectrum image loaded into \progname{}. The spectrum image to be
+used for this test may, for example, consist of float values from 0 to 1,
+reshaped into the size $(10,10,25)$, with an energy range from $0-9\
+\si{\electronvolt}$.
+
+Input: The user must interact with the GUI to select an energy range in the
+spectrum from which to create and export an image.
+
+Output: An \textit{Image.png} image written to the filesystem corresponding to
+the image averaged over the selected spectrum energy range.
+
+How test will be performed: Using a 3D dataset, the test will display the GUI
+and ask the user to select an energy range in the spectrum and run the command
+to export an image to file. The user must inspect the \textit{Image.png} file to
+ensure that the correct spectrum was exported from the correct pixel.\\
+
+\item{Spectrum export}
+\label{TFR:SpecExport}
+
+Type: Functional, Dynamic, Manual
+
+Initial State: Spectrum image loaded into \progname{}. The spectrum image to be
+used for this test may, for example, consist of float values from 0 to 1,
+reshaped into the size $(2,2,10)$, with an energy range from $0-9\
+\si{\electronvolt}$.
+
+Input: A selected range in the image (\textit{e.g.}, pixel $(0,0)$).
+
+Output: A \textit{Spectrum.csv} file written to the filesystem corresponding to
+the spectrum averaged over the selected area.
+
+How test will be performed: Using a 3D dataset, the test will request the return
+value of a spectrum averaged over the chosen area. No errors should be raised.
+The user must inspect the \textit{Spectrum.csv} file to ensure that the correct
+spectrum was exported from the correct pixel, with the correct energy range.
+
+\item{Spectrum export - GUI}
+\label{TFR:SpecExportGUI}
+
+Type: Functional, Dynamic, Manual
+
+Initial State: Spectrum image loaded into \progname{}. The spectrum image to be
+used for this test may, for example, consist of float values from 0 to 1,
+reshaped into the size $(10,10,25)$, with an energy range from $0-9\
+\si{\electronvolt}$.
+
+Input: The user must interact with the GUI to select an area on the image from
+which to create and export the spectrum.
+
+Output: A \textit{Spectrum.csv} image written to the filesystem corresponding to
+the spectrum averaged over the selected area.
+
+How test will be performed: Using a 3D dataset, the test will display the GUI
+and ask the user to select an area in the image and run the command to export a
+spectrum to file. The user must inspect the \textit{Spectrum.csv} file to ensure
+that the correct spectrum was exported from the correct pixel.\\
+
+\end{enumerate}
+
 
 \subsection{Tests for Nonfunctional Requirements}
 \label{subsec:NonfuncReqTest}
@@ -186,11 +373,27 @@ Type: Performance, Dynamic
 					
 Initial State: Spectrum loaded into \progname{}.
 
-Input: A known spectrum convolved with a broadening function (for instance, the data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if it is available from the author), and transformed into a spectrum image data format (of 3D shape). Otherwise a spectrum will be simulated and convolved with a broadening function (such as a Lorentzian peak, a Gaussian peak, or an experimental point spread function). The broadening function itself is also an input to the deconvolution. The spectrum image size will be varied from $(1\text{ by }1\text{ by }K)$ to $(1000 \text{ by } 1000 \text{ by } K)$ with a minimum of 10 intermediate values. 25 iterations will be performed for each spectrum image size. A typical value for $K$ might be 2048 or 1024, depending on the dataset used.
+Input: A known spectrum convolved with a broadening function (for instance, the
+data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if
+it is available from the author), and transformed into a spectrum image data
+format (of 3D shape). Otherwise a spectrum will be simulated and convolved with
+a broadening function (such as a Lorentzian peak, a Gaussian peak, or an
+experimental point spread function). The broadening function itself is also an
+input to the deconvolution. The spectrum image size will be varied from
+$(1\text{ by }1\text{ by }K)$ to $(1000 \text{ by } 1000 \text{ by } K)$ with a
+minimum of 10 intermediate values. 25 iterations will be performed for each
+spectrum image size. A typical value for $K$ might be 2048 or 1024, depending on
+the dataset used.
 
-Output: A plot of the calculation time required vs the size of the spectrum image used.
+Output: A plot of the calculation time required vs the size of the spectrum
+image used.
 
-How test will be performed: The Richardson-Lucy deconvolution algorithm will be run on a series of spectrum images of varying size. 25 iterations will be run on each spectrum image and the time required to finish the calculations recorded and plotted against the number of $(x, y)$ pixels in the spectrum image.\\
+How test will be performed: The Richardson-Lucy deconvolution algorithm will be
+run on a series of spectrum images of varying size. 25 iterations will be run on
+each spectrum image and the time required to finish the calculations recorded
+and plotted against the number of $(x, y)$ pixels in the spectrum image. The
+test will be repeated for the deconvolution algorithm written in the HyperSpy
+toolbox, for comparison of the plots.\\
 
 
 \item{Deconvolution calculation time - iterations}
@@ -199,11 +402,26 @@ Type: Performance, Dynamic
 					
 Initial State: Spectrum loaded into \progname{}.
 
-Input: A known spectrum convolved with a broadening function (for instance, the data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if it is available from the author), and transformed into a spectrum image data format (of 3D shape). Otherwise a spectrum will be simulated and convolved with a broadening function (such as a Lorentzian peak, a Gaussian peak, or an experimental point spread function). The broadening function itself is also an input to the deconvolution. The spectrum image size will be set at $(500 \text{ by } 500 \text{ by } E)$ and a the number of iterations will be changed from 1 to 500 with at least 10 intermediate steps. A typical value for E might be 2048 or 1024, depending on the dataset used.
+Input: A known spectrum convolved with a broadening function (for instance, the
+data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if
+it is available from the author), and transformed into a spectrum image data
+format (of 3D shape). Otherwise a spectrum will be simulated and convolved with
+a broadening function (such as a Lorentzian peak, a Gaussian peak, or an
+experimental point spread function). The broadening function itself is also an
+input to the deconvolution. The spectrum image size will be set at $(500 \text{
+by } 500 \text{ by } E)$ and a the number of iterations will be changed from 1
+to 500 with at least 10 intermediate steps. A typical value for E might be 2048
+or 1024, depending on the dataset used.
 
-Output: A plot of the calculation time required vs the number of iterations used.
+Output: A plot of the calculation time required vs the number of iterations
+used.
 
-How test will be performed: The Richardson-Lucy deconvolution algorithm will be run repeatedly on a spectrum image with varying numbers of iterations. The time required to finish the calculations will be recorded and plotted against the number of $(x, y)$ pixels in the spectrum image.\\
+How test will be performed: The Richardson-Lucy deconvolution algorithm will be
+run repeatedly on a spectrum image with varying numbers of iterations. The time
+required to finish the calculations will be recorded and plotted against the
+number of $(x, y)$ pixels in the spectrum image.  The test will be repeated for
+the deconvolution algorithm written in the HyperSpy toolbox, for comparison of
+the plots.\\
 
 \paragraph{Normalization}
 \item{Normalization calculation time}
@@ -212,11 +430,20 @@ Type: Performance, Dynamic
 
 Initial State: Spectrum loaded into \progname{}.
 
-Input: A known spectrum (for instance, an artificially created spectrum, a range of values from 0 to the number of pixels used in the spectrum image), transformed into a spectrum image data format (of 3D shape).The spectrum image size will be varied from $(1\text{ by }1\text{ by }K)$ to $(1000 \text{ by } 1000 \text{ by }K)$ with a minimum of 10 intermediate values. A typical value for $K$ might be 2048 or 1024, depending on the dataset used.
+Input: A known spectrum (for instance, an artificially created spectrum, a range
+of values from 0 to the number of pixels used in the spectrum image),
+transformed into a spectrum image data format (of 3D shape).The spectrum image
+size will be varied from $(1\text{ by }1\text{ by }K)$ to $(1000 \text{ by }
+1000 \text{ by }K)$ with a minimum of 10 intermediate values. A typical value
+for $K$ might be 2048 or 1024, depending on the dataset used.
 
-Output: A plot of the calculation time required vs the size of the spectrum image used.
+Output: A plot of the calculation time required vs the size of the spectrum
+image used.
 
-How test will be performed: The normalization algorithm will be run on a series of spectrum images of varying size, normalizing to the integral of the full spectrum. The time required to finish the calculations will be recorded and plotted against the number of $(x, y)$ pixels in the spectrum image.\\
+How test will be performed: The normalization algorithm will be run on a series
+of spectrum images of varying size, normalizing to the integral of the full
+spectrum. The time required to finish the calculations will be recorded and
+plotted against the number of $(x, y)$ pixels in the spectrum image.\\
 
 \paragraph{Gain Correction}
 \item{Gain correction calculation time}
@@ -225,11 +452,21 @@ Type: Performance, Dynamic
 
 Initial State: Spectrum loaded into \progname{}.
 
-Input: A known spectrum (for instance, an artificially created spectrum, a range of values from 0 to the number of pixels used in the spectrum image), transformed into a spectrum image data format (of 3D shape).The spectrum image size will be varied from $(1\text{ by }1\text{ by }K)$ to $(1000 \text{ by } 1000 \text{ by }K)$ with a minimum of 10 intermediate values. A typical value for $K$ might be 2048 or 1024, depending on the dataset used. The gain correction factor will be given as a range of integers from 0 to $K-1$.
+Input: A known spectrum (for instance, an artificially created spectrum, a range
+of values from 0 to the number of pixels used in the spectrum image),
+transformed into a spectrum image data format (of 3D shape).The spectrum image
+size will be varied from $(1\text{ by }1\text{ by }K)$ to $(1000 \text{ by }
+1000 \text{ by }K)$ with a minimum of 10 intermediate values. A typical value
+for $K$ might be 2048 or 1024, depending on the dataset used. The gain
+correction factor will be given as a range of integers from 0 to $K-1$.
 
-Output: A plot of the calculation time required vs the size of the spectrum image used.
+Output: A plot of the calculation time required vs the size of the spectrum
+image used.
 
-How test will be performed: The gain correction function will be run on a series of spectrum images of varying size. The time required to finish the calculations will be recorded and plotted against the number of $(x, y)$ pixels in the spectrum image.\\
+How test will be performed: The gain correction function will be run on a series
+of spectrum images of varying size. The time required to finish the calculations
+will be recorded and plotted against the number of $(x, y)$ pixels in the
+spectrum image.\\
 
 \paragraph{Background subtraction}
 \item{Background subtraction calculation time}
@@ -238,43 +475,58 @@ Type: Performance, Dynamic
 
 Initial State: Spectrum loaded into \progname{}.
 
-Input: A known spectrum (for instance, the data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if it is available from the author), transformed into a spectrum image data format (of 3D shape).The spectrum image size will be varied from $(1\text{ by }1\text{ by }K)$ to $(1000 \text{ by } 1000 \text{ by }K)$ with a minimum of 10 intermediate values. A typical value for $K$ might be 2048 or 1024, depending on the dataset used. The background correction will be given as a an array of ones of size $K$.
+Input: A known spectrum (for instance, the data used in the paper by Bellido
+\textit{et al} \cite{bellido_toward_2014}, if it is available from the author),
+transformed into a spectrum image data format (of 3D shape).The spectrum image
+size will be varied from $(1\text{ by }1\text{ by }K)$ to $(1000 \text{ by }
+1000 \text{ by }K)$ with a minimum of 10 intermediate values. A typical value
+for $K$ might be 2048 or 1024, depending on the dataset used. The background
+correction will be given as a an array of ones of size $K$.
 
-Output: A plot of the calculation time required vs the size of the spectrum image used.
+Output: A plot of the calculation time required vs the size of the spectrum
+image used.
 
-How test will be performed: The gain correction function will be run on a series of spectrum images of varying size. The time required to finish the calculations will be recorded and plotted against the number of $(x, y)$ pixels in the spectrum image.\\ 
+How test will be performed: The gain correction function will be run on a series
+of spectrum images of varying size. The time required to finish the calculations
+will be recorded and plotted against the number of $(x, y)$ pixels in the
+spectrum image.\\
 
 \end{enumerate}
 
-\subsubsection{Area of Testing2}
-
-...
-
 \subsection{Traceability Between Test Cases and Requirements}
-
-\begin{table}[H]
+This section provides a matrix with the relationships between the
+\hyperref[subsec:FR]{functional requirements} in the SRS and the
+\hyperref[subsec:FuncReqTest]{System Tests} outlined above. The non-functional
+requirements are addressed in the section \hyperref[subsec:NonfuncReqTest]{Tests
+for Nonfunctional Requirements}. Note that testing for some of the
+non-functional requirements will be addressed with the user survey and code
+review.
+\begin{table}[h]
 	\centering
 	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 		\hline 
-		& \hyperref[TFR:RLblankPSF]{1} & \hyperref[TFR:RLerror]{2} & \hyperref[TFR:RLSNR]{3} & & \hyperref[sec:UnitTest]{Unit Test} \\
+		& \hyperref[TFR:RLblankPSF]{1} & \hyperref[TFR:RLerror]{2} &
+\hyperref[TFR:RLSNR]{3} &  \hyperref[TFR:ImgExport]{4} &
+\hyperref[TFR:ImgExportGUI]{5} & \hyperref[TFR:SpecExport]{6}&
+\hyperref[TFR:SpecExportGUI]{7} & \hyperref[sec:UnitTest]{Unit Test} \\
 		\hline
-		\hyperref[R_SI_inputs]{SI input}     			&  &  &  &  & X \\ 
+		\hyperref[R_SI_inputs]{SI input}     			&  &  &  &  &  &  &  & X\\ 
 		\hline
-		\hyperref[R_spectrum_inputs]{Spectrum input}    &  &  &  &  & X \\ 
+		\hyperref[R_spectrum_inputs]{Spectrum input}    &  &  &  &  &  &  &  & X\\ 
 		\hline
-		\hyperref[R_Input_dimension]{Input dimensions}  &  &  &  &  & X \\
+		\hyperref[R_Input_dimension]{Input dimensions}  &  &  &  &  &  &  &  & X\\
 		\hline
-		\hyperref[R_Input_dimension]{SI slicing}		&  &  &  &  & X \\ 
+		\hyperref[R_SI_slicing]{SI slicing}				&  &  &  & X& X&  &  & X\\ 
 		\hline
-		\hyperref[R_SI_area]{SI area}          			&  &  &  &  & X \\ 
+		\hyperref[R_SI_area]{SI area}          			&  &  &  &  &  & X& X& X\\ 
 		\hline
-		\hyperref[R_deconvolution]{Deconvolution}       & X & X & X &  & X \\ 
+		\hyperref[R_deconvolution]{Deconvolution}       & X& X& X&  &  &  &  & X\\ 
 		\hline
-		\hyperref[R_normalization]{Normalization} 		&  &  &  &  &  \\ 
+		\hyperref[R_normalization]{Normalization} 		&  &  &  &  &  &  &  & X\\ 
 		\hline
-		\hyperref[R_normalization]{Background} 			&  &  &  &  &  \\ 
+		\hyperref[R_background]{Background} 			&  &  &  &  &  &  &  & X\\ 
 		\hline
-		\hyperref[R_normalization]{Gain}  				&  &  &  &  &  \\ 
+		\hyperref[R_gain]{Gain}  						&  &  &  &  &  &  &  & X\\ 
 		\hline
 	\end{tabular}
 	\caption{Traceability Matrix Showing the Connections Between Test Cases and
@@ -287,7 +539,9 @@ Requirements}
 \label{sec:UnitTest}
 
 \subsection{Inputs}
-		
+This section details the unit tests concerning the import of spectrum images and
+spectrum datasets (\hyperref[R_SI_inputs]{R1}, \hyperref[R_spectrum_inputs]{R2},
+\hyperref[R_Input_dimension]{R3})
 \paragraph{Spectrum Image Input}
 
 \begin{enumerate}
@@ -298,7 +552,8 @@ Type: Functional, Dynamic, Unit
 
 Initial State: None
 
-Input: 3D data array, present in memory; use standard calibration variabilities\\
+Input: 3D data array, present in memory; use standard calibration
+variabilities\\
 For example, the following values might be used to create an SI: 
 \begin{itemize}
 	\item $x = [0, 1]$
@@ -308,9 +563,15 @@ For example, the following values might be used to create an SI:
 	\item $\text{energy range} = \text{range}(0, 10)\ \si{\electronvolt}$
 \end{itemize}
 
-Output: Spectrum Image stored within \progname{}; the first and second axes should correspond to spatial dimensions, while the third axis should correspond to a spectral dimension.
+Output: Spectrum Image stored within \progname{}; the first and second axes
+should correspond to spatial dimensions, while the third axis should correspond
+to a spectral dimension.
 
-How test will be performed: Create a 3D data array and attempt to initialize a spectrum image in \progname{}. No errors should be raised. The spectrum image axes should be read in the correct order (x, y, E), and the calibrations should be applied to the correct axes. Addresses \hyperref[R_SI_inputs]{Functional Requirement}.
+How test will be performed: Create a 3D data array and attempt to initialize a
+spectrum image in \progname{}. No errors should be raised. The spectrum image
+axes should be read in the correct order (x, y, E), and the calibrations should
+be applied to the correct axes. Addresses \hyperref[R_SI_inputs]{Functional
+Requirement}.
 
 
 \item{SI Data array with dispersion (EELS)}
@@ -319,7 +580,8 @@ Type: Functional, Dynamic, Unit
 
 Initial State: None
 
-Input: 3D data array, present in memory; use standard calibration variabilities\\
+Input: 3D data array, present in memory; use standard calibration
+variabilities\\
 For example, the following values might be used to create an SI: 
 \begin{itemize}
 	\item $x = [0, 1]$
@@ -330,9 +592,14 @@ For example, the following values might be used to create an SI:
 	\item $E(0) = -2\ \si{\electronvolt}$
 \end{itemize}
 
-Output: Spectrum Image stored within \progname{}; the first and second axes should correspond to spatial dimensions, while the third axis should correspond to a spectral dimension.
+Output: Spectrum Image stored within \progname{}; the first and second axes
+should correspond to spatial dimensions, while the third axis should correspond
+to a spectral dimension.
 
-How test will be performed: Create a 3D data array and attempt to initialize a spectrum image in \progname{}. No errors should be raised. The spectrum image axes should be read in the correct order (x, y, E), and the calibrations should be applied to the correct axes.
+How test will be performed: Create a 3D data array and attempt to initialize a
+spectrum image in \progname{}. No errors should be raised. The spectrum image
+axes should be read in the correct order (x, y, E), and the calibrations should
+be applied to the correct axes.
 
 
 \item{SI Data array with wavelength range (CL)}
@@ -341,7 +608,8 @@ Type: Functional, Dynamic, Unit
 
 Initial State: None
 
-Input: 3D data array, present in memory; use standard calibration variabilities\\
+Input: 3D data array, present in memory; use standard calibration
+variabilities\\
 For example, the following values might be used to create an SI: 
 \begin{itemize}
 	\item $x = [0, 1]$
@@ -351,9 +619,14 @@ For example, the following values might be used to create an SI:
 	\item $\text{wavelength range} = \text{range}(0, 10)\ \si{\nano\metre}$
 \end{itemize}
 
-Output: Spectrum Image stored within \progname{}; the first and second axes should correspond to spatial dimensions, while the third axis should correspond to a spectral dimension.
+Output: Spectrum Image stored within \progname{}; the first and second axes
+should correspond to spatial dimensions, while the third axis should correspond
+to a spectral dimension.
 
-How test will be performed: Create a 3D data array and attempt to initialize a spectrum image in \progname{}. No errors should be raised. The spectrum image axes should be read in the correct order (x, y, E), and the calibrations should be applied to the correct axes.
+How test will be performed: Create a 3D data array and attempt to initialize a
+spectrum image in \progname{}. No errors should be raised. The spectrum image
+axes should be read in the correct order (x, y, E), and the calibrations should
+be applied to the correct axes.
 
 
 \item{SI .dm3 file}
@@ -362,7 +635,9 @@ Type: Functional, Dynamic, Unit
 
 Initial State: None
 
-Input: A .dm3 file, containing a fabricated spectrum image. The .dm3 file will be created using Digital Micrograph (Gatan Microscopy Suite Software) software \cite{noauthor_gatan_nodate} with the following parameters:
+Input: A .dm3 file, containing a fabricated spectrum image. The .dm3 file will
+be created using Digital Micrograph (Gatan Microscopy Suite Software) software
+\cite{gatan_inc._gatan_nodate} with the following parameters:
 \begin{itemize}
 	\item $x = [0, 1]$
 	\item $y = [0, 1]$
@@ -372,11 +647,19 @@ Input: A .dm3 file, containing a fabricated spectrum image. The .dm3 file will b
 	\item $E(0) = -2\ \si{\electronvolt}$
 \end{itemize}
 
-Output: EELS Spectrum Image stored within \progname{}, with metadata assigned to appropriate values
+Output: EELS Spectrum Image stored within \progname{}, with metadata assigned to
+appropriate values
 
-How test will be performed: Read in the .dm3 file with \progname{}. Check that no errors are raised. Display the spectrum image to manually check that the data was read in correctly. Check spatial and spectral calibration to verify metadata was assigned correctly.
+How test will be performed: Read in the .dm3 file with \progname{}. Check that
+no errors are raised. Display the spectrum image to manually check that the data
+was read in correctly. Check spatial and spectral calibration to verify metadata
+was assigned correctly.
 
-\an{There is a potential problem with the .dm3 file, since there are many version of Digital Micrograph out there and many different set-ups, all of which may format their .dm3 slightly differently. Not sure on the best way to test this, without asking several other labs for pieces of data (which are not usually shared readily) and trying out all of them.}
+\an{There is a potential problem with the .dm3 file, since there are many
+version of Digital Micrograph out there and many different set-ups, all of which
+may format their .dm3 slightly differently. Not sure on the best way to test
+this, without asking several other labs for pieces of data (which are not
+usually shared readily) and trying out all of them.}
 
 \item{SI .h5 file}
 
@@ -384,7 +667,11 @@ Type: Functional, Dynamic, Unit.
 
 Initial State: None
 
-Input: .h5 file, containing an acquired or fabricated spectrum image. The .h5 spectrum image file originates from Odemis software \cite{bv_odemis:_nodate}, it may be possible to fabricate a spectrum image using the scripting interface, using the following values for the calibration parameters, otherwise it may be necessary to use an acquired data file.
+Input: .h5 file, containing an acquired or fabricated spectrum image. The .h5
+spectrum image file originates from Odemis software \cite{bv_odemis:_nodate}, it
+may be possible to fabricate a spectrum image using the scripting interface,
+using the following values for the calibration parameters, otherwise it may be
+necessary to use an acquired data file.
 
 \begin{itemize}
 	\item $x = [0, 1]$
@@ -394,9 +681,12 @@ Input: .h5 file, containing an acquired or fabricated spectrum image. The .h5 sp
 	\item $\text{wavelength range} = \text{range}(0, 10)\ \si{\nano\metre}$
 \end{itemize}
 
-Output: CL Spectrum Image stored within \progname, with metadata assigned to appropriate values.
+Output: CL Spectrum Image stored within \progname, with metadata assigned to
+appropriate values.
 					
-How test will be performed: Read in the .h5 file with \progname{}. Check that no errors are raised. Check spatial and spectral calibration to verify metadata was assigned correctly.
+How test will be performed: Read in the .h5 file with \progname{}. Check that no
+errors are raised. Check spatial and spectral calibration to verify metadata was
+assigned correctly.
 
 \item{SI Data array with dispersion (EELS) - complex numbers}
 
@@ -404,20 +694,27 @@ Type: Functional, Dynamic, Unit
 
 Initial State: None
 
-Input: 3D data array, present in memory; use standard calibration variabilities\\
+Input: 3D data array, present in memory; use standard calibration
+variabilities\\
 For example, the following values might be used to create an SI: 
 \begin{itemize}
 	\item $x = [0, 1]$
 	\item $y = [0, 1]$
-	\item $\text{Intensity} = \text{ones}(\text{size}(2,2,10)) + j * \text{ones}(\text{size}(2,2,10))$
+	\item $\text{Intensity} = \text{ones}(\text{size}(2,2,10)) + j *
+\text{ones}(\text{size}(2,2,10))$
 	\item $\text{x calibration} = 1\ \si{\nano\metre}/\text{pixel}$
 	\item $\text{dispersion} = 0.01\ \si{\electronvolt}/\text{pixel}$
 	\item $E(0) = -2\ \si{\electronvolt}$
 \end{itemize}
 
-Output: Spectrum Image stored within \progname{}; the first and second axes should correspond to spatial dimensions, while the third axis should correspond to a spectral dimension.
+Output: Spectrum Image stored within \progname{}; the first and second axes
+should correspond to spatial dimensions, while the third axis should correspond
+to a spectral dimension.
 
-How test will be performed: Create a 3D data array and attempt to initialize a spectrum image in \progname{}. No errors should be raised. The spectrum image axes should be read in the correct order (x, y, E), and the calibrations should be applied to the correct axes.
+How test will be performed: Create a 3D data array and attempt to initialize a
+spectrum image in \progname{}. No errors should be raised. The spectrum image
+axes should be read in the correct order (x, y, E), and the calibrations should
+be applied to the correct axes.
 
 \end{enumerate}
 
@@ -431,15 +728,20 @@ Type: Functional, Dynamic, Unit.
 					
 Initial State: 
 					
-Input: 1D data array, present in memory. For example, the following data may be used to initialize a Spectrum:
+Input: 1D data array, present in memory. For example, the following data may be
+used to initialize a Spectrum:
 \begin{itemize}
 	\item $\text{intensity} = \text{ones}(\text{size}(10))\ \text{counts}$
 	\item $\text{energy range} = \text{range}(0, 10)\ \si{\electronvolt}$
 \end{itemize}
 
-Output: Spectrum stored within \progname{}, with data assigned to appropriate values.
+Output: Spectrum stored within \progname{}, with data assigned to appropriate
+values.
 					
-How test will be performed: Create a 1D data array and attempt to read it with \progname{}. No errors should be raised. The unit test will check that the intensity and energy range are assigned to the appropriate variables, as well as the spectral calibration.
+How test will be performed: Create a 1D data array and attempt to read it with
+\progname{}. No errors should be raised. The unit test will check that the
+intensity and energy range are assigned to the appropriate variables, as well as
+the spectral calibration.
 
 
 \item{Spectrum .csv file}
@@ -448,15 +750,20 @@ Type: Functional, Dynamic, Unit.
 
 Initial State: 
 
-Input: .csv file, containing a 1D spectrum. The following data may be used to create a spectrum csv file:
+Input: .csv file, containing a 1D spectrum. The following data may be used to
+create a spectrum csv file:
 \begin{itemize}
 	\item $\text{Intensity} = \text{ones}(\text{size}(10))\ \text{counts}$
 	\item $\text{energy range} = \text{range}(0, 10)\ \si{\electronvolt}$
 \end{itemize}
 
-Output: Spectrum stored within \progname{}, with data assigned to appropriate values
+Output: Spectrum stored within \progname{}, with data assigned to appropriate
+values
 
-How test will be performed: A csv file containing 1D spectrum data will be imported. No errors should be raised. The unit test will check that the intensity and energy range are assigned to the appropriate variables, as well as the spectral calibration.
+How test will be performed: A csv file containing 1D spectrum data will be
+imported. No errors should be raised. The unit test will check that the
+intensity and energy range are assigned to the appropriate variables, as well as
+the spectral calibration.
 
 
 \item{Spectrum Data array - complex numbers}
@@ -465,15 +772,18 @@ Type: Functional, Dynamic, Unit.
 
 Initial State: 
 
-Input: 1D data array, present in memory. For example, the following data may be used to initialize a Spectrum:
+Input: 1D data array, present in memory. For example, the following data may be
+used to initialize a Spectrum:
 \begin{itemize}
-	\item $\text{energy values} = \text{ones}(\text{size}(10)) + j*\text{ones}(\text{size}(10))\ \text{counts}$
+	\item $\text{energy values} = \text{ones}(\text{size}(10)) +
+j*\text{ones}(\text{size}(10))\ \text{counts}$
 	\item $\text{energy range} = \text{range}(0, 10)\ \si{\electronvolt}$
 \end{itemize}
 
 Output: Error message - input must be real
 
-How test will be performed: Create a 1D data array and attempt to read it with \progname{}. An error should be raised.
+How test will be performed: Create a 1D data array and attempt to read it with
+\progname{}. An error should be raised.
 
 
 \item{Spectrum Data array - 2D array}
@@ -482,7 +792,8 @@ Type: Functional, Dynamic, Unit.
 
 Initial State: 
 
-Input: 2D data array, present in memory. For example, the following data may be used to initialize a Spectrum:
+Input: 2D data array, present in memory. For example, the following data may be
+used to initialize a Spectrum:
 \begin{itemize}
 	\item $\text{energy values} = \text{ones}(\text{size}(2, 2))\ \text{counts}$
 	\item $\text{energy range} = \text{range}(0, 2)\ \si{\electronvolt}$
@@ -490,13 +801,20 @@ Input: 2D data array, present in memory. For example, the following data may be 
 
 Output: Error message - input must be 1D
 
-How test will be performed: Create a 1D data array and attempt to read it with \progname{}. An error should be raised.
+How test will be performed: Create a 1D data array and attempt to read it with
+\progname{}. An error should be raised.
 
 \end{enumerate}
 
+\subsection{Data Extraction}
+This section details the unit tests concerning the extraction of images or
+spectra from a spectrum image (\hyperref[R_SI_slicing]{R4},
+\hyperref[R_SI_area]{R5})
 \paragraph{Energy range slicing}
 
-The spectrum image to be used for these tests will be the same for all tests in this section and may, for example, consist of float values from 0 to 1, reshaped into the size (2,2,10), with an energy range from $0-9 \si{\electronvolt}$.
+The spectrum image to be used for these tests will be the same for all tests in
+this section and may, for example, consist of float values from 0 to 1, reshaped
+into the size $(2,2,10)$, with an energy range from $0-9\ \si{\electronvolt}$.
 
 \begin{enumerate}
 
@@ -506,50 +824,83 @@ Type: Functional, Dynamic, Unit
 
 Initial State: Spectrum image exists in \progname{}.
 
-Input: Two values within the spectrum range calibration values. For example, in a spectrum image with an energy range from $0-9\ \si{\electronvolt}$, the input values might be 5 and 7. the existing spectrum image must have different values of intensity at each pixel and each channel along the energy axis.
+Input: Two values within the spectrum range calibration values. For example, in
+a spectrum image with an energy range from $0-9\ \si{\electronvolt}$, the input
+values might be 5 and 7. the existing spectrum image must have different values
+of intensity at each pixel and each channel along the energy axis.
 
-Output: An $(x,y)$ image averaged over the spectral range specified by the input to the test.
+Output: An $(x,y)$ image averaged over the spectral range specified by the input
+to the test.
 
-How test will be performed: Using a 3D dataset, such as those used in the Spectrum image 3D dataset unit test, the test will request the return value of an $(x,y)$ image averaged over the chosen spectral range. No errors should be raised. Check that the range averaged over is the same as the range selected.
-
-
-\item{Extract $(x,y)$ slice from spectrum, slice less than any value in the energy range}
-
-Type: Functional, Dynamic, Unit
-
-Initial State: Spectrum image exists in \progname{}.
-
-Input: Two values within the spectrum range calibration values. For example, in a spectrum image with an energy range from $0-9\ \si{\electronvolt}$, the input values might be -2 and 5. the existing spectrum image must have different values of intensity at each pixel and each channel along the energy axis.
-
-Output: An $(x,y)$ image averaged over the spectral range specified by the input to the test and the minimum value of the energy range in the spectrum image.
-
-How test will be performed: Using a 3D dataset, such as those used in the Spectrum image 3D dataset unit test, the test will request the return value of an $(x,y)$ image averaged over the chosen spectral range. No errors should be raised. Check that the range averaged over is the same as the range selected within the data limits.
+How test will be performed: Using a 3D dataset, such as those used in the
+Spectrum image 3D dataset unit test, the test will request the return value of
+an $(x,y)$ image averaged over the chosen spectral range. No errors should be
+raised. Check that the range averaged over is the same as the range selected.
 
 
-\item{Extract $(x,y)$ slice from spectrum, slice more than any value in the energy range}
+\item{Extract $(x,y)$ slice from spectrum, slice less than any value in the
+energy range}
 
 Type: Functional, Dynamic, Unit
 
 Initial State: Spectrum image exists in \progname{}.
 
-Input: Two values within the spectrum range calibration values. For example, in a spectrum image with an energy range from $0-9\ \si{\electronvolt}$, the input values might be 5 and 12. the existing spectrum image must have different values of intensity at each pixel and each channel along the energy axis.
+Input: Two values within the spectrum range calibration values. For example, in
+a spectrum image with an energy range from $0-9\ \si{\electronvolt}$, the input
+values might be -2 and 5. the existing spectrum image must have different values
+of intensity at each pixel and each channel along the energy axis.
 
-Output: An $(x,y)$ image averaged over the spectral range specified by the input to the test and the maximum value of the energy range in the spectrum image.
+Output: An $(x,y)$ image averaged over the spectral range specified by the input
+to the test and the minimum value of the energy range in the spectrum image.
 
-How test will be performed: Using a 3D dataset, such as those used in the Spectrum image 3D dataset unit test, the test will request the return value of an $(x,y)$ image averaged over the chosen spectral range. No errors should be raised. Check that the range averaged over is the same as the range selected within the data limits.
+How test will be performed: Using a 3D dataset, such as those used in the
+Spectrum image 3D dataset unit test, the test will request the return value of
+an $(x,y)$ image averaged over the chosen spectral range. No errors should be
+raised. Check that the range averaged over is the same as the range selected
+within the data limits.
 
 
-\item{Extract $(x,y)$ slice from spectrum, slice completely outside the energy range}
+\item{Extract $(x,y)$ slice from spectrum, slice more than any value in the
+energy range}
 
 Type: Functional, Dynamic, Unit
 
 Initial State: Spectrum image exists in \progname{}.
 
-Input: Two values within the spectrum range calibration values. For example, in a spectrum image with an energy range from $0-9\ \si{\electronvolt}$, the input values might be -5 and -2. the existing spectrum image must have different values of intensity at each pixel and each channel along the energy axis.
+Input: Two values within the spectrum range calibration values. For example, in
+a spectrum image with an energy range from $0-9\ \si{\electronvolt}$, the input
+values might be 5 and 12. the existing spectrum image must have different values
+of intensity at each pixel and each channel along the energy axis.
 
-Output: A warning should be raised that the range selected is outside the range for which there is data available.
+Output: An $(x,y)$ image averaged over the spectral range specified by the input
+to the test and the maximum value of the energy range in the spectrum image.
 
-How test will be performed: Using a 3D dataset, such as those used in the Spectrum image 3D dataset unit test, the test will request the return value of an $(x,y)$ image averaged over the chosen spectral range. A warning should be raised and no image returned.
+How test will be performed: Using a 3D dataset, such as those used in the
+Spectrum image 3D dataset unit test, the test will request the return value of
+an $(x,y)$ image averaged over the chosen spectral range. No errors should be
+raised. Check that the range averaged over is the same as the range selected
+within the data limits.
+
+
+\item{Extract $(x,y)$ slice from spectrum, slice completely outside the energy
+range}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: Spectrum image exists in \progname{}.
+
+Input: Two values within the spectrum range calibration values. For example, in
+a spectrum image with an energy range from $0-9\ \si{\electronvolt}$, the input
+values might be -5 and -2. the existing spectrum image must have different
+values of intensity at each pixel and each channel along the energy axis.
+
+Output: A warning should be raised that the range selected is outside the range
+for which there is data available.
+
+How test will be performed: Using a 3D dataset, such as those used in the
+Spectrum image 3D dataset unit test, the test will request the return value of
+an $(x,y)$ image averaged over the chosen spectral range. A warning should be
+raised and no image returned.
 
 
 \item{Extract $(x,y)$ slice from spectrum, backwards slice}
@@ -558,17 +909,30 @@ Type: Functional, Dynamic, Unit
 
 Initial State: Spectrum image exists in \progname{}.
 
-Input: Two values within the spectrum range calibration values. For example, in a spectrum image with an energy range from $0-9\ \si{\electronvolt}$, the input values might be 7 and 5. the existing spectrum image must have different values of intensity at each pixel and each channel along the energy axis.
+Input: Two values within the spectrum range calibration values. For example, in
+a spectrum image with an energy range from $0-9\ \si{\electronvolt}$, the input
+values might be 7 and 5. the existing spectrum image must have different values
+of intensity at each pixel and each channel along the energy axis.
 
-Output: An $(x,y)$ image averaged over the spectral range specified by the input to the test.
+Output: An $(x,y)$ image averaged over the spectral range specified by the input
+to the test.
 
-How test will be performed: Using a 3D dataset, such as those used in the Spectrum image 3D dataset unit test, the test will request the return value of an $(x,y)$ image averaged over the chosen spectral range (regardless of the order of selection, the program should behave exactly the same as if the input range was 5 to 7). No errors should be raised. Check that the range averaged over is the same as the range selected (ie, by knowing what data the spectrum image contains).
+How test will be performed: Using a 3D dataset, such as those used in the
+Spectrum image 3D dataset unit test, the test will request the return value of
+an $(x,y)$ image averaged over the chosen spectral range (regardless of the
+order of selection, the program should behave exactly the same as if the input
+range was 5 to 7). No errors should be raised. Check that the range averaged
+over is the same as the range selected (ie, by knowing what data the spectrum
+image contains).
 
 \end{enumerate}
 
 \paragraph{Area spectrum extraction}
 
-The spectrum image to be used for these tests will be the same for all tests in this section and may, for example, consist of float values from 0 to 1, reshaped into the size (100, 100, 10), with an energy range from $0-9 \si{\electronvolt}$.
+The spectrum image to be used for these tests will be the same for all tests in
+this section and may, for example, consist of float values from 0 to 1, reshaped
+into the size (100, 100, 10), with an energy range from $0-9\
+\si{\electronvolt}$.
 
 \begin{enumerate}
 
@@ -578,11 +942,16 @@ Type: Functional, Dynamic, Unit
 
 Initial State: Spectrum image exists in \progname{}.
 
-Input: Four $(x,y)$ values defining the vertices of a square (for instance, $(20, 20)$, $(20, 35)$, $(35, 35)$, $(35, 20)$). A spectrum image, as defined above for this section.
+Input: Four $(x,y)$ values defining the vertices of a square (for instance,
+$(20, 20)$, $(20, 35)$, $(35, 35)$, $(35, 20)$). A spectrum image, as defined
+above for this section.
 
 Output: An spectrum, averaged over the $(x,y)$ area defined.
 
-How test will be performed: Using a 3D dataset, the test will request the return value of a spectrum averaged over the chosen area. No errors should be raised. Check that the correct area was used in the average (correct solution is known by manual deduction from the spectrum image).
+How test will be performed: Using a 3D dataset, the test will request the return
+value of a spectrum averaged over the chosen area. No errors should be raised.
+Check that the correct area was used in the average (correct solution is known
+by manual deduction from the spectrum image).
 
 \item{Extract area - triangle}
 
@@ -590,11 +959,15 @@ Type: Functional, Dynamic, Unit
 
 Initial State: Spectrum image exists in \progname{}.
 
-Input: A range of $(x,y)$ values defining a triangle (for instance, $(20, 20)$, $(35, 35)$, $(35, 20)$). A spectrum image, as defined above for this section.
+Input: A range of $(x,y)$ values defining a triangle (for instance, $(20, 20)$,
+$(35, 35)$, $(35, 20)$). A spectrum image, as defined above for this section.
 
 Output: A spectrum, averaged over the $(x,y)$ values defined.
 
-How test will be performed: Using a 3D dataset, the test will request the return value of a spectrum averaged over the chosen area. No errors should be raised. Check that the correct area was used in the average (correct solution is known by manual deduction from the spectrum image).
+How test will be performed: Using a 3D dataset, the test will request the return
+value of a spectrum averaged over the chosen area. No errors should be raised.
+Check that the correct area was used in the average (correct solution is known
+by manual deduction from the spectrum image).
 
 \item{Extract area - line}
 
@@ -602,11 +975,15 @@ Type: Functional, Dynamic, Unit
 
 Initial State: Spectrum image exists in \progname{}.
 
-Input: A range of $(x,y)$ values defining a line (for instance, $(20, 20)$, $(35, 35)$). A spectrum image, as defined above for this section.
+Input: A range of $(x,y)$ values defining a line (for instance, $(20, 20)$,
+$(35, 35)$). A spectrum image, as defined above for this section.
 
-Output: A warning that a 2D area does not exist when only two points are used to define the area.
+Output: A warning that a 2D area does not exist when only two points are used to
+define the area.
 
-How test will be performed: Using a 3D dataset, the test will request the return value of a spectrum averaged over the chosen area. A warning should be raised and nothing returned.
+How test will be performed: Using a 3D dataset, the test will request the return
+value of a spectrum averaged over the chosen area. A warning should be raised
+and nothing returned.
 
 \item{Extract area - outside image}
 
@@ -614,13 +991,172 @@ Type: Functional, Dynamic, Unit
 
 Initial State: Spectrum image exists in \progname{}.
 
-Input: A range of $(x,y)$ values defining a line (for instance, $(-20, 20)$, $(35, 135)$). A spectrum image, as defined above for this section.
+Input: A range of $(x,y)$ values defining a line (for instance, $(-20, 20)$,
+$(35, 135)$). A spectrum image, as defined above for this section.
 
-Output: A spectrum, averaged over the $(x,y)$ values defined, within the image dimensions. Dimensions outside the image should be rounded to the closest value within the image range (0-99).
+Output: A spectrum, averaged over the $(x,y)$ values defined, within the image
+dimensions. Dimensions outside the image should be rounded to the closest value
+within the image range (0-99).
 
-How test will be performed: Using a 3D dataset, the test will request the return value of a spectrum averaged over the chosen area.  No errors should be raised. Check that the correct area was used in the average (correct solution is known by manual deduction from the spectrum image). The program should behave as though any image ranges outside the available range are at the closest border of the image (\textit{e.g.} -20 rounds to 0, 135 rounds to 99).
+How test will be performed: Using a 3D dataset, the test will request the return
+value of a spectrum averaged over the chosen area.  No errors should be raised.
+Check that the correct area was used in the average (correct solution is known
+by manual deduction from the spectrum image). The program should behave as
+though any image ranges outside the available range are at the closest border of
+the image (\textit{e.g.} -20 rounds to 0, 135 rounds to 99).
 
 \end{enumerate}
+
+\subsection{Normalization}
+This section details the unit tests concerning the normalization of a spectrum
+(\hyperref[normalization]{IM1}, \hyperref[R_normalization]{R7})
+		
+\paragraph{Spectrum normalization}
+
+\begin{enumerate}
+
+\item{Normalization - integral}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: None
+
+Input: 1D spectrum object, with an energy range from $0-9\ \si{\electronvolt}$
+and intensity values of 1 at each spectrum channel.
+
+Output: Normalized spectrum, with an intensity value of 0.1 in each spectrum
+channel.
+
+How test will be performed: Feed the spectrum object into the normalization
+function and request normalization to the full integral. No errors should be
+raised and a normalized spectrum should be returned.
+
+
+\item{Normalization - select channel}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: None
+
+Input: 1D spectrum object, with an energy range from $0-9\ \si{\electronvolt}$
+and intensity values of 1 at each spectrum channel, except for the fifth
+channel, which will have a value of 10. 
+
+Output: Normalized spectrum, with an intensity value of 1 in the fifth channel
+and a value of 0.1 everywhere else.
+
+How test will be performed: Feed the spectrum object into the normalization
+function and request normalization to the fifth channel. No errors should be
+raised and a normalized spectrum should be returned.
+
+
+\item{Normalization - integral is zero}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: None
+
+Input: 1D spectrum object, with an energy range from $0-9\ \si{\electronvolt}$
+and intensity values of 0 at each spectrum channel. 
+
+Output: Error message, stating that normalization cannot be performed on this
+spectrum because of a divide-by-zero error.
+
+How test will be performed: Feed the spectrum object into the normalization
+function and request normalization to the fifth channel. An error should be
+raised.
+
+\end{enumerate}
+
+\subsection{Background Correction}
+This section details the unit tests concerning the background correction of a
+spectrum (\hyperref[background]{IM3}, \hyperref[R_background]{R8})
+\paragraph{Spectrum-background correction}
+
+\begin{enumerate}
+
+\item{Background subtraction}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: None
+
+Input: 1D spectrum object, with an energy range from $0-9\ \si{\electronvolt}$
+and intensity values of 1 at each spectrum channel. Background spectrum, with
+the same energy range and intensity values of 0.1 at each spectrum channel.
+
+Output: Corrected spectrum, with an intensity value of 0.9 in each spectrum
+channel.
+
+How test will be performed: Feed the spectrum object and background spectrum
+object into the background correction function. No errors should be raised and a
+background-corrected spectrum should be returned.
+
+\item{Background subtraction - different size}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: None
+
+Input: 1D spectrum object, with an energy range from $0-9\ \si{\electronvolt}$
+and intensity values of 1 at each spectrum channel. Background spectrum, with an
+energy range of $0-8\ \si{\electronvolt}$ and intensity values of 0.1 at each
+spectrum channel (one channel shorter than the 1D spectrum object).
+
+Output: An error message, stating that the background correction spectrum is not
+the right size and the correction cannot be applied.
+
+How test will be performed: Feed the spectrum object and background spectrum
+object into the background correction function. An error should be raised.
+
+\end{enumerate}
+
+\subsection{Gain Correction}
+This section details the unit tests concerning the gain correction of a spectrum
+(\hyperref[gain]{IM4}, \hyperref[R_gain]{R9})
+
+\paragraph{Spectrum-gain correction}
+
+\begin{enumerate}
+
+\item{Gain correction}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: None
+
+Input: 1D spectrum object, with an energy range from $0-9 \si{\electronvolt}$
+and intensity values of 1 at each spectrum channel. Gain correction spectrum,
+with the same energy range and intensity values of 0.1 at each spectrum channel.
+
+Output: Corrected spectrum, with an intensity value of 0.1 in each spectrum
+channel.
+
+How test will be performed: Feed the spectrum object and gain correction
+spectrum object into the gain correction function. No errors should be raised
+and a gain-corrected spectrum should be returned.
+
+
+\item{Gain correction - zeros}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: None
+
+Input: 1D spectrum object, with an energy range from $0-9 \si{\electronvolt}$
+and intensity values of 1 at each spectrum channel. Gain correction spectrum,
+with the same energy range and intensity values of 0 at each spectrum channel.
+
+Output: Corrected spectrum, with an intensity value of 0 in each spectrum
+channel and a Warning that the gain correction is composed of zeros and so
+nullifies the whole spectrum.
+
+How test will be performed: Feed the spectrum object and gain correction
+spectrum object into the gain correction function. A warning should be raised
+and a gain-corrected spectrum should be returned.
+
+\end{enumerate}
+
 
 \bibliography {TestPlan}
 
@@ -628,27 +1164,61 @@ How test will be performed: Using a 3D dataset, the test will request the return
 
 \section{Appendix}
 
-This is where you can place additional information.
-
-\subsection{Symbolic Parameters}
-
-The definition of the test cases will call for SYMBOLIC\_CONSTANTS.
-Their values are defined in this section for easy maintenance.
+This appendix contains questions for a Code Review and questions for a user
+survey.
 
 \subsection{Code Review Checklist}
-
+This section contains some questions to be covered during a Code Review process.
+An effort was made to keep the number of items low to allow more time for a
+thorough review of these items without requiring an overly lengthy time
+commitment from the reviewer. Questions were inspired by
+\cite{office_of_safety_and_mission_assurance_software_1993,
+karl_e._wiegers_generic_2001, erik_dietrich_creating_2015}.
 \begin{itemize}
-\item Summarize in your own words what each function or unit of code does, based on inspection of the code. 
+\item Summarize in your own words what each function or unit of code does, based
+on inspection of the code. 
 \item Is the documentation clear and readable for each function or unit of code?
 \item Does the described functionality match with your written description?
 \item Are all variables and functions named clearly and meaningfully?
 \item Are all cases covered in IF/ELSEIF loops?
-\item Do all branches in conditionals make sense (logic and resulting action is correct)?
-\item Are the specifications and requirements complete and correctly implemented?
+\item Do all branches in conditionals make sense (logic and resulting action is
+correct)?
+\item Are the specifications and requirements complete and correctly
+implemented?
 \item Is the user interface clear and easy to use?
-\item Does each unit of code have a single purpose, or can it be split into multiple functions?
-\item What is the expected memory usage for each function? Can it be reduced? (\textit{e.g.} are unnecessary copies of arrays being created?)
-\item Are array slicing references in the correct order? (\textit{e.g.}, check correct dimension is used)
+\item Does each unit of code have a single purpose, or can it be split into
+multiple functions?
+\item What is the expected memory usage for each function? Can it be reduced?
+(\textit{e.g.} are unnecessary copies of arrays being created?)
+\item Are array slicing references in the correct order? (\textit{e.g.}, check
+correct dimension is used)
+\item Does it appear to be easy to add new modules or functions?
+\end{itemize}
+
+\subsection{User Survey}
+This section contains some sample questions which may be used to create a user
+survey of the software. Effort was made to keep the number of questions small
+and to address non-functional requirements.
+\begin{itemize}
+\item What operating system do you use?
+\item Did the software experience any noticeable lag while you were using the
+GUI interface?
+\item Where you able to use the interactive display easily, or did you find the
+commands difficult to remember and use?
+\item Could you easily read everything you needed to on the data display?
+(please consider font, font size, colour, plot lines, colour maps, etc.)
+\item What aspects of using the software did you find most intuitive? Least
+intuitive?
+\item Do you think you will be able to use this software given only the
+documentation available and no other training?
+\item On a scale of 1-10, did you find the software easy to use? (0: impossible
+to use; 10: very simple and intuitive)
+\item On a scale of 1-10, did you find the software enjoyable to use? (0: hated
+the software and resented the waste of time; 10: fully enjoyed the experience
+and I look forward to using this to process my data again)
+\item Do you think the software will be useful to you in your work?
+\item Do you have any comments or suggestions for further improvements? What
+would make this software more useful to you?
 \end{itemize}
 
 \end{document}
