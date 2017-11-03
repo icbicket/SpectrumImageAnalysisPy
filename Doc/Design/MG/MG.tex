@@ -15,7 +15,8 @@
     linkcolor=red,
     urlcolor=blue
 }
-\usepackage[round]{natbib}
+
+\input{../../Comments}
 
 \newcounter{acnum}
 \newcommand{\actheacnum}{AC\theacnum}
@@ -29,29 +30,18 @@
 \newcommand{\mthemnum}{M\themnum}
 \newcommand{\mref}[1]{M\ref{#1}}
 
-\title{SE 3XA3: Software Requirements Specification\\Title of Project}
-
-\author{Team \#, Team Name
-		\\ Student 1 name and macid
-		\\ Student 2 name and macid
-		\\ Student 3 name and macid
-}
-
-\date{\today}
-
-\input{../../Comments}
-
 \begin{document}
+
+\title{Module Guide: Project Title} 
+\author{Author Name}
+\date{\today}
 
 \maketitle
 
 \pagenumbering{roman}
-\tableofcontents
-\listoftables
-\listoffigures
 
-\begin{table}[bp]
-\caption{\bf Revision History}
+\section{Revision History}
+
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
@@ -59,7 +49,14 @@ Date 1 & 1.0 & Notes\\
 Date 2 & 1.1 & Notes\\
 \bottomrule
 \end{tabularx}
-\end{table}
+
+\newpage
+
+\tableofcontents
+
+\listoftables
+
+\listoffigures
 
 \newpage
 
@@ -136,7 +133,11 @@ change.
   hardware on which the software is running.
 \item[\refstepcounter{acnum} \actheacnum \label{acInput}:] The format of the
   initial input data.
-\item ...
+\item [\refstepcounter{acnum} \actheacnum \label{acInput}:] The format of the output data.
+\item [\refstepcounter{acnum} \actheacnum \label{acInput}:] The algorithms used for processing data.
+\item [\refstepcounter{acnum} \actheacnum \label{acInput}:] The type of input data.
+\item [\refstepcounter{acnum} \actheacnum \label{acInput}:] The plotting library used.
+
 \end{description}
 
 \subsection{Unlikely Changes} \label{SecUchange}
@@ -340,12 +341,8 @@ the modules. It can be seen that the graph is a directed acyclic graph
 system, and modules in the higher level of the hierarchy are essentially simpler
 because they use modules from the lower levels.
 
-\begin{figure}[H]
-\centering
-%\includegraphics[width=0.7\textwidth]{UsesHierarchy.png}
-\caption{Use hierarchy among modules}
-\label{FigUH}
-\end{figure}
+
+
 
 %\section*{References}
 
