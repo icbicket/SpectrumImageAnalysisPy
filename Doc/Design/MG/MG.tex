@@ -1,6 +1,7 @@
 \documentclass[12pt, titlepage]{article}
 
 \usepackage{fullpage}
+\usepackage{tikz}
 \usepackage[round]{natbib}
 \usepackage{multirow}
 \usepackage{booktabs}
@@ -166,9 +167,27 @@ actually be implemented.
 
 \begin{description}
 \item [\refstepcounter{mnum} \mthemnum \label{mHH}:] Hardware-Hiding Module
-\item [\refstepcounter{mnum} \mthemnum \label{mBH}:] Behaviour-Hiding Module
+\item [\refstepcounter{mnum} \mthemnum \label{mdm3}:] I/O *.dm3 Module
+\item [\refstepcounter{mnum} \mthemnum \label{mh5}:] I/O *.h5 Module
+\item [\refstepcounter{mnum} \mthemnum \label{mrpl}:] I/O *.rpl Module
+\item [\refstepcounter{mnum} \mthemnum \label{mcsv}:] I/O *.csv Module
+\item [\refstepcounter{mnum} \mthemnum \label{mpng}:] I/O *.png Module
+\item [\refstepcounter{mnum} \mthemnum \label{mRL}:] Data Processing Richardson-Lucy Deconvolution Module
+\item [\refstepcounter{mnum} \mthemnum \label{mNorm}:] Data Processing Normalization Module
+\item [\refstepcounter{mnum} \mthemnum \label{mGain}:] Data Processing Gain Correction Module
+\item [\refstepcounter{mnum} \mthemnum \label{mBkgnd}:] Data Processing Background Correction Module
+\item [\refstepcounter{mnum} \mthemnum \label{m1Dslice}:] Data Extraction 1D Slice Module
+\item [\refstepcounter{mnum} \mthemnum \label{m2Dmask}:] Data Extraction 2D Mask Module
+\item [\refstepcounter{mnum} \mthemnum \label{m3Dmask}:] Data Extraction 3D Mask Module
+\item [\refstepcounter{mnum} \mthemnum \label{m1Dspecdisplay}:] Display 1D Spectrum Module
+\item [\refstepcounter{mnum} \mthemnum \label{m2Dimgdisplay}:] Display 2D Image Module
+\item [\refstepcounter{mnum} \mthemnum \label{m3DSIdisplay}:] Display 3D Spectrum Image Module
+\item [\refstepcounter{mnum} \mthemnum \label{m1Dspecdata}:] Data 1D Spectrum Module
+\item [\refstepcounter{mnum} \mthemnum \label{m2Dimgdata}:] Data 2D Image Module
+\item [\refstepcounter{mnum} \mthemnum \label{m3DSIdata}:] Data 3D Spectrum Image Module
+\item [\refstepcounter{mnum} \mthemnum \label{mArrayStruct}:] Array Data Structure
+\item [\refstepcounter{mnum} \mthemnum \label{mPlotStruct}:] Plotting Structure
 \end{description}
-
 
 \begin{table}[h!]
 \centering
@@ -180,14 +199,11 @@ actually be implemented.
 {Hardware-Hiding Module} & ~ & ~ \\
 \midrule
 
-\multirow{18}{0.25\textwidth}{Behaviour-Hiding Module} & \multirow{5}{0.25\textwidth}{I/O} & *.h5 \\
-& & *.dm3\\
-& & *.png\\
+\multirow{18}{0.25\textwidth}{Behaviour-Hiding Module} & \multirow{5}{0.25\textwidth}{I/O} & *.dm3 \\
+& & *.h5\\
+& & *.rpl\\
 & & *.csv\\
-& & *.rpl\\\cline{2-3}
-& \multirow{3}{0.25\textwidth}{Data} & Spectrum\\
-& & Image\\
-& & Spectrum Image\\\cline{2-3}
+& & *.png\\\cline{2-3}
 & \multirow{4}{0.25\textwidth}{Data processing} & Richardson-Lucy Deconvolution\\
 & & Normalization\\
 & & Gain correction\\
@@ -200,8 +216,12 @@ actually be implemented.
 & & 3D spectrum image plot\\
 \midrule
 
-\multirow{2}{0.25\textwidth}{Software Decision Module} & Array data structure\\
+\multirow{2}{0.25\textwidth}{Software Decision Module} & \multirow{3}{0.25\textwidth}{Data} & Spectrum\\
+& & Image\\
+& & Spectrum Image\\\cline{2-3}
+& Array data structure\\\cline{2-3}
 & Plotting structure\\
+
 \bottomrule
 
 \end{tabular}
@@ -350,11 +370,50 @@ the modules. It can be seen that the graph is a directed acyclic graph
 system, and modules in the higher level of the hierarchy are essentially simpler
 because they use modules from the lower levels.
 
+\begin{figure}[h!]
+	\centering
+	\input{UseHierarchy.tex}
+	\caption{Use Hierarchy}
+	\label{figure:UH}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\input{UseHierarchy_IO.tex}
+	\caption{Use Hierarchy I/O}
+	\label{figure:UHIO}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\input{UseHierarchy_DataProcessing.tex}
+	\caption{Use Hierarchy Data Processing}
+	\label{figure:UHDP}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\input{UseHierarchy_DataExtraction.tex}
+	\caption{Use Hierarchy Data Extraction}
+	\label{figure:UHDE}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\input{UseHierarchy_Display.tex}
+	\caption{Use Hierarchy Display}
+	\label{figure:UHDisp}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\input{UseHierarchy_Data.tex}
+	\caption{Use Hierarchy Data}
+	\label{figure:UHData}
+\end{figure}
 
 
-
-%\section*{References}
-
+\newpage
 \bibliographystyle {plainnat}
 \bibliography {MG}
 
