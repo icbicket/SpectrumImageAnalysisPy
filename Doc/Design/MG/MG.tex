@@ -131,15 +131,21 @@ adapted here is called design for
 change.
 
 \begin{description}
-\item[\refstepcounter{acnum} \actheacnum \label{acHardware}:] The specific
-  hardware on which the software is running.
-\item[\refstepcounter{acnum} \actheacnum \label{acInput}:] The format of the
-  initial input data.
-\item [\refstepcounter{acnum} \actheacnum \label{acInput}:] The format of the output data.
-\item [\refstepcounter{acnum} \actheacnum \label{acInput}:] The algorithms used for processing data.
-\item [\refstepcounter{acnum} \actheacnum \label{acInput}:] The type of input data.
-\item [\refstepcounter{acnum} \actheacnum \label{acInput}:] The plotting library used.
-
+	\item[\refstepcounter{acnum} \actheacnum \label{acHardware}:] The specific
+	  hardware on which the software is running.
+	\item The headings or data format of saved spectrum csv files.
+	\item The locations/labels of data and metadata inside dm3 files.
+	\item Expanding support to dm4 files.
+	\item Functions used for deconvolution (optimizations for reduced error or speed).
+	\item The locations/labels of data and metadat inside h5 files.
+	\item The data type inside h5 files.
+	\item The data type inside dm3 files.
+	\item 
+	\item[\refstepcounter{acnum} \actheacnum \label{acImport}:] The format of import data.
+	\item [\refstepcounter{acnum} \actheacnum \label{acOutput}:] The format of the output data.
+	\item [\refstepcounter{acnum} \actheacnum \label{acInput}:] The algorithms used for processing data.
+	\item [\refstepcounter{acnum} \actheacnum \label{acInput}:] The type of input data.
+	\item [\refstepcounter{acnum} \actheacnum \label{acInput}:] The plotting library used.
 \end{description}
 
 \subsection{Unlikely Changes} \label{SecUchange}
@@ -190,7 +196,7 @@ actually be implemented.
 	\item [\refstepcounter{mnum} \mthemnum \label{m2Dimgdata}:] Data 2D Image Module
 	\item [\refstepcounter{mnum} \mthemnum \label{m3DSIdata}:] Data 3D Spectrum Image Module
 	\item [\refstepcounter{mnum} \mthemnum \label{mArrayStruct}:] Array Data Structure
-	\item [\refstepcounter{mnum} \mthemnum \label{mPlotStruct}:] Plotting Structure
+	\item [\refstepcounter{mnum} \mthemnum \label{mPlotLib}:] Plotting Library
 \end{description}
 
 \begin{table}[h!]
@@ -226,8 +232,8 @@ actually be implemented.
 \multirow{2}{0.25\textwidth}{Software Decision Module} & \multirow{3}{0.25\textwidth}{Data} & Spectrum\\
 & & Image\\
 & & Spectrum Image\\\cline{2-3}
-& Array data structure\\\cline{2-3}
-& Plotting structure\\
+& Array Data Structure\\\cline{2-3}
+& Plotting Library\\
 
 \bottomrule
 
@@ -388,6 +394,62 @@ selected.
 	\item[Implemented By:] \progname
 \end{description}
 
+\subsubsection{Data Extraction}
+\begin{description}
+	\item[Secrets:]Contains modules for extracting segments of data.
+	\item[Services:]Extract 1D, 2D, and 3D segmentns of data, as desired by the user.
+	\item[Implemented By:] --
+\end{description}
+
+\subsubsection{Data Extraction: 1D Slice (\mref{m1Dslice})}
+\begin{description}
+	\item[Secrets:]Perform 1D slice on the spectrum axis, based on input from the user.
+	\item[Services:]Takes input on the desired spectral range to slice, performs the slice on the data, and returns the sliced range.
+	\item[Implemented By:] \progname
+\end{description}
+
+\subsubsection{Data Extraction: 2D Mask (\mref{m2Dmask})}
+\begin{description}
+	\item[Secrets:]Perform 2D mask operation on the image axis, based on input from the user.
+	\item[Services:]Takes input on the desired spatial pixels to mask and returns the area under the mask.
+	\item[Implemented By:] \progname
+\end{description}
+
+\subsubsection{Data Extraction: 3D Mask (\mref{m3Dmask})}
+\begin{description}
+	\item[Secrets:]Perform 3D mask operation on a spectrum image, based on input from the user.
+	\item[Services:]Takes input from a 2D mask and extends this mask along the spectral axis, or takes input from a 1D slice and extends this slice along the spatial axes to produce a 3D mask. Returns the volume under the mask.
+	\item[Implemented By:] \progname
+\end{description}
+
+\subsubsection{Display}
+\begin{description}
+	\item[Secrets:]Display a spectrum, image, or spectrum image for the user.
+	\item[Services:]Plots a 1D spectrum, plots a 2D image, or plots a 3D spectrum image, depending on the input data. 
+	\item[Implemented By:] --
+\end{description}
+
+\subsubsection{Display: 1D Spectrum Plot (\mref{m1Dspecdisplay})}
+\begin{description}
+	\item[Secrets:]Displays a 1D spectrum plot for the user.
+	\item[Services:]Takes in a 1D spectrum and plots it for the user with the appropriate x- and y- axis labels and units.
+	\item[Implemented By:] \progname
+\end{description}
+
+\subsubsection{Display: 2D Image Plot (\mref{m2Dimgdisplay})}
+\begin{description}
+	\item[Secrets:]Displays 2D image plot for the user.
+	\item[Services:]Takes in 2D image data and plots it for the user to interact with, including a scalebar if desired by the user.
+	\item[Implemented By:] \progname
+\end{description}
+
+\subsubsection{Display: 3D Spectrum Image Plot (\mref{m3DSIdisplay})}
+\begin{description}
+	\item[Secrets:]Displays 3D spectrum image for the user.
+	\item[Services:]Combines a 1D spectrum plot and 2D image plot to allow the user to visualize and navigate a 3D data set. 
+	\item[Implemented By:] \progname
+\end{description}
+
 \subsection{Software Decision Module}
 
 \begin{description}
@@ -401,7 +463,47 @@ selected.
 \item[Implemented By:] --
 \end{description}
 
-\subsubsection{Etc.}
+\subsubsection{Data}
+\begin{description}
+	\item[Secrets:]Contains the 1D, 2D, and 3D datasets.
+	\item[Services:]Includes the structure of the datasets for spectra (1D), images (2D), and spectrum images (3D). Includes spatial and spectral calibrations and metadata as appropriate.
+	\item[Implemented By:] --
+\end{description}
+
+\subsubsection{Data: 1D Spectrum (\mref{m1Dspecdata})}
+\begin{description}
+	\item[Secrets:]Holds data structure for 1D spectrum data.
+	\item[Services:]Contains the data for a spectrum, including x-axis values and y-axis values, and any relevant calibrations or metadata.
+	\item[Implemented By:] \progname
+\end{description}
+
+\subsubsection{Data: 2D Image (\mref{m2Dimgdata})}
+\begin{description}
+	\item[Secrets:]Holds data structure for 2D image data.
+	\item[Services:]Contains the data for an image, including $(x,y)$ values, and any relevant spatial calibrations or metadata.
+	\item[Implemented By:] \progname
+\end{description}
+
+\subsubsection{Data: 3D Spectrum Image (\mref{m3DSIdata})}
+\begin{description}
+	\item[Secrets:]Holds data structure for 3D spectrum image data.
+	\item[Services:]Contains the data for a spectrum image, including the values along the spectral axis, and intensity values for the whole volume defined, as well as any relevant calibrations or metadata.
+	\item[Implemented By:] \progname
+\end{description}
+
+\subsubsection{Array Data Structure}
+\begin{description}
+	\item[Secrets:]Data structure for arrays.
+	\item[Services:]Functions and support for array data types.
+	\item[Implemented By:] Python
+\end{description}
+
+\subsubsection{Plotting Library}
+\begin{description}
+	\item[Secrets:]Library for creating plots.
+	\item[Services:]Building blocks for creating 1D, 2D, and 3D plots.
+	\item[Implemented By:] Python
+\end{description}
 
 \section{Traceability Matrix} \label{SecTM}
 
@@ -411,26 +513,24 @@ requirements and between the modules and the anticipated changes.
 % the table should use mref, the requirements should be named, use something
 % like fref
 \begin{table}[H]
-\centering
-\begin{tabular}{p{0.2\textwidth} p{0.6\textwidth}}
-\toprule
-\textbf{Req.} & \textbf{Modules}\\
-\midrule
-R1 & \mref{mHH}, \mref{mInput}, \mref{mParams}, \mref{mControl}\\
-R2 & \mref{mInput}, \mref{mParams}\\
-R3 & \mref{mVerify}\\
-R4 & \mref{mOutput}, \mref{mControl}\\
-R5 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}, \mref{mSeqDS}, \mref{mSolver}, \mref{mPlot}\\
-R6 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}, \mref{mSeqDS}, \mref{mSolver}, \mref{mPlot}\\
-R7 & \mref{mOutput}, \mref{mEnergy}, \mref{mControl}, \mref{mSeqDS}, \mref{mPlot}\\
-R8 & \mref{mOutput}, \mref{mEnergy}, \mref{mControl}, \mref{mSeqDS}, \mref{mPlot}\\
-R9 & \mref{mVerifyOut}\\
-R10 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}\\
-R11 & \mref{mOutput}, \mref{mODEs}, \mref{mEnergy}, \mref{mControl}\\
-\bottomrule
-\end{tabular}
-\caption{Trace Between Requirements and Modules}
-\label{TblRT}
+	\centering
+	\begin{tabular}{p{0.2\textwidth} p{0.6\textwidth}}
+		\toprule
+		\textbf{Req.} & \textbf{Modules}\\
+		\midrule
+		R1 & \mref{mHH}, \mref{mdm3Im}, \mref{mh5Im}, \mref{m3DSIdata}\\
+		R2 & \mref{mHH}, \mref{mcsvIm}, \mref{m1Dspecdata}\\
+		R3 & \mref{mcsvIm}, \mref{mdm3Im}, \mref{mh5Im}, \mref{mrplIm}\\
+		R4 & \mref{mpngEx}, \mref{m1Dslice}, \mref{m3Dmask}, \mref{m1Dspecdisplay}, \mref{m2Dimgdisplay}, \mref{m3DSIdisplay}\\
+		R5 & \mref{mcsvEx}, \mref{m2Dmask}, \mref{m3Dmask}, \mref{m1Dspecdisplay}, \mref{m2Dimgdisplay}, \mref{m3DSIdisplay}\\
+		R6 & \mref{mRL}, \mref{m3DSIdisplay}, \mref{m1Dspecdata}, \mref{m3DSIdata}\\
+		R7 & \mref{mNorm}, \mref{m1Dslice}, \mref{m3DSIdata}\\
+		R8 & \mref{mBkgnd}, \mref{m1Dspecdata}, \mref{m3DSIdata}\\
+		R9 & \mref{mGain}, \mref{m1Dspecdata}, \mref{m3DSIdata}\\
+		\bottomrule
+	\end{tabular}
+	\caption{Trace Between Requirements and Modules}
+	\label{TblRT}
 \end{table}
 
 \begin{table}[H]
@@ -473,42 +573,49 @@ because they use modules from the lower levels.
 \begin{figure}[h!]
 	\centering
 	\input{UseHierarchy.tex}
-	\caption{Use Hierarchy}
+	\caption{Use Hierarchy for Level 1 and Level 2 modules}
 	\label{figure:UH}
 \end{figure}
 
 \begin{figure}[h!]
 	\centering
-	\input{UseHierarchy_IO.tex}
-	\caption{Use Hierarchy I/O}
-	\label{figure:UHIO}
+	\input{UseHierarchy_Import.tex}
+	\caption{Use Hierarchy for Level 3 Import modules}
+	\label{figure:UHIm}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\input{UseHierarchy_Export.tex}
+	\caption{Use Hierarchy for Level 3 Export modules}
+	\label{figure:UHEx}
 \end{figure}
 
 \begin{figure}[h!]
 	\centering
 	\input{UseHierarchy_DataProcessing.tex}
-	\caption{Use Hierarchy Data Processing}
+	\caption{Use Hierarchy for Level 3 Data Processing modules}
 	\label{figure:UHDP}
 \end{figure}
 
 \begin{figure}[h!]
 	\centering
 	\input{UseHierarchy_DataExtraction.tex}
-	\caption{Use Hierarchy Data Extraction}
+	\caption{Use Hierarchy for Level 3 Data Extraction modules}
 	\label{figure:UHDE}
 \end{figure}
 
 \begin{figure}[h!]
 	\centering
 	\input{UseHierarchy_Display.tex}
-	\caption{Use Hierarchy Display}
+	\caption{Use Hierarchy for Level 3 Display modules}
 	\label{figure:UHDisp}
 \end{figure}
 
 \begin{figure}[h!]
 	\centering
 	\input{UseHierarchy_Data.tex}
-	\caption{Use Hierarchy Data}
+	\caption{Use Hierarchy for Level 3 Data modules}
 	\label{figure:UHData}
 \end{figure}
 
