@@ -8,6 +8,7 @@
 \usepackage{tabularx}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{xr-hyper}
 \usepackage{hyperref}
 \hypersetup{
     colorlinks,
@@ -17,6 +18,7 @@
     urlcolor=blue
 }
 
+\externaldocument{../../SRS/SRS}
 \input{../../Comments}
 
 \newcounter{acnum}
@@ -30,12 +32,13 @@
 \newcounter{mnum}
 \newcommand{\mthemnum}{M\themnum}
 \newcommand{\mref}[1]{M\ref{#1}}
+
 \newcommand{\progname}{SpectrumImageAnalysisPy}
 
 \begin{document}
 
-\title{Module Guide: Project Title} 
-\author{Author Name}
+\title{Module Guide: \progname} 
+\author{Isobel Bicket}
 \date{\today}
 
 \maketitle
@@ -44,11 +47,10 @@
 
 \section{Revision History}
 
-\begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
+\begin{tabularx}{\textwidth}{p{4cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+November 8, 2017 & 1.0 & Initial draft\\
 \bottomrule
 \end{tabularx}
 
@@ -133,19 +135,31 @@ change.
 \begin{description}
 	\item[\refstepcounter{acnum} \actheacnum \label{acHardware}:] The specific
 	  hardware on which the software is running.
-	\item The headings or data format of saved spectrum csv files.
-	\item The locations/labels of data and metadata inside dm3 files.
-	\item Expanding support to dm4 files.
-	\item Functions used for deconvolution (optimizations for reduced error or speed).
-	\item The locations/labels of data and metadat inside h5 files.
-	\item The data type inside h5 files.
-	\item The data type inside dm3 files.
-	\item 
-	\item[\refstepcounter{acnum} \actheacnum \label{acImport}:] The format of import data.
-	\item [\refstepcounter{acnum} \actheacnum \label{acOutput}:] The format of the output data.
-	\item [\refstepcounter{acnum} \actheacnum \label{acInput}:] The algorithms used for processing data.
-	\item [\refstepcounter{acnum} \actheacnum \label{acInput}:] The type of input data.
-	\item [\refstepcounter{acnum} \actheacnum \label{acInput}:] The plotting library used.
+	\item[\refstepcounter{acnum} \actheacnum \label{acCSVheadings}:] The headings or data format of saved spectrum csv files.
+	\item[\refstepcounter{acnum} \actheacnum \label{acDM3datatype}:] The data type inside dm3 files.
+	\item[\refstepcounter{acnum} \actheacnum \label{acDM3labels}:] The locations/labels of data and metadata inside dm3 files.
+	\item[\refstepcounter{acnum} \actheacnum \label{acDM4support}:] Expanding support to dm4 files.
+	\item[\refstepcounter{acnum} \actheacnum \label{acH5datatype}:] The data type inside h5 files.
+	\item[\refstepcounter{acnum} \actheacnum \label{acH5labels}:] The locations/labels of data and metadata inside h5 files.
+	\item[\refstepcounter{acnum} \actheacnum \label{acNewDataProcessing}:] Adding new data processing algorithms
+	\item[\refstepcounter{acnum} \actheacnum \label{acRLoptimize}:] Functions used for RL deconvolution (optimizations for reduced error or speed).
+	\item[\refstepcounter{acnum} \actheacnum \label{acNorm}:] Optimizations on normalization algorithm
+	\item[\refstepcounter{acnum} \actheacnum \label{acGain}:] Optimizations on gain correction algorithm
+	\item[\refstepcounter{acnum} \actheacnum \label{acBkgnd}:] Optimizations on background correction algorithm
+	\item[\refstepcounter{acnum} \actheacnum \label{ac1DplotFormat}:] Format of 1D spectrum plot
+	\item[\refstepcounter{acnum} \actheacnum \label{ac2DplotFormat}:] Format of 2D image plot
+	\item[\refstepcounter{acnum} \actheacnum \label{ac3DPlotLayout}:] Layout of 3D spectrum image plotting display
+	\item[\refstepcounter{acnum} \actheacnum \label{ac3DPlotOptimize}:] Optimizations for faster response of spectrum image plotting display
+	\item[\refstepcounter{acnum} \actheacnum \label{ac3DPlotCommands}:] Changes to the interactive commands in the spectrum image plotting display
+	\item[\refstepcounter{acnum} \actheacnum \label{acSpectrumUnits}:] Units or label on the spectral axis
+	\item[\refstepcounter{acnum} \actheacnum \label{ac1DSlice}:] Method used to slice spectra
+	\item[\refstepcounter{acnum} \actheacnum \label{ac2DMask}:] Method of masking 2D images
+	\item[\refstepcounter{acnum} \actheacnum \label{ac3DMask}:] Method of masking 3D images
+	\item[\refstepcounter{acnum} \actheacnum \label{ac4Dsupport}:] Adding new modules for image stacks (4D datasets)
+	\item[\refstepcounter{acnum} \actheacnum \label{acImageExportFormat}:] New file format for exported image files (\textit{e.g.}, change to tiff)
+	\item[\refstepcounter{acnum} \actheacnum \label{acSIExportFormat}:] New file format for exporting spectrum image files
+	\item[\refstepcounter{acnum} \actheacnum \label{acSIExportH5Format}:] Format changes for exporting spectrum image files to h5
+	\item[\refstepcounter{acnum} \actheacnum \label{acSIExportRPLFormat}:] Format changes for exporting spectrum image files to rpl.
 \end{description}
 
 \subsection{Unlikely Changes} \label{SecUchange}
@@ -158,11 +172,18 @@ will potentially need to be modified. Hence, it is not intended that these
 decisions will be changed.
 
 \begin{description}
-\item[\refstepcounter{ucnum} \uctheucnum \label{ucIO}:] Input/Output devices
-  (Input: File and/or Keyboard, Output: File, Memory, and/or Screen).
-\item[\refstepcounter{ucnum} \uctheucnum \label{ucInput}:] There will always be
-  a source of input data external to the software.
-\item ...
+	\item[\refstepcounter{ucnum} \uctheucnum \label{ucIO}:] Input/Output hardware devices (a keyboard and mouse for input, a monitor screen for output)
+	\item[\refstepcounter{ucnum} \uctheucnum \label{ucHardware}:] The nature of the hardware used to run the software (a laptop or desktop computer containing sufficient memory and computing power to perform the operations required)
+	\item[\refstepcounter{ucnum} \uctheucnum \label{ucInput}:] There will always be
+	  a source of input data external to the software.
+	\item[\refstepcounter{ucnum} \uctheucnum \label{ucArray}:]  The use of arrays for holding data.
+	\item[\refstepcounter{ucnum} \uctheucnum \label{ucPlottingLibrary}:]  Plotting library used
+	\item[\refstepcounter{ucnum} \uctheucnum \label{ucArrayLibrary}:]  Array structure library used
+	\item[\refstepcounter{ucnum} \uctheucnum \label{uc1DdataFormat}:]  Format of 1D data (y-axis and x-axis data)
+	\item[\refstepcounter{ucnum} \uctheucnum \label{uc2DdataFormat}:]  Format of 2D data ($(x,y)$ data array)
+	\item[\refstepcounter{ucnum} \uctheucnum \label{uc3DdataFormat}:]  Format of 3D data ($(x,y,E)$ data array)
+	\item[\refstepcounter{ucnum} \uctheucnum \label{uc3DSIAxisOrder}:] The order of the spatial and spectral axes in a spectrum image
+	\item[\refstepcounter{ucnum} \uctheucnum \label{ucExDataType}:] The data type to export
 \end{description}
 
 \section{Module Hierarchy} \label{SecMH}
@@ -317,7 +338,7 @@ selected.
 	\item[Implemented By:] \progname
 \end{description}
 
-\subsubsection{Import dm3 Module (\mref{mrplIm})}
+\subsubsection{Import rpl Module (\mref{mrplIm})}
 \begin{description}
 	\item[Secrets:]Import data from rpl file (\textit{e.g.}, as exported by \progname)
 	\item[Services:]Reads data from a rpl file and assigns the data to the appropriate data module. Will assign calibrations based on the metadata in the file.
@@ -397,7 +418,7 @@ selected.
 \subsubsection{Data Extraction}
 \begin{description}
 	\item[Secrets:]Contains modules for extracting segments of data.
-	\item[Services:]Extract 1D, 2D, and 3D segmentns of data, as desired by the user.
+	\item[Services:]Extract 1D, 2D, and 3D segments of data, as desired by the user.
 	\item[Implemented By:] --
 \end{description}
 
@@ -514,44 +535,61 @@ requirements and between the modules and the anticipated changes.
 % like fref
 \begin{table}[H]
 	\centering
-	\begin{tabular}{p{0.2\textwidth} p{0.6\textwidth}}
+	\begin{tabular}{p{0.4\textwidth} p{0.6\textwidth}}
 		\toprule
-		\textbf{Req.} & \textbf{Modules}\\
+		\textbf{Requirement} & \textbf{Modules}\\
 		\midrule
-		R1 & \mref{mHH}, \mref{mdm3Im}, \mref{mh5Im}, \mref{m3DSIdata}\\
-		R2 & \mref{mHH}, \mref{mcsvIm}, \mref{m1Dspecdata}\\
-		R3 & \mref{mcsvIm}, \mref{mdm3Im}, \mref{mh5Im}, \mref{mrplIm}\\
-		R4 & \mref{mpngEx}, \mref{m1Dslice}, \mref{m3Dmask}, \mref{m1Dspecdisplay}, \mref{m2Dimgdisplay}, \mref{m3DSIdisplay}\\
-		R5 & \mref{mcsvEx}, \mref{m2Dmask}, \mref{m3Dmask}, \mref{m1Dspecdisplay}, \mref{m2Dimgdisplay}, \mref{m3DSIdisplay}\\
-		R6 & \mref{mRL}, \mref{m3DSIdisplay}, \mref{m1Dspecdata}, \mref{m3DSIdata}\\
-		R7 & \mref{mNorm}, \mref{m1Dslice}, \mref{m3DSIdata}\\
-		R8 & \mref{mBkgnd}, \mref{m1Dspecdata}, \mref{m3DSIdata}\\
-		R9 & \mref{mGain}, \mref{m1Dspecdata}, \mref{m3DSIdata}\\
+		\hyperref[R_SI_inputs]{SI input} & \mref{mHH}, \mref{mdm3Im}, \mref{mh5Im}, \mref{m3DSIdata}\\
+		\hyperref[R_spectrum_inputs]{Spectrum input} & \mref{mHH}, \mref{mcsvIm}, \mref{m1Dspecdata}\\
+		\hyperref[R_Input_dimension]{Input dimensions} & \mref{mcsvIm}, \mref{mdm3Im}, \mref{mh5Im}, \mref{mrplIm}\\
+		\hyperref[R_SI_slicing]{SI slicing} & \mref{mpngEx}, \mref{m1Dslice}, \mref{m3Dmask}, \mref{m1Dspecdisplay}, \mref{m2Dimgdisplay}, \mref{m3DSIdisplay}\\
+		\hyperref[R_SI_area]{SI area} & \mref{mcsvEx}, \mref{m2Dmask}, \mref{m3Dmask}, \mref{m1Dspecdisplay}, \mref{m2Dimgdisplay}, \mref{m3DSIdisplay}\\
+		\hyperref[R_deconvolution]{Deconvolution} & \mref{mRL}, \mref{m3DSIdisplay}, \mref{m1Dspecdata}, \mref{m3DSIdata}\\
+		\hyperref[R_normalization]{Normalization} & \mref{mNorm}, \mref{m1Dslice}, \mref{m3DSIdata}\\
+		\hyperref[R_background]{Background} & \mref{mBkgnd}, \mref{m1Dspecdata}, \mref{m3DSIdata}\\
+		\hyperref[R_gain]{Gain} & \mref{mGain}, \mref{m1Dspecdata}, \mref{m3DSIdata}\\
 		\bottomrule
 	\end{tabular}
 	\caption{Trace Between Requirements and Modules}
 	\label{TblRT}
 \end{table}
 
+Ideally, each anticipated change should correspond to one module. There are some anticipated changes to this program which may affect multiple modules, such as \acref{acCSVheadings}. The modules affected by this change are interdependent on each other, concerning the reading and writing of csv files. The format which must be read corresponds to output from a previous use of \progname, so must correspond to the format which was written beforehand. Combining the import and export modules, however, will result in cyclic paths in the use hierarchy, as Export uses Data Extraction, which uses Data, which uses Import, so the decision was made to keep the Import and Export modules separate from each other.
+Where no leaf module was relevant to the anticipated change, the name of a node module is written. This might happen when the anticipated change results in the addition of a new module under that node.
+
 \begin{table}[H]
 \centering
 \begin{tabular}{p{0.2\textwidth} p{0.6\textwidth}}
-\toprule
-\textbf{AC} & \textbf{Modules}\\
-\midrule
-\acref{acHardware} & \mref{mHH}\\
-\acref{acInput} & \mref{mInput}\\
-\acref{acParams} & \mref{mParams}\\
-\acref{acVerify} & \mref{mVerify}\\
-\acref{acOutput} & \mref{mOutput}\\
-\acref{acVerifyOut} & \mref{mVerifyOut}\\
-\acref{acODEs} & \mref{mODEs}\\
-\acref{acEnergy} & \mref{mEnergy}\\
-\acref{acControl} & \mref{mControl}\\
-\acref{acSeqDS} & \mref{mSeqDS}\\
-\acref{acSolver} & \mref{mSolver}\\
-\acref{acPlot} & \mref{mPlot}\\
-\bottomrule
+	\toprule
+	\textbf{AC} & \textbf{Modules}\\
+	\midrule
+	\acref{acHardware} & \mref{mHH}\\
+	\acref{acCSVheadings} & \mref{mcsvIm}, \mref{mcsvEx}\\
+	\acref{acDM3datatype} & \mref{mdm3Im}\\
+	\acref{acDM3labels} & \mref{mdm3Im}\\
+	\acref{acDM4support} & Import\\
+	\acref{acH5datatype} & \mref{mh5Im}\\
+	\acref{acH5labels} & \mref{mh5Im}\\
+	\acref{acNewDataProcessing} & Data Processing\\
+	\acref{acRLoptimize} & \mref{mRL}\\
+	\acref{acNorm} & \mref{mNorm}\\
+	\acref{acGain} & \mref{mGain}\\
+	\acref{acBkgnd} & \mref{mBkgnd}\\
+	\acref{ac1DplotFormat} & \mref{m1Dspecdisplay}\\
+	\acref{ac2DplotFormat} & \mref{m2Dimgdisplay}\\
+	\acref{ac3DPlotLayout} & \mref{m3DSIdisplay}\\
+	\acref{ac3DPlotOptimize} & \mref{m3DSIdisplay}\\
+	\acref{ac3DPlotCommands} & \mref{m3DSIdisplay}\\
+	\acref{acSpectrumUnits} & \mref{m1Dspecdata}\\
+	\acref{ac1DSlice} & \mref{m1Dslice}\\
+	\acref{ac2DMask} & \mref{m2Dmask}\\
+	\acref{ac3DMask} & \mref{m3Dmask}\\
+	\acref{ac4Dsupport} & Data\\
+	\acref{acImageExportFormat} & Export\\
+	\acref{acSIExportFormat} & Export\\
+	\acref{acSIExportH5Format} & \mref{mh5Ex}\\
+	\acref{acSIExportRPLFormat} & \mref{mrplEx}\\
+	\bottomrule
 \end{tabular}
 \caption{Trace Between Anticipated Changes and Modules}
 \label{TblACT}
@@ -620,7 +658,7 @@ because they use modules from the lower levels.
 \end{figure}
 
 
-\newpage
+\clearpage
 \bibliographystyle {plainnat}
 \bibliography {MG}
 
