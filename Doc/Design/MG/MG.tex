@@ -30,6 +30,7 @@
 \newcounter{mnum}
 \newcommand{\mthemnum}{M\themnum}
 \newcommand{\mref}[1]{M\ref{#1}}
+\newcommand{\progname}{SpectrumImageAnalysisPy}
 
 \begin{document}
 
@@ -166,27 +167,30 @@ below, which are leaves in the hierarchy tree, are the modules that will
 actually be implemented.
 
 \begin{description}
-\item [\refstepcounter{mnum} \mthemnum \label{mHH}:] Hardware-Hiding Module
-\item [\refstepcounter{mnum} \mthemnum \label{mdm3}:] I/O *.dm3 Module
-\item [\refstepcounter{mnum} \mthemnum \label{mh5}:] I/O *.h5 Module
-\item [\refstepcounter{mnum} \mthemnum \label{mrpl}:] I/O *.rpl Module
-\item [\refstepcounter{mnum} \mthemnum \label{mcsv}:] I/O *.csv Module
-\item [\refstepcounter{mnum} \mthemnum \label{mpng}:] I/O *.png Module
-\item [\refstepcounter{mnum} \mthemnum \label{mRL}:] Data Processing Richardson-Lucy Deconvolution Module
-\item [\refstepcounter{mnum} \mthemnum \label{mNorm}:] Data Processing Normalization Module
-\item [\refstepcounter{mnum} \mthemnum \label{mGain}:] Data Processing Gain Correction Module
-\item [\refstepcounter{mnum} \mthemnum \label{mBkgnd}:] Data Processing Background Correction Module
-\item [\refstepcounter{mnum} \mthemnum \label{m1Dslice}:] Data Extraction 1D Slice Module
-\item [\refstepcounter{mnum} \mthemnum \label{m2Dmask}:] Data Extraction 2D Mask Module
-\item [\refstepcounter{mnum} \mthemnum \label{m3Dmask}:] Data Extraction 3D Mask Module
-\item [\refstepcounter{mnum} \mthemnum \label{m1Dspecdisplay}:] Display 1D Spectrum Module
-\item [\refstepcounter{mnum} \mthemnum \label{m2Dimgdisplay}:] Display 2D Image Module
-\item [\refstepcounter{mnum} \mthemnum \label{m3DSIdisplay}:] Display 3D Spectrum Image Module
-\item [\refstepcounter{mnum} \mthemnum \label{m1Dspecdata}:] Data 1D Spectrum Module
-\item [\refstepcounter{mnum} \mthemnum \label{m2Dimgdata}:] Data 2D Image Module
-\item [\refstepcounter{mnum} \mthemnum \label{m3DSIdata}:] Data 3D Spectrum Image Module
-\item [\refstepcounter{mnum} \mthemnum \label{mArrayStruct}:] Array Data Structure
-\item [\refstepcounter{mnum} \mthemnum \label{mPlotStruct}:] Plotting Structure
+	\item [\refstepcounter{mnum} \mthemnum \label{mHH}:] Hardware-Hiding Module
+	\item [\refstepcounter{mnum} \mthemnum \label{mcsvIm}:] Import .csv Module
+	\item [\refstepcounter{mnum} \mthemnum \label{mdm3Im}:] Import .dm3 Module
+	\item [\refstepcounter{mnum} \mthemnum \label{mh5Im}:] Import .h5 Module
+	\item [\refstepcounter{mnum} \mthemnum \label{mrplIm}:] Import .rpl Module
+	\item [\refstepcounter{mnum} \mthemnum \label{mcsvEx}:] Export .csv Module
+	\item [\refstepcounter{mnum} \mthemnum \label{mh5Ex}:] Export .h5 Module
+	\item [\refstepcounter{mnum} \mthemnum \label{mpngEx}:] Export .png Module
+	\item [\refstepcounter{mnum} \mthemnum \label{mrplEx}:] Export .rpl Module
+	\item [\refstepcounter{mnum} \mthemnum \label{mRL}:] Data Processing Richardson-Lucy Deconvolution Module
+	\item [\refstepcounter{mnum} \mthemnum \label{mNorm}:] Data Processing Normalization Module
+	\item [\refstepcounter{mnum} \mthemnum \label{mGain}:] Data Processing Gain Correction Module
+	\item [\refstepcounter{mnum} \mthemnum \label{mBkgnd}:] Data Processing Background Correction Module
+	\item [\refstepcounter{mnum} \mthemnum \label{m1Dslice}:] Data Extraction 1D Slice Module
+	\item [\refstepcounter{mnum} \mthemnum \label{m2Dmask}:] Data Extraction 2D Mask Module
+	\item [\refstepcounter{mnum} \mthemnum \label{m3Dmask}:] Data Extraction 3D Mask Module
+	\item [\refstepcounter{mnum} \mthemnum \label{m1Dspecdisplay}:] Display 1D Spectrum Module
+	\item [\refstepcounter{mnum} \mthemnum \label{m2Dimgdisplay}:] Display 2D Image Module
+	\item [\refstepcounter{mnum} \mthemnum \label{m3DSIdisplay}:] Display 3D Spectrum Image Module
+	\item [\refstepcounter{mnum} \mthemnum \label{m1Dspecdata}:] Data 1D Spectrum Module
+	\item [\refstepcounter{mnum} \mthemnum \label{m2Dimgdata}:] Data 2D Image Module
+	\item [\refstepcounter{mnum} \mthemnum \label{m3DSIdata}:] Data 3D Spectrum Image Module
+	\item [\refstepcounter{mnum} \mthemnum \label{mArrayStruct}:] Array Data Structure
+	\item [\refstepcounter{mnum} \mthemnum \label{mPlotStruct}:] Plotting Structure
 \end{description}
 
 \begin{table}[h!]
@@ -199,11 +203,14 @@ actually be implemented.
 {Hardware-Hiding Module} & ~ & ~ \\
 \midrule
 
-\multirow{18}{0.25\textwidth}{Behaviour-Hiding Module} & \multirow{5}{0.25\textwidth}{I/O} & *.dm3 \\
-& & *.h5\\
-& & *.rpl\\
-& & *.csv\\
-& & *.png\\\cline{2-3}
+\multirow{18}{0.25\textwidth}{Behaviour-Hiding Module} & \multirow{4}{0.25\textwidth}{Import} & csv\\
+& & dm3\\
+& & h5\\
+& & rpl\\\cline{2-3}
+& \multirow{4}{0.25\textwidth}{Export} & csv\\
+& & h5\\
+& & png\\
+& & rpl\\\cline{2-3}
 & \multirow{4}{0.25\textwidth}{Data processing} & Richardson-Lucy Deconvolution\\
 & & Normalization\\
 & & Gain correction\\
@@ -276,17 +283,110 @@ selected.
 \item[Implemented By:] --
 \end{description}
 
-\subsubsection{Input Format Module (\mref{mInput})}
-
+\subsubsection{Import}
 \begin{description}
-\item[Secrets:]The format and structure of the input data.
-\item[Services:]Converts the input data into the data structure used by the
-  input parameters module.
-\item[Implemented By:] [Your Program Name Here]
+	\item[Secrets:]Container for modules concerning reading data from files.
+	\item[Services:]Imports spectrum, image, or spectrum image data from various formats, as defined in the Level 3 modules to follow (\mref{mcsvIm}, \mref{mdm3Im}, \mref{mh5Im}, \mref{mrplIm}).
+	\item[Implemented By:] --
 \end{description}
 
-\subsubsection{Etc.}
+\subsubsection{Import csv Module (\mref{mcsvIm})}
+\begin{description}
+	\item[Secrets:]Import from csv (\textit{e.g.}, as created by \progname).
+	\item[Services:]Reads data from a csv file (which must be formatted appropriately) and assigns the data to the appropriate data module.
+	\item[Implemented By:] \progname
+\end{description}
 
+\subsubsection{Import dm3 Module (\mref{mdm3Im})}
+\begin{description}
+	\item[Secrets:]Import data from Gatan Digital Micrograph file (dm3).
+	\item[Services:]Reads data from a dm3 file and assigns the data to the appropriate data module. Will assign calibrations based on the metadata in the file.
+	\item[Implemented By:] \progname
+\end{description}
+
+\subsubsection{Import h5 Module (\mref{mh5Im})}
+\begin{description}
+	\item[Secrets:]Import data from an h5 file (\textit{e.g.}, as produced by Odemis CL acquisition software, or by \progname).
+	\item[Services:]Reads data from an h5 file and assigns the data to the appropriate data module. Will assign calibrations based on the metadata in the file.
+	\item[Implemented By:] \progname
+\end{description}
+
+\subsubsection{Import dm3 Module (\mref{mrplIm})}
+\begin{description}
+	\item[Secrets:]Import data from rpl file (\textit{e.g.}, as exported by \progname)
+	\item[Services:]Reads data from a rpl file and assigns the data to the appropriate data module. Will assign calibrations based on the metadata in the file.
+	\item[Implemented By:] \progname
+\end{description}
+
+\subsubsection{Export}
+\begin{description}
+	\item[Secrets:]Container for modules concerning exporting data to files.
+	\item[Services:]Writing data (spectrum, image, or spectrum image) to various formats, as defined by Level 3 modules (\mref{mcsvEx}, \mref{mh5Ex}, \mref{mpngEx}, \mref{mrplEx}).
+	\item[Implemented By:] --
+\end{description}
+
+\subsubsection{Export csv Module (\mref{mcsvEx})}
+\begin{description}
+	\item[Secrets:]Export data to csv file.
+	\item[Services:]Takes spectrum data, formats it as appropriate, and exports the spectrum range (x-axis) and the intensity (y-axis) as a comma separated value file.
+	\item[Implemented By:] \progname
+\end{description}
+
+\subsubsection{Export h5 Module (\mref{mh5Ex})}
+\begin{description}
+	\item[Secrets:]Export data to h5 file.
+	\item[Services:]Takes spectrum or spectrum image data, formats it as appropriate, and exports the spectrum range, calibrations and metadata, and the spectrum image data to an h5 file.
+	\item[Implemented By:] \progname
+\end{description}
+
+\subsubsection{Export png Module (\mref{mpngEx})}
+\begin{description}
+	\item[Secrets:]Export image data to png file.
+	\item[Services:]Takes image data, formats it as appropriate, and writes it to a png file, with scalebar if requested by the user.
+	\item[Implemented By:] \progname
+\end{description}
+
+\subsubsection{Export rpl Module (\mref{mrplEx})}
+\begin{description}
+	\item[Secrets:]Export spectrum image data to rpl file.
+	\item[Services:]Takes spectrum image data, formats it as appropriate, and writes it to a rpl file, including any metadata or calibrations which are known.
+	\item[Implemented By:] \progname
+\end{description}
+
+\subsubsection{Data Processing}
+\begin{description}
+	\item[Secrets:]Container for data processing modules.
+	\item[Services:]Performs data processing functions, as defined by Level 3 modules.
+	\item[Implemented By:] --
+\end{description}
+
+\subsubsection{Data Processing: Richardson-Lucy Deconvolution (\mref{mRL})}
+\begin{description}
+	\item[Secrets:]Richardson-Lucy deconvolution algorithm.
+	\item[Services:]Performs Richardson-Lucy deconvolution on the desired spectrum or spectrum image input, using the number of iterations desired by the user and returns a deconvolved spectrum or spectrum image. 
+	\item[Implemented By:] \progname
+\end{description}
+
+\subsubsection{Data Processing: Normalization (\mref{mNorm})}
+\begin{description}
+	\item[Secrets:]Normalization algorithm.
+	\item[Services:]Performs normalization of the spectrum or spectrum image, as desired by the user. User can input the channel or a range of channels on which to normalize.
+	\item[Implemented By:] \progname
+\end{description}
+
+\subsubsection{Data Processing: Gain Correction (\mref{mGain})}
+\begin{description}
+	\item[Secrets:]Gain correction algorithm.
+	\item[Services:] Performs gain correction on the spectrum or spectrum image input. A gain reference is also required.
+	\item[Implemented By:] \progname
+\end{description}
+
+\subsubsection{Data Processing: Background Correction (\mref{mBkgnd})}
+\begin{description}
+	\item[Secrets:]Background correction algorithm.
+	\item[Services:]Performs background correction on input spectrum or spectrum image and returns the corrected spectrum or spectrum image. A background reference is required.
+	\item[Implemented By:] \progname
+\end{description}
 
 \subsection{Software Decision Module}
 
