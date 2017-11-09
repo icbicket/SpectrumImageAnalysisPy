@@ -2,7 +2,6 @@
 
 \usepackage{fullpage}
 \usepackage{tikz}
-\usepackage[round]{natbib}
 \usepackage{multirow}
 \usepackage{booktabs}
 \usepackage{tabularx}
@@ -36,7 +35,7 @@
 \newcommand{\progname}{SpectrumImageAnalysisPy}
 
 \begin{document}
-
+\bibliographystyle{ieeetr}
 \title{Module Guide: \progname} 
 \author{Isobel Bicket}
 \date{\today}
@@ -70,14 +69,15 @@ November 8, 2017 & 1.0 & Initial draft\\
 
 Decomposing a system into modules is a commonly accepted approach to developing
 software.  A module is a work assignment for a programmer or programming
-team~\citep{ParnasEtAl1984}.  We advocate a decomposition
-based on the principle of information hiding~\citep{Parnas1972a}.  This
+team \cite{parnas_modular_1985}.  We advocate a decomposition
+based on the principle of information hiding \cite{Parnas1972a}.  This
 principle supports design for change, because the ``secrets'' that each module
 hides represent likely future changes.  Design for change is valuable in SC,
 where modifications are frequent, especially during initial development as the
 solution space is explored.  
 
-Our design follows the rules layed out by \citet{ParnasEtAl1984}, as follows:
+Our design follows the rules layed out by \cite{parnas_modular_1985}, as
+follows:
 \begin{itemize}
 \item System details that are likely to change independently should be the
   secrets of separate modules.
@@ -87,7 +87,8 @@ Our design follows the rules layed out by \citet{ParnasEtAl1984}, as follows:
 \end{itemize}
 
 After completing the first stage of the design, the Software Requirements
-Specification (SRS), the Module Guide (MG) is developed~\citep{ParnasEtAl1984}. The MG
+Specification (SRS), the Module Guide (MG) is developed
+\cite{parnas_modular_1985}. The MG
 specifies the modular structure of the system and is intended to allow both
 designers and maintainers to easily identify the parts of the software.  The
 potential readers of this document are as follows:
@@ -135,31 +136,56 @@ change.
 \begin{description}
 	\item[\refstepcounter{acnum} \actheacnum \label{acHardware}:] The specific
 	  hardware on which the software is running.
-	\item[\refstepcounter{acnum} \actheacnum \label{acCSVheadings}:] The headings or data format of saved spectrum csv files.
-	\item[\refstepcounter{acnum} \actheacnum \label{acDM3datatype}:] The data type inside dm3 files.
-	\item[\refstepcounter{acnum} \actheacnum \label{acDM3labels}:] The locations/labels of data and metadata inside dm3 files.
-	\item[\refstepcounter{acnum} \actheacnum \label{acDM4support}:] Expanding support to dm4 files.
-	\item[\refstepcounter{acnum} \actheacnum \label{acH5datatype}:] The data type inside h5 files.
-	\item[\refstepcounter{acnum} \actheacnum \label{acH5labels}:] The locations/labels of data and metadata inside h5 files.
-	\item[\refstepcounter{acnum} \actheacnum \label{acNewDataProcessing}:] Adding new data processing algorithms
-	\item[\refstepcounter{acnum} \actheacnum \label{acRLoptimize}:] Functions used for RL deconvolution (optimizations for reduced error or speed).
-	\item[\refstepcounter{acnum} \actheacnum \label{acNorm}:] Optimizations on normalization algorithm
-	\item[\refstepcounter{acnum} \actheacnum \label{acGain}:] Optimizations on gain correction algorithm
-	\item[\refstepcounter{acnum} \actheacnum \label{acBkgnd}:] Optimizations on background correction algorithm
-	\item[\refstepcounter{acnum} \actheacnum \label{ac1DplotFormat}:] Format of 1D spectrum plot
-	\item[\refstepcounter{acnum} \actheacnum \label{ac2DplotFormat}:] Format of 2D image plot
-	\item[\refstepcounter{acnum} \actheacnum \label{ac3DPlotLayout}:] Layout of 3D spectrum image plotting display
-	\item[\refstepcounter{acnum} \actheacnum \label{ac3DPlotOptimize}:] Optimizations for faster response of spectrum image plotting display
-	\item[\refstepcounter{acnum} \actheacnum \label{ac3DPlotCommands}:] Changes to the interactive commands in the spectrum image plotting display
-	\item[\refstepcounter{acnum} \actheacnum \label{acSpectrumUnits}:] Units or label on the spectral axis
-	\item[\refstepcounter{acnum} \actheacnum \label{ac1DSlice}:] Method used to slice spectra
-	\item[\refstepcounter{acnum} \actheacnum \label{ac2DMask}:] Method of masking 2D images
-	\item[\refstepcounter{acnum} \actheacnum \label{ac3DMask}:] Method of masking 3D images
-	\item[\refstepcounter{acnum} \actheacnum \label{ac4Dsupport}:] Adding new modules for image stacks (4D datasets)
-	\item[\refstepcounter{acnum} \actheacnum \label{acImageExportFormat}:] New file format for exported image files (\textit{e.g.}, change to tiff)
-	\item[\refstepcounter{acnum} \actheacnum \label{acSIExportFormat}:] New file format for exporting spectrum image files
-	\item[\refstepcounter{acnum} \actheacnum \label{acSIExportH5Format}:] Format changes for exporting spectrum image files to h5
-	\item[\refstepcounter{acnum} \actheacnum \label{acSIExportRPLFormat}:] Format changes for exporting spectrum image files to rpl.
+	\item[\refstepcounter{acnum} \actheacnum \label{acCSVheadings}:] The headings
+or data format of saved spectrum csv files.
+	\item[\refstepcounter{acnum} \actheacnum \label{acDM3datatype}:] The data type
+inside dm3 files.
+	\item[\refstepcounter{acnum} \actheacnum \label{acDM3labels}:] The
+locations/labels of data and metadata inside dm3 files.
+	\item[\refstepcounter{acnum} \actheacnum \label{acDM4support}:] Expanding
+support to dm4 files.
+	\item[\refstepcounter{acnum} \actheacnum \label{acH5datatype}:] The data type
+inside h5 files.
+	\item[\refstepcounter{acnum} \actheacnum \label{acH5labels}:] The
+locations/labels of data and metadata inside h5 files.
+	\item[\refstepcounter{acnum} \actheacnum \label{acNewDataProcessing}:] Adding
+new data processing algorithms.
+	\item[\refstepcounter{acnum} \actheacnum \label{acRLoptimize}:] Functions used
+for RL deconvolution (optimizations for reduced error or speed).
+	\item[\refstepcounter{acnum} \actheacnum \label{acNorm}:] Optimizations on
+normalization algorithm.
+	\item[\refstepcounter{acnum} \actheacnum \label{acGain}:] Optimizations on gain
+correction algorithm.
+	\item[\refstepcounter{acnum} \actheacnum \label{acBkgnd}:] Optimizations on
+background correction algorithm.
+	\item[\refstepcounter{acnum} \actheacnum \label{ac1DplotFormat}:] Format of 1D
+spectrum plot.
+	\item[\refstepcounter{acnum} \actheacnum \label{ac2DplotFormat}:] Format of 2D
+image plot.
+	\item[\refstepcounter{acnum} \actheacnum \label{ac3DPlotLayout}:] Layout of 3D
+spectrum image plotting display.
+	\item[\refstepcounter{acnum} \actheacnum \label{ac3DPlotOptimize}:]
+Optimizations for faster response of spectrum image plotting display.
+	\item[\refstepcounter{acnum} \actheacnum \label{ac3DPlotCommands}:] Changes to
+the interactive commands in the spectrum image plotting display.
+	\item[\refstepcounter{acnum} \actheacnum \label{acSpectrumUnits}:] Units or
+label on the spectral axis.
+	\item[\refstepcounter{acnum} \actheacnum \label{ac1DSlice}:] Method used to
+slice spectra.
+	\item[\refstepcounter{acnum} \actheacnum \label{ac2DMask}:] Method of masking
+2D images.
+	\item[\refstepcounter{acnum} \actheacnum \label{ac3DMask}:] Method of masking
+3D images.
+	\item[\refstepcounter{acnum} \actheacnum \label{ac4Dsupport}:] Adding new
+modules for image stacks (4D datasets).
+	\item[\refstepcounter{acnum} \actheacnum \label{acImageExportFormat}:] New file
+format for exported image files (\textit{e.g.}, change to tiff).
+	\item[\refstepcounter{acnum} \actheacnum \label{acSIExportFormat}:] New file
+format for exporting spectrum image files.
+	\item[\refstepcounter{acnum} \actheacnum \label{acSIExportH5Format}:] Format
+changes for exporting spectrum image files to h5.
+	\item[\refstepcounter{acnum} \actheacnum \label{acSIExportRPLFormat}:] Format
+changes for exporting spectrum image files to rpl.
 \end{description}
 
 \subsection{Unlikely Changes} \label{SecUchange}
@@ -167,23 +193,34 @@ change.
 The module design should be as general as possible. However, a general system is
 more complex. Sometimes this complexity is not necessary. Fixing some design
 decisions at the system architecture stage can simplify the software design. If
-these decision should later need to be changed, then many parts of the design
+these decisions should later need to be changed, then many parts of the design
 will potentially need to be modified. Hence, it is not intended that these
 decisions will be changed.
 
 \begin{description}
-	\item[\refstepcounter{ucnum} \uctheucnum \label{ucIO}:] Input/Output hardware devices (a keyboard and mouse for input, a monitor screen for output)
-	\item[\refstepcounter{ucnum} \uctheucnum \label{ucHardware}:] The nature of the hardware used to run the software (a laptop or desktop computer containing sufficient memory and computing power to perform the operations required)
+	\item[\refstepcounter{ucnum} \uctheucnum \label{ucIO}:] Input/Output hardware
+devices (a keyboard and mouse for input, a monitor screen for output).
+	\item[\refstepcounter{ucnum} \uctheucnum \label{ucHardware}:] The nature of the
+hardware used to run the software (a laptop or desktop computer containing
+sufficient memory and computing power to perform the operations required).
 	\item[\refstepcounter{ucnum} \uctheucnum \label{ucInput}:] There will always be
 	  a source of input data external to the software.
-	\item[\refstepcounter{ucnum} \uctheucnum \label{ucArray}:]  The use of arrays for holding data.
-	\item[\refstepcounter{ucnum} \uctheucnum \label{ucPlottingLibrary}:]  Plotting library used
-	\item[\refstepcounter{ucnum} \uctheucnum \label{ucArrayLibrary}:]  Array structure library used
-	\item[\refstepcounter{ucnum} \uctheucnum \label{uc1DdataFormat}:]  Format of 1D data (y-axis and x-axis data)
-	\item[\refstepcounter{ucnum} \uctheucnum \label{uc2DdataFormat}:]  Format of 2D data ($(x,y)$ data array)
-	\item[\refstepcounter{ucnum} \uctheucnum \label{uc3DdataFormat}:]  Format of 3D data ($(x,y,E)$ data array)
-	\item[\refstepcounter{ucnum} \uctheucnum \label{uc3DSIAxisOrder}:] The order of the spatial and spectral axes in a spectrum image
-	\item[\refstepcounter{ucnum} \uctheucnum \label{ucExDataType}:] The data type to export
+	\item[\refstepcounter{ucnum} \uctheucnum \label{ucArray}:]  The use of arrays
+for holding data.
+	\item[\refstepcounter{ucnum} \uctheucnum \label{ucPlottingLibrary}:]  Plotting
+library used.
+	\item[\refstepcounter{ucnum} \uctheucnum \label{ucArrayLibrary}:]  Array
+structure library used.
+	\item[\refstepcounter{ucnum} \uctheucnum \label{uc1DdataFormat}:]  Format of 1D
+data (y-axis and x-axis data).
+	\item[\refstepcounter{ucnum} \uctheucnum \label{uc2DdataFormat}:]  Format of 2D
+data ($(x,y)$ data array).
+	\item[\refstepcounter{ucnum} \uctheucnum \label{uc3DdataFormat}:]  Format of 3D
+data ($(x,y,E)$ data array).
+	\item[\refstepcounter{ucnum} \uctheucnum \label{uc3DSIAxisOrder}:] The order of
+the spatial and spectral axes in a spectrum image.
+	\item[\refstepcounter{ucnum} \uctheucnum \label{ucExDataType}:] The data type
+to export.
 \end{description}
 
 \section{Module Hierarchy} \label{SecMH}
@@ -194,30 +231,42 @@ below, which are leaves in the hierarchy tree, are the modules that will
 actually be implemented.
 
 \begin{description}
-	\item [\refstepcounter{mnum} \mthemnum \label{mHH}:] Hardware-Hiding Module
-	\item [\refstepcounter{mnum} \mthemnum \label{mcsvIm}:] Import .csv Module
-	\item [\refstepcounter{mnum} \mthemnum \label{mdm3Im}:] Import .dm3 Module
-	\item [\refstepcounter{mnum} \mthemnum \label{mh5Im}:] Import .h5 Module
-	\item [\refstepcounter{mnum} \mthemnum \label{mrplIm}:] Import .rpl Module
-	\item [\refstepcounter{mnum} \mthemnum \label{mcsvEx}:] Export .csv Module
-	\item [\refstepcounter{mnum} \mthemnum \label{mh5Ex}:] Export .h5 Module
-	\item [\refstepcounter{mnum} \mthemnum \label{mpngEx}:] Export .png Module
-	\item [\refstepcounter{mnum} \mthemnum \label{mrplEx}:] Export .rpl Module
-	\item [\refstepcounter{mnum} \mthemnum \label{mRL}:] Data Processing Richardson-Lucy Deconvolution Module
-	\item [\refstepcounter{mnum} \mthemnum \label{mNorm}:] Data Processing Normalization Module
-	\item [\refstepcounter{mnum} \mthemnum \label{mGain}:] Data Processing Gain Correction Module
-	\item [\refstepcounter{mnum} \mthemnum \label{mBkgnd}:] Data Processing Background Correction Module
-	\item [\refstepcounter{mnum} \mthemnum \label{m1Dslice}:] Data Extraction 1D Slice Module
-	\item [\refstepcounter{mnum} \mthemnum \label{m2Dmask}:] Data Extraction 2D Mask Module
-	\item [\refstepcounter{mnum} \mthemnum \label{m3Dmask}:] Data Extraction 3D Mask Module
-	\item [\refstepcounter{mnum} \mthemnum \label{m1Dspecdisplay}:] Display 1D Spectrum Module
-	\item [\refstepcounter{mnum} \mthemnum \label{m2Dimgdisplay}:] Display 2D Image Module
-	\item [\refstepcounter{mnum} \mthemnum \label{m3DSIdisplay}:] Display 3D Spectrum Image Module
-	\item [\refstepcounter{mnum} \mthemnum \label{m1Dspecdata}:] Data 1D Spectrum Module
-	\item [\refstepcounter{mnum} \mthemnum \label{m2Dimgdata}:] Data 2D Image Module
-	\item [\refstepcounter{mnum} \mthemnum \label{m3DSIdata}:] Data 3D Spectrum Image Module
-	\item [\refstepcounter{mnum} \mthemnum \label{mArrayStruct}:] Array Data Structure
-	\item [\refstepcounter{mnum} \mthemnum \label{mPlotLib}:] Plotting Library
+	\item [\refstepcounter{mnum} \mthemnum \label{mHH}:] Hardware-Hiding.
+	\item [\refstepcounter{mnum} \mthemnum \label{mcsvIm}:] Import .csv.
+	\item [\refstepcounter{mnum} \mthemnum \label{mdm3Im}:] Import .dm3.
+	\item [\refstepcounter{mnum} \mthemnum \label{mh5Im}:] Import .h5.
+	\item [\refstepcounter{mnum} \mthemnum \label{mrplIm}:] Import .rpl.
+	\item [\refstepcounter{mnum} \mthemnum \label{mcsvEx}:] Export .csv.
+	\item [\refstepcounter{mnum} \mthemnum \label{mh5Ex}:] Export .h5.
+	\item [\refstepcounter{mnum} \mthemnum \label{mpngEx}:] Export .png.
+	\item [\refstepcounter{mnum} \mthemnum \label{mrplEx}:] Export .rpl.
+	\item [\refstepcounter{mnum} \mthemnum \label{mRL}:] Data Processing
+Richardson-Lucy Deconvolution.
+	\item [\refstepcounter{mnum} \mthemnum \label{mNorm}:] Data Processing
+Normalization.
+	\item [\refstepcounter{mnum} \mthemnum \label{mGain}:] Data Processing Gain
+Correction.
+	\item [\refstepcounter{mnum} \mthemnum \label{mBkgnd}:] Data Processing
+Background Correction.
+	\item [\refstepcounter{mnum} \mthemnum \label{m1Dslice}:] Data Extraction 1D
+Slice.
+	\item [\refstepcounter{mnum} \mthemnum \label{m2Dmask}:] Data Extraction 2D
+Mask.
+	\item [\refstepcounter{mnum} \mthemnum \label{m3Dmask}:] Data Extraction 3D
+Mask.
+	\item [\refstepcounter{mnum} \mthemnum \label{m1Dspecdisplay}:] Display 1D
+Spectrum.
+	\item [\refstepcounter{mnum} \mthemnum \label{m2Dimgdisplay}:] Display 2D
+Image.
+	\item [\refstepcounter{mnum} \mthemnum \label{m3DSIdisplay}:] Display 3D
+Spectrum Image.
+	\item [\refstepcounter{mnum} \mthemnum \label{m1Dspecdata}:] Data 1D Spectrum.
+	\item [\refstepcounter{mnum} \mthemnum \label{m2Dimgdata}:] Data 2D Image.
+	\item [\refstepcounter{mnum} \mthemnum \label{m3DSIdata}:] Data 3D Spectrum
+Image.
+	\item [\refstepcounter{mnum} \mthemnum \label{mArrayStruct}:] Array Data
+Structure.
+	\item [\refstepcounter{mnum} \mthemnum \label{mPlotLib}:] Plotting Library.
 \end{description}
 
 \begin{table}[h!]
@@ -230,7 +279,8 @@ actually be implemented.
 {Hardware-Hiding Module} & ~ & ~ \\
 \midrule
 
-\multirow{18}{0.25\textwidth}{Behaviour-Hiding Module} & \multirow{4}{0.25\textwidth}{Import} & csv\\
+\multirow{18}{0.25\textwidth}{Behaviour-Hiding Module} &
+\multirow{4}{0.25\textwidth}{Import} & csv\\
 & & dm3\\
 & & h5\\
 & & rpl\\\cline{2-3}
@@ -238,7 +288,8 @@ actually be implemented.
 & & h5\\
 & & png\\
 & & rpl\\\cline{2-3}
-& \multirow{4}{0.25\textwidth}{Data processing} & Richardson-Lucy Deconvolution\\
+& \multirow{4}{0.25\textwidth}{Data processing} & Richardson-Lucy
+Deconvolution\\
 & & Normalization\\
 & & Gain correction\\
 & & Background correction\\\cline{2-3}
@@ -250,7 +301,8 @@ actually be implemented.
 & & 3D spectrum image plot\\
 \midrule
 
-\multirow{2}{0.25\textwidth}{Software Decision Module} & \multirow{3}{0.25\textwidth}{Data} & Spectrum\\
+\multirow{2}{0.25\textwidth}{Software Decision Module} &
+\multirow{3}{0.25\textwidth}{Data} & Spectrum\\
 & & Image\\
 & & Spectrum Image\\\cline{2-3}
 & Array Data Structure\\\cline{2-3}
@@ -272,7 +324,7 @@ between requirements and modules is listed in Table \ref{TblRT}.
 \section{Module Decomposition} \label{SecMD}
 
 Modules are decomposed according to the principle of ``information hiding''
-proposed by \citet{ParnasEtAl1984}. The \emph{Secrets} field in a module
+proposed by \cite{parnas_modular_1985}. The \emph{Secrets} field in a module
 decomposition is a brief statement of the design decision hidden by the
 module. The \emph{Services} field specifies \emph{what} the module will do
 without documenting \emph{how} to do it. For each module, a suggestion for the
@@ -313,161 +365,221 @@ selected.
 \subsubsection{Import}
 \begin{description}
 	\item[Secrets:]Container for modules concerning reading data from files.
-	\item[Services:]Imports spectrum, image, or spectrum image data from various formats, as defined in the Level 3 modules to follow (\mref{mcsvIm}, \mref{mdm3Im}, \mref{mh5Im}, \mref{mrplIm}).
+	\item[Services:]Imports spectrum, image, or spectrum image data from various
+formats, as defined in the Level 3 modules to follow (\mref{mcsvIm},
+\mref{mdm3Im}, \mref{mh5Im}, \mref{mrplIm}). 
 	\item[Implemented By:] --
 \end{description}
 
 \subsubsection{Import csv Module (\mref{mcsvIm})}
 \begin{description}
 	\item[Secrets:]Import from csv (\textit{e.g.}, as created by \progname).
-	\item[Services:]Reads data from a csv file (which must be formatted appropriately) and assigns the data to the appropriate data module.
+	\item[Services:]Reads data from a csv file (which must be formatted
+appropriately) and assigns the data to the spectrum module. Throws an error if
+the format of the csv file is wrong.
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Import dm3 Module (\mref{mdm3Im})}
 \begin{description}
 	\item[Secrets:]Import data from Gatan Digital Micrograph file (dm3).
-	\item[Services:]Reads data from a dm3 file and assigns the data to the appropriate data module. Will assign calibrations based on the metadata in the file.
+	\item[Services:]Reads data from a dm3 file and assigns the data to the
+spectrum, spectrum image, or image data module, as appropriate based on the
+dimensions of the data. Will assign calibrations based on the metadata in the
+file. Throws an error if the data type is not one of the expected types or the
+format is not one of the expected formats.
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Import h5 Module (\mref{mh5Im})}
 \begin{description}
-	\item[Secrets:]Import data from an h5 file (\textit{e.g.}, as produced by Odemis CL acquisition software, or by \progname).
-	\item[Services:]Reads data from an h5 file and assigns the data to the appropriate data module. Will assign calibrations based on the metadata in the file.
+	\item[Secrets:]Import data from an h5 file (\textit{e.g.}, as produced by
+Odemis CL acquisition software, or by \progname).
+	\item[Services:]Reads data from an h5 file and assigns the data to the
+spectrum, spectrum image, or image data module, as appropriate based on the
+dimensions of the data. Will assign calibrations based on the metadata in the
+file. Throws an error if the data type is not one of the expected types or the
+format is not one of the expected formats.
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Import rpl Module (\mref{mrplIm})}
 \begin{description}
-	\item[Secrets:]Import data from rpl file (\textit{e.g.}, as exported by \progname)
-	\item[Services:]Reads data from a rpl file and assigns the data to the appropriate data module. Will assign calibrations based on the metadata in the file.
+	\item[Secrets:]Import data from rpl file (\textit{e.g.}, as exported by
+\progname)
+	\item[Services:]Reads data from a rpl file and assigns the data to the
+spectrum, spectrum image, or image data module, as appropriate based on the
+dimensions of the data. Will assign calibrations based on the metadata in the
+file. Throws an error if the data type is not one of the expected types or the
+format is not one of the expected formats.
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Export}
 \begin{description}
 	\item[Secrets:]Container for modules concerning exporting data to files.
-	\item[Services:]Writing data (spectrum, image, or spectrum image) to various formats, as defined by Level 3 modules (\mref{mcsvEx}, \mref{mh5Ex}, \mref{mpngEx}, \mref{mrplEx}).
+	\item[Services:]Writing data (spectrum, image, or spectrum image) to various
+formats, as defined by Level 3 modules (\mref{mcsvEx}, \mref{mh5Ex},
+\mref{mpngEx}, \mref{mrplEx}).
 	\item[Implemented By:] --
 \end{description}
 
 \subsubsection{Export csv Module (\mref{mcsvEx})}
 \begin{description}
 	\item[Secrets:]Export data to csv file.
-	\item[Services:]Takes spectrum data, formats it as appropriate, and exports the spectrum range (x-axis) and the intensity (y-axis) as a comma separated value file.
+	\item[Services:]Takes spectrum data, formats it as appropriate, and exports the
+spectrum range (x-axis) and the intensity (y-axis) as a comma separated value
+file to the filepath specified by the user. Checks that the data is the
+appropriate dimensions (a 1D dataset, with x-axis values and corresponding
+y-axis values).
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Export h5 Module (\mref{mh5Ex})}
 \begin{description}
 	\item[Secrets:]Export data to h5 file.
-	\item[Services:]Takes spectrum or spectrum image data, formats it as appropriate, and exports the spectrum range, calibrations and metadata, and the spectrum image data to an h5 file.
+	\item[Services:]Takes image, spectrum, or spectrum image data, formats it for
+writing to a file, and exports the spectrum range, calibrations, metadata, and
+the spectrum image data to an h5 file. Verifies that the data is the correct
+dimensionality and format before exporting.
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Export png Module (\mref{mpngEx})}
 \begin{description}
 	\item[Secrets:]Export image data to png file.
-	\item[Services:]Takes image data, formats it as appropriate, and writes it to a png file, with scalebar if requested by the user.
+	\item[Services:]Takes image data, formats it as appropriate, and writes it to a
+png file, with scalebar if requested by the user. Applies the colourmap or
+transparency as requested by the user. Verifies that the data is 2D, and will
+convert intensity values to those appropriate for an image file (0-255).
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Export rpl Module (\mref{mrplEx})}
 \begin{description}
 	\item[Secrets:]Export spectrum image data to rpl file.
-	\item[Services:]Takes spectrum image data, formats it as appropriate, and writes it to a rpl file, including any metadata or calibrations which are known.
+	\item[Services:]Takes spectrum image data, formats it as appropriate, and
+writes it to a rpl file, including any metadata or calibrations which are known.
+Verifies the data is the correct dimensionality and format before exporting.
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Data Processing}
 \begin{description}
 	\item[Secrets:]Container for data processing modules.
-	\item[Services:]Performs data processing functions, as defined by Level 3 modules.
+	\item[Services:]Performs data processing functions, as defined by Level 3
+modules (\mref{mRL}, \mref{mNorm}, \mref{mGain}).
 	\item[Implemented By:] --
 \end{description}
 
 \subsubsection{Data Processing: Richardson-Lucy Deconvolution (\mref{mRL})}
 \begin{description}
 	\item[Secrets:]Richardson-Lucy deconvolution algorithm.
-	\item[Services:]Performs Richardson-Lucy deconvolution on the desired spectrum or spectrum image input, using the number of iterations desired by the user and returns a deconvolved spectrum or spectrum image. 
+	\item[Services:]Performs Richardson-Lucy deconvolution on the desired spectrum
+or spectrum image input, and returns a deconvolved spectrum or spectrum image.
+Requires the input of a point spread function, a spectrum or spectrum image, and
+the number of iterations to perform.
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Data Processing: Normalization (\mref{mNorm})}
 \begin{description}
 	\item[Secrets:]Normalization algorithm.
-	\item[Services:]Performs normalization of the spectrum or spectrum image, as desired by the user. User can input the channel or a range of channels on which to normalize.
+	\item[Services:]Performs normalization of the spectrum or spectrum image, as
+desired by the user. User can input the channel or a range of channels on which
+to normalize. Returns a normalized spectrum or spectrum image. Checks for
+divide-by-zero errors and will not perform the normalization if this is an
+issue.
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Data Processing: Gain Correction (\mref{mGain})}
 \begin{description}
 	\item[Secrets:]Gain correction algorithm.
-	\item[Services:] Performs gain correction on the spectrum or spectrum image input. A gain reference is also required.
+	\item[Services:]Performs gain correction on the spectrum or spectrum image
+input. A gain reference is also required. Returns a spectrum or spectrum image
+which has been corrected for gain.
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Data Processing: Background Correction (\mref{mBkgnd})}
 \begin{description}
 	\item[Secrets:]Background correction algorithm.
-	\item[Services:]Performs background correction on input spectrum or spectrum image and returns the corrected spectrum or spectrum image. A background reference is required.
+	\item[Services:]Performs background correction on input spectrum or spectrum
+image and returns the corrected spectrum or spectrum image. A background
+reference is required. Returns a spectrum or spectrum image which has been
+corrected for the background.
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Data Extraction}
 \begin{description}
 	\item[Secrets:]Contains modules for extracting segments of data.
-	\item[Services:]Extract 1D, 2D, and 3D segments of data, as desired by the user.
+	\item[Services:]Extract 1D, 2D, and 3D segments of data, as desired by the
+user, defined in Level 3 modules (\mref{m1Dslice}, \mref{m2Dmask},
+\mref{m3Dmask}).
 	\item[Implemented By:] --
 \end{description}
 
 \subsubsection{Data Extraction: 1D Slice (\mref{m1Dslice})}
 \begin{description}
-	\item[Secrets:]Perform 1D slice on the spectrum axis, based on input from the user.
-	\item[Services:]Takes input on the desired spectral range to slice, performs the slice on the data, and returns the sliced range.
+	\item[Secrets:]Perform 1D slice on the spectrum axis, based on input from the
+user.
+	\item[Services:]Takes input on the desired spectral range to slice, performs
+the slice on the data, and returns the sliced range.
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Data Extraction: 2D Mask (\mref{m2Dmask})}
 \begin{description}
-	\item[Secrets:]Perform 2D mask operation on the image axis, based on input from the user.
-	\item[Services:]Takes input on the desired spatial pixels to mask and returns the area under the mask.
+	\item[Secrets:]Perform 2D mask operation on the image axis, based on input from
+the user.
+	\item[Services:]Takes input on the desired spatial pixels to mask and returns
+the area under the mask.
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Data Extraction: 3D Mask (\mref{m3Dmask})}
 \begin{description}
-	\item[Secrets:]Perform 3D mask operation on a spectrum image, based on input from the user.
-	\item[Services:]Takes input from a 2D mask and extends this mask along the spectral axis, or takes input from a 1D slice and extends this slice along the spatial axes to produce a 3D mask. Returns the volume under the mask.
+	\item[Secrets:]Perform 3D mask operation on a spectrum image, based on input
+from the user.
+	\item[Services:]Takes input from a 2D mask and extends this mask along the
+spectral axis, or takes input from a 1D slice and extends this slice along the
+spatial axes to produce a 3D mask. Returns the volume under the mask.
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Display}
 \begin{description}
 	\item[Secrets:]Display a spectrum, image, or spectrum image for the user.
-	\item[Services:]Plots a 1D spectrum, plots a 2D image, or plots a 3D spectrum image, depending on the input data. 
+	\item[Services:]Plots a 1D spectrum, plots a 2D image, or plots a 3D spectrum
+image, depending on the input data. 
 	\item[Implemented By:] --
 \end{description}
 
 \subsubsection{Display: 1D Spectrum Plot (\mref{m1Dspecdisplay})}
 \begin{description}
 	\item[Secrets:]Displays a 1D spectrum plot for the user.
-	\item[Services:]Takes in a 1D spectrum and plots it for the user with the appropriate x- and y- axis labels and units.
+	\item[Services:]Takes in a 1D spectrum and plots it for the user with the
+appropriate x- and y- axis labels and units. Allows the user to plot multiple
+spectra on one plot with a defined colourmap.
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Display: 2D Image Plot (\mref{m2Dimgdisplay})}
 \begin{description}
 	\item[Secrets:]Displays 2D image plot for the user.
-	\item[Services:]Takes in 2D image data and plots it for the user to interact with, including a scalebar if desired by the user.
+	\item[Services:]Takes in 2D image data and plots it for the user to interact
+with, including a scalebar if desired by the user. Allows user to define a
+colourmap. 
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Display: 3D Spectrum Image Plot (\mref{m3DSIdisplay})}
 \begin{description}
 	\item[Secrets:]Displays 3D spectrum image for the user.
-	\item[Services:]Combines a 1D spectrum plot and 2D image plot to allow the user to visualize and navigate a 3D data set. 
+	\item[Services:]Combines a 1D spectrum plot and 2D image plot to allow the user
+to visualize and navigate a 3D data set. 
 	\item[Implemented By:] \progname
 \end{description}
 
@@ -487,28 +599,35 @@ selected.
 \subsubsection{Data}
 \begin{description}
 	\item[Secrets:]Contains the 1D, 2D, and 3D datasets.
-	\item[Services:]Includes the structure of the datasets for spectra (1D), images (2D), and spectrum images (3D). Includes spatial and spectral calibrations and metadata as appropriate.
+	\item[Services:]Includes the structure of the datasets for spectra (1D), images
+(2D), and spectrum images (3D), defined in Level 3 modules (\mref{m1Dspecdata},
+\mref{m2Dimgdata}, \mref{m3DSIdata} ). Includes spatial and spectral
+calibrations and metadata as appropriate.
 	\item[Implemented By:] --
 \end{description}
 
 \subsubsection{Data: 1D Spectrum (\mref{m1Dspecdata})}
 \begin{description}
 	\item[Secrets:]Holds data structure for 1D spectrum data.
-	\item[Services:]Contains the data for a spectrum, including x-axis values and y-axis values, and any relevant calibrations or metadata.
+	\item[Services:]Contains the data for a spectrum, including x-axis values and
+y-axis values, and any relevant calibrations or metadata.
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Data: 2D Image (\mref{m2Dimgdata})}
 \begin{description}
 	\item[Secrets:]Holds data structure for 2D image data.
-	\item[Services:]Contains the data for an image, including $(x,y)$ values, and any relevant spatial calibrations or metadata.
+	\item[Services:]Contains the data for an image, including $(x,y)$ values, and
+any relevant spatial calibrations or metadata.
 	\item[Implemented By:] \progname
 \end{description}
 
 \subsubsection{Data: 3D Spectrum Image (\mref{m3DSIdata})}
 \begin{description}
 	\item[Secrets:]Holds data structure for 3D spectrum image data.
-	\item[Services:]Contains the data for a spectrum image, including the values along the spectral axis, and intensity values for the whole volume defined, as well as any relevant calibrations or metadata.
+	\item[Services:]Contains the data for a spectrum image, including the values
+along the spectral axis, and intensity values for the whole volume defined, as
+well as any relevant calibrations or metadata.
 	\item[Implemented By:] \progname
 \end{description}
 
@@ -539,14 +658,23 @@ requirements and between the modules and the anticipated changes.
 		\toprule
 		\textbf{Requirement} & \textbf{Modules}\\
 		\midrule
-		\hyperref[R_SI_inputs]{SI input} & \mref{mHH}, \mref{mdm3Im}, \mref{mh5Im}, \mref{m3DSIdata}\\
-		\hyperref[R_spectrum_inputs]{Spectrum input} & \mref{mHH}, \mref{mcsvIm}, \mref{m1Dspecdata}\\
-		\hyperref[R_Input_dimension]{Input dimensions} & \mref{mcsvIm}, \mref{mdm3Im}, \mref{mh5Im}, \mref{mrplIm}\\
-		\hyperref[R_SI_slicing]{SI slicing} & \mref{mpngEx}, \mref{m1Dslice}, \mref{m3Dmask}, \mref{m1Dspecdisplay}, \mref{m2Dimgdisplay}, \mref{m3DSIdisplay}\\
-		\hyperref[R_SI_area]{SI area} & \mref{mcsvEx}, \mref{m2Dmask}, \mref{m3Dmask}, \mref{m1Dspecdisplay}, \mref{m2Dimgdisplay}, \mref{m3DSIdisplay}\\
-		\hyperref[R_deconvolution]{Deconvolution} & \mref{mRL}, \mref{m3DSIdisplay}, \mref{m1Dspecdata}, \mref{m3DSIdata}\\
-		\hyperref[R_normalization]{Normalization} & \mref{mNorm}, \mref{m1Dslice}, \mref{m3DSIdata}\\
-		\hyperref[R_background]{Background} & \mref{mBkgnd}, \mref{m1Dspecdata}, \mref{m3DSIdata}\\
+		\hyperref[R_SI_inputs]{SI input} & \mref{mHH}, \mref{mdm3Im}, \mref{mh5Im},
+\mref{m3DSIdata}\\
+		\hyperref[R_spectrum_inputs]{Spectrum input} & \mref{mHH}, \mref{mcsvIm},
+\mref{m1Dspecdata}\\
+		\hyperref[R_Input_dimension]{Input dimensions} & \mref{mcsvIm}, \mref{mdm3Im},
+\mref{mh5Im}, \mref{mrplIm}\\
+		\hyperref[R_SI_slicing]{SI slicing} & \mref{mpngEx}, \mref{m1Dslice},
+\mref{m3Dmask}, \mref{m1Dspecdisplay}, \mref{m2Dimgdisplay},
+\mref{m3DSIdisplay}\\
+		\hyperref[R_SI_area]{SI area} & \mref{mcsvEx}, \mref{m2Dmask}, \mref{m3Dmask},
+\mref{m1Dspecdisplay}, \mref{m2Dimgdisplay}, \mref{m3DSIdisplay}\\
+		\hyperref[R_deconvolution]{Deconvolution} & \mref{mRL}, \mref{m3DSIdisplay},
+\mref{m1Dspecdata}, \mref{m3DSIdata}\\
+		\hyperref[R_normalization]{Normalization} & \mref{mNorm}, \mref{m1Dslice},
+\mref{m3DSIdata}\\
+		\hyperref[R_background]{Background} & \mref{mBkgnd}, \mref{m1Dspecdata},
+\mref{m3DSIdata}\\
 		\hyperref[R_gain]{Gain} & \mref{mGain}, \mref{m1Dspecdata}, \mref{m3DSIdata}\\
 		\bottomrule
 	\end{tabular}
@@ -554,8 +682,19 @@ requirements and between the modules and the anticipated changes.
 	\label{TblRT}
 \end{table}
 
-Ideally, each anticipated change should correspond to one module. There are some anticipated changes to this program which may affect multiple modules, such as \acref{acCSVheadings}. The modules affected by this change are interdependent on each other, concerning the reading and writing of csv files. The format which must be read corresponds to output from a previous use of \progname, so must correspond to the format which was written beforehand. Combining the import and export modules, however, will result in cyclic paths in the use hierarchy, as Export uses Data Extraction, which uses Data, which uses Import, so the decision was made to keep the Import and Export modules separate from each other.
-Where no leaf module was relevant to the anticipated change, the name of a node module is written. This might happen when the anticipated change results in the addition of a new module under that node.
+Ideally, each anticipated change should correspond to one module. There is one
+anticipated change to \progname which may affect multiple modules:
+\acref{acCSVheadings}. The modules affected by this change are interdependent on
+each other, concerning the reading and writing of csv files. The format which
+must be read corresponds to output from a previous use of \progname, so must
+correspond to the format which was written beforehand. Combining the import and
+export modules, however, will result in cyclic paths in the Use Hierarchy, as
+Export uses Data Extraction, which uses Data, which uses Import, so the decision
+was made to keep the Import and Export modules separate from each other.\\
+
+Where no leaf module was relevant to the anticipated change, the name of a node
+module is written. This might happen when the anticipated change results in the
+addition of a new module under that node.
 
 \begin{table}[H]
 \centering
@@ -598,15 +737,21 @@ Where no leaf module was relevant to the anticipated change, the name of a node 
 \section{Use Hierarchy Between Modules} \label{SecUse}
 
 In this section, the uses hierarchy between modules is
-provided. \citet{Parnas1978} said of two programs A and B that A {\em uses} B if
+provided. \cite{Parnas1978} said of two programs A and B that A {\em uses} B if
 correct execution of B may be necessary for A to complete the task described in
 its specification. That is, A {\em uses} B if there exist situations in which
 the correct functioning of A depends upon the availability of a correct
-implementation of B.  Figure \ref{FigUH} illustrates the use relation between
-the modules. It can be seen that the graph is a directed acyclic graph
+implementation of B.  Figure \ref{figure:UH} illustrates the use relation
+between
+the Level 1 and 2 modules. It can be seen that the graph is a directed acyclic
+graph
 (DAG). Each level of the hierarchy offers a testable and usable subset of the
 system, and modules in the higher level of the hierarchy are essentially simpler
-because they use modules from the lower levels.
+because they use modules from the lower levels. For clarity, the Level 3 modules
+have been split apart from the main Use Hierarchy diagram and are shown in more
+detail in Figure \ref{figure:UHIm}, Figure \ref{figure:UHEx}, Figure
+\ref{figure:UHDP}, Figure \ref{figure:UHDE}, Figure \ref{figure:UHDisp}, and
+Figure \ref{figure:UHData}.
 
 \begin{figure}[h!]
 	\centering
@@ -659,7 +804,6 @@ because they use modules from the lower levels.
 
 
 \clearpage
-\bibliographystyle {plainnat}
 \bibliography {MG}
 
 \end{document}
