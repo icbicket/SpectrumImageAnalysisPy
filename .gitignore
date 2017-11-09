@@ -96,6 +96,8 @@ ENV/
 *.blg
 *.out
 *.toc
+*.lot
+*.lof
 
 # For Mac computers
 *.DS_Store
