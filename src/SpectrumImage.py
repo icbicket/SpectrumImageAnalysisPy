@@ -167,7 +167,7 @@ class EELSSpectrumImage(SpectrumImage):
 		zero = float(metadata['root']['ImageList']['1']['ImageData']['Calibrations']['Dimension']['2']['Origin'])
 		if zero >= 0:
 			ZLP = True
-		else: 
+		else:
 			ZLP = False
 		if spectrum_calibrated is True:
 			channel_eV = [0, -zero * dispersion]
@@ -179,7 +179,7 @@ class EELSSpectrumImage(SpectrumImage):
 	def FindZLP(data):
 		ZLP = int(stats.mode(np.argmax(data, axis = -1), axis=None)[0])
 		return ZLP
-	
+
 	def FindZLPArray(self):
 		ZLParray = np.argmax(self.data, axis=2)
 		return ZLParray
