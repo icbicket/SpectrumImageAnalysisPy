@@ -165,6 +165,7 @@ class ImagePlotter(object):
 			np.max((extent_colourbar.get_points()[1,:], extent_toptick.get_points()[1,:], extent_bottomtick.get_points()[1,:]), axis=0)])
 		extent_colourbar.set_points(new_extent)
 		filename = FileNamer.NameFile(filename)
+		print('Saving colourbar as...', filename)
 		plt.gcf().savefig(filename, bbox_inches=extent_colourbar, transparent=True)
 	
 	def save_image(self, filename):
