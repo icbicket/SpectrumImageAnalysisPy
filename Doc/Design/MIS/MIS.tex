@@ -273,7 +273,10 @@ ImportCSV
 ImportDM3
 
 \subsection{Uses}
-
+\begin{itemize}
+\item Array data structure
+\item Hardware hiding
+\end{itemize}
 
 \subsection{Syntax}
 
@@ -284,16 +287,21 @@ ImportDM3
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-\wss{accessProg} & - & - & - \\
+ReadDM3 & - & - & - \\
+VerifyFile & - & - & Exceptions related to wrong or bad input\\
 \hline
 \end{tabular}
 \end{center}
+\an{file contains wrong data type, file is empty, file is not dm3, ...}
 
 \subsection{Semantics}
 
 \subsubsection{State Variables}
 
-
+\subsubsection{Environment Variables}
+\begin{itemize}
+\item filedm3
+\end{itemize}
 \subsubsection{Access Routine Semantics}
 
 \noindent \wss{accessProg}():
@@ -395,7 +403,9 @@ ExportCSV
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-\wss{accessProg} & - & - & - \\
+WriteCSV & - & - & - \\
+FormatCSV & - & - & - \\
+Verify1D & - & - & - \\
 \hline
 \end{tabular}
 \end{center}
@@ -407,11 +417,25 @@ ExportCSV
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent WriteCSV():
 \begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
+\item transition: Writes data to csv file 
+\item output: csv file
+\item exception:
+\end{itemize}
+
+\noindent FormatCSV():
+\begin{itemize}
+\item transition: Formats data to prepare it to write to csv file 
+\item output: formatted data
+\item exception:
+\end{itemize}
+
+\noindent Verify1D():
+\begin{itemize}
+\item transition: Verifies that the input data is of the correct format (a 1D spectrum) and has a spectral range and an intensity array of equal length
+\item output: formatted data
+\item exception:
 \end{itemize}
 
 \section{MIS of Export h5 Module} \label{Mod:ExportH5} \wss{Use labels for cross-referencing}
@@ -532,18 +556,19 @@ ExportRPL
 RLDeconvolution
 
 \subsection{Uses}
-
+Array Data Structure
 
 \subsection{Syntax}
 
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+\begin{tabular}{p{4cm} p{4cm} p{4cm} p{2cm}}
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-\wss{accessProg} & - & - & - \\
+RLDeconvolution & - & - & - \\
+SIDeconvolution & - & - & - \\
 \hline
 \end{tabular}
 \end{center}
@@ -551,15 +576,27 @@ RLDeconvolution
 \subsection{Semantics}
 
 \subsubsection{State Variables}
-
+\begin{itemize}
+\item iterations
+\item PSF
+\item spectrum
+\item threads
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent RLDeconvolution():
 \begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
+\item transition: Performs the RL deconvolution algorithm on the input spectrum, using the input PSF and number of iterations 
+\item output: deconvolved spectrum
+\item exception: 
+\end{itemize}
+
+\noindent SIDeconvolution():
+\begin{itemize}
+\item transition: Splits a spectrum image into its composite spectra, so each spectrum can be deconvolved separately, according to the number of threads used. Sets up multithreading to prepare large datasets for RLDeconvolution.
+\item output: Decomposed spectrum image
+\item exception:  
 \end{itemize}
 
 \section{MIS of Data Processing Normalization Module} \label{Mod:Normalization} \wss{Use labels for cross-referencing}
@@ -691,7 +728,8 @@ Slice1D
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-\wss{accessProg} & - & - & - \\
+CreateMask & - & - & - \\
+ApplyMask & - & - & - \\
 \hline
 \end{tabular}
 \end{center}
@@ -699,15 +737,25 @@ Slice1D
 \subsection{Semantics}
 
 \subsubsection{State Variables}
-
+\begin{itemize}
+\item Mask (2D array of booleans)
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent CreateMask():
 \begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
+\item transition: Creation of the mask for a 2d dataset - relies on user interaction
+\item output:  
+\item exception:  
+\end{itemize}
+\an{should this be here, or in display?}
+
+\noindent ApplyMask():
+\begin{itemize}
+\item transition: Applies 2d mask to dataset
+\item output:  
+\item exception:  
 \end{itemize}
 
 \section{MIS of Data Extraction 2D Mask Module} \label{Mod:Mask2D} \wss{Use labels for cross-referencing}
@@ -890,6 +938,16 @@ Disp3D
 \subsection{Semantics}
 
 \subsubsection{State Variables}
+\begin{itemize}
+	\item axis2D image
+	\item axis1D spectrum
+	\item axis2D mask
+	\item axis1D contrast
+	\item axis colourbar
+	\item polygons
+	\item slicer
+\end{itemize}
+\an{do polygons and slicer belong here, or in the mask2d and slice1d modules?}
 
 \subsubsection{Environment Variables}
 \begin{itemize}
@@ -1006,7 +1064,7 @@ SI
 	\hline
 \end{tabular}
 \end{center}
-\an{Need to think on this more}
+\an{Need to think on this more, if I treat this as a template module, does it have exported access programs?}
 
 \subsection{Semantics}
 
