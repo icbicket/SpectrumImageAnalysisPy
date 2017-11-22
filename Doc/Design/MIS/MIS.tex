@@ -37,9 +37,9 @@ urlcolor=cyan          % color of external links
 
 \begin{document}
 
-\title{Module Interface Specification for ...}
+\title{Module Interface Specification for \progname{}}
 
-\author{Author Name}
+\author{Isobel Bicket}
 
 \date{\today}
 
@@ -52,8 +52,7 @@ urlcolor=cyan          % color of external links
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+	\today & 1.0 & Initial draft\\
 \bottomrule
 \end{tabularx}
 
@@ -266,7 +265,7 @@ ImportCSV
 \item exception: \wss{if appropriate} 
 \end{itemize}
 
-\section{MIS of Import dm3 Module} \label{Mod:ImportDM3} \wss{Use labels for cross-referencing}
+\section{MIS of Import dm3 Module} \label{Mod:ImportDM3}
 
 \subsection{Module}
 
@@ -274,8 +273,9 @@ ImportDM3
 
 \subsection{Uses}
 \begin{itemize}
-\item Array data structure
-\item Hardware hiding
+	\item Array data structure
+	\item Hardware hiding
+	\item Data Spectrum Image
 \end{itemize}
 
 \subsection{Syntax}
@@ -283,16 +283,14 @@ ImportDM3
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+\begin{tabular}{p{2cm} p{4cm} p{4cm} p{4cm}}
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-ReadDM3 & - & - & - \\
-VerifyFile & - & - & Exceptions related to wrong or bad input\\
+ReadDM3 & filename: string & SI: $\mathbb{R}^{X \times Y \times E}$, metadata: dict & NO FILE, WRONG FILETYPE, NO DATA FOUND  \\
 \hline
 \end{tabular}
 \end{center}
-\an{file contains wrong data type, file is empty, file is not dm3, ...}
 
 \subsection{Semantics}
 
@@ -304,14 +302,15 @@ VerifyFile & - & - & Exceptions related to wrong or bad input\\
 \end{itemize}
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent ImportDM3():
 \begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
+\item input: 
+\item transition:
+\item output: 
+\item exception: 
 \end{itemize}
 
-\section{MIS of Import h5 Module} \label{Mod:ImportH5} \wss{Use labels for cross-referencing}
+\section{MIS of Import h5 Module} \label{Mod:ImportH5} 
 
 \subsection{Module}
 
@@ -821,7 +820,7 @@ Mask3D
 \subsection{Semantics}
 
 \subsubsection{State Variables}
-
+mask3d
 
 \subsubsection{Access Routine Semantics}
 
@@ -839,7 +838,8 @@ Mask3D
 Disp1D
 
 \subsection{Uses}
-
+Data 1D Spectrum
+Plotting library
 
 \subsection{Syntax}
 
@@ -850,7 +850,7 @@ Disp1D
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-\wss{accessProg} & - & - & - \\
+plot & - & - & - \\
 \hline
 \end{tabular}
 \end{center}
@@ -859,6 +859,8 @@ Disp1D
 
 \subsubsection{State Variables}
 
+\subsubsection{Environment Variables}
+fig
 
 \subsubsection{Access Routine Semantics}
 
@@ -1041,54 +1043,50 @@ Image
 
 \section{MIS of Data 3D Spectrum Image Module} \label{Mod:SI}
 
-\subsection{Module}
+\subsection{Template Module}
 SI
 
 \subsection{Uses}
 \begin{itemize}
-	\item Import
 	\item Array Data Structure
 \end{itemize}
 
 
 \subsection{Syntax}
 
-\subsubsection{Exported Access Programs}
+\subsubsection{Exported Types}
 
 \begin{center}
 \begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
 	\hline
-	\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+	\textbf{Routine Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 	\hline
-	FindFW & Peak index and fraction & Full width at fraction of peak height & - \\ 
+	 init & data & SI & - \\
 	\hline
 \end{tabular}
 \end{center}
-\an{Need to think on this more, if I treat this as a template module, does it have exported access programs?}
 
 \subsection{Semantics}
 
 \subsubsection{State Variables}
 \begin{itemize}
-	\item $data$: $\mathbb{R}^{size(x) \times size(y) \times size(E)}$
-	\item $xy_\text{calibration}$: $\mathbb{R}$
-	\item $dispersion$: $\mathbb{R}$
-	\item $spectrum range$: $\mathbb{R}^{size(E)}$
-	\item $zero index$: $\mathbb{Z}$
-	\item $size$: $\mathbb{N}^3$
-	\item $spectrum label$: string
-	\item $spectrum units$: string
-	\item $metadata$: dict
+	\item data: $\mathbb{R}^{X \times Y \times K}$
+	\item Imcal: $\mathbb{R}$
+	\item dispersion: $\mathbb{R}$
+	\item Srange: $\mathbb{R}^{K}$
+	\item ZLP: $\mathbb{Z}$
+	\item size: $\mathbb{N}^3$
+	\item Slabel: string
+	\item Sunit: string
+	\item metadata: dict
 \end{itemize}
+
+\subsubsection{State Invariant}
+
+\subsubsection{Assumptions}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent FindFW():
-\begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
-\end{itemize}
 
 \section{MIS of Array Data Structure Module} \label{Mod:Array} \wss{Use labels for cross-referencing}
 
