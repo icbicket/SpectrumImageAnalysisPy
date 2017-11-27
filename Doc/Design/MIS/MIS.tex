@@ -403,8 +403,6 @@ ExportCSV
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
 WriteCSV & - & - & - \\
-FormatCSV & - & - & - \\
-Verify1D & - & - & - \\
 \hline
 \end{tabular}
 \end{center}
@@ -566,7 +564,7 @@ Array Data Structure
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-RLDeconvolution & - & - & - \\
+RLDeconvolution & S, iterations, S, threads & deconvolved SI & - \\
 SIDeconvolution & - & - & - \\
 \hline
 \end{tabular}
@@ -575,27 +573,30 @@ SIDeconvolution & - & - & - \\
 \subsection{Semantics}
 
 \subsubsection{State Variables}
-\begin{itemize}
-\item iterations
-\item PSF
-\item spectrum
-\item threads
-\end{itemize}
+N/A
+%\begin{itemize}
+%\item iterations
+%\item PSF
+%\item spectrum
+%\item threads
+%\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
 \noindent RLDeconvolution():
 \begin{itemize}
-\item transition: Performs the RL deconvolution algorithm on the input spectrum, using the input PSF and number of iterations 
+\item input: S, S, iterations, threads
+\item transition:  
 \item output: deconvolved spectrum
-\item exception: 
+\item exception: Divide by zero!
 \end{itemize}
 
 \noindent SIDeconvolution():
 \begin{itemize}
-\item transition: Splits a spectrum image into its composite spectra, so each spectrum can be deconvolved separately, according to the number of threads used. Sets up multithreading to prepare large datasets for RLDeconvolution.
-\item output: Decomposed spectrum image
-\item exception:  
+\item input: SI, iterations, S, threads
+\item transition: 
+\item output: Deconvolved spectrum image
+\item exception: divide by zero
 \end{itemize}
 
 \section{MIS of Data Processing Normalization Module} \label{Mod:Normalization} \wss{Use labels for cross-referencing}
@@ -775,7 +776,10 @@ Mask2D
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-\wss{accessProg} & - & - & - \\
+Create mask & keyboard event, mouse event, data size & 2d bool mask of data size & - \\
+Apply mask & & & \\
+Modify mask & & & \\
+
 \hline
 \end{tabular}
 \end{center}
@@ -783,7 +787,9 @@ Mask2D
 \subsection{Semantics}
 
 \subsubsection{State Variables}
-
+\begin{itemize}
+\item mask2D
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
@@ -1054,7 +1060,7 @@ SI
 
 \subsection{Syntax}
 
-\subsubsection{Exported Types}
+\subsubsection{Exported Access Programs}
 
 \begin{center}
 \begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
@@ -1067,6 +1073,7 @@ SI
 \end{center}
 
 \subsection{Semantics}
+\an{Stuff it does, in English}
 
 \subsubsection{State Variables}
 \begin{itemize}
@@ -1086,7 +1093,13 @@ SI
 \subsubsection{Assumptions}
 
 \subsubsection{Access Routine Semantics}
-
+init
+\begin{itemize}
+\item input: 
+\item transition: Initialize all state variables
+\item output: 
+\item exception: 
+\end{itemize}
 
 \section{MIS of Array Data Structure Module} \label{Mod:Array} \wss{Use labels for cross-referencing}
 
