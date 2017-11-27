@@ -141,7 +141,10 @@ or data format of saved spectrum csv files.
 	\item[\refstepcounter{acnum} \actheacnum \label{acDM3datatype}:] The data type
 inside dm3 files.
 	\item[\refstepcounter{acnum} \actheacnum \label{acDM3labels}:] The
-locations/labels of data and metadata inside dm3 files.
+locations/labels of data and metadata inside dm3 files. \wss{Having two secrets
+  for dm3 files (and some of the others) seems like too fine a subdivision to
+  me.  I'm willing to be convinced that it is necessary, but the ``format of the
+  file'' is usually adequate as an anticipated change (and secret).}
 	\item[\refstepcounter{acnum} \actheacnum \label{acDM4support}:] Expanding
 support to dm4 files.
 	\item[\refstepcounter{acnum} \actheacnum \label{acH5datatype}:] The data type
@@ -153,7 +156,10 @@ new data processing algorithms.
 	\item[\refstepcounter{acnum} \actheacnum \label{acRLoptimize}:] Functions used
 for RL deconvolution (optimizations for reduced error or speed).
 	\item[\refstepcounter{acnum} \actheacnum \label{acNorm}:] Optimizations on
-normalization algorithm.
+normalization algorithm.  \wss{I think the anticipated change is the
+  normalization algorithm.  The purpose of the change may be optimization of the
+  algorithm, but the change is the algorithm.  A similar comment applies for
+  some of the other anticipated changes.}
 	\item[\refstepcounter{acnum} \actheacnum \label{acGain}:] Optimizations on gain
 correction algorithm.
 	\item[\refstepcounter{acnum} \actheacnum \label{acBkgnd}:] Optimizations on
@@ -206,13 +212,17 @@ sufficient memory and computing power to perform the operations required).
 	\item[\refstepcounter{ucnum} \uctheucnum \label{ucInput}:] There will always be
 	  a source of input data external to the software.
 	\item[\refstepcounter{ucnum} \uctheucnum \label{ucArray}:]  The use of arrays
-for holding data.
+for holding data. \wss{This is an unusual (and I believe unnecessary)
+  restriction.  Mathematically (abstractly) what you need is a sequence.  If it
+  is a numpy array, or a Python list, or another data structure in another
+  language, you could still implement your software.}
 	\item[\refstepcounter{ucnum} \uctheucnum \label{ucPlottingLibrary}:]  Plotting
 library used.
 	\item[\refstepcounter{ucnum} \uctheucnum \label{ucArrayLibrary}:]  Array
-structure library used.
+structure library used. \wss{This seems like an unnecessary restriction to me.}
 	\item[\refstepcounter{ucnum} \uctheucnum \label{uc1DdataFormat}:]  Format of 1D
-data (y-axis and x-axis data).
+data (y-axis and x-axis data). \wss{This also seems like an unnecessary
+  restriction.}
 	\item[\refstepcounter{ucnum} \uctheucnum \label{uc2DdataFormat}:]  Format of 2D
 data ($(x,y)$ data array).
 	\item[\refstepcounter{ucnum} \uctheucnum \label{uc3DdataFormat}:]  Format of 3D
@@ -265,7 +275,10 @@ Spectrum Image.
 	\item [\refstepcounter{mnum} \mthemnum \label{m3DSIdata}:] Data 3D Spectrum
 Image.
 	\item [\refstepcounter{mnum} \mthemnum \label{mArrayStruct}:] Array Data
-Structure.
+Structure. \wss{The more abstract notion of sequence hiding might be better
+  here.  The choice of using arrays in numpy is for efficiency, but a sequence
+  ADT with an interface that provides the services you need should be fine, and
+  it would be more amenable to change.}
 	\item [\refstepcounter{mnum} \mthemnum \label{mPlotLib}:] Plotting Library.
 \end{description}
 
@@ -804,6 +817,12 @@ Figure \ref{figure:UHData}.
 
 
 \clearpage
+
+\wss{Your design looks like a great start.  It will be easier to tell how well
+  the pieces fit together as you work on your MIS.  If anything becomes awkward,
+  or too detailed, remember that you can use abstraction to simplify the
+  interfaces, and maybe reduce your number of modules.}
+
 \bibliography {MG}
 
 \end{document}
