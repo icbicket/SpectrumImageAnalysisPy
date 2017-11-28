@@ -1,0 +1,40 @@
+\begin{tabular}{p{0.25\textwidth} p{0.25\textwidth} p{0.4\textwidth}}
+\toprule
+\textbf{Level 1} & \textbf{Level 2} & \textbf{Level 3}\\
+\midrule
+
+{Hardware-Hiding Module} & ~ & ~ \\
+\midrule
+
+\multirow{18}{0.25\textwidth}{Behaviour-Hiding Module} &
+\multirow{4}{0.25\textwidth}{Import} & csv\\
+& & dm3\\
+& & h5\\
+& & rpl\\\cline{2-3}
+& \multirow{4}{0.25\textwidth}{Export} & csv\\
+& & h5\\
+& & png\\
+& & rpl\\\cline{2-3}
+& \multirow{4}{0.25\textwidth}{Data processing} & Richardson-Lucy
+Deconvolution\\
+& & Normalization\\
+& & Gain correction\\
+& & Background correction\\\cline{2-3}
+& \multirow{3}{0.25\textwidth}{Data extraction} & 1D slice\\
+& & 2D mask\\
+& & 3D mask\\\cline{2-3}
+& \multirow{3}{0.25\textwidth}{Display} & 1D spectrum plot\\
+& & 2D image plot\\
+& & 3D spectrum image plot\\
+\midrule
+
+\multirow{2}{0.25\textwidth}{Software Decision Module} &
+\multirow{3}{0.25\textwidth}{Data} & Spectrum\\
+& & Image\\
+& & Spectrum Image\\\cline{2-3}
+& Array Data Structure\\\cline{2-3}
+& Plotting Library\\
+
+\bottomrule
+
+\end{tabular}

@@ -2,12 +2,12 @@
 
 \usepackage{amsmath, mathtools}
 
-\usepackage[round]{natbib}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{colortbl}
 \usepackage{xr}
+\usepackage{xr-hyper}
 \usepackage{hyperref}
 \usepackage{longtable}
 \usepackage{xfrac}
@@ -20,6 +20,7 @@
 \usepackage{caption}
 \usepackage{fullpage}
 
+
 \hypersetup{
 bookmarks=true,     % show bookmarks bar?
 colorlinks=true,       % false: boxed links; true: colored links
@@ -28,15 +29,16 @@ citecolor=blue,      % color of links to bibliography
 filecolor=magenta,  % color of file links
 urlcolor=cyan          % color of external links
 }
-
+\externaldocument{../../SRS/SRS}
 \usepackage{array}
 
 \input{../../Comments}
 
-\newcommand{\progname}{Program Name}
+\newcommand{\progname}{SpectrumImageAnalysisPy}
 
 \begin{document}
-
+\label{doc:MIS}
+\bibliographystyle{ieeetr}
 \title{Module Interface Specification for \progname{}}
 
 \author{Isobel Bicket}
@@ -49,10 +51,10 @@ urlcolor=cyan          % color of external links
 
 \section{Revision History}
 
-\begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
+\begin{tabularx}{\textwidth}{p{4cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-	\today & 1.0 & Initial draft\\
+	November 29, 2017 & 1.0 & Initial draft\\
 \bottomrule
 \end{tabularx}
 
@@ -60,9 +62,7 @@ urlcolor=cyan          % color of external links
 
 \section{Symbols, Abbreviations and Acronyms}
 
-See SRS Documentation at \wss{give url}
-
-\wss{Also add any additional symbols, abbreviations or acronyms}
+See \hyperref[doc:SRS]{SRS} documentation at \url{https://github.com/icbicket/SpectrumImageAnalysisPy/blob/SpectrumImageAnalysisPy_dev/Doc/SRS/SRS.pdf}.
 
 \newpage
 
@@ -75,21 +75,21 @@ See SRS Documentation at \wss{give url}
 \section{Introduction}
 
 The following document details the Module Interface Specifications for
-\wss{Fill in your project name and description}
+\progname, a library created for the data processing of spectrum image datasets.
 
 Complementary documents include the System Requirement Specifications
 and Module Guide.  The full documentation and implementation can be
-found at \url{...}.  \wss{provide the url for your repo}
+found at \url{https://github.com/icbicket/SpectrumImageAnalysisPy/tree/SpectrumImageAnalysisPy_dev}.
 
 \section{Notation}
 
 \wss{You should describe your notation.  You can use what is below as
   a starting point.}
 
-The structure of the MIS for modules comes from \citet{HoffmanAndStrooper1995},
+The structure of the MIS for modules comes from \cite{HoffmanAndStrooper1995},
 with the addition that template modules have been adapted from
 \cite{GhezziEtAl2003}.  The mathematical notation comes from Chapter 3 of
-\citet{HoffmanAndStrooper1995}.  For instance, the symbol := is used for a
+\cite{HoffmanAndStrooper1995}.  For instance, the symbol := is used for a
 multiple assignment statement and conditional rules follow the form $(c_1
 \Rightarrow r_1 | c_2 \Rightarrow r_2 | ... | c_n \Rightarrow r_n )$.
 
@@ -124,29 +124,7 @@ The following table is taken directly from the Module Guide document for this pr
 
 \begin{table}[h!]
 \centering
-\begin{tabular}{p{0.3\textwidth} p{0.6\textwidth}}
-\toprule
-\textbf{Level 1} & \textbf{Level 2}\\
-\midrule
-
-{Hardware-Hiding} & ~ \\
-\midrule
-
-\multirow{7}{0.3\textwidth}{Behaviour-Hiding} & Input Parameters\\
-& Output Format\\
-& Output Verification\\
-& Temperature ODEs\\
-& Energy Equations\\ 
-& Control Module\\
-& Specification Parameters Module\\
-\midrule
-
-\multirow{3}{0.3\textwidth}{Software Decision} & {Sequence Data Structure}\\
-& ODE Solver\\
-& Plotting\\
-\bottomrule
-
-\end{tabular}
+\input{../MG/ModuleHierarchyTable.tex}
 \caption{Module Hierarchy}
 \label{TblMH}
 \end{table}
@@ -228,25 +206,27 @@ BehaviourHiding
 \item exception: \wss{if appropriate} 
 \end{itemize}
 
-\section{MIS of Import csv Module} \label{Mod:ImportCSV} \wss{Use labels for cross-referencing}
-
+\section{MIS of Import csv Module} \label{Mod:ImportCSV} 
 \subsection{Module}
-
 ImportCSV
 
 \subsection{Uses}
-
+\begin{itemize}
+\item \hyperref[Mod:Spectrum]{Data 1D Spectrum}
+\item \hyperref[Mod:Array]{Array data structure}
+\item \hyperref[Mod:HH]{Hardware-hiding}
+\end{itemize}
 
 \subsection{Syntax}
 
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+\begin{tabular}{p{2cm} p{4cm} p{4cm} p{5cm}}
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-\wss{accessProg} & - & - & - \\
+ReadCSV & fname: str & Spectrum & NO FILE, NOT CSV\\
 \hline
 \end{tabular}
 \end{center}
@@ -254,16 +234,36 @@ ImportCSV
 \subsection{Semantics}
 
 \subsubsection{State Variables}
+N/A
 
+\subsubsection{Environment Variables}
+filesystem
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent ReadCSV():\\
+ReadCSV reads a .csv file and creates a Spectrum object with the appropriate assignations to intensity and energy range.
 \begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
+	\item input: fname: str
+	\item transition: N/A 
+	\item output: \hyperref[Mod:Spectrum]{Spectrum}
+	\item exceptions:
 \end{itemize}
+\begin{center}
+	\begin{tabular}{p{3cm} p{12cm}}
+		\toprule[0.15em]
+		\textbf{Exception} & \textbf{Condition}\\
+		\midrule[0.1em]
+		\multirow{2}{0.25\textwidth}{NO FILE} & The filename does not correspond to any file in the filesystem\\ 
+		& $fname \notin filesystem$\\ 
+		\midrule[0.05em]
+		\multirow{2}{0.25\textwidth}{NOT CSV} & The indicated file is not a *.csv format\\
+		& $fname \notin \{files|files \in .csv\}$\\ 
+		
+		\bottomrule[0.15em]
+	\end{tabular}
+\end{center}
+
 
 \section{MIS of Import dm3 Module} \label{Mod:ImportDM3}
 
@@ -1010,6 +1010,10 @@ Spectrum
 \item exception: \wss{if appropriate} 
 \end{itemize}
 
+%\midrule[0.05em] %
+%		\multirow{2}{0.25\textwidth}{WRONG DATA FORMAT} & The data contained within the file is not in the right format for a Spectrum\\
+%		& $size(data) \notin \{2 \times N | N \times 2 \}$ \\
+
 \section{MIS of Data 2D Image Module} \label{Mod:Image} \wss{Use labels for cross-referencing}
 
 \subsection{Module}
@@ -1177,8 +1181,7 @@ Plotting
 
 \newpage
 
-\bibliographystyle {plainnat}
-\bibliography {../../../ReferenceMaterial/References}
+\bibliography {MIS}
 
 \newpage
 
