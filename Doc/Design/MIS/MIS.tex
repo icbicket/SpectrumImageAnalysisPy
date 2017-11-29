@@ -136,11 +136,10 @@ The following table is taken directly from the Module Guide document for this pr
 \section{MIS of Hardware Hiding Module} \label{Mod:HH}
 
 \subsection{Module}
-
 HardwareHiding
 
 \subsection{Uses}
-
+N/A
 
 \subsection{Syntax}
 
@@ -151,60 +150,43 @@ HardwareHiding
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-\wss{accessProg} & - & - & - \\
+InputDevices & Hardware & Read out & - \\
+OutputDevices & Hardware & Write out & - \\
 \hline
 \end{tabular}
 \end{center}
 
 \subsection{Semantics}
+This module handles the interface between the hardware being used and inputs to the software
 
 \subsubsection{State Variables}
+N/A
 
-
-\subsubsection{Access Routine Semantics}
-
-\noindent \wss{accessProg}():
+\subsubsection{Environment Variables}
 \begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
+    \item Keyboard
+    \item Mouse
+    \item Screen
+    \item Long Term Storage
+    \item Temporary storage
 \end{itemize}
 
-\section{MIS of Behaviour Hiding Module} \label{Mod:BehaviourHiding}
-
-\subsection{Module}
-
-BehaviourHiding
-
-\subsection{Uses}
-
-
-\subsection{Syntax}
-
-\subsubsection{Exported Access Programs}
-
-\begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-\wss{accessProg} & - & - & - \\
-\hline
-\end{tabular}
-\end{center}
-
-\subsection{Semantics}
-
-\subsubsection{State Variables}
-
-
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent InputDevices():
 \begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
+    \item input: Hardware allowing the user to input instructions to the computer software, \textit{e.g.} mouse, keyboard, long term or temporary memory
+    \item transition: N/A
+    \item output: Software instructions corresponding to the desire of the user (\textit{e.g.} registering a mouse click, reading a variable from memory, accessing a file on the harddrive)
+    \item exception: N/A
+\end{itemize}
+
+\noindent OutputDevices():
+\begin{itemize}
+    \item input: Hardware allowing the user to see output from the computer software, \textit{e.g.} screen, storage
+    \item transition: N/A
+    \item output: Interface to allow software to communicate output to the user (\textit{e.g.}, it provides the capability for the software to output something onto the screen or write to a file on a harddrive, or write to memory)
+    \item exception: N/A
 \end{itemize}
 
 \section{MIS of Import csv Module} \label{Mod:ImportCSV} 
@@ -245,7 +227,7 @@ filesystem
 \noindent ReadCSV():\\
 ReadCSV reads a .csv file and creates a Spectrum object with the appropriate assignations to intensity and energy range.
 \begin{itemize}
-	\item input: fname: str
+	\item input: \textit{fname}: \textit{str}
 	\item transition: N/A 
 	\item output: \hyperref[Mod:Spectrum]{Spectrum}
 	\item exceptions:
@@ -260,7 +242,6 @@ ReadCSV reads a .csv file and creates a Spectrum object with the appropriate ass
 		\midrule[0.05em]
 		\multirow{2}{0.25\textwidth}{NOT CSV} & The indicated file is not a *.csv format\\
 		& $fname \notin \{files|files \in .csv\}$\\ 
-		
 		\bottomrule[0.15em]
 	\end{tabular}
 \end{center}
@@ -274,9 +255,11 @@ ImportDM3
 
 \subsection{Uses}
 \begin{itemize}
-	\item Array data structure
-	\item Hardware hiding
-	\item Data Spectrum Image
+	\item \hyperref[Mod:Array]{Array data structure}
+	\item \hyperref[Mod:HH]{Hardware hiding}
+	\item \hyperref[Mod:SI]{Data Spectrum Image}
+    \item \hyperref[Mod:Spectrum]{Data 1D Spectrum}
+    \item \hyperref[Mod:Image]{Data 2D Image}
 \end{itemize}
 
 \subsection{Syntax}
@@ -288,7 +271,7 @@ ImportDM3
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-ReadDM3 & filename: string & SI: $\mathbb{R}^{X \times Y \times E}$, metadata: dict & NO FILE, WRONG FILETYPE, NO DATA FOUND  \\
+ReadDM3 & fname: string & SI $|$ Spectrum $|$ Image & NO FILE, NOT DM3 \\
 \hline
 \end{tabular}
 \end{center}
@@ -296,29 +279,48 @@ ReadDM3 & filename: string & SI: $\mathbb{R}^{X \times Y \times E}$, metadata: d
 \subsection{Semantics}
 
 \subsubsection{State Variables}
+N/A
 
 \subsubsection{Environment Variables}
 \begin{itemize}
-\item filedm3
+\item filesystem: the filesystem of the computer on which \progname{} is being run
 \end{itemize}
 \subsubsection{Access Routine Semantics}
 
 \noindent ImportDM3():
 \begin{itemize}
-\item input: 
-\item transition:
-\item output: 
+\item input: \textit{fname}: \textit{str}
+\item transition: N/A
+\item output: \hyperref[Mod:SI]{Spectrum Image} or \hyperref[Mod:Spectrum]{Spectrum} or \hyperref[Mod:Image]{Image}
 \item exception: 
+\begin{center}
+    \begin{tabular}{p{3cm} p{12cm}}
+        \toprule[0.15em]
+        \textbf{Exception} & \textbf{Condition}\\
+        \midrule[0.1em]
+        \multirow{2}{0.25\textwidth}{NO FILE} & The filename does not correspond to any file in the filesystem\\ 
+        & $fname \notin filesystem$\\ 
+        \midrule[0.05em]
+        NOT DM3 & The indicated file is not a *.dm3 format\\
+        \bottomrule[0.15em]
+    \end{tabular}
+\end{center}
+
 \end{itemize}
 
 \section{MIS of Import h5 Module} \label{Mod:ImportH5} 
 
 \subsection{Module}
-
 ImportH5
 
 \subsection{Uses}
-
+\begin{itemize}
+    \item \hyperref[Mod:Array]{Array data structure}
+    \item \hyperref[Mod:HH]{Hardware hiding}
+    \item \hyperref[Mod:SI]{Data Spectrum Image}
+    \item \hyperref[Mod:Spectrum]{Data 1D Spectrum}
+    \item \hyperref[Mod:Image]{Data 2D Image}
+\end{itemize}
 
 \subsection{Syntax}
 
@@ -329,23 +331,37 @@ ImportH5
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-\wss{accessProg} & - & - & - \\
+ReadH5 & fname: string & SI $|$ Spectrum $|$ Image & NO FILE, NOT H5 \\
 \hline
 \end{tabular}
 \end{center}
 
 \subsection{Semantics}
+This module handles the reading of .h5 files and assignation of the data contained therein to the appropriate data type.
 
 \subsubsection{State Variables}
-
+N/A
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent ImportDM3():
 \begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
+    \item input: \textit{fname}: \textit{str}
+    \item transition: N/A
+    \item output: \hyperref[Mod:SI]{Spectrum Image} or \hyperref[Mod:Spectrum]{Spectrum} or \hyperref[Mod:Image]{Image}
+    \item exception: 
+    \begin{center}
+        \begin{tabular}{p{3cm} p{12cm}}
+            \toprule[0.15em]
+            \textbf{Exception} & \textbf{Condition}\\
+            \midrule[0.1em]
+            \multirow{2}{0.25\textwidth}{NO FILE} & The filename does not correspond to any file in the filesystem\\ 
+            & $fname \notin filesystem \Rightarrow$ NO\_FILE\\ 
+            \midrule[0.05em]
+            NOT H5 & The indicated file is not a *.h5 format\\
+            \bottomrule[0.15em]
+        \end{tabular}
+    \end{center}
 \end{itemize}
 
 \section{MIS of Import rpl Module} \label{Mod:ImportRPL}
@@ -355,7 +371,13 @@ ImportH5
 ImportRPL
 
 \subsection{Uses}
-
+\begin{itemize}
+	\item \hyperref[Mod:Array]{Array data structure}
+    \item \hyperref[Mod:HH]{Hardware hiding}
+    \item \hyperref[Mod:SI]{Data Spectrum Image}
+    \item \hyperref[Mod:Spectrum]{Data 1D Spectrum}
+    \item \hyperref[Mod:Image]{Data 2D Image}
+\end{itemize}
 
 \subsection{Syntax}
 
@@ -366,23 +388,37 @@ ImportRPL
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-\wss{accessProg} & - & - & - \\
+ReadRPL & fname: string & SI $|$ Spectrum $|$ Image & NO FILE, NOT RPL \\
 \hline
 \end{tabular}
 \end{center}
 
 \subsection{Semantics}
+This module handles the reading of .rpl files and assigns the data contained within to the appropriate data type.
 
 \subsubsection{State Variables}
-
+N/A
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent ImportRPL():
 \begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
+    \item input: \textit{fname}: \textit{str}
+    \item transition: N/A
+    \item output: \hyperref[Mod:SI]{Spectrum Image} or \hyperref[Mod:Spectrum]{Spectrum} or \hyperref[Mod:Image]{Image}
+    \item exception: 
+    \begin{center}
+        \begin{tabular}{p{3cm} p{12cm}}
+            \toprule[0.15em]
+            \textbf{Exception} & \textbf{Condition}\\
+            \midrule[0.1em]
+            \multirow{2}{0.25\textwidth}{NO FILE} & The filename does not correspond to any file in the filesystem\\ 
+            & $fname \notin filesystem \Rightarrow$ NO\_FILE\\ 
+            \midrule[0.05em]
+            NOT RPL & The indicated file is not a *.rpl format\\
+            \bottomrule[0.15em]
+        \end{tabular}
+    \end{center}
 \end{itemize}
 
 \section{MIS of Export csv Module} \label{Mod:ExportCSV}
@@ -392,48 +428,55 @@ ImportRPL
 ExportCSV
 
 \subsection{Uses}
-
+\begin{itemize}
+    \item \hyperref[Mod:Slice1D]{Data Extraction 1D Slice}
+    \item \hyperref[Mod:Mask3D]{Data Extraction 3D Mask}
+    \item \hyperref[Mod:Disp1D]{Display 1D Spectrum}
+\end{itemize}
 
 \subsection{Syntax}
 
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+\begin{tabular}{p{2cm} p{4cm} p{3cm} p{4cm}}
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-WriteCSV & - & - & - \\
+WriteCSV & Spectrum & file & FILE EXISTS \\
 \hline
 \end{tabular}
 \end{center}
 
 \subsection{Semantics}
+This module writes Spectrum data to a csv file.
 
 \subsubsection{State Variables}
+N/A
 
+\subsubsection{Environment Variables}
+\begin{itemize}
+    \item filesystem
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
 \noindent WriteCSV():
 \begin{itemize}
-\item transition: Writes data to csv file 
-\item output: csv file
-\item exception:
-\end{itemize}
-
-\noindent FormatCSV():
-\begin{itemize}
-\item transition: Formats data to prepare it to write to csv file 
-\item output: formatted data
-\item exception:
-\end{itemize}
-
-\noindent Verify1D():
-\begin{itemize}
-\item transition: Verifies that the input data is of the correct format (a 1D spectrum) and has a spectral range and an intensity array of equal length
-\item output: formatted data
-\item exception:
+    \item input: \hyperref[Mod:Spectrum]{Spectrum}
+    \item transition: N/A
+    \item output: csv file containing spectrum data, written to filesystem
+    \item exception:
+    \begin{center}
+        \begin{tabular}{p{3cm} p{12cm}}
+            \toprule[0.15em]
+            \textbf{Exception} & \textbf{Condition}\\
+            \midrule[0.1em]
+            \multirow{2}{0.25\textwidth}{FILE EXISTS} & The filename already exists in the filesystem\\ 
+            & $fname \in filesystem \Rightarrow$ FILE\_EXISTS\\ 
+            \bottomrule[0.15em]
+        \end{tabular}
+    \end{center}
 \end{itemize}
 
 \section{MIS of Export h5 Module} \label{Mod:ExportH5}
