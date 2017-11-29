@@ -974,7 +974,6 @@ Disp3D
 \item exception: \wss{if appropriate} 
 \end{itemize}
 
-`
 \section{MIS of Data 1D Spectrum Module} \label{Mod:Spectrum}
 \subsection{Template Module}
 Spectrum
@@ -1049,7 +1048,7 @@ init initializes a Spectrum object.
 
 \section{MIS of Data 2D Image Module} \label{Mod:Image}
 
-\subsection{Module}
+\subsection{Template Module}
 Image
 
 \subsection{Uses}
@@ -1194,14 +1193,19 @@ init
 
 \section{MIS of Array Data Structure Module} \label{Mod:Array}
 
-\subsection{Module}
+\subsection{Template Module}
 
 Array
 
 \subsection{Uses}
-
+N/A
 
 \subsection{Syntax}
+
+\subsubsection{Type}
+\begin{itemize}
+    \item Array
+\end{itemize}
 
 \subsubsection{Exported Access Programs}
 
@@ -1210,7 +1214,8 @@ Array
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-\wss{accessProg} & - & - & - \\
+CreateArray & data & Array & - \\
+ModifyArray & Array & Array & - \\
 \hline
 \end{tabular}
 \end{center}
@@ -1218,15 +1223,26 @@ Array
 \subsection{Semantics}
 
 \subsubsection{State Variables}
-
+\begin{itemize}
+    \item Array: $\mathbb{C}^N, dim(N) \in \mathbb{N}$
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent CreateArray():
 \begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
+    \item input: data, $\mathbb{C}^N$
+    \item transition: Create array variable
+    \item output: Array, $\mathbb{C}^N$
+    \item exception: N/A
+\end{itemize}
+
+\noindent ModifyArray():
+\begin{itemize}
+    \item input: Array, $\mathbb{C}^N$
+    \item transition: Modify array by some operation, including but not limited to, addition, subtraction, multiplication, division, \textit{etc.}
+    \item output: Array, $\mathbb{C}^N$
+    \item exception: N/A
 \end{itemize}
 
 \section{MIS of Plotting Library Module} \label{Mod:Plotting}
@@ -1236,7 +1252,9 @@ Array
 Plotting
 
 \subsection{Uses}
-
+\begin{itemize}
+    \item \hyperref[Mod:HH]{Hardware Hiding Module}
+\end{itemize}
 
 \subsection{Syntax}
 
@@ -1247,7 +1265,7 @@ Plotting
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-\wss{accessProg} & - & - & - \\
+plot & data & window & - \\
 \hline
 \end{tabular}
 \end{center}
@@ -1255,15 +1273,26 @@ Plotting
 \subsection{Semantics}
 
 \subsubsection{State Variables}
+\begin{itemize}
+    \item figure
+    \item 1D plot axis
+    \item 2D plot axis
+    \item event handler
+\end{itemize}
 
+\subsubsection{Environment Variables}
+\begin{itemize}
+    \item window: 2D on-screen display of plot figure
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent plot():
 \begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
+    \item input: data, $\mathbb{R}^{K} | \mathbb{R}^{X \times Y}$
+    \item transition: Creates a figure to display the input data, with a 1D plot axis for 1D data or a 2D plot axis for 2D data. Provides handling for events such as mouse clicks or keyboard key presses and options to format the display.
+    \item output: window
+    \item exception:
 \end{itemize}
 
 \newpage
