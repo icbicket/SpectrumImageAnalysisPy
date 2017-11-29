@@ -103,6 +103,7 @@ The following table summarizes the primitive data types used by \progname.
 \textbf{Data Type} & \textbf{Notation} & \textbf{Description}\\ 
 \midrule
 character & char & a single symbol or digit\\
+string & str & a sequence of characters\\
 integer & $\mathbb{Z}$ & a number without a fractional component in (-$\infty$, $\infty$) \\
 natural number & $\mathbb{N}$ & a number without a fractional component in [1, $\infty$) \\
 real & $\mathbb{R}$ & any number in (-$\infty$, $\infty$)\\
@@ -132,7 +133,7 @@ The following table is taken directly from the Module Guide document for this pr
 \newpage
 ~\newpage
 
-\section{MIS of Hardware Hiding Module} \label{Mod:HH} \wss{Use labels for cross-referencing}
+\section{MIS of Hardware Hiding Module} \label{Mod:HH}
 
 \subsection{Module}
 
@@ -169,7 +170,7 @@ HardwareHiding
 \item exception: \wss{if appropriate} 
 \end{itemize}
 
-\section{MIS of Behaviour Hiding Module} \label{Mod:BehaviourHiding} \wss{Use labels for cross-referencing}
+\section{MIS of Behaviour Hiding Module} \label{Mod:BehaviourHiding}
 
 \subsection{Module}
 
@@ -347,7 +348,7 @@ ImportH5
 \item exception: \wss{if appropriate} 
 \end{itemize}
 
-\section{MIS of Import rpl Module} \label{Mod:ImportRPL} \wss{Use labels for cross-referencing}
+\section{MIS of Import rpl Module} \label{Mod:ImportRPL}
 
 \subsection{Module}
 
@@ -384,7 +385,7 @@ ImportRPL
 \item exception: \wss{if appropriate} 
 \end{itemize}
 
-\section{MIS of Export csv Module} \label{Mod:ExportCSV} \wss{Use labels for cross-referencing}
+\section{MIS of Export csv Module} \label{Mod:ExportCSV}
 
 \subsection{Module}
 
@@ -435,7 +436,7 @@ WriteCSV & - & - & - \\
 \item exception:
 \end{itemize}
 
-\section{MIS of Export h5 Module} \label{Mod:ExportH5} \wss{Use labels for cross-referencing}
+\section{MIS of Export h5 Module} \label{Mod:ExportH5}
 
 \subsection{Module}
 
@@ -472,7 +473,7 @@ ExportH5
 \item exception: \wss{if appropriate} 
 \end{itemize}
 
-\section{MIS of Export png Module} \label{Mod:ExportPNG} \wss{Use labels for cross-referencing}
+\section{MIS of Export png Module} \label{Mod:ExportPNG}
 
 \subsection{Module}
 
@@ -509,7 +510,7 @@ ExportPNG
 \item exception: \wss{if appropriate} 
 \end{itemize}
 
-\section{MIS of Export rpl Module} \label{Mod:ExportRPL} \wss{Use labels for cross-referencing}
+\section{MIS of Export rpl Module} \label{Mod:ExportRPL}
 
 \subsection{Module}
 
@@ -564,7 +565,7 @@ Array Data Structure
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-RLDeconvolution & S, iterations, S, threads & deconvolved SI & - \\
+RLDeconvolution & S, iterations, S, threads & deconvolved S & - \\
 SIDeconvolution & - & - & - \\
 \hline
 \end{tabular}
@@ -599,7 +600,7 @@ N/A
 \item exception: divide by zero
 \end{itemize}
 
-\section{MIS of Data Processing Normalization Module} \label{Mod:Normalization} \wss{Use labels for cross-referencing}
+\section{MIS of Data Processing Normalization Module} \label{Mod:Normalization}
 
 \subsection{Module}
 
@@ -636,7 +637,7 @@ Normalization
 \item exception: \wss{if appropriate} 
 \end{itemize}
 
-\section{MIS of Data Processing Gain Correction Module} \label{Mod:GainCorr} \wss{Use labels for cross-referencing}
+\section{MIS of Data Processing Gain Correction Module} \label{Mod:GainCorr}
 
 \subsection{Module}
 
@@ -673,7 +674,7 @@ GainCorr
 \item exception: \wss{if appropriate} 
 \end{itemize}
 
-\section{MIS of Data Processing Background Correction Module} \label{Mod:BackgroundCorr} \wss{Use labels for cross-referencing}
+\section{MIS of Data Processing Background Correction Module} \label{Mod:BackgroundCorr}
 
 \subsection{Module}
 
@@ -710,7 +711,7 @@ BackgroundCorr
 \item exception: \wss{if appropriate} 
 \end{itemize}
 
-\section{MIS of Data Extraction 1D Slice Module} \label{Mod:Slice1D} \wss{Use labels for cross-referencing}
+\section{MIS of Data Extraction 1D Slice Module} \label{Mod:Slice1D}
 
 \subsection{Module}
 
@@ -758,7 +759,7 @@ ApplyMask & - & - & - \\
 \item exception:  
 \end{itemize}
 
-\section{MIS of Data Extraction 2D Mask Module} \label{Mod:Mask2D} \wss{Use labels for cross-referencing}
+\section{MIS of Data Extraction 2D Mask Module} \label{Mod:Mask2D}
 
 \subsection{Module}
 
@@ -800,7 +801,7 @@ Modify mask & & & \\
 \item exception: \wss{if appropriate} 
 \end{itemize}
 
-\section{MIS of Data Extraction 3D Mask Module} \label{Mod:Mask3D} \wss{Use labels for cross-referencing}
+\section{MIS of Data Extraction 3D Mask Module} \label{Mod:Mask3D}
 
 \subsection{Module}
 
@@ -837,7 +838,7 @@ mask3d
 \item exception: \wss{if appropriate} 
 \end{itemize}
 
-\section{MIS of Display 1D Spectrum Module} \label{Mod:Disp1D} \wss{Use labels for cross-referencing}
+\section{MIS of Display 1D Spectrum Module} \label{Mod:Disp1D}
 
 \subsection{Module}
 
@@ -877,7 +878,7 @@ fig
 \item exception: \wss{if appropriate} 
 \end{itemize}
 
-\section{MIS of Display 2D Image Module} \label{Mod:Disp2D} \wss{Use labels for cross-referencing}
+\section{MIS of Display 2D Image Module} \label{Mod:Disp2D}
 
 \subsection{Module}
 
@@ -914,7 +915,7 @@ Disp2D
 \item exception: \wss{if appropriate} 
 \end{itemize}
 
-\section{MIS of Display 3D Spectrum Image Module} \label{Mod:Disp3D} \wss{Use labels for cross-referencing}
+\section{MIS of Display 3D Spectrum Image Module} \label{Mod:Disp3D}
 
 \subsection{Module}
 
@@ -973,82 +974,141 @@ Disp3D
 \item exception: \wss{if appropriate} 
 \end{itemize}
 
-\section{MIS of Data 1D Spectrum Module} \label{Mod:Spectrum} \wss{Use labels for cross-referencing}
-
-\subsection{Module}
-
+`
+\section{MIS of Data 1D Spectrum Module} \label{Mod:Spectrum}
+\subsection{Template Module}
 Spectrum
 
 \subsection{Uses}
-
+\begin{itemize}
+\item \hyperref[Mod:Array]{Array data structure}
+\end{itemize}
 
 \subsection{Syntax}
+
+\subsubsection{Types}
+Spectrum
 
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
-\hline
+\begin{tabular}{p{1.5cm} p{4cm} p{4cm} p{4cm}}
+\toprule
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-\wss{accessProg} & - & - & - \\
-\hline
+\midrule
+init & data, (Srange $|$ (dispersion $\&$ [index, value])), Slabel, Sunit & - & WRONG DATA TYPE, LENGTH MISMATCH \\
+\bottomrule
 \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-
+This module contains the abstract data type Spectrum, including the following state variables.
 \subsubsection{State Variables}
-
+\begin{itemize}
+\item \textit{SRange}: $\mathbb{R}^K$
+\item \textit{data}: $\mathbb{R}^K$
+\item \textit{index}: $\mathbb{Z}$
+\item \textit{value}: $\mathbb{R}$
+\item \textit{dispersion}: $\mathbb{R}$
+\item \textit{Slabel}: \textit{str}
+\item \textit{Sunit}: \textit{str}
+\item \textit{metadata}: \textit{dict}
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent init():
+init initializes a Spectrum object.
 \begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
+    \item input:
+    \begin{itemize}
+        \item \textit{data}: intensity values, $\in \mathbb{R}^K$
+        \item \textit{Srange}: spectral axis values, $\in \mathbb{R}^K$
+        \item \textit{dispersion}: difference  between neighbouring channels along the spectral axis,  $\mathbb{R}$
+        \item \textit{index}: location on the spectral axis at which \textit{value} is, $\mathbb{Z}$
+        \item \textit{value}: value of the spectral axis (in spectral axis units) at the location given by \textit{index}, $\mathbb{R}$
+        \item \textit{Slabel}: spectrum label, the name for the spectral axis (\textit{e.g.} Energy, Wavelength), \textit{str}
+        \item \textit{Sunit}: spectrum units, the units which the spectral axis uses (\textit{e.g.} \si{\electronvolt}, \si{\nano\metre}), \textit{str}
+    \end{itemize}
+    \item transition: Creates all state variables
+    \item output: N/A
+    \item exception:
+\begin{center}
+    \begin{tabular}{p{3cm} p{12cm}}
+        \toprule[0.15em]
+        \textbf{Exception} & \textbf{Condition}\\
+        \midrule[0.1em]
+        WRONG DATA TYPE & Any of the input data are the wrong type\\ 
+        \midrule[0.05em]
+        LENGTH MISMATCH & The length of Srange is not the same as the length of data\\
+        & $len(Srange) \neq len(data)$\\
+        \bottomrule[0.15em]
+    \end{tabular}
+\end{center}
 \end{itemize}
 
-%\midrule[0.05em] %
-%		\multirow{2}{0.25\textwidth}{WRONG DATA FORMAT} & The data contained within the file is not in the right format for a Spectrum\\
-%		& $size(data) \notin \{2 \times N | N \times 2 \}$ \\
-
-\section{MIS of Data 2D Image Module} \label{Mod:Image} \wss{Use labels for cross-referencing}
+\section{MIS of Data 2D Image Module} \label{Mod:Image}
 
 \subsection{Module}
-
 Image
 
 \subsection{Uses}
-
+\begin{itemize}
+    \item \hyperref[Mod:Array]{Array data structure}
+\end{itemize}
 
 \subsection{Syntax}
+\subsubsection{Types}
+Image
 
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-\wss{accessProg} & - & - & - \\
-\hline
-\end{tabular}
+    \begin{tabular}{p{1.5cm} p{4cm} p{4cm} p{4cm}}
+        \toprule
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \midrule
+        init & data, Imcal, metadata & - & WRONG DATA TYPE, WRONG DIMENSIONS \\
+        \bottomrule
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-
+This module contains the abstract data type Spectrum, including the following state variables.
 \subsubsection{State Variables}
-
+\begin{itemize}
+    \item data: $\mathbb{R}^{X \times Y}$
+    \item Imcal: $\mathbb{R}$
+    \item metadata: dict
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent init():
+init initializes an Image object.
 \begin{itemize}
-\item transition: 
-\item output:
-\item exception:
+    \item input:
+    \begin{itemize}
+        \item \textit{data}: intensity values, $\in \mathbb{R}^{X \times Y}$
+        \item \textit{Imcal}: image calibration values (\textit{e.g.} number of \si{\nano\metre} per pixel), $\in \mathbb{R}$
+        \item \textit{metadata}: dictionary containing extra information about the source of the image (\textit{e.g.} experimental parameters)
+    \end{itemize}
+    \item transition: Creates all state variables
+    \item output: N/A
+    \item exception:
+    \begin{center}
+        \begin{tabular}{p{4cm} p{11.5cm}}
+            \toprule[0.15em]
+            \textbf{Exception} & \textbf{Condition}\\
+            \midrule[0.1em]
+            WRONG DATA TYPE & The input data are not real numbers or the Imcal value is not a real float\\
+            & $data \notin \mathbb{R}^{X \times Y}  | Imcal \notin \mathbb{R} \Rightarrow$ WRONG\_DATA\_TYPE \\ 
+            \midrule[0.05em]
+            WRONG DIMENSIONS & The input data is not 2D\\
+            & $size(data) \notin \mathbb{N}^2 \Rightarrow $ WRONG\_DIMENSIONS\\
+            \bottomrule[0.15em]
+        \end{tabular}
+    \end{center}
 \end{itemize}
 
 \section{MIS of Data 3D Spectrum Image Module} \label{Mod:SI}
@@ -1062,50 +1122,77 @@ SI
 \end{itemize}
 
 
-\subsection{Syntax}
+\subsubsection{Types}
+Spectrum Image
 
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
-	\hline
-	\textbf{Routine Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-	\hline
-	 init & data & SI & - \\
-	\hline
-\end{tabular}
+    \begin{tabular}{p{1.5cm} p{4cm} p{4cm} p{4cm}}
+        \toprule
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \midrule
+        init & data, Srange $|$ dispersion $\&$ [index, value], Slabel, Sunit, Imcal, metadata & - & WRONG DATA TYPE, WRONG DIMENSIONS \\
+        \bottomrule
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-\an{Stuff it does, in English}
+This module holds spectrum image data (a 3D dataset) and associated calibrations and other related information.
 
 \subsubsection{State Variables}
 \begin{itemize}
-	\item data: $\mathbb{R}^{X \times Y \times K}$
-	\item Imcal: $\mathbb{R}$
-	\item dispersion: $\mathbb{R}$
-	\item Srange: $\mathbb{R}^{K}$
-	\item ZLP: $\mathbb{Z}$
-	\item size: $\mathbb{N}^3$
-	\item Slabel: string
-	\item Sunit: string
-	\item metadata: dict
+	\item \textit{data}: $\mathbb{R}^{X \times Y \times K}$
+	\item \textit{Imcal}: $\mathbb{R}$
+	\item \textit{dispersion}: $\mathbb{R}$
+	\item \textit{Srange}: $\mathbb{R}^{K}$
+    \item \textit{index}: $\mathbb{Z}$
+    \item \textit{value}: $\mathbb{R}$
+	\item \textit{Slabel}: string
+	\item \textit{Sunit}: string
+	\item \textit{metadata}: dict
 \end{itemize}
-
-\subsubsection{State Invariant}
-
-\subsubsection{Assumptions}
 
 \subsubsection{Access Routine Semantics}
 init
 \begin{itemize}
 \item input: 
+    \begin{itemize}
+        \item \textit{data}: intensity values, $\in \mathbb{R}^{X \times Y \times K}$
+        \item \textit{Srange}: spectral axis values, $\in \mathbb{R}^K$
+        \item \textit{dispersion}: difference  between neighbouring channels along the spectral axis,  $\mathbb{R}$
+        \item \textit{index}: location on the spectral axis at which \textit{value} is, $\mathbb{Z}$
+        \item \textit{value}: value of the spectral axis (in spectral axis units) at the location given by \textit{index}, $\mathbb{R}$
+        \item \textit{Slabel}: spectrum label, the name for the spectral axis (\textit{e.g.} Energy, Wavelength), \textit{str}
+        \item \textit{Sunit}: spectrum units, the units which the spectral axis uses (\textit{e.g.} \si{\electronvolt}, \si{\nano\metre}), \textit{str}
+        \item \textit{Imcal}: image calibration values (\textit{e.g.} number of \si{\nano\metre} per pixel), $\in \mathbb{R}$
+        \item \textit{metadata}: dictionary containing extra information about the source of the image (\textit{e.g.} experimental parameters)
+    \end{itemize}
 \item transition: Initialize all state variables
-\item output: 
+\item output: N/A
 \item exception: 
+\begin{center}
+    \begin{tabular}{p{3cm} p{12cm}}
+        \toprule[0.15em]
+        \textbf{Exception} & \textbf{Condition}\\
+        \midrule[0.1em]
+        WRONG DATA TYPE & Any of the input data are the wrong type\\
+        & $(data \notin \mathbb{R}^{X \times Y \times K}) | (Srange \notin \mathbb{R}^K) | (dispersion \notin \mathbb{R}) | (index \notin \mathbb{Z}) | (value \notin \mathbb{R}) | (Slabel \notin str) | (Sunit \notin str) | (Imcal \notin \mathbb{R}) \Rightarrow$ WRONG\_DATA\_TYPE\\ 
+        \midrule[0.05em]
+        LENGTH MISMATCH & The length of Srange is not the same as the length of data's spectral axis\\
+        & $len(Srange) \neq size(data)[2] \Rightarrow$ LENGTH\_MISMATCH\\
+        \midrule[0.05em]
+        WRONG DATA TYPE & The input data are not real numbers or the Imcal value is not a real float\\
+        & $data \notin \mathbb{R}^{X \times Y}  | Imcal \notin \mathbb{R} \Rightarrow$ WRONG\_DATA\_TYPE \\ 
+        \midrule[0.05em]
+        WRONG DIMENSIONS & The input data is not 2D\\
+        & $size(data) \notin \mathbb{N}^2 \Rightarrow $ WRONG\_DIMENSIONS\\
+        \bottomrule[0.15em]
+    \end{tabular}
+\end{center}
 \end{itemize}
 
-\section{MIS of Array Data Structure Module} \label{Mod:Array} \wss{Use labels for cross-referencing}
+\section{MIS of Array Data Structure Module} \label{Mod:Array}
 
 \subsection{Module}
 
@@ -1142,7 +1229,7 @@ Array
 \item exception: \wss{if appropriate} 
 \end{itemize}
 
-\section{MIS of Plotting Library Module} \label{Mod:Plotting} \wss{Use labels for cross-referencing}
+\section{MIS of Plotting Library Module} \label{Mod:Plotting}
 
 \subsection{Module}
 
