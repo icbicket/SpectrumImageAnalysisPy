@@ -99,5 +99,10 @@ ENV/
 *.lot
 *.lof
 
+# Make files
+*.fdb_latexmk
+*.fls
+*.refresh
+
 # For Mac computers
 *.DS_Store
