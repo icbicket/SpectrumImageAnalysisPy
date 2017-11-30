@@ -119,19 +119,7 @@ each unit, the symbol is given followed by a
 description of the quantity described by the symbol and the unit name.
 ~\newline
 
-\renewcommand{\arraystretch}{1.2}
-%\begin{table}[ht]
-  \noindent \begin{tabular}{l l l} 
-    \toprule		
-    \textbf{symbol} & \textbf{quantity} & \textbf{unit name}\\
-    \midrule 
-    counts & intensity & number of particles\\
-    \si{\nano\metre} & length & nanometre\\
-    \si{\electronvolt} & energy	& electron volt\\
-    \bottomrule
-  \end{tabular}
-  %	\caption{Provide a caption}
-%\end{table}
+\input{UnitTable.tex}
 
 \wss{Is ``number of particles'' a standard measure of intensity?  I did a quick
   google search and I did not see any examples of intensity measured by the
@@ -143,102 +131,11 @@ description of the quantity described by the symbol and the unit name.
 The table that follows summarizes the symbols used in this document along with
 their units. The symbols are listed in alphabetical order.
 
-\renewcommand{\arraystretch}{1.2}
-%\noindent \begin{tabularx}{1.0\textwidth}{l l X}
-\noindent \begin{longtable*}{l l p{12cm}} \toprule
-\textbf{symbol} & \textbf{unit} & \textbf{description}\\
-\midrule 
-$A^2$ & \si{\nano\metre^2} & Area of interest on the sample\\
-$b(k)$ & counts & Background signal on a detector\\
-$c$ & -- & Index of the current iteration in deconvolution \\
-$E$ & \si{\nano\metre} or \si{\electronvolt} & Energy of the collected particle,
-represented by wavelength (CL) or energy loss (EELS)\\
-$f(\rho')$ & -- & Probability of an electron landing on the detector at position
-$\rho'$\\
-$f(k')$ & -- & Probability of an electron landing on the detector at pixel
-$k'$\\
-$g(k)$ & -- & Gain value at each pixel\\
-$h(\rho, \rho')$ & -- & Probability of detecting an electron at position $\rho$
-if it hits position $\rho'$\\
-$h(k, k')$ & -- & Probability of detecting an electron at pixel $k$ if it hits
-pixel $k'$\\
-$i$ & -- & Index for pixel number in a spectrum\\
-$I(E)$ & counts & Intensity of a spectrum as a function of energy\\
-$I_{background}(E)$ & counts & Intensity of a background contribution to the
-spectrum (from the spectrometer), as a function of energy\\
-$I_{collected}(E)$ & counts & Intensity of a spectrum as received from the
-spectrometer, as a function of energy\\
-$I_{corrected}(E)$ & counts & Intensity of a spectrum from the sample with gain
-artifacts removed as a function of energy\\
-$I_{deconvolved}(E)$ & counts & Intensity of a deconvolved spectrum as a
-function of energy\\
-$I_{measured}(E)$ & counts & Intensity of a measured spectrum as a function of
-energy\\
-$I_{norm}(E)$ & counts & Intensity of a normalized spectrum as a function of
-energy\\
-$I_{PSF}(E)$ & counts & Intensity of a reference point spread function
-(spectrum) as a function of energy\\
-$I_{real}^0(E)$ & counts & Initial guess for a ``real'' spectrum for
-deconvolution, as a function of energy\\
-$I_{real (j)}^R(E)$ & counts & Intensity for a deconvolved spectrum after R
-deconvolution iterations\\
-$I_{sample}(E)$ & counts & Intensity of a spectrum from the sample with
-background artifacts removed as a function of energy\\
-$j$ & -- & Index for pixel number in a spectrum\\
-$k$ & -- & Pixel (index) on a spectrometer\\
-$k_1$ & -- & First pixel (index) on a spectrometer (user selected)\\
-$k_2$ & -- & Second pixel (index) on a spectrometer (user selected)\\
-$K$ & -- & Maximum pixel (index) on a spectrometer\\
-$l$ & -- & Index for pixel number in a spectrum\\
-$N(k)$ & counts & Noise signal from the detector\\
-$P(x,y)$ & \si{\nano\metre} & Position coordinates describing possible locations
-of the electron beam on the sample\\
-$R$ & -- & Integer number of deconvolution iterations the user desires the
-software to perform\\
-$S(k)$ & counts & Signal entering the detector\\
-$S'(k)$ & counts & Signal entering the detector, resulting from a beam which has
-not interacted with the sample\\
-$x$ & \si{\nano\metre} & Displacement of the beam in one spatial dimension\\
-$X$ & \si{\nano\metre} & Maximum displacement of the beam in one spatial
-dimension\\
-$y$ & \si{\nano\metre} & Displacement of the beam in one spatial dimension,
-perpendicular to $x$\\
-$Y$ & \si{\nano\metre} & Maximum displacement of the beam in one spatial
-dimension, perpendicular to $x$\\
-$\rho$ & -- & Location of detection of an electron hitting a detector\\
-$\rho'$ & -- & Location of an electron hitting a detector\\
-$\zeta(k)$ & counts & Signal at each pixel as read out by a detector\\
-\bottomrule
-\end{longtable*}
+\input{SymbolTable.tex}
 
 \subsection{Abbreviations and Acronyms}
 
-\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{l l} 
-  \toprule		
-  \textbf{symbol} & \textbf{description}\\
-  \midrule 
-  3D & Three-dimensions\\
-  A & Assumption\\
-  CCD & Charge-Coupled Device\\
-  CL & Cathodoluminescence Spectroscopy\\
-  DD & Data Definition\\
-  EELS & Electron Energy Loss Spectroscopy\\
-  GD & General Definition\\
-  GS & Goal Statement\\
-  IM & Instance Model\\
-  LC & Likely Change\\
-  PS & Physical System Description\\
-  PSF & Point Spread Function\\
-  R & Requirement\\
-  SI & Spectrum Image\\
-  SRS & Software Requirements Specification\\
-  STEM & Scanning Transmission Electron Microscope/Microscopy\\
-  SEM & Scanning Electron Microscope/Microscopy\\
-  TEM & Transmission Electron Microscope/Microscopy\\
-  T & Theoretical Model\\
-  \bottomrule
-\end{tabular}\\
+\input{Abbr_acronymsTable.tex}
 
 \newpage
 \pagenumbering{arabic}
