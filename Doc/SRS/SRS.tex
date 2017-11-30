@@ -384,22 +384,22 @@ the gain factor $g(k)$ of the pixel;
 		  Label&\bf Signal \\
 		  \hline
 		  Equation& $S(k)=\int_{pixel}d\rho \lfloor \int f(\rho') h(\rho, \rho')
-d\rho' \rfloor$ \\
-		  & $ S(k)=\sum_{k'} f(k') h(k, k')$ \wss{Maybe in brackets
+d\rho' \rfloor$ (continuous)\\
+		  & $ S(k)=\sum_{k'} f(k') h(k, k')$ (discrete)\wss{Maybe in brackets
                     after each option for $S(k)$ you should mention which
                     version it is (continuous versus discrete).  Otherwise it is
-          confusing why you define a function twice.}\\
+          confusing why you define a function twice.}\an{Ok, that makes sense.}\\
 		  \hline
-		  Description & The signal ($S(k)$) from the microscope, as read at one pixel
-on the CCD ($k$), is an integral over the area of one pixel. Inside the integral
-is the probability ($f(\rho')$) of an electron landing at position $\rho'$ on
+		  Description & The signal $S(k)$ (continuous) from the microscope, as read at one pixel
+on the CCD ($k$), is an integral over the area of one pixel, and becomes $S(k)$ (discrete). Inside the integral
+of the continuous function is the probability ($f(\rho')$) of an electron landing at position $\rho'$ on
 the detector given the interaction of the beam with the sample, multiplied by
 the probability ($h(\rho, \rho')$) of detecting an electron at location $\rho$
 if the electron arrives at position $\rho'$ on the detector. The probability
 $h(\rho, \rho')$ of detecting an electron at one location after it hits the
-detector at another location is the point spread function (PSF: \ddref{PSF}).
+detector at another location is the point spread function (PSF: \ddref{PSF}). Discretization of the Signal is done by the camera; each pixel in the camera integrates signal over its area, discretizing a continuous Signal into discrete Signal at each pixel.
                                 \wss{When do you use the continuous versus the
-                                discrete version?}\\
+                                discrete version?}\an{I have tried to clarify this in the text.}\\
 		  & The second equation is the discretized version of the first. The signal
 $S(k)$ is the sum over all pixels $k'$ of the probability ($f(k')$) of an
 electron hitting pixel $k'$ multiplied by the probability ($h(k, k')$) of
