@@ -22,12 +22,13 @@
 
 
 \hypersetup{
-bookmarks=true,     % show bookmarks bar?
-colorlinks=true,       % false: boxed links; true: colored links
-linkcolor=red,          % color of internal links (change box color with linkbordercolor)
-citecolor=blue,      % color of links to bibliography
-filecolor=magenta,  % color of file links
-urlcolor=cyan          % color of external links
+    bookmarks=true,     % show bookmarks bar?
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=red,          % color of internal links (change box color with
+    %linkbordercolor)
+    citecolor=blue,      % color of links to bibliography
+    filecolor=magenta,  % color of file links
+    urlcolor=cyan          % color of external links
 }
 \externaldocument{../../SRS/SRS}
 \usepackage{array}
@@ -62,7 +63,8 @@ urlcolor=cyan          % color of external links
 
 \section{Symbols, Abbreviations and Acronyms}
 
-See \hyperref[doc:SRS]{SRS} documentation at \url{https://github.com/icbicket/SpectrumImageAnalysisPy/blob/SpectrumImageAnalysisPy_dev/Doc/SRS/SRS.pdf}.
+See \hyperref[doc:SRS]{SRS} documentation at
+\url{https://github.com/icbicket/SpectrumImageAnalysisPy/blob/SpectrumImageAnalysisPy_dev/Doc/SRS/SRS.pdf}.
 
 \newpage
 
@@ -79,9 +81,12 @@ The following document details the Module Interface Specifications for
 
 Complementary documents include the System Requirement Specifications
 and Module Guide.  The full documentation and implementation can be
-found at \url{https://github.com/icbicket/SpectrumImageAnalysisPy/tree/SpectrumImageAnalysisPy_dev}.
+found at
+\url{https://github.com/icbicket/SpectrumImageAnalysisPy/tree/SpectrumImageAnalysisPy_dev}.
 
-All modules within \progname{} are accessible by the user from terminal commands. Some modules will interface with each other, but the workflow of \progname is driven by the user.
+All modules within \progname{} are accessible by the user from terminal
+commands. Some modules will interface with each other, but the workflow of
+\progname is driven by the user.
 
 \section{Notation}
 The structure of the MIS for modules comes from \cite{HoffmanAndStrooper1995},
@@ -94,39 +99,47 @@ multiple assignment statement and conditional rules follow the form $(c_1
 The following table summarizes the primitive data types used by \progname. 
 
 \begin{center}
-\renewcommand{\arraystretch}{1.2}
-\noindent 
-\begin{tabular}{l l p{7.5cm}} 
-\toprule 
-\textbf{Data Type} & \textbf{Notation} & \textbf{Description}\\ 
-\midrule
-character & char & a single symbol or digit\\
-string & str & a sequence of characters\\
-integer & $\mathbb{Z}$ & a number without a fractional component in (-$\infty$, $\infty$) \\
-natural number & $\mathbb{N}$ & a number without a fractional component in [1, $\infty$) \\
-real & $\mathbb{R}$ & any number in (-$\infty$, $\infty$)\\
-complex & $\mathbb{C}$ & any combination of real and imaginary numbers, in the form $a+bi$, where $a$ and $b$ are real and $i$ is the imaginary number\\
-\bottomrule
-\end{tabular} 
+    \renewcommand{\arraystretch}{1.2}
+    \noindent 
+    \begin{tabular}{l l p{7.5cm}} 
+        \toprule 
+        \textbf{Data Type} & \textbf{Notation} & \textbf{Description}\\ 
+        \midrule
+        character & char & a single symbol or digit\\
+        string & str & a sequence of characters\\
+        integer & $\mathbb{Z}$ & a number without a fractional component in (-$\infty$,
+        $\infty$) \\
+        natural number & $\mathbb{N}$ & a number without a fractional component in [1,
+        $\infty$) \\
+        real & $\mathbb{R}$ & any number in (-$\infty$, $\infty$)\\
+        complex & $\mathbb{C}$ & any combination of real and imaginary numbers, in the
+        form $a+bi$, where $a$ and $b$ are real and $i$ is the imaginary number\\
+        \bottomrule
+    \end{tabular} 
 \end{center}
 
 \noindent
-The specification of \progname \ uses some derived data types: sequences, strings, and
+The specification of \progname \ uses some derived data types: sequences,
+strings, and
 tuples. Sequences are lists filled with elements of the same data type. Strings
 are sequences of characters. Tuples contain a list of values, potentially of
 different types. In addition, \progname \ uses functions, which
 are defined by the data types of their inputs and outputs. Local functions are
-described by giving their type signature followed by their specification. It should be noted that each state variable is assumed to have a setter and getter accessible through module.variable\_name.
+described by giving their type signature followed by their specification. It
+should be noted that each state variable is assumed to have a setter and getter
+accessible through module.variable\_name.
 
 \section{Module Decomposition}
 
-The following table is taken directly from the Module Guide document for this project. The modules in this document are listed in the order in which they appear in this table.
+The following table is taken directly from the Module Guide document for this
+project. The modules in this document are listed in the order in which they
+appear in this table.
 
 \begin{table}[h!]
-\centering
-\input{../MG/ModuleHierarchyTable.tex}
-\caption{Module Hierarchy}
-\label{TblMH}
+    \centering
+    \input{../MG/ModuleHierarchyTable.tex}
+    \caption{Module Hierarchy}
+    \label{TblMH}
 \end{table}
 
 \newpage
@@ -145,18 +158,19 @@ N/A
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-InputDevices & Hardware & Read out & - \\
-OutputDevices & Hardware & Write out & - \\
-\hline
-\end{tabular}
+    \begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
+        \hline
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \hline
+        InputDevices & Hardware & Read out & - \\
+        OutputDevices & Hardware & Write out & - \\
+        \hline
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-This module handles the interface between the hardware being used and inputs to the software
+This module handles the interface between the hardware being used and inputs to
+the software
 
 \subsubsection{State Variables}
 N/A
@@ -174,17 +188,23 @@ N/A
 
 \noindent InputDevices():
 \begin{itemize}
-    \item input: Hardware allowing the user to input instructions to the computer software, \textit{e.g.} mouse, keyboard, long term or temporary memory
+    \item input: Hardware allowing the user to input instructions to the
+    computer software, \textit{e.g.} mouse, keyboard, long term or temporary memory
     \item transition: N/A
-    \item output: Software instructions corresponding to the desire of the user (\textit{e.g.} registering a mouse click, reading a variable from memory, accessing a file on the harddrive)
+    \item output: Software instructions corresponding to the desire of the user
+    (\textit{e.g.} registering a mouse click, reading a variable from memory,
+    accessing a file on the harddrive)
     \item exception: N/A
 \end{itemize}
 
 \noindent OutputDevices():
 \begin{itemize}
-    \item input: Hardware allowing the user to see output from the computer software, \textit{e.g.} screen, storage
+    \item input: Hardware allowing the user to see output from the computer
+    software, \textit{e.g.} screen, storage
     \item transition: N/A
-    \item output: Interface to allow software to communicate output to the user (\textit{e.g.}, it provides the capability for the software to output something onto the screen or write to a file on a harddrive, or write to memory)
+    \item output: Interface to allow software to communicate output to the user
+    (\textit{e.g.}, it provides the capability for the software to output something
+    onto the screen or write to a file on a harddrive, or write to memory)
     \item exception: N/A
 \end{itemize}
 
@@ -194,9 +214,9 @@ ImportCSV
 
 \subsection{Uses}
 \begin{itemize}
-\item \hyperref[Mod:Spectrum]{Data 1D Spectrum}
-\item \hyperref[Mod:Array]{Array data structure}
-\item \hyperref[Mod:HH]{Hardware-hiding}
+    \item \hyperref[Mod:Spectrum]{Data 1D Spectrum}
+    \item \hyperref[Mod:Array]{Array data structure}
+    \item \hyperref[Mod:HH]{Hardware-hiding}
 \end{itemize}
 
 \subsection{Syntax}
@@ -204,13 +224,13 @@ ImportCSV
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{5cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-ReadCSV & fname: str & Spectrum & NO FILE, NOT CSV\\
-\hline
-\end{tabular}
+    \begin{tabular}{p{2cm} p{4cm} p{4cm} p{5cm}}
+        \hline
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \hline
+        ReadCSV & fname: str & Spectrum & NO FILE, NOT CSV\\
+        \hline
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
@@ -225,25 +245,28 @@ filesystem
 \subsubsection{Access Routine Semantics}
 
 \noindent ReadCSV():\\
-ReadCSV reads a .csv file and creates a Spectrum object with the appropriate assignations to intensity and energy range.
+ReadCSV reads a .csv file and creates a Spectrum object with the appropriate
+assignations to intensity and energy range.
 \begin{itemize}
-	\item input: \textit{fname}: \textit{str}
-	\item transition: N/A 
-	\item output: \hyperref[Mod:Spectrum]{Spectrum}
-	\item exceptions:
+    \item input: \textit{fname}: \textit{str}
+    \item transition: N/A 
+    \item output: \hyperref[Mod:Spectrum]{Spectrum}
+    \item exceptions:
 \end{itemize}
 \begin{center}
-	\begin{tabular}{p{3cm} p{12cm}}
-		\toprule[0.15em]
-		\textbf{Exception} & \textbf{Condition}\\
-		\midrule[0.1em]
-		\multirow{2}{0.25\textwidth}{NO FILE} & The filename does not correspond to any file in the filesystem\\ 
-		& $fname \notin filesystem$\\ 
-		\midrule[0.05em]
-		\multirow{2}{0.25\textwidth}{NOT CSV} & The indicated file is not a *.csv format\\
-		& $fname \notin \{files|files \in .csv\}$\\ 
-		\bottomrule[0.15em]
-	\end{tabular}
+    \begin{tabular}{p{3cm} p{12cm}}
+        \toprule[0.15em]
+        \textbf{Exception} & \textbf{Condition}\\
+        \midrule[0.1em]
+        \multirow{2}{0.25\textwidth}{NO FILE} & The filename does not correspond to
+        any file in the filesystem\\ 
+        & $fname \notin filesystem$\\ 
+        \midrule[0.05em]
+        \multirow{2}{0.25\textwidth}{NOT CSV} & The indicated file is not a *.csv
+        format\\
+        & $fname \notin \{files|files \in .csv\}$\\ 
+        \bottomrule[0.15em]
+    \end{tabular}
 \end{center}
 
 
@@ -255,9 +278,9 @@ ImportDM3
 
 \subsection{Uses}
 \begin{itemize}
-	\item \hyperref[Mod:Array]{Array data structure}
-	\item \hyperref[Mod:HH]{Hardware hiding}
-	\item \hyperref[Mod:SI]{Data Spectrum Image}
+    \item \hyperref[Mod:Array]{Array data structure}
+    \item \hyperref[Mod:HH]{Hardware hiding}
+    \item \hyperref[Mod:SI]{Data Spectrum Image}
     \item \hyperref[Mod:Spectrum]{Data 1D Spectrum}
     \item \hyperref[Mod:Image]{Data 2D Image}
 \end{itemize}
@@ -267,13 +290,13 @@ ImportDM3
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{4cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-ReadDM3 & fname: string & SI $|$ Spectrum $|$ Image & NO FILE, NOT DM3 \\
-\hline
-\end{tabular}
+    \begin{tabular}{p{2cm} p{4cm} p{4cm} p{4cm}}
+        \hline
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \hline
+        ReadDM3 & fname: string & SI $|$ Spectrum $|$ Image & NO FILE, NOT DM3 \\
+        \hline
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
@@ -284,29 +307,32 @@ N/A
 
 \subsubsection{Environment Variables}
 \begin{itemize}
-\item filesystem: the filesystem of the computer on which \progname{} is being run
+    \item filesystem: the filesystem of the computer on which \progname{} is being
+    run
 \end{itemize}
 \subsubsection{Access Routine Semantics}
 
 \noindent ImportDM3():
 \begin{itemize}
-\item input: \textit{fname}: \textit{str}
-\item transition: N/A
-\item output: \hyperref[Mod:SI]{Spectrum Image} or \hyperref[Mod:Spectrum]{Spectrum} or \hyperref[Mod:Image]{Image}
-\item exception: 
-\begin{center}
-    \begin{tabular}{p{3cm} p{12cm}}
-        \toprule[0.15em]
-        \textbf{Exception} & \textbf{Condition}\\
-        \midrule[0.1em]
-        \multirow{2}{0.25\textwidth}{NO FILE} & The filename does not correspond to any file in the filesystem\\ 
-        & $fname \notin filesystem$\\ 
-        \midrule[0.05em]
-        NOT DM3 & The indicated file is not a *.dm3 format\\
-        \bottomrule[0.15em]
-    \end{tabular}
-\end{center}
-
+    \item input: \textit{fname}: \textit{str}
+    \item transition: N/A
+    \item output: \hyperref[Mod:SI]{Spectrum Image} or
+    \hyperref[Mod:Spectrum]{Spectrum} or \hyperref[Mod:Image]{Image}
+    \item exception: 
+    \begin{center}
+        \begin{tabular}{p{3cm} p{12cm}}
+            \toprule[0.15em]
+            \textbf{Exception} & \textbf{Condition}\\
+            \midrule[0.1em]
+            \multirow{2}{0.25\textwidth}{NO FILE} & The filename does not correspond
+            to any file in the filesystem\\ 
+            & $fname \notin filesystem$\\ 
+            \midrule[0.05em]
+            NOT DM3 & The indicated file is not a *.dm3 format\\
+            \bottomrule[0.15em]
+        \end{tabular}
+    \end{center}
+    
 \end{itemize}
 
 \section{MIS of Import h5 Module} \label{Mod:ImportH5} 
@@ -328,17 +354,18 @@ ImportH5
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-ReadH5 & fname: string & SI $|$ Spectrum $|$ Image & NO FILE, NOT H5 \\
-\hline
-\end{tabular}
+    \begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+        \hline
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \hline
+        ReadH5 & fname: string & SI $|$ Spectrum $|$ Image & NO FILE, NOT H5 \\
+        \hline
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-This module handles the reading of .h5 files and assignation of the data contained therein to the appropriate data type.
+This module handles the reading of .h5 files and assignation of the data
+contained therein to the appropriate data type.
 
 \subsubsection{State Variables}
 N/A
@@ -349,14 +376,16 @@ N/A
 \begin{itemize}
     \item input: \textit{fname}: \textit{str}
     \item transition: N/A
-    \item output: \hyperref[Mod:SI]{Spectrum Image} or \hyperref[Mod:Spectrum]{Spectrum} or \hyperref[Mod:Image]{Image}
+    \item output: \hyperref[Mod:SI]{Spectrum Image} or
+    \hyperref[Mod:Spectrum]{Spectrum} or \hyperref[Mod:Image]{Image}
     \item exception: 
     \begin{center}
         \begin{tabular}{p{3cm} p{12cm}}
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{NO FILE} & The filename does not correspond to any file in the filesystem\\ 
+            \multirow{2}{0.25\textwidth}{NO FILE} & The filename does not
+            correspond to any file in the filesystem\\ 
             & $fname \notin filesystem \Rightarrow$ NO\_FILE\\ 
             \midrule[0.05em]
             NOT H5 & The indicated file is not a *.h5 format\\
@@ -373,7 +402,7 @@ ImportRPL
 
 \subsection{Uses}
 \begin{itemize}
-	\item \hyperref[Mod:Array]{Array data structure}
+    \item \hyperref[Mod:Array]{Array data structure}
     \item \hyperref[Mod:HH]{Hardware hiding}
     \item \hyperref[Mod:SI]{Data Spectrum Image}
     \item \hyperref[Mod:Spectrum]{Data 1D Spectrum}
@@ -385,17 +414,18 @@ ImportRPL
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-ReadRPL & fname: string & SI $|$ Spectrum $|$ Image & NO FILE, NOT RPL \\
-\hline
-\end{tabular}
+    \begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+        \hline
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \hline
+        ReadRPL & fname: string & SI $|$ Spectrum $|$ Image & NO FILE, NOT RPL \\
+        \hline
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-This module handles the reading of .rpl files and assigns the data contained within to the appropriate data type.
+This module handles the reading of .rpl files and assigns the data contained
+within to the appropriate data type.
 
 \subsubsection{State Variables}
 N/A
@@ -406,14 +436,16 @@ N/A
 \begin{itemize}
     \item input: \textit{fname}: \textit{str}
     \item transition: N/A
-    \item output: \hyperref[Mod:SI]{Spectrum Image} or \hyperref[Mod:Spectrum]{Spectrum} or \hyperref[Mod:Image]{Image}
+    \item output: \hyperref[Mod:SI]{Spectrum Image} or
+    \hyperref[Mod:Spectrum]{Spectrum} or \hyperref[Mod:Image]{Image}
     \item exception: 
     \begin{center}
         \begin{tabular}{p{3cm} p{12cm}}
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{NO FILE} & The filename does not correspond to any file in the filesystem\\ 
+            \multirow{2}{0.25\textwidth}{NO FILE} & The filename does not
+            correspond to any file in the filesystem\\ 
             & $fname \notin filesystem \Rightarrow$ NO\_FILE\\ 
             \midrule[0.05em]
             NOT RPL & The indicated file is not a *.rpl format\\
@@ -442,13 +474,13 @@ ExportCSV
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{3cm} p{4cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-WriteCSV & Spectrum & file & FILE EXISTS \\
-\hline
-\end{tabular}
+    \begin{tabular}{p{2cm} p{4cm} p{3cm} p{4cm}}
+        \hline
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \hline
+        WriteCSV & Spectrum & file & FILE EXISTS \\
+        \hline
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
@@ -475,7 +507,8 @@ N/A
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{FILE EXISTS} & The filename already exists in the filesystem\\ 
+            \multirow{2}{0.25\textwidth}{FILE EXISTS} & The filename already
+            exists in the filesystem\\ 
             & $fname \in filesystem \Rightarrow$ FILE\_EXISTS\\ 
             \bottomrule[0.15em]
         \end{tabular}
@@ -506,17 +539,18 @@ ExportH5
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{2cm} p{4cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-WriteH5 & Spectrum $|$ Image $|$ Spectrum Image & file & FILE EXISTS \\
-\hline
-\end{tabular}
+    \begin{tabular}{p{2cm} p{4cm} p{2cm} p{4cm}}
+        \hline
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \hline
+        WriteH5 & Spectrum $|$ Image $|$ Spectrum Image & file & FILE EXISTS \\
+        \hline
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-This module writes Spectrum data, Image data, or Spectrum Image data to an h5 file.
+This module writes Spectrum data, Image data, or Spectrum Image data to an h5
+file.
 
 \subsubsection{State Variables}
 N/A
@@ -530,16 +564,19 @@ N/A
 
 \noindent WriteH5():
 \begin{itemize}
-    \item input: \hyperref[Mod:Spectrum]{Spectrum} $|$ \hyperref[Mod:Image]{Image} $|$ \hyperref[Mod:SI]{Spectrum Image}
+    \item input: \hyperref[Mod:Spectrum]{Spectrum} $|$
+    \hyperref[Mod:Image]{Image} $|$ \hyperref[Mod:SI]{Spectrum Image}
     \item transition: N/A
-    \item output: h5 file containing spectrum data, image data, or spectrum image data (including any metadata), written to filesystem
+    \item output: h5 file containing spectrum data, image data, or spectrum
+    image data (including any metadata), written to filesystem
     \item exception:
     \begin{center}
         \begin{tabular}{p{3cm} p{12cm}}
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{FILE EXISTS} & The filename already exists in the filesystem\\ 
+            \multirow{2}{0.25\textwidth}{FILE EXISTS} & The filename already
+            exists in the filesystem\\ 
             & $fname \in filesystem \Rightarrow$ FILE\_EXISTS\\ 
             \bottomrule[0.15em]
         \end{tabular}
@@ -600,7 +637,8 @@ N/A
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{FILE EXISTS} & The filename already exists in the filesystem\\ 
+            \multirow{2}{0.25\textwidth}{FILE EXISTS} & The filename already
+            exists in the filesystem\\ 
             & $fname \in filesystem \Rightarrow$ FILE\_EXISTS\\ 
             \bottomrule[0.15em]
         \end{tabular}
@@ -636,7 +674,8 @@ ExportRPL
 \end{center}
 
 \subsection{Semantics}
-This module writes Spectrum data, Image data, or Spectrum Image data to an rpl file.
+This module writes Spectrum data, Image data, or Spectrum Image data to an rpl
+file.
 
 \subsubsection{State Variables}
 N/A
@@ -650,23 +689,27 @@ N/A
 
 \noindent WriteRPL():
 \begin{itemize}
-    \item input: \hyperref[Mod:Spectrum]{Spectrum} $|$ \hyperref[Mod:Image]{Image} $|$ \hyperref[Mod:SI]{Spectrum Image}
+    \item input: \hyperref[Mod:Spectrum]{Spectrum} $|$
+    \hyperref[Mod:Image]{Image} $|$ \hyperref[Mod:SI]{Spectrum Image}
     \item transition: N/A
-    \item output: rpl file containing spectrum data, image data, or spectrum image data (including any metadata), written to filesystem
+    \item output: rpl file containing spectrum data, image data, or spectrum
+    image data (including any metadata), written to filesystem
     \item exception:
     \begin{center}
         \begin{tabular}{p{3cm} p{12cm}}
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{FILE EXISTS} & The filename already exists in the filesystem\\ 
+            \multirow{2}{0.25\textwidth}{FILE EXISTS} & The filename already
+            exists in the filesystem\\ 
             & $fname \in filesystem \Rightarrow$ FILE\_EXISTS\\ 
             \bottomrule[0.15em]
         \end{tabular}
     \end{center}
 \end{itemize}
 
-\section{MIS of Data Processing Richardson-Lucy Deconvolution Module} \label{Mod: RLDeconvolution}
+\section{MIS of Data Processing Richardson-Lucy Deconvolution Module}
+\label{Mod: RLDeconvolution}
 
 \subsection{Module}
 
@@ -685,25 +728,29 @@ RLDeconvolution
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{4cm} p{4cm} p{4cm} p{2cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-RLDeconvolution & Spectrum, PSF, iterations & deconvolved Spectrum & DIVIDE BY ZERO \\
-SIDeconvolution & Spectrum Image, PSF, iterations, threads & deconvolved Spectrum Image & - \\
-\hline
-\end{tabular}
+    \begin{tabular}{p{4cm} p{4cm} p{4cm} p{2cm}}
+        \hline
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \hline
+        RLDeconvolution & Spectrum, PSF, iterations & deconvolved Spectrum & DIVIDE BY
+        ZERO \\
+        SIDeconvolution & Spectrum Image, PSF, iterations, threads & deconvolved
+        Spectrum Image & - \\
+        \hline
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-This module performs the Richardson-Lucy deconvolution algorithm on either a Spectrum or Spectrum Image, following \hyperref[deconvolution]{IM2} in the SRS.
+This module performs the Richardson-Lucy deconvolution algorithm on either a
+Spectrum or Spectrum Image, following \hyperref[deconvolution]{IM2} in the SRS.
 
 \subsubsection{State Variables}
 N/A
 
 \subsubsection{Environment Variables}
 \begin{itemize}
-    \item threads: $\mathbb{N}$, number of processing threads to use during Spectrum Image deconvolution
+    \item threads: $\mathbb{N}$, number of processing threads to use during
+    Spectrum Image deconvolution
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
@@ -711,11 +758,14 @@ N/A
 \noindent RLDeconvolution():
 \begin{itemize}
     \item input: 
-        \begin{itemize}
-            \item \hyperref[Mod:Spectrum]{Spectrum}, the spectrum to be deconvolved
-            \item Point Spread Function: \hyperref[Mod:Spectrum]{Spectrum}, the point spread function to deconvolve from Spectrum
-            \item iterations: $\mathbb{N}$, the number of iterations of the algorithm to perform
-        \end{itemize}
+    \begin{itemize}
+        \item \hyperref[Mod:Spectrum]{Spectrum}, the spectrum to be
+        deconvolved
+        \item Point Spread Function: \hyperref[Mod:Spectrum]{Spectrum}, the
+        point spread function to deconvolve from Spectrum
+        \item iterations: $\mathbb{N}$, the number of iterations of the
+        algorithm to perform
+    \end{itemize}
     \item transition: N/A
     \item output: Deconvolved \hyperref[Mod:Spectrum]{Spectrum}
     \item exception:
@@ -724,8 +774,10 @@ N/A
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{DIVIDE BY ZERO} & The algorithm encounters a 0 in the denominator\\ 
-            & $\sum_l{I_{PSF}(E)I_{real(l)}^c(E)} = 0 \Rightarrow$ DIVIDE\_BY\_ZERO\\ 
+            \multirow{2}{0.25\textwidth}{DIVIDE BY ZERO} & The algorithm
+            encounters a 0 in the denominator\\ 
+            & $\sum_l{I_{PSF}(E)I_{real(l)}^c(E)} = 0 \Rightarrow$
+            DIVIDE\_BY\_ZERO\\ 
             \bottomrule[0.15em]
         \end{tabular}
     \end{center}
@@ -735,10 +787,14 @@ N/A
 \begin{itemize}
     \item input: 
     \begin{itemize}
-        \item \hyperref[Mod:SI]{Spectrum Image}, the spectrum image to be deconvolved
-        \item Point Spread Function: \hyperref[Mod:Spectrum]{Spectrum}, the point spread function to deconvolve from Spectrum Image
-        \item iterations: $\mathbb{N}$, the number of iterations of the algorithm to perform
-        \item threads: $\mathbb{N}$, the number of processing threads to use in deconvolving the Spectrum Image
+        \item \hyperref[Mod:SI]{Spectrum Image}, the spectrum image to be
+        deconvolved
+        \item Point Spread Function: \hyperref[Mod:Spectrum]{Spectrum}, the
+        point spread function to deconvolve from Spectrum Image
+        \item iterations: $\mathbb{N}$, the number of iterations of the
+        algorithm to perform
+        \item threads: $\mathbb{N}$, the number of processing threads to use in
+        deconvolving the Spectrum Image
     \end{itemize}
     \item transition: N/A
     \item output: Deconvolved Spectrum Image
@@ -763,17 +819,19 @@ Normalization
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-Normalization & Spectrum $|$ Spectrum Image, slice & Normalized Spectrum & DIVIDE BY ZERO \\
-\hline
-\end{tabular}
+    \begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
+        \hline
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \hline
+        Normalization & Spectrum $|$ Spectrum Image, slice & Normalized Spectrum &
+        DIVIDE BY ZERO \\
+        \hline
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-This module normalizes either a Spectrum or Spectrum Image to the sum over the range defined by the user, following \hyperref[normalization]{IM1} in the SRS.
+This module normalizes either a Spectrum or Spectrum Image to the sum over the
+range defined by the user, following \hyperref[normalization]{IM1} in the SRS.
 
 \subsubsection{State Variables}
 N/A
@@ -784,19 +842,23 @@ N/A
 \begin{itemize}
     \item input: 
     \begin{itemize}
-        \item \hyperref[Mod:Spectrum]{Spectrum}, the spectrum to be normalized, or \hyperref[Mod:SI]{Spectrum Image}, the spectrum image to be normalized
+        \item \hyperref[Mod:Spectrum]{Spectrum}, the spectrum to be normalized,
+        or \hyperref[Mod:SI]{Spectrum Image}, the spectrum image to be normalized
         \item \hyperref[Mod:Slice1D]{slice}
     \end{itemize}
     \item transition: N/A
-    \item output: Normalized \hyperref[Mod:Spectrum]{Spectrum} or \hyperref[Mod:SI]{Spectrum Image}
+    \item output: Normalized \hyperref[Mod:Spectrum]{Spectrum} or
+    \hyperref[Mod:SI]{Spectrum Image}
     \item exception:
     \begin{center}
         \begin{tabular}{p{3.5cm} p{12cm}}
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{DIVIDE BY ZERO} & The algorithm encounters a 0 in the denominator\\ 
-            & $\sum_{E(k=k_1)}^{E(k=k_2)}{I(E(k))} = 0 \Rightarrow$ DIVIDE\_BY\_ZERO\\ 
+            \multirow{2}{0.25\textwidth}{DIVIDE BY ZERO} & The algorithm
+            encounters a 0 in the denominator\\ 
+            & $\sum_{E(k=k_1)}^{E(k=k_2)}{I(E(k))} = 0 \Rightarrow$
+            DIVIDE\_BY\_ZERO\\ 
             \bottomrule[0.15em]
         \end{tabular}
     \end{center}
@@ -819,17 +881,20 @@ GainCorr
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{3cm} p{4cm} p{4cm} p{4cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-GainCorrection & data, Gain Reference & Gain Corrected Spectrum & DIVIDE BY ZERO, SIZE MISMATCH \\
-\hline
-\end{tabular}
+    \begin{tabular}{p{3cm} p{4cm} p{4cm} p{4cm}}
+        \hline
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \hline
+        GainCorrection & data, Gain Reference & Gain Corrected Spectrum & DIVIDE BY
+        ZERO, SIZE MISMATCH \\
+        \hline
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-This module corrects either a Spectrum or Spectrum Image using a gain reference (obtained from the acquisition camera hardware), following \hyperref[gain]{IM4} in the SRS.
+This module corrects either a Spectrum or Spectrum Image using a gain reference
+(obtained from the acquisition camera hardware), following \hyperref[gain]{IM4}
+in the SRS.
 
 \subsubsection{State Variables}
 N/A
@@ -839,29 +904,37 @@ N/A
 \begin{itemize}
     \item input: 
     \begin{itemize}
-        \item data: \hyperref[Mod:Spectrum]{Spectrum}, the spectrum to be corrected, or \hyperref[Mod:SI]{Spectrum Image}, the spectrum image to be corrected
-        \item Gain Reference: \hyperref[Mod:Spectrum]{Spectrum}, a reference Spectrum obtained from the hardware
+        \item data: \hyperref[Mod:Spectrum]{Spectrum}, the spectrum to be
+        corrected, or \hyperref[Mod:SI]{Spectrum Image}, the spectrum image to be
+        corrected
+        \item Gain Reference: \hyperref[Mod:Spectrum]{Spectrum}, a reference
+        Spectrum obtained from the hardware
     \end{itemize}
     \item transition: N/A
-    \item output: Gain-corrected \hyperref[Mod:Spectrum]{Spectrum} or \hyperref[Mod:SI]{Spectrum Image}
+    \item output: Gain-corrected \hyperref[Mod:Spectrum]{Spectrum} or
+    \hyperref[Mod:SI]{Spectrum Image}
     \item exception:
     \begin{center}
         \begin{tabular}{p{3.5cm} p{12cm}}
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{DIVIDE BY ZERO} & The algorithm encounters a 0 in the denominator\\ 
+            \multirow{2}{0.25\textwidth}{DIVIDE BY ZERO} & The algorithm
+            encounters a 0 in the denominator\\ 
             & $g(E) = 0 \Rightarrow$ DIVIDE\_BY\_ZERO\\ 
             \midrule[0.05em]
-            \multirow{2}{0.25\textwidth}{SIZE MISMATCH} & The size of the gain correction is different from the size of the input data spectral range\\ 
-            & $len(g(E)) \neq len(data.Srange) = 0 \Rightarrow$ SIZE\_MISMATCH\\ 
+            \multirow{2}{0.25\textwidth}{SIZE MISMATCH} & The size of the gain
+            correction is different from the size of the input data spectral range\\ 
+            & $len(g(E)) \neq len(data.Srange) = 0 \Rightarrow$ SIZE\_MISMATCH\\
+            
             \bottomrule[0.15em]
         \end{tabular}
     \end{center}
 \end{itemize}
 
 
-\section{MIS of Data Processing Background Correction Module} \label{Mod:BackgroundCorr}
+\section{MIS of Data Processing Background Correction Module}
+\label{Mod:BackgroundCorr}
 
 \subsection{Module}
 BkgndCorr
@@ -881,13 +954,15 @@ BkgndCorr
         \hline
         \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
         \hline
-        BackgroundCorrection & data, Background Reference & Background Corrected Spectrum & SIZE MISMATCH \\
+        BackgroundCorrection & data, Background Reference & Background Corrected
+        Spectrum & SIZE MISMATCH \\
         \hline
     \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-This module corrects the background noise for either a Spectrum or Spectrum Image, following \hyperref[background]{IM3} in the SRS.
+This module corrects the background noise for either a Spectrum or Spectrum
+Image, following \hyperref[background]{IM3} in the SRS.
 
 \subsubsection{State Variables}
 N/A
@@ -897,19 +972,26 @@ N/A
 \begin{itemize}
     \item input: 
     \begin{itemize}
-        \item data: \hyperref[Mod:Spectrum]{Spectrum}, the spectrum to be corrected, or \hyperref[Mod:SI]{Spectrum Image}, the spectrum image to be corrected
-        \item Background Reference: \hyperref[Mod:Spectrum]{Spectrum}, a reference Spectrum representing the background noise in the camera
+        \item data: \hyperref[Mod:Spectrum]{Spectrum}, the spectrum to be
+        corrected, or \hyperref[Mod:SI]{Spectrum Image}, the spectrum image to be
+        corrected
+        \item Background Reference: \hyperref[Mod:Spectrum]{Spectrum}, a
+        reference Spectrum representing the background noise in the camera
     \end{itemize}
     \item transition: N/A
-    \item output: Background-corrected \hyperref[Mod:Spectrum]{Spectrum} or \hyperref[Mod:SI]{Spectrum Image}
+    \item output: Background-corrected \hyperref[Mod:Spectrum]{Spectrum} or
+    \hyperref[Mod:SI]{Spectrum Image}
     \item exception:
     \begin{center}
         \begin{tabular}{p{3.5cm} p{12cm}}
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{SIZE MISMATCH} & The size of the background correction is different from the size of the input data spectral range\\ 
-            & $len(b(E)) \neq len(data.Srange) = 0 \Rightarrow$ SIZE\_MISMATCH\\ 
+            \multirow{2}{0.25\textwidth}{SIZE MISMATCH} & The size of the
+            background correction is different from the size of the input data spectral
+            range\\ 
+            & $len(b(E)) \neq len(data.Srange) = 0 \Rightarrow$ SIZE\_MISMATCH\\
+            
             \bottomrule[0.15em]
         \end{tabular}
     \end{center}
@@ -932,22 +1014,24 @@ Slice1D
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-CreateSlice & data, $[k_1, k_2]$ & slice & RANGE OUTSIDE BOUNDS \\
-IntegrateSlice & slice & integral & - \\
-\hline
-\end{tabular}
+    \begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
+        \hline
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \hline
+        CreateSlice & data, $[k_1, k_2]$ & slice & RANGE OUTSIDE BOUNDS \\
+        IntegrateSlice & slice & integral & - \\
+        \hline
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-This module allows the user to extract slices from a 1D dataset for further analysis with other modules.
+This module allows the user to extract slices from a 1D dataset for further
+analysis with other modules.
 
 \subsubsection{State Variables}
 \begin{itemize}
-    \item slice: interval of \hyperref[Mod:Spectrum]{Spectrum} between $[k_1, k_2]$
+    \item slice: interval of \hyperref[Mod:Spectrum]{Spectrum} between $[k_1,
+    k_2]$
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
@@ -956,7 +1040,8 @@ This module allows the user to extract slices from a 1D dataset for further anal
 \begin{itemize}
     \item input:
     \begin{itemize}
-        \item $[k_1, k_2] \in \mathbb{R}^2 | [max(min(k_1, k_2), min(data.Srange)..min(max(k_1, k_2), max(data.Srange)))] \in data.Srange$
+        \item $[k_1, k_2] \in \mathbb{R}^2 | [max(min(k_1, k_2),
+        min(data.Srange)..min(max(k_1, k_2), max(data.Srange)))] \in data.Srange$
         \item data: \hyperref[Mod:Spectrum]{Spectrum}
     \end{itemize}
     \item transition: Creation of slice
@@ -967,8 +1052,11 @@ This module allows the user to extract slices from a 1D dataset for further anal
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{RANGE OUTSIDE BOUNDS} & The user tried to select a range of values which was wholly outside the data's spectral range\\ 
-            & $[max(min(k_1, k_2), min(data.Srange)..min(max(k_1, k_2), max(data.Srange)))] \notin data.Srange \Rightarrow$ RANGE\_OUTSIDE\_BOUNDS\\ 
+            \multirow{2}{0.25\textwidth}{RANGE OUTSIDE BOUNDS} & The user tried
+            to select a range of values which was wholly outside the data's spectral range\\
+            
+            & $[max(min(k_1, k_2), min(data.Srange)..min(max(k_1, k_2),
+            max(data.Srange)))] \notin data.Srange \Rightarrow$ RANGE\_OUTSIDE\_BOUNDS\\ 
             \bottomrule[0.15em]
         \end{tabular}
     \end{center}
@@ -1002,23 +1090,25 @@ Mask2D
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{3cm} p{4cm} p{4cm} p{3cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-CreateMask & vertex list, size(data) & mask2D & RANGE OUTSIDE BOUNDS \\
-ApplyMask & data & masked data & SIZE MISMATCH\\
-ModifyMask & vertex list & mask2D & RANGE OUTSIDE BOUNDS \\
-\hline
-\end{tabular}
+    \begin{tabular}{p{3cm} p{4cm} p{4cm} p{3cm}}
+        \hline
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \hline
+        CreateMask & vertex list, size(data) & mask2D & RANGE OUTSIDE BOUNDS \\
+        ApplyMask & data & masked data & SIZE MISMATCH\\
+        ModifyMask & vertex list & mask2D & RANGE OUTSIDE BOUNDS \\
+        \hline
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-This module allows the user to extract portions of a 2D dataset for further analysis with other modules.
+This module allows the user to extract portions of a 2D dataset for further
+analysis with other modules.
 
 \subsubsection{State Variables}
 \begin{itemize}
-    \item mask2D, $\forall\ value \in mask, value \in \{True,False\}$, mask of boolean values representing the desired mask from the user
+    \item mask2D, $\forall\ value \in mask, value \in \{True,False\}$, mask of
+    boolean values representing the desired mask from the user
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
@@ -1027,8 +1117,10 @@ This module allows the user to extract portions of a 2D dataset for further anal
 \begin{itemize}
     \item input
     \begin{itemize}
-        \item vertex list: $[x_i, y_i], x_i, y_i \in \mathbb{N}$, a list of $(x,y)$ ordered pairs of indices to access an array of size(data)
-        \item size(data): $\mathbb{N}^2$, the size of the data to which the mask and vertex list refers
+        \item vertex list: $[x_i, y_i], x_i, y_i \in \mathbb{N}$, a list of
+        $(x,y)$ ordered pairs of indices to access an array of size(data)
+        \item size(data): $\mathbb{N}^2$, the size of the data to which the mask
+        and vertex list refers
     \end{itemize}
     \item transition: Creates mask
     \item output: mask2D
@@ -1038,8 +1130,10 @@ This module allows the user to extract portions of a 2D dataset for further anal
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{RANGE OUTSIDE BOUNDS} & The user tried to select a mask with a vertex outside the data boundaries\\ 
-            & $[x_i, y_i] \notin [0..size(data_x), 0..size(data_y)] \Rightarrow$ RANGE\_OUTSIDE\_BOUNDS\\ 
+            \multirow{2}{0.25\textwidth}{RANGE OUTSIDE BOUNDS} & The user tried
+            to select a mask with a vertex outside the data boundaries\\ 
+            & $[x_i, y_i] \notin [0..size(data_x), 0..size(data_y)] \Rightarrow$
+            RANGE\_OUTSIDE\_BOUNDS\\ 
             \bottomrule[0.15em]
         \end{tabular}
     \end{center}
@@ -1059,7 +1153,8 @@ This module allows the user to extract portions of a 2D dataset for further anal
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{SIZE MISMATCH} & The size of the data is not the same as the size of the mask\\ 
+            \multirow{2}{0.25\textwidth}{SIZE MISMATCH} & The size of the data
+            is not the same as the size of the mask\\ 
             & $size(mask) \neq size(data) \Rightarrow$ SIZE\_MISMATCH\\ 
             \bottomrule[0.15em]
         \end{tabular}
@@ -1070,7 +1165,8 @@ This module allows the user to extract portions of a 2D dataset for further anal
 \begin{itemize}
     \item input
     \begin{itemize}
-        \item vertex list: $[x_i, y_i], x_i, y_i \in \mathbb{N}$, a list of $(x,y)$ ordered pairs of indices to access an array of size(data)
+        \item vertex list: $[x_i, y_i], x_i, y_i \in \mathbb{N}$, a list of
+        $(x,y)$ ordered pairs of indices to access an array of size(data)
     \end{itemize}
     \item transition: Update mask to the new set of input vertices
     \item output: mask2D
@@ -1080,8 +1176,10 @@ This module allows the user to extract portions of a 2D dataset for further anal
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{RANGE OUTSIDE BOUNDS} & The user tried to select a mask with a vertex outside the data boundaries\\ 
-            & $[x_i, y_i] \notin [0..size(data_x), 0..size(data_y)] \Rightarrow$ RANGE\_OUTSIDE\_BOUNDS\\ 
+            \multirow{2}{0.25\textwidth}{RANGE OUTSIDE BOUNDS} & The user tried
+            to select a mask with a vertex outside the data boundaries\\ 
+            & $[x_i, y_i] \notin [0..size(data_x), 0..size(data_y)] \Rightarrow$
+            RANGE\_OUTSIDE\_BOUNDS\\ 
             \bottomrule[0.15em]
         \end{tabular}
     \end{center}
@@ -1104,25 +1202,28 @@ Mask3D
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{3cm} p{4cm} p{4cm} p{4cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-CreateMask3D & vertex list, size(data) & mask3d & RANGE OUTSIDE BOUNDS \\
-ExtrudeMask2D & mask2D, size(data) & mask3d & SIZE MISMATCH \\
-ExtrudeMask1D & slice, size(data) & mask3d & SIZE MISMATCH \\
-ApplyMask3D & data & masked data & SIZE MISMATCH \\
-ModifyMask3D & vertex list & mask3d & RANGE OUTSIDE BOUNDS \\
-\hline
-\end{tabular}
+    \begin{tabular}{p{3cm} p{4cm} p{4cm} p{4cm}}
+        \hline
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \hline
+        CreateMask3D & vertex list, size(data) & mask3d & RANGE OUTSIDE BOUNDS \\
+        ExtrudeMask2D & mask2D, size(data) & mask3d & SIZE MISMATCH \\
+        ExtrudeMask1D & slice, size(data) & mask3d & SIZE MISMATCH \\
+        ApplyMask3D & data & masked data & SIZE MISMATCH \\
+        ModifyMask3D & vertex list & mask3d & RANGE OUTSIDE BOUNDS \\
+        \hline
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-This module allows the user to extract portions of a 3D dataset for further analysis with other modules.
+This module allows the user to extract portions of a 3D dataset for further
+analysis with other modules.
 
 \subsubsection{State Variables}
 \begin{itemize}
-    \item mask3D, $\forall\ value \in mask, value \in \{True,False\}, size(mask3D) = size(data)$, mask of boolean values representing the desired mask from the user
+    \item mask3D, $\forall\ value \in mask, value \in \{True,False\},
+    size(mask3D) = size(data)$, mask of boolean values representing the desired mask
+    from the user
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
@@ -1131,8 +1232,10 @@ This module allows the user to extract portions of a 3D dataset for further anal
 \begin{itemize}
     \item input
     \begin{itemize}
-        \item vertex list: $[x_i, y_i, k_i], x_i, y_i, k_i \in \mathbb{N}$, a list of $(x,y,k)$ ordered pairs of indices to access an array of size(data)
-        \item size(data): $\mathbb{N}^3$, the size of the data to which the mask and vertex list refers
+        \item vertex list: $[x_i, y_i, k_i], x_i, y_i, k_i \in \mathbb{N}$, a
+        list of $(x,y,k)$ ordered pairs of indices to access an array of size(data)
+        \item size(data): $\mathbb{N}^3$, the size of the data to which the mask
+        and vertex list refers
     \end{itemize}
     \item transition: Creates mask
     \item output: mask2D
@@ -1142,8 +1245,10 @@ This module allows the user to extract portions of a 3D dataset for further anal
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{RANGE OUTSIDE BOUNDS} & The user tried to select a mask with a vertex outside the data boundaries\\ 
-            & $[x_i, y_i, k_i] \notin [0..size(data_x), 0..size(data_y), 0..size(data_k)] \Rightarrow$ RANGE\_OUTSIDE\_BOUNDS\\ 
+            \multirow{2}{0.25\textwidth}{RANGE OUTSIDE BOUNDS} & The user tried
+            to select a mask with a vertex outside the data boundaries\\ 
+            & $[x_i, y_i, k_i] \notin [0..size(data_x), 0..size(data_y),
+            0..size(data_k)] \Rightarrow$ RANGE\_OUTSIDE\_BOUNDS\\ 
             \bottomrule[0.15em]
         \end{tabular}
     \end{center}
@@ -1154,9 +1259,11 @@ This module allows the user to extract portions of a 3D dataset for further anal
     \item input
     \begin{itemize}
         \item mask2D: \hyperref[Mod:Mask2D]{mask2D}
-        \item size(data): $\mathbb{N}^3$, the size of the data to which the mask and vertex list refers
+        \item size(data): $\mathbb{N}^3$, the size of the data to which the mask
+        and vertex list refers
     \end{itemize}
-    \item transition: Creates mask3D from mask2D by extruding it along the third dimension
+    \item transition: Creates mask3D from mask2D by extruding it along the third
+    dimension
     \item output: mask3D
     \item exception:
     \begin{center}
@@ -1164,7 +1271,8 @@ This module allows the user to extract portions of a 3D dataset for further anal
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{SIZE MISMATCH} & The size of the data is not the same as the size of the mask\\ 
+            \multirow{2}{0.25\textwidth}{SIZE MISMATCH} & The size of the data
+            is not the same as the size of the mask\\ 
             & $size(mask) \neq size(data) \Rightarrow$ SIZE\_MISMATCH\\ 
             \bottomrule[0.15em]
         \end{tabular}
@@ -1176,9 +1284,11 @@ This module allows the user to extract portions of a 3D dataset for further anal
     \item input
     \begin{itemize}
         \item slice: \hyperref[Mod:Slice1D]{slice}
-        \item size(data): $\mathbb{N}^3$, the size of the data to which the mask and vertex list refers
+        \item size(data): $\mathbb{N}^3$, the size of the data to which the mask
+        and vertex list refers
     \end{itemize}
-    \item transition: Creates mask3D from slice by extruding it along the two extra dimensions
+    \item transition: Creates mask3D from slice by extruding it along the two
+    extra dimensions
     \item output: mask3D
     \item exception:
     \begin{center}
@@ -1186,7 +1296,8 @@ This module allows the user to extract portions of a 3D dataset for further anal
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{SIZE MISMATCH} & The size of the data is not the same as the size of the mask\\ 
+            \multirow{2}{0.25\textwidth}{SIZE MISMATCH} & The size of the data
+            is not the same as the size of the mask\\ 
             & $size(mask) \neq size(data) \Rightarrow$ SIZE\_MISMATCH\\ 
             \bottomrule[0.15em]
         \end{tabular}
@@ -1207,7 +1318,8 @@ This module allows the user to extract portions of a 3D dataset for further anal
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{SIZE MISMATCH} & The size of the data is not the same as the size of the mask\\ 
+            \multirow{2}{0.25\textwidth}{SIZE MISMATCH} & The size of the data
+            is not the same as the size of the mask\\ 
             & $size(mask) \neq size(data) \Rightarrow$ SIZE\_MISMATCH\\ 
             \bottomrule[0.15em]
         \end{tabular}
@@ -1218,8 +1330,10 @@ This module allows the user to extract portions of a 3D dataset for further anal
 \begin{itemize}
     \item input
     \begin{itemize}
-        \item vertex list: $[x_i, y_i, k_i], x_i, y_i, k_i \in \mathbb{N}$, a list of $(x,y,k)$ ordered pairs of indices to access an array of size(data)
-        \item size(data): $\mathbb{N}^3$, the size of the data to which the mask and vertex list refers
+        \item vertex list: $[x_i, y_i, k_i], x_i, y_i, k_i \in \mathbb{N}$, a
+        list of $(x,y,k)$ ordered pairs of indices to access an array of size(data)
+        \item size(data): $\mathbb{N}^3$, the size of the data to which the mask
+        and vertex list refers
     \end{itemize}
     \item transition: Creates mask
     \item output: mask3D
@@ -1229,8 +1343,10 @@ This module allows the user to extract portions of a 3D dataset for further anal
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{RANGE OUTSIDE BOUNDS} & The user tried to select a mask with a vertex outside the data boundaries\\ 
-            & $[x_i, y_i, k_i] \notin [0..size(data_x), 0..size(data_y), 0..size(data_k)] \Rightarrow$ RANGE\_OUTSIDE\_BOUNDS\\ 
+            \multirow{2}{0.25\textwidth}{RANGE OUTSIDE BOUNDS} & The user tried
+            to select a mask with a vertex outside the data boundaries\\ 
+            & $[x_i, y_i, k_i] \notin [0..size(data_x), 0..size(data_y),
+            0..size(data_k)] \Rightarrow$ RANGE\_OUTSIDE\_BOUNDS\\ 
             \bottomrule[0.15em]
         \end{tabular}
     \end{center}
@@ -1253,21 +1369,23 @@ Disp1D
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-plot & data & axis1D, event handler & - \\
-\hline
-\end{tabular}
+    \begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+        \hline
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \hline
+        plot & data & axis1D, event handler & - \\
+        \hline
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-This module plots 1D spectrum data and allows event handling (\textit{eg}, to slice the spectrum).
+This module plots 1D spectrum data and allows event handling (\textit{eg}, to
+slice the spectrum).
 
 \subsubsection{State Variables}
 \begin{itemize}
-    \item Spectrum axis: \hyperref[Mod:Plotting]{axis1D} containing the plotted data and \hyperref[Mod:Plotting]{event handler}
+    \item Spectrum axis: \hyperref[Mod:Plotting]{axis1D} containing the plotted
+    data and \hyperref[Mod:Plotting]{event handler}
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
@@ -1278,7 +1396,8 @@ This module plots 1D spectrum data and allows event handling (\textit{eg}, to sl
     \begin{itemize}
         \item data: \hyperref[Mod:Spectrum]{Spectrum}
     \end{itemize}
-    \item transition: create axis and plot data on axis, initialize event handler for axis
+    \item transition: create axis and plot data on axis, initialize event
+    handler for axis
     \item output:
     \begin{itemize}
         \item axis1D: \hyperref[Mod:Plotting]{axis1D}
@@ -1316,11 +1435,13 @@ Disp2D
 \end{center}
 
 \subsection{Semantics}
-This module plots 2D image data and allows event handling (\textit{eg}, to create masks on the image).
+This module plots 2D image data and allows event handling (\textit{eg}, to
+create masks on the image).
 
 \subsubsection{State Variables}
 \begin{itemize}
-    \item Image axis: \hyperref[Mod:Plotting]{axis2D} containing the plotted data and \hyperref[Mod:Plotting]{event handler}
+    \item Image axis: \hyperref[Mod:Plotting]{axis2D} containing the plotted
+    data and \hyperref[Mod:Plotting]{event handler}
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
@@ -1331,7 +1452,8 @@ This module plots 2D image data and allows event handling (\textit{eg}, to creat
     \begin{itemize}
         \item data: \hyperref[Mod:Image]{Image}
     \end{itemize}
-    \item transition: create axis and plot data on axis, initialize event handler for axis
+    \item transition: create axis and plot data on axis, initialize event
+    handler for axis
     \item output:
     \begin{itemize}
         \item axis2D: \hyperref[Mod:Plotting]{axis2D}
@@ -1351,7 +1473,8 @@ This module plots 2D image data and allows event handling (\textit{eg}, to creat
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{NO CALIBRATION} & No calibration exists in the image, so a scalebar cannot be added\\ 
+            \multirow{2}{0.25\textwidth}{NO CALIBRATION} & No calibration exists
+            in the image, so a scalebar cannot be added\\ 
             & $\nexists\ data.Imcal \Rightarrow$ NO\_CALIBRATION\\ 
             \bottomrule[0.15em]
         \end{tabular}
@@ -1362,7 +1485,8 @@ This module plots 2D image data and allows event handling (\textit{eg}, to creat
 \begin{itemize}
     \item input: 
     \begin{itemize}
-        \item $[minC, maxC]$, $\in \mathbb{R}^2$, the minimum and maximum contrast to stretch the colourscale to 
+        \item $[minC, maxC]$, $\in \mathbb{R}^2$, the minimum and maximum
+        contrast to stretch the colourscale to 
         \item data: \hyperref[Mod:Image]{Image}
     \end{itemize}
     \item transition: Change the contrast of the displayed image
@@ -1373,8 +1497,11 @@ This module plots 2D image data and allows event handling (\textit{eg}, to creat
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            \multirow{2}{0.25\textwidth}{OUT OF RANGE} & The user tried to select a contrast range of values which was wholly outside the data's intensity limits\\ 
-            & $[max(minC, min(data.data)..maxC, max(data.data)))] \notin data.Srange \Rightarrow$ OUT\_OF\_RANGE\\ 
+            \multirow{2}{0.25\textwidth}{OUT OF RANGE} & The user tried to
+            select a contrast range of values which was wholly outside the data's intensity
+            limits\\ 
+            & $[max(minC, min(data.data)..maxC, max(data.data)))] \notin
+            data.Srange \Rightarrow$ OUT\_OF\_RANGE\\ 
             \bottomrule[0.15em]
         \end{tabular}
     \end{center}
@@ -1388,10 +1515,10 @@ Disp3D
 
 \subsection{Uses}
 \begin{itemize}
-	\item Data
-	\item Plotting library
-	\item 2D image plot
-	\item 1D spectrum plot
+    \item Data
+    \item Plotting library
+    \item 2D image plot
+    \item 1D spectrum plot
 \end{itemize}
 
 \subsection{Syntax}
@@ -1409,16 +1536,22 @@ Disp3D
 \end{center}
 
 \subsection{Semantics}
-This module arranges the elements of the 1D and 2D display modules to suit a 3D dataset, and allows connection of the different axes (through event handling) such that within one figure, all axes refer to the same dataset.
+This module arranges the elements of the 1D and 2D display modules to suit a 3D
+dataset, and allows connection of the different axes (through event handling)
+such that within one figure, all axes refer to the same dataset.
 
 \subsubsection{State Variables}
 \begin{itemize}
-    \item figure3d: \hyperref[Mod:Plotting]{figure} containing image plot, spectrum plot, mask plot, colourbar, and image contrast histogram
-	\item image plot: \hyperref[Mod:Plotting]{axis2D} for plotting images extracted from \hyperref[Mod:Slice1D]{slicing} the spectrum axis
-	\item spectrum plot: \hyperref[Mod:Plotting]{axis1D} for plotting spectra extracted from \hyperref[Mod:Mask2D]{masks} on the image axis
-	\item mask plot: \hyperref[Mod:Plotting]{axis2D}
-	\item colourbar axis: colourbar \hyperref[Mod:Plotting]{axis} for image plot
-    \item image contrast axis: histogram \hyperref[Mod:Plotting]{axis} for image plot
+    \item figure3d: \hyperref[Mod:Plotting]{figure} containing image plot,
+    spectrum plot, mask plot, colourbar, and image contrast histogram
+    \item image plot: \hyperref[Mod:Plotting]{axis2D} for plotting images extracted
+    from \hyperref[Mod:Slice1D]{slicing} the spectrum axis
+    \item spectrum plot: \hyperref[Mod:Plotting]{axis1D} for plotting spectra
+    extracted from \hyperref[Mod:Mask2D]{masks} on the image axis
+    \item mask plot: \hyperref[Mod:Plotting]{axis2D}
+    \item colourbar axis: colourbar \hyperref[Mod:Plotting]{axis} for image plot
+    \item image contrast axis: histogram \hyperref[Mod:Plotting]{axis} for image
+    plot
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
@@ -1429,10 +1562,12 @@ This module arranges the elements of the 1D and 2D display modules to suit a 3D 
     \begin{itemize}
         \item data: \hyperref[Mod:Image]{Image}
     \end{itemize}
-    \item transition: create axis and plot data on axis, initialize event handler for axis
+    \item transition: create axis and plot data on axis, initialize event
+    handler for axis
     \item output:
     \begin{itemize}
-        \item figure3D: contains \hyperref[Mod:Plotting]{axis1D}, \hyperref[Mod:Plotting]{axis2D}
+        \item figure3D: contains \hyperref[Mod:Plotting]{axis1D},
+        \hyperref[Mod:Plotting]{axis2D}
         \item event handler for \hyperref[Mod:Plotting]{axis1D}
         \item event handler for \hyperref[Mod:Plotting]{axis2D}
     \end{itemize}
@@ -1445,7 +1580,7 @@ Spectrum
 
 \subsection{Uses}
 \begin{itemize}
-\item \hyperref[Mod:Array]{Array data structure}
+    \item \hyperref[Mod:Array]{Array data structure}
 \end{itemize}
 
 \subsection{Syntax}
@@ -1456,27 +1591,29 @@ Spectrum
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{1.5cm} p{4cm} p{4cm} p{4cm}}
-\toprule
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\midrule
-init & data, (Srange $|$ (dispersion $\&$ [index, value])), Slabel, Sunit & - & WRONG DATA TYPE, LENGTH MISMATCH \\
-\bottomrule
-\end{tabular}
+    \begin{tabular}{p{1.5cm} p{4cm} p{4cm} p{4cm}}
+        \toprule
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \midrule
+        init & data, (Srange $|$ (dispersion $\&$ [index, value])), Slabel, Sunit & - &
+        WRONG DATA TYPE, LENGTH MISMATCH \\
+        \bottomrule
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-This module contains the abstract data type Spectrum, including the following state variables.
+This module contains the abstract data type Spectrum, including the following
+state variables.
 \subsubsection{State Variables}
 \begin{itemize}
-\item \textit{SRange}: $\mathbb{R}^K$
-\item \textit{data}: $\mathbb{R}^K$
-\item \textit{index}: $\mathbb{Z}$
-\item \textit{value}: $\mathbb{R}$
-\item \textit{dispersion}: $\mathbb{R}$
-\item \textit{Slabel}: \textit{str}
-\item \textit{Sunit}: \textit{str}
-\item \textit{metadata}: \textit{dict}
+    \item \textit{SRange}: $\mathbb{R}^K$
+    \item \textit{data}: $\mathbb{R}^K$
+    \item \textit{index}: $\mathbb{Z}$
+    \item \textit{value}: $\mathbb{R}$
+    \item \textit{dispersion}: $\mathbb{R}$
+    \item \textit{Slabel}: \textit{str}
+    \item \textit{Sunit}: \textit{str}
+    \item \textit{metadata}: \textit{dict}
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
@@ -1488,27 +1625,33 @@ init initializes a Spectrum object.
     \begin{itemize}
         \item \textit{data}: intensity values, $\in \mathbb{R}^K$
         \item \textit{Srange}: spectral axis values, $\in \mathbb{R}^K$
-        \item \textit{dispersion}: difference  between neighbouring channels along the spectral axis,  $\mathbb{R}$
-        \item \textit{index}: location on the spectral axis at which \textit{value} is, $\mathbb{Z}$
-        \item \textit{value}: value of the spectral axis (in spectral axis units) at the location given by \textit{index}, $\mathbb{R}$
-        \item \textit{Slabel}: spectrum label, the name for the spectral axis (\textit{e.g.} Energy, Wavelength), \textit{str}
-        \item \textit{Sunit}: spectrum units, the units which the spectral axis uses (\textit{e.g.} \si{\electronvolt}, \si{\nano\metre}), \textit{str}
+        \item \textit{dispersion}: difference  between neighbouring channels
+        along the spectral axis,  $\mathbb{R}$
+        \item \textit{index}: location on the spectral axis at which
+        \textit{value} is, $\mathbb{Z}$
+        \item \textit{value}: value of the spectral axis (in spectral axis
+        units) at the location given by \textit{index}, $\mathbb{R}$
+        \item \textit{Slabel}: spectrum label, the name for the spectral axis
+        (\textit{e.g.} Energy, Wavelength), \textit{str}
+        \item \textit{Sunit}: spectrum units, the units which the spectral axis
+        uses (\textit{e.g.} \si{\electronvolt}, \si{\nano\metre}), \textit{str}
     \end{itemize}
     \item transition: Creates all state variables
     \item output: N/A
     \item exception:
-\begin{center}
-    \begin{tabular}{p{3cm} p{12cm}}
-        \toprule[0.15em]
-        \textbf{Exception} & \textbf{Condition}\\
-        \midrule[0.1em]
-        WRONG DATA TYPE & Any of the input data are the wrong type\\ 
-        \midrule[0.05em]
-        LENGTH MISMATCH & The length of Srange is not the same as the length of data\\
-        & $len(Srange) \neq len(data)$\\
-        \bottomrule[0.15em]
-    \end{tabular}
-\end{center}
+    \begin{center}
+        \begin{tabular}{p{3cm} p{12cm}}
+            \toprule[0.15em]
+            \textbf{Exception} & \textbf{Condition}\\
+            \midrule[0.1em]
+            WRONG DATA TYPE & Any of the input data are the wrong type\\ 
+            \midrule[0.05em]
+            LENGTH MISMATCH & The length of Srange is not the same as the length of
+            data\\
+            & $len(Srange) \neq len(data)$\\
+            \bottomrule[0.15em]
+        \end{tabular}
+    \end{center}
 \end{itemize}
 
 \section{MIS of Data 2D Image Module} \label{Mod:Image}
@@ -1538,7 +1681,8 @@ Image
 \end{center}
 
 \subsection{Semantics}
-This module contains the abstract data type Spectrum, including the following state variables.
+This module contains the abstract data type Spectrum, including the following
+state variables.
 \subsubsection{State Variables}
 \begin{itemize}
     \item data: $\mathbb{R}^{X \times Y}$
@@ -1554,8 +1698,10 @@ init initializes an Image object.
     \item input:
     \begin{itemize}
         \item \textit{data}: intensity values, $\in \mathbb{R}^{X \times Y}$
-        \item \textit{Imcal}: image calibration values (\textit{e.g.} number of \si{\nano\metre} per pixel), $\in \mathbb{R}$
-        \item \textit{metadata}: dictionary containing extra information about the source of the image (\textit{e.g.} experimental parameters)
+        \item \textit{Imcal}: image calibration values (\textit{e.g.} number of
+        \si{\nano\metre} per pixel), $\in \mathbb{R}$
+        \item \textit{metadata}: dictionary containing extra information about
+        the source of the image (\textit{e.g.} experimental parameters)
     \end{itemize}
     \item transition: Creates all state variables
     \item output: N/A
@@ -1565,8 +1711,10 @@ init initializes an Image object.
             \toprule[0.15em]
             \textbf{Exception} & \textbf{Condition}\\
             \midrule[0.1em]
-            WRONG DATA TYPE & The input data are not real numbers or the Imcal value is not a real float\\
-            & $data \notin \mathbb{R}^{X \times Y}  | Imcal \notin \mathbb{R} \Rightarrow$ WRONG\_DATA\_TYPE \\ 
+            WRONG DATA TYPE & The input data are not real numbers or the Imcal
+            value is not a real float\\
+            & $data \notin \mathbb{R}^{X \times Y}  | Imcal \notin \mathbb{R}
+            \Rightarrow$ WRONG\_DATA\_TYPE \\ 
             \midrule[0.05em]
             WRONG DIMENSIONS & The input data is not 2D\\
             & $size(data) \notin \mathbb{N}^2 \Rightarrow $ WRONG\_DIMENSIONS\\
@@ -1582,7 +1730,7 @@ SI
 
 \subsection{Uses}
 \begin{itemize}
-	\item Array Data Structure
+    \item Array Data Structure
 \end{itemize}
 
 
@@ -1596,64 +1744,80 @@ Spectrum Image
         \toprule
         \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
         \midrule
-        init & data, Srange $|$ dispersion $\&$ [index, value], Slabel, Sunit, Imcal, metadata & - & WRONG DATA TYPE, WRONG DIMENSIONS \\
+        init & data, Srange $|$ dispersion $\&$ [index, value], Slabel, Sunit,
+        Imcal, metadata & - & WRONG DATA TYPE, WRONG DIMENSIONS \\
         \bottomrule
     \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-This module holds spectrum image data (a 3D dataset) and associated calibrations and other related information.
+This module holds spectrum image data (a 3D dataset) and associated calibrations
+and other related information.
 
 \subsubsection{State Variables}
 \begin{itemize}
-	\item \textit{data}: $\mathbb{R}^{X \times Y \times K}$
-	\item \textit{Imcal}: $\mathbb{R}$
-	\item \textit{dispersion}: $\mathbb{R}$
-	\item \textit{Srange}: $\mathbb{R}^{K}$
+    \item \textit{data}: $\mathbb{R}^{X \times Y \times K}$
+    \item \textit{Imcal}: $\mathbb{R}$
+    \item \textit{dispersion}: $\mathbb{R}$
+    \item \textit{Srange}: $\mathbb{R}^{K}$
     \item \textit{index}: $\mathbb{Z}$
     \item \textit{value}: $\mathbb{R}$
-	\item \textit{Slabel}: string
-	\item \textit{Sunit}: string
-	\item \textit{metadata}: dict
+    \item \textit{Slabel}: string
+    \item \textit{Sunit}: string
+    \item \textit{metadata}: dict
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
 init
 \begin{itemize}
-\item input: 
+    \item input: 
     \begin{itemize}
-        \item \textit{data}: intensity values, $\in \mathbb{R}^{X \times Y \times K}$
+        \item \textit{data}: intensity values, $\in \mathbb{R}^{X \times Y
+            \times K}$
         \item \textit{Srange}: spectral axis values, $\in \mathbb{R}^K$
-        \item \textit{dispersion}: difference  between neighbouring channels along the spectral axis,  $\mathbb{R}$
-        \item \textit{index}: location on the spectral axis at which \textit{value} is, $\mathbb{Z}$
-        \item \textit{value}: value of the spectral axis (in spectral axis units) at the location given by \textit{index}, $\mathbb{R}$
-        \item \textit{Slabel}: spectrum label, the name for the spectral axis (\textit{e.g.} Energy, Wavelength), \textit{str}
-        \item \textit{Sunit}: spectrum units, the units which the spectral axis uses (\textit{e.g.} \si{\electronvolt}, \si{\nano\metre}), \textit{str}
-        \item \textit{Imcal}: image calibration values (\textit{e.g.} number of \si{\nano\metre} per pixel), $\in \mathbb{R}$
-        \item \textit{metadata}: dictionary containing extra information about the source of the image (\textit{e.g.} experimental parameters)
+        \item \textit{dispersion}: difference  between neighbouring channels
+        along the spectral axis,  $\mathbb{R}$
+        \item \textit{index}: location on the spectral axis at which
+        \textit{value} is, $\mathbb{Z}$
+        \item \textit{value}: value of the spectral axis (in spectral axis
+        units) at the location given by \textit{index}, $\mathbb{R}$
+        \item \textit{Slabel}: spectrum label, the name for the spectral axis
+        (\textit{e.g.} Energy, Wavelength), \textit{str}
+        \item \textit{Sunit}: spectrum units, the units which the spectral axis
+        uses (\textit{e.g.} \si{\electronvolt}, \si{\nano\metre}), \textit{str}
+        \item \textit{Imcal}: image calibration values (\textit{e.g.} number of
+        \si{\nano\metre} per pixel), $\in \mathbb{R}$
+        \item \textit{metadata}: dictionary containing extra information about
+        the source of the image (\textit{e.g.} experimental parameters)
     \end{itemize}
-\item transition: Initialize all state variables
-\item output: N/A
-\item exception: 
-\begin{center}
-    \begin{tabular}{p{3cm} p{12cm}}
-        \toprule[0.15em]
-        \textbf{Exception} & \textbf{Condition}\\
-        \midrule[0.1em]
-        WRONG DATA TYPE & Any of the input data are the wrong type\\
-        & $(data \notin \mathbb{R}^{X \times Y \times K}) | (Srange \notin \mathbb{R}^K) | (dispersion \notin \mathbb{R}) | (index \notin \mathbb{Z}) | (value \notin \mathbb{R}) | (Slabel \notin str) | (Sunit \notin str) | (Imcal \notin \mathbb{R}) \Rightarrow$ WRONG\_DATA\_TYPE\\ 
-        \midrule[0.05em]
-        LENGTH MISMATCH & The length of Srange is not the same as the length of data's spectral axis\\
-        & $len(Srange) \neq size(data)[2] \Rightarrow$ LENGTH\_MISMATCH\\
-        \midrule[0.05em]
-        WRONG DATA TYPE & The input data are not real numbers or the Imcal value is not a real float\\
-        & $data \notin \mathbb{R}^{X \times Y}  | Imcal \notin \mathbb{R} \Rightarrow$ WRONG\_DATA\_TYPE \\ 
-        \midrule[0.05em]
-        WRONG DIMENSIONS & The input data is not 2D\\
-        & $size(data) \notin \mathbb{N}^2 \Rightarrow $ WRONG\_DIMENSIONS\\
-        \bottomrule[0.15em]
-    \end{tabular}
-\end{center}
+    \item transition: Initialize all state variables
+    \item output: N/A
+    \item exception: 
+    \begin{center}
+        \begin{tabular}{p{3cm} p{12cm}}
+            \toprule[0.15em]
+            \textbf{Exception} & \textbf{Condition}\\
+            \midrule[0.1em]
+            WRONG DATA TYPE & Any of the input data are the wrong type\\
+            & $(data \notin \mathbb{R}^{X \times Y \times K}) | (Srange \notin
+            \mathbb{R}^K) | (dispersion \notin \mathbb{R}) | (index \notin \mathbb{Z}) |
+            (value \notin \mathbb{R}) | (Slabel \notin str) | (Sunit \notin str) | (Imcal
+            \notin \mathbb{R}) \Rightarrow$ WRONG\_DATA\_TYPE\\ 
+            \midrule[0.05em]
+            LENGTH MISMATCH & The length of Srange is not the same as the length of
+            data's spectral axis\\
+            & $len(Srange) \neq size(data)[2] \Rightarrow$ LENGTH\_MISMATCH\\
+            \midrule[0.05em]
+            WRONG DATA TYPE & The input data are not real numbers or the Imcal value
+            is not a real float\\
+            & $data \notin \mathbb{R}^{X \times Y}  | Imcal \notin \mathbb{R}
+            \Rightarrow$ WRONG\_DATA\_TYPE \\ 
+            \midrule[0.05em]
+            WRONG DIMENSIONS & The input data is not 2D\\
+            & $size(data) \notin \mathbb{N}^2 \Rightarrow $ WRONG\_DIMENSIONS\\
+            \bottomrule[0.15em]
+        \end{tabular}
+    \end{center}
 \end{itemize}
 
 \section{MIS of Array Data Structure Module} \label{Mod:Array}
@@ -1675,18 +1839,19 @@ N/A
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-CreateArray & data & Array & - \\
-ModifyArray & Array & Array & - \\
-\hline
-\end{tabular}
+    \begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+        \hline
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \hline
+        CreateArray & data & Array & - \\
+        ModifyArray & Array & Array & - \\
+        \hline
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-This module holds the array structure and functions for performing various calculations on arrays.
+This module holds the array structure and functions for performing various
+calculations on arrays.
 
 \subsubsection{State Variables}
 \begin{itemize}
@@ -1706,7 +1871,8 @@ This module holds the array structure and functions for performing various calcu
 \noindent ModifyArray():
 \begin{itemize}
     \item input: Array, $\mathbb{C}^N$
-    \item transition: Modify array by some operation, including but not limited to, addition, subtraction, multiplication, division, \textit{etc.}
+    \item transition: Modify array by some operation, including but not limited
+    to, addition, subtraction, multiplication, division, \textit{etc.}
     \item output: Array, $\mathbb{C}^N$
     \item exception: N/A
 \end{itemize}
@@ -1727,18 +1893,19 @@ Plotting
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-plot & data & window & - \\
-\hline
-\end{tabular}
+    \begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+        \hline
+        \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+        \hline
+        plot & data & window & - \\
+        \hline
+    \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-This module is the basis for plotting 1D and 2D data and handling events such as mouse clicks and keyboard presses.
- 
+This module is the basis for plotting 1D and 2D data and handling events such as
+mouse clicks and keyboard presses.
+
 \subsubsection{State Variables}
 \begin{itemize}
     \item figure
@@ -1757,7 +1924,9 @@ This module is the basis for plotting 1D and 2D data and handling events such as
 \noindent plot():
 \begin{itemize}
     \item input: data, $\mathbb{R}^{K} | \mathbb{R}^{X \times Y}$
-    \item transition: Creates a figure to display the input data, with a 1D plot axis for 1D data or a 2D plot axis for 2D data. Provides handling for events such as mouse clicks or keyboard key presses and options to format the display.
+    \item transition: Creates a figure to display the input data, with a 1D plot
+    axis for 1D data or a 2D plot axis for 2D data. Provides handling for events
+    such as mouse clicks or keyboard key presses and options to format the display.
     \item output: window
     \item exception:
 \end{itemize}
