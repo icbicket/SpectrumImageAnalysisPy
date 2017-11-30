@@ -293,35 +293,35 @@ matrices and graphs.
 \section{General System Description}
 
 This section identifies the interfaces between the system and its environment
-and
-describes the user characteristics and lists the system constraints.
+and describes the user characteristics and lists the system constraints.
 
 \subsection{System Context}
 
 Use of the software \progname{} confers the following responsibilities to the
 part of the user and to the program.
 
+\subsubsection{User Responsibilities}
+The user must
 \begin{itemize}
-	\item User Responsibilities:
-	\begin{itemize}
-		\item Provide the correct input data to the program;
-		\item Be capable of interacting with the software via a mouse, keyboard, and
+	\item provide the correct input data to the program;
+	\item be capable of interacting with the software via a mouse, keyboard, and
 screen;
-		\item Have the necessary dependencies for the program installed;
-		\item Possess sufficient knowledge on what processing steps need to be
+	\item have the necessary dependencies for the program installed; and
+	\item possess sufficient knowledge on what processing steps need to be
 performed and be able to judge that the quality of the output data is sufficient
 for the application, or change the processing steps performed.
-	\end{itemize}
-	\item \progname{} Responsibilities:
-	\begin{itemize}
-		\item Read inputs (either files or data arrays) and check the inputs for the
+\end{itemize}
+    
+\subsubsection{\progname{} Responsibilities}
+The program must
+\begin{itemize}
+	\item read inputs (either files or data arrays) and check the inputs for the
 correct data type and size;
-		\item Display the data and graphical user interface for the user to interact
+	\item display the data and graphical user interface for the user to interact
 with;
-		\item Respond to user commands and accept user input as appropriate, including
-visualization and data processing commands;
-		\item Export data in the correct file format(s).
-	\end{itemize}
+	\item respond to user commands and accept user input as appropriate, including
+visualization and data processing commands; and
+	\item export data in the correct file format(s).
 \end{itemize}
 
 \subsection{User Characteristics} \label{SecUserCharacteristics}
@@ -342,14 +342,17 @@ software.  \wss{Great example of a constraint.}
 
 \section{Specific System Description}
 
-This section first presents the problem description, which gives a high-level
+This section first presents the \hyperref[ssec:PD]{problem description}, which gives a high-level
 view of what the program is expected to do. The solution characteristics
-specification follows, detailing the assumptions that the software will make;
-the theoretical models the data analysis is based on; definitions for the types
-of data that the software must be able to process; and the instance models,
-which detail the data processing algorithms that the software will implement.
+specification follows, detailing 
+\begin{itemize}
+    \item the \hyperref[sssec:Assumptions]{assumptions} that the software will make;
+    \item the \hyperref[sssec:TM]{theoretical models} the data analysis is based on;
+    \item \hyperref[sssec:DD]{definitions} for the types of data that the software must be able to process; and
+    \item the \hyperref[sssec:IM]{instance models}, which detail the data processing algorithms that the software will implement.
+\end{itemize}
 
-\subsection{Problem Description} \label{Sec_pd}
+\subsection{Problem Description} \label{ssec:PD}
 
 \progname{} is a software to allow users to import, process, navigate, and
 export 3D spectrum image data. 
@@ -360,37 +363,8 @@ This subsection provides a list of terms that are used in the subsequent
 sections and their meaning, with the purpose of reducing ambiguity and making it
 easier to correctly understand the requirements:
 
-\begin{itemize}
-	\item Beam: the probe used by an electron microscope, composed of electrons
-accelerated to high speeds;
-	\item Beam current: the number of electrons travelling in the beam per unit
-time;
-	\item Cathodoluminescence: a technique in a STEM or SEM in which light emitted
-from the sample is collected by a mirror and directed to a spectrometer or other
-analysis system;
-	\item Charge-Coupled Device: the camera used in the spectrometer to collect
-signal and output it to the microscope acquisition software;
-	\item Electron energy loss spectroscopy: a technique performed in a TEM or STEM
-which detects the energy lost by an electron beam after passing through a
-sample;
-	\item Point Spread Function (PSF): a function representing the spreading in the
-spectrometer, as defined in \ddref{PSF};
-	\item Sample: a physical sample of scientific interest that has been probed by
-the beam in the EELS or CL instrument; 
-	\item Scanning transmission electron microscope: a TEM with the capability of
-scanning the electron beam in a raster scan over the sample;
-	\item Slice: a subset of the dataset;
-	\item Spectrometer: an instrument attached to a microscope and equipped with a
-CCD or equivalent camera, used for collecting signal as a function of energy;
-	\item Scanning electron microscope: a microscope which uses an electron beam to
-probe the sample and acquires data based on scattering off the surface or near
-the surface of the sample, operating using a raster scan of the electron beam;
-	\item Spectrum Image: a 3D dataset with two spatial dimensions and one spectral
-dimension, obtained using spectro-microscopy techniques (\textit{i.e.}, EELS or
-CL) (\ddref{SI});
-	\item Transmission electron microscope: a microscope which uses an electron
-beam to probe a sample and collects the signal of the transmitted beam.
-\end{itemize}
+
+\input{Terminology_Definitions.tex}
 
 \subsubsection{Physical System Description}
 
@@ -407,7 +381,7 @@ the following elements:
 
 \noindent Given a spectrum image dataset collected by either EELS or CL and a
 desire to visualize and process this dataset, the goal statements for
-\progname{} are:
+\progname{} are
 
 \begin{itemize}
 	\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_ImportDisplay}:] Import a
@@ -429,7 +403,7 @@ The assumptions used in consideration of spectrum imaging datasets are given in
 this section, followed by the models and definitions used to clearly define the
 data processing steps.
 
-\subsubsection{Assumptions}
+\subsubsection{Assumptions}\label{sssec:Assumptions}
 
 This section simplifies the original problem and helps in developing the
 theoretical model by filling in the missing information for the physical
@@ -443,18 +417,18 @@ likely change [LC], in which the respective assumption is used.
 The EELS data can be described as the convolution of the ``real'' spectrum of
 the sample with the response of the microscope and spectrometer system function.
 The microscope and spectrometer system typically causes broadening in the peaks
-of the ``real'' spectrum;
+of the ``real'' spectrum.
 	
 	\item[A\refstepcounter{assumpnum}\theassumpnum \label{EELS_PSF_variability}:]
-The same PSF is valid for all pixels in the EELS spectrum image;
+The same PSF is valid for all pixels in the EELS spectrum image.
 	
 	\item[A\refstepcounter{assumpnum}\theassumpnum
 \label{EELS_Intensity_Fluctuations}:] Fluctuations in the intensity of the EELS
-signal are due to changes in the beam current as collected by the spectrometer;
+signal are due to changes in the beam current as collected by the spectrometer.
 	
 	\item[A\refstepcounter{assumpnum}\theassumpnum \label{CL_Background}:] A
 subtraction is sufficient \wss{to?} remove the contributions of the dark signal and the
-substrate signal from the CL sample signal;
+substrate signal from the CL sample signal.
 	
 	\item[A\refstepcounter{assumpnum}\theassumpnum \label{CL_System_Response}:] The
 CL spectrometer wavelength sensitivity can be accurately modelled by
@@ -462,7 +436,7 @@ experimental reference data.
 
 \end{itemize}
 
-\subsubsection{Theoretical Models}\label{sec_theoretical}
+\subsubsection{Theoretical Models}\label{sssec:TM}
 
 This section focuses on the general equations and laws underlying the data
 acquisition process on a camera, providing the motivation for the data
@@ -488,8 +462,8 @@ contributions:
 		  \begin{itemize}
 			\item the signal obtained from the microscope $S(k)$, which is multiplied by
 the gain factor $g(k)$ of the pixel; 
-			\item the background signal of each pixel $b(k)$; 
-			\item and the noise present at each pixel $N(k)$.
+			\item the background signal of each pixel $b(k)$; and
+			\item the noise present at each pixel $N(k)$.
 		  \end{itemize}\\
 		  \hline
 		  Source & \cite{zuo_electron_2000}\\
@@ -580,7 +554,7 @@ instrument, ranging from 0 to the maximum $(X,Y)$. \wss{Do you really mean
 	\end{tabular}
 \end{minipage}\\
 
-\subsubsection{Data Definitions}\label{sec_datadef}
+\subsubsection{Data Definitions}\label{sssec:DD}
 
 This section collects and defines the data types needed to build the instance
 models.
@@ -697,7 +671,7 @@ gloter_improving_2003}  \\
 	\end{tabular}
 \end{minipage}\\
 
-\subsubsection{Instance Models} \label{sec_instance}    
+\subsubsection{Instance Models} \label{sssec:IM}    
 
 This section details the instance models, which are the algorithms that the code
 must perform to process spectrum imaging data, given the data types defined in
@@ -800,7 +774,7 @@ Deconvolution is usually run after normalization of the spectra
 (\ddref{SI})) by applying it at every $(x,y)$ pixel in the spectrum image.\\
 		\hline
 		Sources&~\cite{gloter_improving_2003, bellido_toward_2014} \ \\
-		\hlinedeconvolution
+		\hline
 		Ref.\ By & --\\
 		\hline
 	\end{tabular}
@@ -883,20 +857,20 @@ spectrometer CCD is applied.\\
 This section details the constraints on the data that the software must process,
 including the input, processing steps, and output from the software. Physical
 constraints based on the expectations of the dataset are left out to allow the
-user more freedom in the input.
+user more freedom in the input. The constraints on the data are defined as
 
 \begin{itemize}
 	\item The input spectrum image (\ddref{SI}) must be a 3D structure, or a 3D
-structure contained within a .dm3 or .h5 file;
+structure contained within a .dm3 or .h5 file.
 	\item The user input number of iterations to use for the deconvolution
-algorithm must be an integer number greater than or equal to 0;
+algorithm must be an integer number greater than or equal to 0.
 	\item For the normalization model, the user input of the number of bins to
-normalize must not be empty;
+normalize must not be empty.
 	\item The user input of the background signal (\iref{background}) must be of
 the same length along the spectral axis as the spectrum image it will be applied
-to;
+to.
 	\item The user input of the gain signal (\iref{gain}) must be of the same
-length along the spectral axis as the spectrum image it will be applied to;
+length along the spectral axis as the spectrum image it will be applied to.
 	\item The normalization ({\iref{normalization}}) and deconvolution
 ({\iref{deconvolution}}) data processing algorithms both include a division by
 experimentally-derived values. The denominator in these steps must not be 0.
@@ -997,22 +971,22 @@ operating systems. The nonfunctional requirements are listed below:
 
 \begin{itemize}
 	\item The software should be maintainable by the original programmer or future
-programmers to keep up to date with advances in data processing practices;
+programmers to keep up to date with advances in data processing practices.
 	\item The software should allow the addition of more data processing functions
-as required by an advanced user experienced in programming;
+as required by an advanced user experienced in programming.
 	\item The software should not display significant lag when interacting with the
 user, except in the case of data processing steps, which may be computationally
-expensive;
+expensive.
 	\item Use of the interactive display and of data processing functions should be
-intuitive for a user experienced with the processing techniques for 3D datasets;
+intuitive for a user experienced with the processing techniques for 3D datasets.
 	\item The coding practices for the software should be open and transparent to
 facilitate inspection by an experienced user to encourage trust in the data
-processing steps performed;
+processing steps performed.
 	\item The display for the user to interact with should be readable:
 \textit{i.e.} the text should be large enough to read by a user with average
-eyesight, with high contrast against the background for visibility;
+eyesight, with high contrast against the background for visibility.
 	\item The colours used in the display should be clearly distinguishable from
-each other;
+each other.
 	\item The software should function on multiple operating systems, including
 Windows, Linux, and MacOS, in a laptop or desktop environment.
 \end{itemize}
