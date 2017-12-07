@@ -123,7 +123,19 @@ description of the quantity described by the symbol and the unit name.
 
 \wss{Is ``number of particles'' a standard measure of intensity?  I did a quick
   google search and I did not see any examples of intensity measured by the
-  number of particles.}
+  number of particles.}\an{If you think about the physical process of detecting
+  a signal in the ideal case, you get one incoming photon and you get one count on
+  a spectrum (or image). So in this sense, you are counting the number of photons
+  (particles) which hit the detector at each pixel, and this builds up the
+  intensity of that pixel. More particles hitting one pixel than another means
+  that the first pixel has more intensity, so will be brighter/have higher counts.
+  It's usually not explicitly stated that the counts refers to the number of
+  particles, but I wanted to make this connection to the physical detector. In
+  reality, you have additional problems like dark current in the detector
+  electronics which add intensity to the spectrum/image which don't correspond to
+  actual particles, but in the ideal case, this would not be a problem. (I think
+  of it like 'counts'...what are you counting? ...things that hit the detector at
+  that pixel)}
 
 \subsection{Table of Symbols}
 \label{TableSymbols}
@@ -161,18 +173,28 @@ the software must satisfy are explicitly detailed.
 
 \subsection{Scope of Requirements} 
 The scope of the requirements for the software \progname{} is limited to the
-import; removal of instrumentation artifacts; visualization and navigation
-through \wss{Do you want the word through here?}; and the export of EELS and CL spectrum imaging data.
+import of; removal of instrumentation artifacts from; visualization and
+navigation through \wss{Do you want the word through here?}\an{yes, though I
+    have changed the rest of the clauses to match the same structure}; and export of
+EELS and CL spectrum imaging data.
 
 \subsection{Characteristics of Intended Reader} 
 The reader of this document should have an understanding of spectrum imaging
 techniques, particularly EELS and CL, and the data processing methods used to
 remove effects of the acquisition system from the data acquired. A basic
-knowledge of convolution theory will be helpful to the reader and an
-understanding of the characteristics of 3D datasets. The reader should
-understand EELS and CL, as relevant to the sections of the document.  \wss{Can
-  you also relate these characteristics to a standard degree and level?  For
-  instance, are you assuming an undergraduate degree in physics?}
+knowledge of convolution theory, as might be obtained from an introductory
+post-secondary calculus or image processing course, will be helpful to the
+reader, as will an understanding of the characteristics of 3D datasets. The
+reader should understand EELS and CL, from either field experience or from an
+upper year post-secondary course on electron microscopy, as relevant to the
+sections of the document.  \wss{Can you also relate these characteristics to a
+    standard degree and level?  For instance, are you assuming an undergraduate
+    degree in physics?}\an{To be honest, I don't think there is a standard education
+    for understanding microscopy data or techniques. I suppose the lower limit would
+    be secondary school physics, but beyond that I can picture university
+    students/graduates, college students/graduates, employees in the
+    field/lab...anyone with formal or informal education in the field should be able
+    to read this. I have tried to clarify this more in the text.}
 
 \subsection{Organization of Document}
 
@@ -239,15 +261,18 @@ software.  \wss{Great example of a constraint.}
 
 \section{Specific System Description}
 
-This section first presents the \hyperref[ssec:PD]{problem description}, which gives a high-level
+This section first presents the \hyperref[ssec:PD]{problem description}, which
+gives a high-level
 view of what the program is expected to do. The solution characteristics
 specification follows, detailing 
 \begin{itemize}
     \item the \hyperref[sssec:Assumptions]{assumptions} that the software will make;
     \item the \hyperref[sssec:TM]{theoretical models} the data analysis is based on;
-    \item \hyperref[sssec:DD]{definitions} for the types of data that the software must be able to process; and
-    \item the \hyperref[sssec:IM]{instance models}, which detail the data processing algorithms that the software will implement.
-\end{itemize}
+    \item \hyperref[sssec:DD]{definitions} for the types of data that the
+    software must be able to process; and
+    \item the \hyperref[sssec:IM]{instance models}, which detail the data
+    processing algorithms that the software will implement.
+    \end{itemize}
 
 \subsection{Problem Description} \label{ssec:PD}
 
@@ -326,8 +351,8 @@ The same PSF is valid for all pixels in the EELS spectrum image.
 signal are due to changes in the beam current as collected by the spectrometer.
 	
 	\item[A\refstepcounter{assumpnum}\theassumpnum \label{CL_Background}:] A
-subtraction is sufficient \wss{to?} remove the contributions of the dark signal and the
-substrate signal from the CL sample signal.
+subtraction is sufficient to \wss{to?}\an{yes!} remove the contributions of the
+dark signal and the substrate signal from the CL sample signal.
 	
 	\item[A\refstepcounter{assumpnum}\theassumpnum \label{CL_System_Response}:] The
 CL spectrometer wavelength sensitivity can be accurately modelled by
@@ -385,23 +410,28 @@ the gain factor $g(k)$ of the pixel;
 		  \hline
 		  Label&\bf Signal \\
 		  \hline
-		  Equation& $S(k)=\int_{pixel}d\rho \lfloor \int f(\rho') h(\rho, \rho')
+		  Equation& $S(k)=\int_{\textit{pixel}}d\rho \lfloor \int f(\rho') h(\rho, \rho')
 d\rho' \rfloor$ (continuous)\\
 		  & $ S(k)=\sum_{k'} f(k') h(k, k')$ (discrete)\wss{Maybe in brackets
                     after each option for $S(k)$ you should mention which
                     version it is (continuous versus discrete).  Otherwise it is
           confusing why you define a function twice.}\an{Ok, that makes sense.}\\
 		  \hline
-		  Description & The signal $S(k)$ (continuous) from the microscope, as read at one pixel
-on the CCD ($k$), is an integral over the area of one pixel, and becomes $S(k)$ (discrete). Inside the integral
-of the continuous function is the probability ($f(\rho')$) of an electron landing at position $\rho'$ on
-the detector given the interaction of the beam with the sample, multiplied by
-the probability ($h(\rho, \rho')$) of detecting an electron at location $\rho$
-if the electron arrives at position $\rho'$ on the detector. The probability
-$h(\rho, \rho')$ of detecting an electron at one location after it hits the
-detector at another location is the point spread function (PSF: \ddref{PSF}). Discretization of the Signal is done by the camera; each pixel in the camera integrates signal over its area, discretizing a continuous Signal into discrete Signal at each pixel.
+		  Description & The signal $S(k)$ (continuous) from the microscope, as read at
+          one pixel on the CCD ($k$), is an integral over the area of one pixel, and
+          becomes $S(k)$ (discrete). Inside the integral of the continuous function is
+          the probability ($f(\rho')$) of an electron landing at position $\rho'$ on
+          the detector given the interaction of the beam with the sample, multiplied
+          by the probability ($h(\rho, \rho')$) of detecting an electron at location
+          $\rho$ if the electron arrives at position $\rho'$ on the detector. The probability
+        $h(\rho, \rho')$ of detecting an electron at one location after it hits the
+        detector at another location is the point spread function (PSF: \ddref{PSF}).
+        Discretization of the Signal is done by the camera; each pixel in the camera
+        integrates signal over its area, discretizing a continuous Signal into discrete
+        Signal at each pixel.
                                 \wss{When do you use the continuous versus the
-                                discrete version?}\an{I have tried to clarify this in the text.}\\
+                                    discrete version?}\an{I have tried to clarify
+                                    this in the text.}\\
 		  & The second equation is the discretized version of the first. The signal
 $S(k)$ is the sum over all pixels $k'$ of the probability ($f(k')$) of an
 electron hitting pixel $k'$ multiplied by the probability ($h(k, k')$) of
@@ -437,7 +467,7 @@ definitions.
 		\hline
 		Units& \si{\nano\metre}\\
 		\hline
-		Equation& $P(x,y) = \{\langle x, y \rangle \in A^2 \mid x \in \{0..X\}, y \in
+		Equation& $P(x,y) = \{\langle x, y \rangle \in A \mid x \in \{0..X\}, y \in
 \{0..Y\} \}$\\
 		\hline
 		Description & $P(x,y)$ is a set of position coordinates describing the
@@ -446,6 +476,7 @@ raster scan across the sample in a rectangular grid pattern across the area on
 the sample, $A^2$. The limits on $(x,y)$ are set by the operator on the
 instrument, ranging from 0 to the maximum $(X,Y)$. \wss{Do you really mean
                               $A^2$?  I would have thought you just meant $A$.}
+                            \an{I had a reason for doing that, but now I don't remember why...I have changed it}
 		\\
 		  \hline
 		  Ref.\ By & \ddref{SI}\\
@@ -480,14 +511,19 @@ models.
 		  Equation &$I(E) = \zeta(k=0..K)$\\
 		  \hline
 		  Description & Each pixel ($k$) on the spectrometer CCD has an energy loss
-		  (EELS) or wavelength (CL) value associated with it ($E$, where $E$ is also
-		  function of $k$), obtained from the spectrometer acquisition settings, and a
-		  collected signal ($\zeta(k)$, \tref{signal}). The intensity of the spectrum
-		  ($I(E)$) is obtained from the collected signal over the whole CCD, from the
-		  0th pixel to the final ($K$th) pixel on the CCD. \wss{Which count applies is
-		  not clear.  Does the user select this, or does it change depending on the
-		  type of imaging, or something else?  This might be something you can address
-		  under your requirements?}\\
+          (EELS) or wavelength (CL) value associated with it ($E$, where $E$ is also
+          function of $k$), obtained from the spectrometer acquisition settings, and a
+          collected signal ($\zeta(k)$, \tref{signal}). The intensity of the spectrum
+          ($I(E)$, in electron counts for EELS and photon counts for CL) is obtained
+          from the collected signal over the whole CCD, from the 0th pixel to the
+          final ($K$th) pixel on the CCD. \wss{Which count applies is not clear.  Does
+              the user select this, or does it change depending on the type of imaging, or
+              something else?  This might be something you can address under
+              your requirements?}\an{I've tried to clarify this: when you are
+              doing EELS, you are counting electrons at each pixel, when you are
+              doing CL, you are counting photons at each channel, so it depends
+              on the type of experiment you did. It's covered in the modules via
+              an input argument.}\\
 		  \hline
 		  Sources & \cite{egerton_introduction_2011} \\
 		  \hline
@@ -519,10 +555,12 @@ models.
 	Equation& $I(x, y, E): \forall \langle x, y \rangle \in P(x,y), \exists
 I(x,y,E) \in \mathbb{R}$\\
 	\hline
-	Description & $I(x, y, E)$ is a dataset composed of Spectra (\ddref{Spectrum})
-collected by the spectrometer detector at each value of $P(x,y)$
-                      (\dref{grid}). \wss{I suggest you restate the math from
-                      the above equation in natural language.}
+	Description & For all the pixels ($(x,y)$ pairs) within the scanning grid
+    acquired ($P(x,y)$, \dref{grid}), there is a Spectrum, ($I(x,y,E)$,
+    \ddref{Spectrum}), collected by the spectrometer. \wss{I suggest you restate
+        the math from the above equation in natural language.}\an{I have tried to
+        rephrase this, though I think it is very similar to what I said before and I'm
+        not sure what you want me to change...}
 	\\
 	\hline
 	Sources&~\cite{jeanguillaume_spectrum-image:_1989}  \\
@@ -544,15 +582,15 @@ collected by the spectrometer detector at each value of $P(x,y)$
 		\hline
 		Label& \bf Point Spread Function\\
 		\hline
-		Symbol &$I_{PSF}(E)$\\
+		Symbol &$I_{\textit{PSF}}(E)$\\
 		\hline
 		Units & Electron counts or arbitrary units (a.u.) (EELS)\\
 		  \hline
-		  Equation&$I_{PSF}(E) = \zeta(k={0..K}) = g(k) S'(k) + b(k) +
-                            N(k)$ \wss{defining the limits on $k$ inside the
+		  Equation&$I_{\textit{PSF}}(E) = \zeta(k) = g(k) S'(k) + b(k) +
+                            N(k),\ k \in [0..K]$ \wss{defining the limits on $k$ inside the
                             function seems odd to me.  Maybe you could just say
                             $\zeta(k)$ and then follow the equation with a comma
-          and $k \in [0..K]$?}\\
+          and $k \in [0..K]$?}\an{Sure, ok}\\
 		  \hline
 		  Description & $I_{PSF}(E)$ is a reference spectrum ($I(E)$,
 \ddref{Spectrum}) representing the point spread function (see \tref{signal}) on
@@ -602,11 +640,11 @@ input\\
 		  & The input is constrained such that $k_1 >= 0$, and $k_2 <= N$\\
 		  \hline
 		  Equation &
-                             $I_{\text{norm}}(E)=\frac{I(E)}{\sum_{E(k=k_1)}^{E(k=k_2)}
+                             $I_{\textit{norm}}(E)=\frac{I(E)}{\sum_{E(k=k_1)}^{E(k=k_2)}
                              I(E(k))}$ \wss{Technically, LaTeX will interpret
                              norm in the equation as n times o times r ... in
                              terms of spacing.  You probably actually want
-                             $I_{\text{norm}}$.  Your reviewer (Keshav) noted that the
+                             $I_{\textit{norm}}$.  Your reviewer (Keshav) noted that the
                              denominator looks odd for this equation.  I agree.
           :-)}\an{I have changed the subtext and moved the misplaced bracket!}\\
 		  \hline
@@ -618,7 +656,7 @@ input\\
 		  &$K$: Last index along the spectral axis.\\
 		  &$x$: Location along first spatial axis.\\
 		  &$y$: Location along second spatial axis.\\
-		  &$I_{norm}(E)$: Spectrum normalized along the spectral axis to the integral
+		  &$I_{\textit{norm}}(E)$: Spectrum normalized along the spectral axis to the integral
 defined by a user.\\
 		  & Note that this algorithm can be applied to a 3D spectrum image
 (\ddref{SI}) by applying the algorithm to each $(x,y)$ pixel independently.\\
@@ -644,11 +682,11 @@ defined by a user.\\
 		\hline
 		Label & \bf Richardson-Lucy Deconvolution\\
 		\hline
-		Input& $I_{PSF}(E)$ is the point spread function of the instrument (see
+		Input& $I_{\textit{PSF}}(E)$ is the point spread function of the instrument (see
 \ddref{PSF}).\\
-		& $I_{real}^0(E)$ is the initial guess for the ``real'' spectrum
+		& $I_{\textit{real}}^0(E)$ is the initial guess for the ``real'' spectrum
 (\ddref{Spectrum}).\\
-		& $I_{measured}(E)$ is the measured spectrum, as obtained from the
+		& $I_{\textit{measured}}(E)$ is the measured spectrum, as obtained from the
 spectrometer software (\ddref{Spectrum}).\\
 		& $R$ is the total (non-negative integer) number of iterations of the
 deconvolution algorithm applied to the spectrum. \\
@@ -657,11 +695,11 @@ deconvolution algorithm applied to the spectrum. \\
 variables are used for the pixel index to make the effect of the different
 summations clear.\\
 		\hline
-		Equation & $I_{real (j)}^{c+1}(E)=I_{real
-(j)}^c(E)\sum_i{\frac{I_{PSF}(E)I_{measured}(E)}{\sum_l{I_{PSF}(E)I_{real
+		Equation & $I_{\textit{real} (j)}^{c+1}(E)=I_{\textit{real}
+(j)}^c(E)\sum_i{\frac{I_{\textit{PSF}}(E)I_{measured}(E)}{\sum_l{I_{\textit{PSF}}(E)I_{\textit{real}
 (l)}^c(E)}}}$, while $c < R$\\
 		\hline
-		Output& $I_{deconvolved}(E_k)=I_{real (j)}^{R}(E)$\\
+		Output& $I_{\textit{deconvolved}}(E_k)=I_{\textit{real} (j)}^{R}(E)$\\
 		\hline
 		Description & The purpose of the RL deconvolution algorithm is to separate the
 effects of the spectrometer point spread function from the ``real'' signal of
@@ -693,15 +731,15 @@ Deconvolution is usually run after normalization of the spectra
 		\hline
 		Label& \bf Background subtraction\\
 		\hline
-		Input & $I_{collected}$ is the spectrum as collected by the spectrometer.\\
-		& $I_{background}(E)$ is a spectrum representing the background to be
+		Input & $I_{\textit{collected}}$ is the spectrum as collected by the spectrometer.\\
+		& $I_{\textit{background}}(E)$ is a spectrum representing the background to be
 subtracted (this could be associated with the dark signal or with the signal
 coming from unwanted sources: \textit{e.g.} outside noise, substrate
 signal...).\\
 		\hline
-		Equation & $I_{sample}=I_{collected}-I_{background}$\\
+		Equation & $I_{\textit{sample}}=I_{\textit{collected}}-I_{\textit{background}}$\\
 		\hline
-		Output& $I_{sample}(E)$\\
+		Output& $I_{\textit{sample}}(E)$\\
 		\hline
 		Description & This model addresses the removal of background contributions to
 the signal ($b(k)$ in \tref{intensity}), where $b(k)$ is transformed to a
@@ -731,14 +769,14 @@ applied independently to each pixel.\\
 		\hline
 		Label& \bf Gain correction\\
 		\hline
-		Input & $I_{collected}$ is the spectrum (\ddref{Spectrum}) of the signal as
+		Input & $I_{\textit{collected}}$ is the spectrum (\ddref{Spectrum}) of the signal as
 collected by the spectrometer (see \tref{intensity}).\\
 		& $g(E)$ is the gain ``spectrum'' of the spectrometer $g(k)$ transformed into
 a function of energy (\ddref{Spectrum}).\\
 		\hline
-		Equation & $I_{corrected}(E)=\frac{I_{collected}(E)}{g(E)}$\\
+		Equation & $I_{\textit{corrected}}(E)=\frac{I_{\textit{collected}}(E)}{g(E)}$\\
 		\hline
-		Output& $I_{corrected}(E)$ is the spectrum after the gain correction from the
+		Output& $I_{\textit{corrected}}(E)$ is the spectrum after the gain correction from the
 spectrometer CCD is applied.\\
 		\hline
 		Description & This model addresses the removal of the gain ($g(k)$ in
@@ -826,27 +864,30 @@ file, as desired by the user.
 	\item[R\refstepcounter{reqnum}\thereqnum \label{R_deconvolution}:] Given a 1D
 spectrum array and an integer number, the software should perform that number of
 deconvolution iterations on a 3D EELS dataset using the 1D spectrum array as a
-reference of the system response. The software should display the output of the
+reference of the system response (\iref{deconvolution}). The software should display the output of the
 deconvolution for navigation by the user. Output of the deconvolution algorithm
 will be validated by an expert user. 
 	
 	\item[R\refstepcounter{reqnum}\thereqnum \label{R_normalization}:] The software
-should be able to normalize a 3D spectrum image upon user command: either to an
+should be able to normalize a 3D spectrum image (\iref{normalization}) upon user command: either to an
 integrated portion of a chosen range along the spectral axis or to a single
 chosen channel.
 	
 	\item[R\refstepcounter{reqnum}\thereqnum \label{R_background}:] The software
-should be able to perform a background subtraction, given the appropriate inputs
+should be able to perform a background subtraction (\iref{background}), given the appropriate inputs
 of a spectrum or spectrum image and a background reference spectrum.
 	
 	\item[R\refstepcounter{reqnum}\thereqnum \label{R_gain}:] The software should
-be able to perform a gain correction, given the appropriate inputs of a spectrum
+be able to perform a gain correction (\iref{gain}), given the appropriate inputs of a spectrum
 or spectrum image and a gain reference spectrum.
 \end{itemize}
 
 \wss{Your requirements should reference explicitly the instance models that
-  apply.  This information is in your traceability matrices, but it should also
-  be explicit in the definition of the requirements themselves.}
+    apply.  This information is in your traceability matrices, but it should also be
+    explicit in the definition of the requirements themselves.}\an{Perhaps you can
+    include a comment about this in the template, because this wasn't clear at all.
+    For my type of software, it is also the case that not all requirements reference
+    an instance model. I have added the cross-reference for those which do.}
 
 \subsection{Nonfunctional Requirements}
 \label{subsec:NfR}
@@ -987,7 +1028,7 @@ Sections}
 \rref{R_Input_dimension} &  &  &  &  & X& X& X&  & X& X&  &  & X& X\\ \hline
 \rref{R_SI_slicing}      &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
 \rref{R_SI_area}         &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline 
-\rref{R_deconvolution}   & X& X&  &  &  &  & X&  &  &  &  & X&  &  \\ \hline
+\rref{R_deconvolution}   &  & X&  &  &  &  & X&  &  &  &  & X&  &  \\ \hline
 \rref{R_normalization}   & X&  &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
 \rref{R_background}      &  &  & X&  &  &  & X&  &  &  &  &  &  &  \\ \hline
 \rref{R_gain}            &  &  &  & X&  &  & X&  &  &  &  &  &  &  \\ \hline
