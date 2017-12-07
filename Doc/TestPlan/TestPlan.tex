@@ -189,8 +189,8 @@ deconvolution algorithm will be explained.
 \item{Deconvolution error estimation - blank PSF}
 \label{TFR:RLblankPSF}
 
-Type: Functional, Dynamic
-					
+Type: Functional, Dynamic, Automatic
+
 Initial State: Spectrum loaded into \progname{}.
 
 Input: A known spectrum (for instance, the data used in the paper by Bellido
@@ -216,7 +216,7 @@ reference.\\
 \item{Deconvolution error estimation}
 \label{TFR:RLerror}
 
-Type: Functional, Dynamic
+Type: Functional, Dynamic, Automatic
 					
 Initial State: Spectrum loaded into \progname{}.
 
@@ -244,7 +244,8 @@ Tools} section.\\
 
 \item{Deconvolution signal-to-noise ratio estimation}
 \label{TFR:RLSNR}
-Type: Functional, Dynamic
+
+Type: Functional, Dynamic, Automatic
 					
 Initial State: Spectrum loaded into \progname{}.
 
@@ -391,7 +392,7 @@ that the correct spectrum was exported from the correct pixel.\\
 \paragraph{Deconvolution}
 \item{Deconvolution calculation time - SI size}
 
-Type: Performance, Dynamic
+Type: Performance, Dynamic, Automatic
 					
 Initial State: Spectrum loaded into \progname{}.
 
@@ -420,8 +421,8 @@ toolbox, for comparison of the plots.\\
 
 \item{Deconvolution calculation time - iterations}
 
-Type: Performance, Dynamic
-					
+Type: Performance, Dynamic, Automatic
+
 Initial State: Spectrum loaded into \progname{}.
 
 Input: A known spectrum convolved with a broadening function (for instance, the
@@ -448,7 +449,7 @@ the plots.\\
 \paragraph{Normalization}
 \item{Normalization calculation time}
 
-Type: Performance, Dynamic
+Type: Performance, Dynamic, Automatic
 
 Initial State: Spectrum loaded into \progname{}.
 
@@ -470,7 +471,7 @@ plotted against the number of $(x, y)$ pixels in the spectrum image.\\
 \paragraph{Gain Correction}
 \item{Gain correction calculation time}
 
-Type: Performance, Dynamic
+Type: Performance, Dynamic, Automatic
 
 Initial State: Spectrum loaded into \progname{}.
 
@@ -493,7 +494,7 @@ spectrum image.\\
 \paragraph{Background subtraction}
 \item{Background subtraction calculation time}
 
-Type: Performance, Dynamic
+Type: Performance, Dynamic, Automatic
 
 Initial State: Spectrum loaded into \progname{}.
 
