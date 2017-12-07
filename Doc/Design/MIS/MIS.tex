@@ -146,6 +146,9 @@ appear in this table.
 
 \section{MIS of Hardware Hiding Module} \label{Mod:HH}
 
+\wss{You probably don't need to document this module, unless you need it to make
+  the specification for other modules clear.}
+
 \subsection{Module}
 HardwareHiding
 
@@ -183,6 +186,9 @@ N/A
     \item Temporary storage
 \end{itemize}
 
+\wss{Yes, these are environment variables.  There seems to have been some
+  confusion on this topic, but you get it.  :-)}
+
 \subsubsection{Access Routine Semantics}
 
 \noindent InputDevices():
@@ -206,6 +212,8 @@ N/A
     onto the screen or write to a file on a harddrive, or write to memory)
     \item exception: N/A
 \end{itemize}
+
+\wss{It is nice if each module starts one a new page.}
 
 \section{MIS of Import csv Module} \label{Mod:ImportCSV} 
 \subsection{Module}
@@ -232,6 +240,9 @@ ImportCSV
     \end{tabular}
 \end{center}
 
+\wss{Having exception names with spaces in them might be a problem for your
+  implementation.}
+
 \subsection{Semantics}
 This module imports data from csv files and initializes a Spectrum object.
 
@@ -239,7 +250,8 @@ This module imports data from csv files and initializes a Spectrum object.
 N/A
 
 \subsubsection{Environment Variables}
-filesystem
+filesystem \wss{What is the type of your environment variable?  Usually a file
+  is abstracted as a sequence of strings.}
 
 \subsubsection{Access Routine Semantics}
 
@@ -249,7 +261,8 @@ assignations to intensity and energy range.
 \begin{itemize}
     \item input: \textit{fname}: \textit{str}
     \item transition: N/A 
-    \item output: \hyperref[Mod:Spectrum]{Spectrum}
+    \item output: \hyperref[Mod:Spectrum]{Spectrum} \wss{You have inputs for the
+        constructor for Spectrum; you should identify them here.}
     \item exceptions:
 \end{itemize}
 \begin{center}
@@ -741,7 +754,8 @@ RLDeconvolution
 
 \subsection{Semantics}
 This module performs the Richardson-Lucy deconvolution algorithm on either a
-Spectrum or Spectrum Image, following \hyperref[deconvolution]{IM2} in the SRS.
+Spectrum or Spectrum Image, following \hyperref[deconvolution]{IM2} in the
+SRS. \wss{Referencing the SRS is a good idea.}
 
 \subsubsection{State Variables}
 N/A
@@ -1022,6 +1036,10 @@ Slice1D
         \hline
     \end{tabular}
 \end{center}
+
+\wss{What is the type of data, or is data a type?  It looks like data is of type
+Spectrum, so the Input types should be Spectrum.  If you would like to show the
+variable name, you could use the notation data: Spectrum.}
 
 \subsection{Semantics}
 This module allows the user to extract slices from a 1D dataset for further
@@ -1636,7 +1654,10 @@ init initializes a Spectrum object.
         uses (\textit{e.g.} \si{\electronvolt}, \si{\nano\metre}), \textit{str}
     \end{itemize}
     \item transition: Creates all state variables
-    \item output: N/A
+    \item output: N/A \wss{You actually have an output for a constructor.  If
+        you look at slide 19 of the MISContinued slides, you'll see an example
+        of an ADT.  You output the object here and then it can be an input for
+        another access program.}
     \item exception:
     \begin{center}
         \begin{tabular}{p{3cm} p{12cm}}
@@ -1929,6 +1950,12 @@ mouse clicks and keyboard presses.
     \item output: window
     \item exception:
 \end{itemize}
+
+\wss{Great work.  There is too much in here for me to go over everything, but I
+  am confident that you are on the right track with your documentation.
+  Hopefully maintaining the documentation with the code will not be too
+  difficult.  I look forward to your feedback in the future to see how easy/hard
+  it is to keep the documentation in sync.}
 
 \newpage
 
