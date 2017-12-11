@@ -64,8 +64,7 @@ class CLSpectrum(Spectrum):
 
 		
 class EELSSpectrum(Spectrum):
-	def __init__(self, intensity, SpectrumRange=None, channel_eV = None, dispersion=0.005, ZLP=True, units='eV'):
-		super(EELSSpectrum, self).__init__(intensity, units)
+	def __init__(self, intensity, SpectrumRange=None, channel_eV = None, dispersion=0.005, ZLP=None, units='eV'):
 		'''intensity: 1D array
 		   SpectrumRange: 1D array
 		   channel_eV: 2 element array [channel #, eV value]
@@ -73,19 +72,19 @@ class EELSSpectrum(Spectrum):
 		   ZLP: Boolean - True=ZLP is present
 		   units: string, for plot axis
 		   '''
+		super(EELSSpectrum, self).__init__(intensity, units)
 		if SpectrumRange is not None:
 			self.dispersion = SpectrumRange[1] - SpectrumRange[0]
 		else:
 			self.dispersion = dispersion
-		
-		if ZLP == True:
+
+		if ZLP:
 			self.ZLP = SpectrumImage.EELSSpectrumImage.FindZLP(self.intensity)
 			if SpectrumRange is not None:
 				self.SpectrumRange = SpectrumRange
 			else:
 				self.SpectrumRange = np.arange(0 - self.ZLP, self.length - self.ZLP) * self.dispersion
 		else:
-			self.ZLP = None
 			if SpectrumRange is not None:
 				self.SpectrumRange = SpectrumRange
 			elif channel_eV is not None:
@@ -100,6 +99,7 @@ class EELSSpectrum(Spectrum):
 					raise ValueError('You need to define the channel and the energy!')
 			else:
 				raise ValueError('You need to input the energy range!')
+			self.ZLP = 0 - np.min(SpectrumRange)/self.dispersion
 		self.unit_label = 'Energy'
 		self.secondary_units = 'nm'
 		self.secondary_unit_label = 'Wavelength'
@@ -107,13 +107,13 @@ class EELSSpectrum(Spectrum):
 	@classmethod
 	def LoadFromCSV(cls, filename):
 		spectrum = ImportCSV(filename)
-		return cls(intensity=spectrum[:, 1], dispersion=spectrum[1,0]-spectrum[0,0], units='eV')
+		return cls(intensity=spectrum[:, 1], SpectrumRange=spectrum[:,0], dispersion=spectrum[1,0]-spectrum[0,0], units='eV')
 		
 	def Normalize(self):
 		'''Normalize data to integral'''
 		normfactor = np.sum(self.intensity, keepdims=True)
 		data_norm = self.intensity/normfactor
-		return EELSSpectrum(data_norm, dispersion=self.dispersion, units=self.units)
+		return EELSSpectrum(data_norm, SpectrumRange=self.SpectrumRange, dispersion=self.dispersion, ZLP=self.ZLP, units=self.units)
 
 	def SymmetrizeAroundZLP(self):
 		if self.ZLP < (self.length-1)/2.:
@@ -123,7 +123,7 @@ class EELSSpectrum(Spectrum):
 		else:
 			data_sym = self.intensity
 		data_sym[data_sym<0] = 0
-		return EELSSpectrum(data_sym, dispersion=self.dispersion, units=self.units)
+		return EELSSpectrum(data_sym, SpectrumRange=self.SpectrumRange, dispersion=self.dispersion, ZLP=self.ZLP, units=self.units)
 
 	def PadSpectrum(self, pad_length, pad_value=0, pad_side='left'):
 		if pad_side == 'left':
@@ -136,7 +136,7 @@ class EELSSpectrum(Spectrum):
 						np.ones((pad_length, 1)) * pad_value, 
 						self.intensity), 
 					np.ones((pad_length, 1)) * pad_value)
-		return EELSSpectrum(padded, dispersion=self.dispersion, units=self.units)
+		return EELSSpectrum(padded, SpectrumRange=self.SpectrumRange, dispersion=self.dispersion, ZLP=self.ZLP, units=self.units)
 
 	def FindFW(self, intensityfraction):
 #		intensity_norm = self.intensity.Normalize().intensity
@@ -160,12 +160,8 @@ class EELSSpectrum(Spectrum):
 		
 		FW = left_energy + right_energy
 		return FW
-		
-	def RLDeconvolution(self, RLiterations, PSF, PSF_pad=0):
-		'''Input: RLiterations=number of iterations to perform
-			PSF=point spread function (an EELS spectrum object)
-		Optional argument: 
-			PSF_pad=value to pad PSF with (or None to not pad PSF)'''
+	
+	def RL_PSFsym(self, PSF, PSF_pad=0):
 		PSF_sym = PSF.SymmetrizeAroundZLP()
 		if PSF_pad is not None:
 			data_length = np.size(self.SpectrumRange)
@@ -175,24 +171,33 @@ class EELSSpectrum(Spectrum):
 				PSF_sym = PSF.PadSpectrum(pad_length, pad_value=PSF_pad, pad_side='left').SymmetrizeAroundZLP()
 			elif PSF_sym.ZLP > data_length/2:
 				PSF_sym = PSF_sym.PadSpectrum(pad_length, pad_value=PSF_pad, pad_side='right')
+		return PSF_sym
+
+	def RLDeconvolution(self, RLiterations, PSF):
+		'''Input: RLiterations=number of iterations to perform
+			PSF=point spread function (an EELS spectrum object)
+		Optional argument:
+			PSF_pad=value to pad PSF with (or None to not pad PSF)'''
 		print('Beginning deconvolution...')
-		x_deconv = RL(RLiterations, PSF_sym.Normalize().intensity, self.Normalize().intensity)
+		x_deconv = RL(RLiterations, PSF.intensity, self.intensity)
 		print('Done %s iterations!' %RLiterations)
-		return EELSSpectrum(x_deconv, dispersion=self.dispersion)
+		return EELSSpectrum(x_deconv, SpectrumRange=self.SpectrumRange, dispersion=self.dispersion, units=self.units)
 		
 	def eVSlice(self, starteV, stopeV):
-		startchannel = int(starteV / self.dispersion + self.ZLP)
-		stopchannel = int(stopeV / self.dispersion + self.ZLP)
-		sliced = self.data[startchannel:stopchannel]
+		startchannel = int(round(starteV / self.dispersion + self.ZLP))
+		stopchannel = int(round(stopeV / self.dispersion + self.ZLP))
+		sliced = self.intensity[startchannel:stopchannel]
 		return sliced
 		
+import matplotlib.pyplot as plt
 #Richardson-Lucy algorithm
-def RL(iterations, PSF_norm, Spec):
+def RL(iterations, PSF, Spec):
 	RL4 = Spec.copy()
 	for ii in range(iterations):
-		RL1 = np.convolve(PSF_norm, RL4, 'same')
+		RL1 = np.convolve(PSF, RL4, 'same')
+		RL1[RL1 == 0] = 1.
 		RL2 = Spec/RL1
-		RL3 = np.convolve(PSF_norm, RL2, 'same')
+		RL3 = np.convolve(PSF, RL2, 'same')
 		RL4 *= RL3
 	return RL4
 
