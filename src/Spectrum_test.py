@@ -99,28 +99,5 @@ class EELSSpectrumTest(unittest.TestCase):
 		sliced = eels.eVSlice(11, 13)
 		self.assertArraysEqual(np.array([1, 28, 3]), sliced)
 		
-#	def testRLIterationCalls(self):
-#		data = np.array([35, 20, 1, 28, 3, 5, 4, 7, 6, 9, 8, 15]).astype(float)
-#		Srange = Srange = np.linspace(10, 15, num=10)
-#		eels = Spectrum.EELSSpectrum(data, SpectrumRange=Srange)
-#		psf_data = np.ones(np.size(data)).astype(float)
-#		psf = Spectrum.EELSSpectrum(psf_data, SpectrumRange=Srange)
-#		RL2 = eels.RLDeconvolution(2, psf)
-#		RL1_1 = eels.RLDeconvolution(1, psf)
-#		RL1_2 = RL1_1.RLDeconvolution(1, psf)
-#		print(RL2.intensity)
-#		print(RL1_2.intensity)
-#		self.assertArraysEqual(RL2.intensity, RL1_2.intensity)
-		
-#	def testRLIterationFcnCalls(self):
-#		data = np.array([35, 20, 1, 28, 3, 5, 4, 7, 6, 9, 8, 15]).astype(float)
-#		psf_data = np.ones(np.size(data)).astype(float)
-#		RL2 = Spectrum.RL(2, psf_data, data)
-#		RL1_1 = Spectrum.RL(1, psf_data, data)
-#		RL1_2 = Spectrum.RL(1, psf_data, RL1_1)
-#		print(RL2)
-#		print(RL1_2)
-#		self.assertArraysEqual(RL2, RL1_2)
-		
 if __name__ == '__main__':
 	unittest.main()	

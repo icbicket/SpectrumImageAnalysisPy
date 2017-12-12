@@ -99,7 +99,7 @@ class EELSSpectrum(Spectrum):
 					raise ValueError('You need to define the channel and the energy!')
 			else:
 				raise ValueError('You need to input the energy range!')
-			self.ZLP = 0 - np.min(SpectrumRange)/self.dispersion
+			self.ZLP = int(round(0 - np.min(SpectrumRange)/self.dispersion))
 		self.unit_label = 'Energy'
 		self.secondary_units = 'nm'
 		self.secondary_unit_label = 'Wavelength'
@@ -166,7 +166,7 @@ class EELSSpectrum(Spectrum):
 		if PSF_pad is not None:
 			data_length = np.size(self.SpectrumRange)
 			PSF_length = np.size(PSF_sym.intensity)
-			pad_length = data_length/2 - (1 + data_length) % 2 - (PSF_length-(PSF_length % 2))/2
+			pad_length = int(data_length/2 - (1 + data_length) % 2 - (PSF_length-(PSF_length % 2))/2)
 			if PSF_sym.ZLP < data_length/2:
 				PSF_sym = PSF.PadSpectrum(pad_length, pad_value=PSF_pad, pad_side='left').SymmetrizeAroundZLP()
 			elif PSF_sym.ZLP > data_length/2:
