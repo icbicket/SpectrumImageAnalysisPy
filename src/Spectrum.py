@@ -195,7 +195,8 @@ def RL(iterations, PSF, Spec):
 	RL4 = Spec.copy()
 	for ii in range(iterations):
 		RL1 = np.convolve(PSF, RL4, 'same')
-		RL1[RL1 == 0] = 1.
+		if np.any(RL1==0):
+		    raise Exception('You have a zero value in the RL denominator!')
 		RL2 = Spec/RL1
 		RL3 = np.convolve(PSF, RL2, 'same')
 		RL4 *= RL3

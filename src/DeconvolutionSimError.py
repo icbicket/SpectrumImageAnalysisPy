@@ -47,6 +47,7 @@ spec1plot.update_spectrum(spec2, ID='Convolved')
 spec1plot.add_legend()
 
 iterations = np.append(np.arange(1, 1000), np.array([2000, 2500, 3000, 3500, 4000, 4500, 5000]))
+iterations = np.arange(10)
 spec2RL = collections.OrderedDict()
 error = []
 PSF_sym = PSF_Gauss.RL_PSFsym(PSF_Gauss, PSF_pad=None)
@@ -66,4 +67,4 @@ ax_error.set_xlabel('Iteration number')
 plt.show()
 
 RMS_error_filename = 'RMS error - SimNoNoise.csv'
-WriteToCSV(os.path.join(folder, RMS_error_filename))
+#WriteToCSV(os.path.join(folder, RMS_error_filename))
