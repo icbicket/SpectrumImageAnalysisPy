@@ -665,6 +665,34 @@ spectrum image in \progname{}. No errors should be raised. The spectrum image
 axes should be read in the correct order (x, y, E), and the calibrations should
 be applied to the correct axes.
 
+\item{Empty SI data array}
+
+Type: Functional, Dynamic, Unit
+
+Initial State: None
+
+Input: 3D empty data array, present in memory; use standard calibration
+variabilities\\
+For example, the following values might be used to create an SI: 
+\begin{itemize}
+    \item $x = [0, 1]$
+    \item $y = [0, 1]$
+    \item $\text{Intensity} = \text{empty}(\text{size}(2,2,10))$
+    \item $\text{x calibration} = 1\ \si{\nano\metre}/\text{pixel}$
+    \item $\text{dispersion} = 0.01\ \si{\electronvolt}/\text{pixel}$
+    \item $E(0) = -2\ \si{\electronvolt}$
+\end{itemize}
+
+Output: Empty Spectrum Image stored within \progname{}; the first and second axes
+should correspond to spatial dimensions, while the third axis should correspond
+to a spectral dimension.
+
+How test will be performed: Create a 3D data array and attempt to initialize a
+spectrum image in \progname{}. No errors should be raised, but a warning should
+be raised that the input data is empty. The spectrum image axes should be read
+in the correct order (x, y, E), and the calibrations should be applied to the
+correct axes.
+
 
 \item{SI .dm3 file}
 
@@ -766,7 +794,7 @@ be applied to the correct axes.
 
 Type: Functional, Dynamic, Unit.
 					
-Initial State: 
+Initial State: None
 					
 Input: 1D data array, present in memory. For example, the following data may be
 used to initialize a Spectrum:
@@ -788,7 +816,7 @@ the spectral calibration.
 
 Type: Functional, Dynamic, Unit.
 
-Initial State: 
+Initial State: None
 
 Input: .csv file, containing a 1D spectrum. The following data may be used to
 create a spectrum csv file:
@@ -830,7 +858,7 @@ How test will be performed: Create a 1D data array and attempt to read it with
 
 Type: Functional, Dynamic, Unit.
 
-Initial State: 
+Initial State: None
 
 Input: 2D data array, present in memory. For example, the following data may be
 used to initialize a Spectrum:
