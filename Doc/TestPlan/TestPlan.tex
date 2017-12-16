@@ -291,7 +291,8 @@ reshaped into the size $(2,2,10)$, with an energy range from $0-9\
 Input: A selected range in the spectrum (eg, $1$ to $2\ \si{\electronvolt}$).
 
 Output: An \textit{Image.png} image written to the filesystem corresponding to
-the signal averaged over the selected energy range for each pixel.
+the signal averaged over the selected energy range for each pixel, to be
+inspected for correctness by the user.
 
 How test will be performed: Using a 3D dataset, the test will request the return
 value of an $(x,y)$ image averaged over the chosen spectral range and export
@@ -331,7 +332,8 @@ Input: The user must interact with the GUI to select an energy range in the
 spectrum from which to create and export an image.
 
 Output: An \textit{Image.png} image written to the filesystem corresponding to
-the image averaged over the selected spectrum energy range.
+the image averaged over the selected spectrum energy range, to be inspected for
+correctness by the user.
 
 How test will be performed: Using a 3D dataset, the test will display the GUI
 and ask the user to select an energy range in the spectrum and run the command
@@ -351,7 +353,8 @@ reshaped into the size $(2,2,10)$, with an energy range from $0-9\
 Input: A selected range in the image (\textit{e.g.}, pixel $(0,0)$).
 
 Output: A \textit{Spectrum.csv} file written to the filesystem corresponding to
-the spectrum averaged over the selected area.
+the spectrum averaged over the selected area, to be inspected for correctness by
+the user.
 
 How test will be performed: Using a 3D dataset, the test will request the return
 value of a spectrum averaged over the chosen area. No errors should be raised.
@@ -372,7 +375,8 @@ Input: The user must interact with the GUI to select an area on the image from
 which to create and export the spectrum.
 
 Output: A \textit{Spectrum.csv} image written to the filesystem corresponding to
-the spectrum averaged over the selected area.
+the spectrum averaged over the selected area, to be inspected for correctness by
+the user.
 
 How test will be performed: Using a 3D dataset, the test will display the GUI
 and ask the user to select an area in the image and run the command to export a
