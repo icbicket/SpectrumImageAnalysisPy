@@ -1061,7 +1061,8 @@ analysis with other modules.
         min(data.Srange)..min(max(k_1, k_2), max(data.Srange)))] \in data.Srange$
         \item data: \hyperref[Mod:Spectrum]{Spectrum}
     \end{itemize}
-    \item transition: Creation of slice
+    \item transition: Creation of slice object, using the range and the data
+    input by the user (the slice object contains the data within this range)
     \item output: slice
     \item exception: 
     \begin{center}
@@ -1125,7 +1126,8 @@ analysis with other modules.
 \subsubsection{State Variables}
 \begin{itemize}
     \item mask2D, $\forall\ value \in mask, value \in \{True,False\}$, mask of
-    boolean values representing the desired mask from the user
+    the desired size, consisting of boolean values representing the desired mask
+    from the user
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
@@ -1139,7 +1141,9 @@ analysis with other modules.
         \item size(data): $\mathbb{N}^2$, the size of the data to which the mask
         and vertex list refers
     \end{itemize}
-    \item transition: Creates mask
+    \item transition: Creates a mask2D object, given a list of vertices (to
+    define the shape to mask on a 2D image) and the size of the data to be
+    masked (to define the size of the mask).
     \item output: mask2D
     \item exception:
     \begin{center}
@@ -1254,7 +1258,9 @@ analysis with other modules.
         \item size(data): $\mathbb{N}^3$, the size of the data to which the mask
         and vertex list refers
     \end{itemize}
-    \item transition: Creates mask
+    \item transition: Creates mask3D object, given the list of vertices from the
+    user, representing which the indices in the data to be masked, and the size
+    of the data, to make the mask3D the same size.
     \item output: mask2D
     \item exception:
     \begin{center}
