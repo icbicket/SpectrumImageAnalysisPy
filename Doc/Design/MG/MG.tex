@@ -241,45 +241,58 @@ below, which are leaves in the hierarchy tree, are the modules that will
 actually be implemented.
 
 \begin{description}
-	\item [\refstepcounter{mnum} \mthemnum \label{mHH}:] Hardware-Hiding.
-	\item [\refstepcounter{mnum} \mthemnum \label{mcsvIm}:] Import .csv.
-	\item [\refstepcounter{mnum} \mthemnum \label{mdm3Im}:] Import .dm3.
-	\item [\refstepcounter{mnum} \mthemnum \label{mh5Im}:] Import .h5.
-	\item [\refstepcounter{mnum} \mthemnum \label{mrplIm}:] Import .rpl.
-	\item [\refstepcounter{mnum} \mthemnum \label{mcsvEx}:] Export .csv.
-	\item [\refstepcounter{mnum} \mthemnum \label{mh5Ex}:] Export .h5.
-	\item [\refstepcounter{mnum} \mthemnum \label{mpngEx}:] Export .png.
-	\item [\refstepcounter{mnum} \mthemnum \label{mrplEx}:] Export .rpl.
-	\item [\refstepcounter{mnum} \mthemnum \label{mRL}:] Data Processing
-Richardson-Lucy Deconvolution.
-	\item [\refstepcounter{mnum} \mthemnum \label{mNorm}:] Data Processing
-Normalization.
-	\item [\refstepcounter{mnum} \mthemnum \label{mGain}:] Data Processing Gain
-Correction.
-	\item [\refstepcounter{mnum} \mthemnum \label{mBkgnd}:] Data Processing
-Background Correction.
-	\item [\refstepcounter{mnum} \mthemnum \label{m1Dslice}:] Data Extraction 1D
-Slice.
-	\item [\refstepcounter{mnum} \mthemnum \label{m2Dmask}:] Data Extraction 2D
-Mask.
-	\item [\refstepcounter{mnum} \mthemnum \label{m3Dmask}:] Data Extraction 3D
-Mask.
-	\item [\refstepcounter{mnum} \mthemnum \label{m1Dspecdisplay}:] Display 1D
-Spectrum.
-	\item [\refstepcounter{mnum} \mthemnum \label{m2Dimgdisplay}:] Display 2D
-Image.
-	\item [\refstepcounter{mnum} \mthemnum \label{m3DSIdisplay}:] Display 3D
-Spectrum Image.
-	\item [\refstepcounter{mnum} \mthemnum \label{m1Dspecdata}:] Data 1D Spectrum.
-	\item [\refstepcounter{mnum} \mthemnum \label{m2Dimgdata}:] Data 2D Image.
-	\item [\refstepcounter{mnum} \mthemnum \label{m3DSIdata}:] Data 3D Spectrum
-Image.
-	\item [\refstepcounter{mnum} \mthemnum \label{mArrayStruct}:] Array Data
-Structure. \wss{The more abstract notion of sequence hiding might be better
+	\item [\refstepcounter{mnum} \mthemnum \label{mHH}:]
+    \hyperref[sssec:HH]{Hardware-Hiding}.
+	\item [\refstepcounter{mnum} \mthemnum \label{mcsvIm}:]
+    \hyperref[sssec:ImportCSV]{Import .csv}.
+	\item [\refstepcounter{mnum} \mthemnum \label{mdm3Im}:]
+    \hyperref[sssec:ImportDM3]{Import .dm3}.
+	\item [\refstepcounter{mnum} \mthemnum \label{mh5Im}:]
+    \hyperref[sssec:ImportH5]{Import .h5}.
+	\item [\refstepcounter{mnum} \mthemnum \label{mrplIm}:]
+    \hyperref[sssec:ImportRPL]{Import .rpl}.
+	\item [\refstepcounter{mnum} \mthemnum \label{mcsvEx}:]
+    \hyperref[sssec:ExportCSV]{Export .csv}.
+	\item [\refstepcounter{mnum} \mthemnum \label{mh5Ex}:]
+    \hyperref[sssec:ExportH5]{Export .h5}.
+	\item [\refstepcounter{mnum} \mthemnum \label{mpngEx}:]
+    \hyperref[sssec:ExportPNG]{Export .png}.
+	\item [\refstepcounter{mnum} \mthemnum \label{mrplEx}:]
+    \hyperref[sssec:ExportRPL]{Export .rpl}.
+	\item [\refstepcounter{mnum} \mthemnum \label{mRL}:] \hyperref[sssec:RL]{Data
+        Processing Richardson-Lucy Deconvolution}.
+	\item [\refstepcounter{mnum} \mthemnum \label{mNorm}:]
+    \hyperref[sssec:Norm]{Data Processing Normalization}.
+	\item [\refstepcounter{mnum} \mthemnum \label{mGain}:]
+    \hyperref[sssec:Gain]{Data Processing Gain Correction}.
+	\item [\refstepcounter{mnum} \mthemnum \label{mBkgnd}:]
+    \hyperref[sssec:Bkgnd]{Data Processing Background Correction}.
+	\item [\refstepcounter{mnum} \mthemnum \label{m1Dslice}:]
+    \hyperref[sssec:Extract1D]{Data Extraction 1D Slice}.
+	\item [\refstepcounter{mnum} \mthemnum \label{m2Dmask}:]
+    \hyperref[sssec:Extract2D]{Data Extraction 2D Mask}.
+	\item [\refstepcounter{mnum} \mthemnum \label{m3Dmask}:]
+    \hyperref[sssec:Extract3D]{Data Extraction 3D Mask}.
+	\item [\refstepcounter{mnum} \mthemnum \label{m1Dspecdisplay}:]
+    \hyperref[sssec:Plot1D]{Display 1D Spectrum}.
+	\item [\refstepcounter{mnum} \mthemnum \label{m2Dimgdisplay}:]
+    \hyperref[sssec:Plot2D]{Display 2D Image}.
+	\item [\refstepcounter{mnum} \mthemnum \label{m3DSIdisplay}:]
+    \hyperref[sssec:Plot3D]{Display 3D Spectrum Image}.
+	\item [\refstepcounter{mnum} \mthemnum \label{m1Dspecdata}:]
+    \hyperref[sssec:Data1D]{Data 1D Spectrum}.
+	\item [\refstepcounter{mnum} \mthemnum \label{m2Dimgdata}:]
+    \hyperref[sssec:Data2D]{Data 2D Image}.
+	\item [\refstepcounter{mnum} \mthemnum \label{m3DSIdata}:]
+    \hyperref[sssec:Data3D]{Data 3D Spectrum Image}.
+	\item [\refstepcounter{mnum} \mthemnum \label{mArrayStruct}:]
+    \hyperref[sssec:ArrayStruct]{Array Data Structure}. \wss{The more abstract
+        notion of sequence hiding might be better
   here.  The choice of using arrays in numpy is for efficiency, but a sequence
   ADT with an interface that provides the services you need should be fine, and
   it would be more amenable to change.}
-	\item [\refstepcounter{mnum} \mthemnum \label{mPlotLib}:] Plotting Library.
+	\item [\refstepcounter{mnum} \mthemnum \label{mPlotLib}:]
+    \hyperref[sssec:PlotLib]{Plotting Library}.
 \end{description}
 
 \begin{table}[h!]
@@ -314,7 +327,7 @@ not this module is implemented depends on the programming language
 selected.
 
 \subsection{Hardware Hiding Modules (\mref{mHH})}
-
+\label{sssec:HH}
 \begin{description}
 \item[Secrets:]The data structure and algorithm used to implement the virtual
   hardware.
@@ -337,6 +350,7 @@ selected.
 \end{description}
 
 \subsubsection{Import}
+\label{sssec:Import}
 \begin{description}
 	\item[Secrets:]Container for modules concerning reading data from files
     (unifies the interface to the Level 3 import modules).
@@ -347,6 +361,7 @@ formats, as defined in the Level 3 modules to follow (\mref{mcsvIm},
 \end{description}
 
 \subsubsection{Import csv Module (\mref{mcsvIm})}
+\label{sssec:ImportCSV}
 \begin{description}
 	\item[Secrets:]Import from csv (\textit{e.g.}, as created by \progname).
 	\item[Services:]Reads data from a csv file (which must be formatted
@@ -356,6 +371,7 @@ the format of the csv file is wrong.
 \end{description}
 
 \subsubsection{Import dm3 Module (\mref{mdm3Im})}
+\label{sssec:ImportDM3}
 \begin{description}
 	\item[Secrets:]Import data from Gatan Digital Micrograph file (dm3).
 	\item[Services:]Reads data from a dm3 file and assigns the data to the
@@ -367,6 +383,7 @@ format is not one of the expected formats.
 \end{description}
 
 \subsubsection{Import h5 Module (\mref{mh5Im})}
+\label{sssec:ImportH5}
 \begin{description}
 	\item[Secrets:]Import data from an h5 file (\textit{e.g.}, as produced by
 Odemis CL acquisition software, or by \progname).
@@ -379,6 +396,7 @@ format is not one of the expected formats.
 \end{description}
 
 \subsubsection{Import rpl Module (\mref{mrplIm})}
+\label{sssec:ImportRPL}
 \begin{description}
 	\item[Secrets:]Import data from rpl file (\textit{e.g.}, as exported by
 \progname)
@@ -391,6 +409,7 @@ format is not one of the expected formats.
 \end{description}
 
 \subsubsection{Export}
+\label{sssec:Export}
 \begin{description}
 	\item[Secrets:]Container for modules concerning exporting data to files.
 	\item[Services:]Writing data (spectrum, image, or spectrum image) to various
@@ -400,6 +419,7 @@ formats, as defined by Level 3 modules (\mref{mcsvEx}, \mref{mh5Ex},
 \end{description}
 
 \subsubsection{Export csv Module (\mref{mcsvEx})}
+\label{sssec:ExportCSV}
 \begin{description}
 	\item[Secrets:]Export data to csv file.
 	\item[Services:]Takes spectrum data, formats it as appropriate, and exports the
@@ -411,6 +431,7 @@ y-axis values).
 \end{description}
 
 \subsubsection{Export h5 Module (\mref{mh5Ex})}
+\label{sssec:ExportH5}
 \begin{description}
 	\item[Secrets:]Export data to h5 file.
 	\item[Services:]Takes image, spectrum, or spectrum image data, formats it for
@@ -421,6 +442,7 @@ dimensionality and format before exporting.
 \end{description}
 
 \subsubsection{Export png Module (\mref{mpngEx})}
+\label{sssec:ExportPNG}
 \begin{description}
 	\item[Secrets:]Export image data to png file.
 	\item[Services:]Takes image data, formats it as appropriate, and writes it to a
@@ -431,6 +453,7 @@ convert intensity values to those appropriate for an image file (0-255).
 \end{description}
 
 \subsubsection{Export rpl Module (\mref{mrplEx})}
+\label{sssec:ExportRPL}
 \begin{description}
 	\item[Secrets:]Export spectrum image data to rpl file.
 	\item[Services:]Takes spectrum image data, formats it as appropriate, and
@@ -440,6 +463,7 @@ Verifies the data is the correct dimensionality and format before exporting.
 \end{description}
 
 \subsubsection{Data Processing}
+\label{sssec:DataProc}
 \begin{description}
 	\item[Secrets:]Container for data processing modules.
 	\item[Services:]Performs data processing functions, as defined by Level 3
@@ -448,6 +472,7 @@ modules (\mref{mRL}, \mref{mNorm}, \mref{mGain}).
 \end{description}
 
 \subsubsection{Data Processing: Richardson-Lucy Deconvolution (\mref{mRL})}
+\label{sssec:RL}
 \begin{description}
 	\item[Secrets:]Richardson-Lucy deconvolution algorithm.
 	\item[Services:]Performs Richardson-Lucy deconvolution on the desired spectrum
@@ -458,6 +483,7 @@ the number of iterations to perform.
 \end{description}
 
 \subsubsection{Data Processing: Normalization (\mref{mNorm})}
+\label{sssec:Norm}
 \begin{description}
 	\item[Secrets:]Normalization algorithm.
 	\item[Services:]Performs normalization of the spectrum or spectrum image, as
@@ -469,6 +495,7 @@ issue.
 \end{description}
 
 \subsubsection{Data Processing: Gain Correction (\mref{mGain})}
+\label{sssec:Gain}
 \begin{description}
 	\item[Secrets:]Gain correction algorithm.
 	\item[Services:]Performs gain correction on the spectrum or spectrum image
@@ -478,6 +505,7 @@ which has been corrected for gain.
 \end{description}
 
 \subsubsection{Data Processing: Background Correction (\mref{mBkgnd})}
+\label{sssec:Bkgnd}
 \begin{description}
 	\item[Secrets:]Background correction algorithm.
 	\item[Services:]Performs background correction on input spectrum or spectrum
@@ -488,6 +516,7 @@ corrected for the background.
 \end{description}
 
 \subsubsection{Data Extraction}
+\label{sssec:Extract}
 \begin{description}
 	\item[Secrets:]Contains modules for extracting segments of data.
 	\item[Services:]Extract 1D, 2D, and 3D segments of data, as desired by the
@@ -497,6 +526,7 @@ user, defined in Level 3 modules (\mref{m1Dslice}, \mref{m2Dmask},
 \end{description}
 
 \subsubsection{Data Extraction: 1D Slice (\mref{m1Dslice})}
+\label{sssec:Extract1D}
 \begin{description}
 	\item[Secrets:]Perform 1D slice on the spectrum axis, based on input from the
 user.
@@ -506,6 +536,7 @@ the slice on the data, and returns the sliced range.
 \end{description}
 
 \subsubsection{Data Extraction: 2D Mask (\mref{m2Dmask})}
+\label{sssec:Extract2D}
 \begin{description}
 	\item[Secrets:]Perform 2D mask operation on the image axis, based on input from
 the user.
@@ -515,6 +546,7 @@ the area under the mask.
 \end{description}
 
 \subsubsection{Data Extraction: 3D Mask (\mref{m3Dmask})}
+\label{sssec:Extract3D}
 \begin{description}
 	\item[Secrets:]Perform 3D mask operation on a spectrum image, based on input
 from the user.
@@ -525,6 +557,7 @@ spatial axes to produce a 3D mask. Returns the volume under the mask.
 \end{description}
 
 \subsubsection{Display}
+\label{sssec:Display}
 \begin{description}
 	\item[Secrets:]Display a spectrum, image, or spectrum image for the user.
 	\item[Services:]Plots a 1D spectrum, plots a 2D image, or plots a 3D spectrum
@@ -533,6 +566,7 @@ image, depending on the input data.
 \end{description}
 
 \subsubsection{Display: 1D Spectrum Plot (\mref{m1Dspecdisplay})}
+\label{sssec:Plot1D}
 \begin{description}
 	\item[Secrets:]Displays a 1D spectrum plot for the user.
 	\item[Services:]Takes in a 1D spectrum and plots it for the user with the
@@ -542,6 +576,7 @@ spectra on one plot with a defined colourmap.
 \end{description}
 
 \subsubsection{Display: 2D Image Plot (\mref{m2Dimgdisplay})}
+\label{sssec:Plot2D}
 \begin{description}
 	\item[Secrets:]Displays 2D image plot for the user.
 	\item[Services:]Takes in 2D image data and plots it for the user to interact
@@ -551,6 +586,7 @@ colourmap.
 \end{description}
 
 \subsubsection{Display: 3D Spectrum Image Plot (\mref{m3DSIdisplay})}
+\label{sssec:Plot3D}
 \begin{description}
 	\item[Secrets:]Displays 3D spectrum image for the user.
 	\item[Services:]Combines a 1D spectrum plot and 2D image plot to allow the user
@@ -572,6 +608,7 @@ to visualize and navigate a 3D data set.
 \end{description}
 
 \subsubsection{Data}
+\label{sssec:Data}
 \begin{description}
 	\item[Secrets:]Contains the 1D, 2D, and 3D datasets.
 	\item[Services:]Includes the structure of the datasets for spectra (1D), images
@@ -582,6 +619,7 @@ calibrations and metadata as appropriate.
 \end{description}
 
 \subsubsection{Data: 1D Spectrum (\mref{m1Dspecdata})}
+\label{sssec:Data1D}
 \begin{description}
 	\item[Secrets:]Holds data structure for 1D spectrum data.
 	\item[Services:]Contains the data for a spectrum, including x-axis values and
@@ -590,6 +628,7 @@ y-axis values, and any relevant calibrations or metadata.
 \end{description}
 
 \subsubsection{Data: 2D Image (\mref{m2Dimgdata})}
+\label{sssec:Data2D}
 \begin{description}
 	\item[Secrets:]Holds data structure for 2D image data.
 	\item[Services:]Contains the data for an image, including $(x,y)$ values, and
@@ -598,6 +637,7 @@ any relevant spatial calibrations or metadata.
 \end{description}
 
 \subsubsection{Data: 3D Spectrum Image (\mref{m3DSIdata})}
+\label{sssec:Data3D}
 \begin{description}
 	\item[Secrets:]Holds data structure for 3D spectrum image data.
 	\item[Services:]Contains the data for a spectrum image, including the values
@@ -607,6 +647,7 @@ well as any relevant calibrations or metadata.
 \end{description}
 
 \subsubsection{Array Data Structure (\mref{mArrayStruct})}
+\label{sssec:ArrayStruct}
 \begin{description}
 	\item[Secrets:]Data structure for arrays.
 	\item[Services:]Functions and support for array data types.
@@ -614,6 +655,7 @@ well as any relevant calibrations or metadata.
 \end{description}
 
 \subsubsection{Plotting Library (\mref{mPlotLib})}
+\label{sssec:PlotLib}
 \begin{description}
 	\item[Secrets:]Library for creating plots.
 	\item[Services:]Building blocks for creating, displaying, and saving 1D, 2D,
@@ -682,10 +724,10 @@ addition of a new module under that node.
 	\acref{acCSVheadings} & \mref{mcsvIm}, \mref{mcsvEx}\\
 	\acref{acDM3datatype} & \mref{mdm3Im}\\
 	\acref{acDM3labels} & \mref{mdm3Im}\\
-	\acref{acDM4support} & Import\\
+	\acref{acDM4support} & \hyperref[sssec:Import]{Import}\\
 	\acref{acH5datatype} & \mref{mh5Im}\\
 	\acref{acH5labels} & \mref{mh5Im}\\
-	\acref{acNewDataProcessing} & Data Processing\\
+	\acref{acNewDataProcessing} & \hyperref[ssec:DataProc]{Data Processing}\\
 	\acref{acRLoptimize} & \mref{mRL}\\
 	\acref{acNorm} & \mref{mNorm}\\
 	\acref{acGain} & \mref{mGain}\\
@@ -699,9 +741,9 @@ addition of a new module under that node.
 	\acref{ac1DSlice} & \mref{m1Dslice}\\
 	\acref{ac2DMask} & \mref{m2Dmask}\\
 	\acref{ac3DMask} & \mref{m3Dmask}\\
-	\acref{ac4Dsupport} & Data\\
-	\acref{acImageExportFormat} & Export\\
-	\acref{acSIExportFormat} & Export\\
+	\acref{ac4Dsupport} & \hyperref[sssec:Data]{Data}\\
+	\acref{acImageExportFormat} & \hyperref[sssec:Export]{Export}\\
+	\acref{acSIExportFormat} & \hyperref[sssec:Export]{Export}\\
 	\acref{acSIExportH5Format} & \mref{mh5Ex}\\
 	\acref{acSIExportRPLFormat} & \mref{mrplEx}\\
 	\bottomrule
