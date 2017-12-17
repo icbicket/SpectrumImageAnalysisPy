@@ -38,6 +38,7 @@
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
 October 31, 2017 & 1.0 & Initial draft\\
+December 16, 2017 & 1.1 & Response to feedback on initial draft\\
 \bottomrule
 \end{tabularx}
 
@@ -75,24 +76,27 @@ it with more assurity that it is behaving correctly and any artifacts seen in
 the data are either a known result of the program, or independent of the use of
 \progname{} to process the data.
 
-\section{General Information}
-The testing outlined in this document gives valuable contributions to the level
-of trust in the performance of the software. Not only will testing the software
-build confidence that it is performing correctly, but the results of the tests
-will also tell the user what to expect when running the software, for instance
-in terms of performance milestones. Testing not only ensures that the software
-will, within predictive power, fulfill its \hyperref[subsec:FR]{functional
-requirements}, but gives the progress and effectiveness of the software in
-fulfulling the \hyperref[subsec:NfR]{non-functional
-  requirements}. \wss{Neat idea to have hyperrefs.  Unfortunately they
-  didn't work when I clicked them.}
+\section{General Information} The testing outlined in this document gives
+valuable contributions to the level of trust in the performance of the software.
+Not only will testing the software build confidence that it is performing
+correctly, but the results of the tests will also tell the user what to expect
+when running the software, for instance in terms of performance milestones.
+Testing not only ensures that the software will, within predictive power,
+fulfill its \hyperref[subsec:FR]{functional requirements}, but gives the
+progress and effectiveness of the software in fulfulling the
+\hyperref[subsec:NfR]{non-functional requirements}. \wss{Neat idea to have
+    hyperrefs.  Unfortunately they didn't work when I clicked them.}\an{I've added a
+    make file, hopefully this will help the other linked documents recompile (if it
+    works!)}
 
 \subsection{Purpose}
 The purpose of this document is to describe the tests which will be carried out
 on \progname{} to verify that it meets the requirements described in the
-\hyperref[doc:SRS]{SRS}.
+\hyperref[doc:SRS]{SRS}, which can be found at
+\url{https://github.com/icbicket/SpectrumImageAnalysisPy/blob/SpectrumImageAnalysisPy_dev/Doc/SRS/SRS.pdf}.
 
-\wss{An explicit web-link to your GitHub repo would be nice.}
+\wss{An explicit web-link to your GitHub repo would be nice.}\an{I have added
+    this!}
 
 \subsection{Scope}
 This document will cover the verification plan for testing the software
@@ -193,17 +197,17 @@ Type: Functional, Dynamic, Automatic
 
 Initial State: Spectrum loaded into \progname{}.
 
-Input: A known spectrum (for instance, the data used in the paper by Bellido
-\textit{et al} \cite{bellido_toward_2014}, if it is available from the
-author). \wss{Don't wait to ask for the information from Bellido.  You
-  should contact him or her now.  This sounds like a nice test case.}
-Otherwise a spectrum will be simulated. A range of integers will be used as
-input for the number of deconvolution iterations. The input of a point spread
-function to the deconvolution will be an array of ones.
+Input: A known spectrum (the data used in the paper by Bellido
+\textit{et al} \cite{bellido_toward_2014}).
+\wss{Don't wait to ask for the information from Bellido.  You should contact him
+    or her now.  This sounds like a nice test case.}\an{Already did! I hadn't
+    heard back by the time I finished this, though.} A range of integers will be
+used as input for the number of deconvolution iterations. The input of a
+point spread function to the deconvolution will be an array of ones.
 
 Output: A series of spectra deconvolved using the range of iterations given in
 the input, and a plot of the RMS error vs the number of iterations used.
-					
+
 How test will be performed: A series of deconvolutions will be run on the
 artificial spectrum, with varying numbers of iterations to produce a set of
 deconvolved spectra. The difference between the deconvolved spectra and the
@@ -220,13 +224,10 @@ Type: Functional, Dynamic, Automatic
 					
 Initial State: Spectrum loaded into \progname{}.
 
-Input: A known spectrum convolved with a broadening function (for instance, the
-data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if
-it is available from the author). Otherwise a spectrum will be simulated and
-convolved with a broadening function (such as a Lorentzian peak, a Gaussian
-peak, or an experimental point spread function). A range of integers will be
-used as input for the number of deconvolution iterations. The broadening
-function itself is also an input to the deconvolution.
+Input: A known spectrum convolved with a broadening function (the data used in
+the paper by Bellido \textit{et al} \cite{bellido_toward_2014}). A range of
+integers will be used as input for the number of deconvolution iterations. The
+broadening function itself is also an input to the deconvolution.
 
 Output: A series of spectra deconvolved using the range of iterations given in
 the input, and a plot of the RMS error vs the number of iterations used.
@@ -249,13 +250,10 @@ Type: Functional, Dynamic, Automatic
 					
 Initial State: Spectrum loaded into \progname{}.
 
-Input: A known spectrum convolved with a broadening function (for instance, the
-data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if
-it is available from the author). Otherwise a spectrum will be simulated and
-convolved with a broadening function (such as a Lorentzian peak, a Gaussian
-peak, or an experimental point spread function). A range of integers will be
-used as input for the number of deconvolution iterations. The broadening
-function itself is also an input to the deconvolution.
+Input: A known spectrum convolved with a broadening function (the data used in
+the paper by Bellido \textit{et al} \cite{bellido_toward_2014}). A range of
+integers will be used as input for the number of deconvolution iterations. The
+broadening function itself is also an input to the deconvolution.
 
 Output: A series of spectra deconvolved using the range of iterations given in
 the input, and a plot of the SNR vs the number of iterations used.
@@ -281,7 +279,7 @@ correctly will be explained.
 \item{Image export}
 \label{TFR:ImgExport}
 
-Type: Functional, Dynamic, Manual
+Type: Functional, Dynamic, Manual(/Automatic)
 
 Initial State: Spectrum image loaded into \progname{}. The spectrum image to be
 used for this test may, for example, consist of float values from 0 to 1,
@@ -292,13 +290,17 @@ Input: A selected range in the spectrum (eg, $1$ to $2\ \si{\electronvolt}$).
 
 Output: An \textit{Image.png} image written to the filesystem corresponding to
 the signal averaged over the selected energy range for each pixel, to be
-inspected for correctness by the user.
+inspected for correctness by the user the first time the test is run. Following
+runs of this test will check automatically that the image produced agrees with
+the first.
 
 How test will be performed: Using a 3D dataset, the test will request the return
 value of an $(x,y)$ image averaged over the chosen spectral range and export
 this to an \textit{Image.png} file. No errors should be raised. The user must
 check that the range averaged over is the same as the range selected within the
-data limits.\\
+data limits. The initial test will rely on the user to verify that the exported
+data is correct. Following this, the test will check that the output matches the
+previous output \textit{Image.png} and the test will be made automatic.\\
 \an{Not sure if I can change these tests into automatic tests. I could read the
 file back into the program, but then I'm testing both the export and import
 functions and can't separate errors from one, so I made the test
@@ -317,6 +319,7 @@ I'm sure they consider the possibility that the ``golden'' version had
 an error.  After a quick google search, I found some code that vtk
 uses for their unit tests.  This might be too much work for you to
 take on in the scope of this course, but it is worth thinking about.}
+\an{Good idea! I will have to look this up myself.}
 
 \item{Image export - GUI}
 \label{TFR:ImgExportGUI}
@@ -333,12 +336,15 @@ spectrum from which to create and export an image.
 
 Output: An \textit{Image.png} image written to the filesystem corresponding to
 the image averaged over the selected spectrum energy range, to be inspected for
-correctness by the user.
+correctness by the user the first time the test is run. Following runs of this
+test will check automatically that the image produced agrees with the first.
 
 How test will be performed: Using a 3D dataset, the test will display the GUI
 and ask the user to select an energy range in the spectrum and run the command
-to export an image to file. The user must inspect the \textit{Image.png} file to
-ensure that the correct image was exported from the correct pixel.\\
+to export an image to file.  The initial test will rely on the user to verify
+that the exported data is correct. Following this, the test will check that the
+output matches the previous output \textit{Image.png} and the test will be made
+automatic.\\
 
 \item{Spectrum export}
 \label{TFR:SpecExport}
@@ -354,12 +360,14 @@ Input: A selected range in the image (\textit{e.g.}, pixel $(0,0)$).
 
 Output: A \textit{Spectrum.csv} file written to the filesystem corresponding to
 the spectrum averaged over the selected area, to be inspected for correctness by
-the user.
+the user the first time the test is run. Following runs of this test will check
+automatically that the image produced agrees with the first.
 
 How test will be performed: Using a 3D dataset, the test will request the return
 value of a spectrum averaged over the chosen area. No errors should be raised.
-The user must inspect the \textit{Spectrum.csv} file to ensure that the correct
-spectrum was exported from the correct pixel, with the correct energy range.
+The initial test will rely on the user to verify that the exported data is
+correct. Following this, the test will check that the output matches the
+previous output \textit{Spectrum.csv} and the test will be made automatic.\\
 
 \item{Spectrum export - GUI}
 \label{TFR:SpecExportGUI}
@@ -380,8 +388,9 @@ the user.
 
 How test will be performed: Using a 3D dataset, the test will display the GUI
 and ask the user to select an area in the image and run the command to export a
-spectrum to file. The user must inspect the \textit{Spectrum.csv} file to ensure
-that the correct spectrum was exported from the correct pixel.\\
+spectrum to file. The initial test will rely on the user to verify that the exported
+data is correct. Following this, the test will check that the output matches the
+previous output \textit{Spectrum.csv} and the test will be made automatic.\\
 
 \end{enumerate}
 
@@ -400,17 +409,14 @@ Type: Performance, Dynamic, Automatic
 					
 Initial State: Spectrum loaded into \progname{}.
 
-Input: A known spectrum convolved with a broadening function (for instance, the
-data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if
-it is available from the author), and transformed into a spectrum image data
-format (of 3D shape). Otherwise a spectrum will be simulated and convolved with
-a broadening function (such as a Lorentzian peak, a Gaussian peak, or an
-experimental point spread function). The broadening function itself is also an
-input to the deconvolution. The spectrum image size will be varied from
-$(1\text{ by }1\text{ by }K)$ to $(1000 \text{ by } 1000 \text{ by } K)$ with a
-minimum of 10 intermediate values. 25 iterations will be performed for each
-spectrum image size. A typical value for $K$ might be 2048 or 1024, depending on
-the dataset used.
+Input: A known spectrum convolved with a broadening function (the data used in
+the paper by Bellido \textit{et al} \cite{bellido_toward_2014}), and transformed
+into a spectrum image data format (of 3D shape). The broadening
+function itself is also an input to the deconvolution. The spectrum image size
+will be varied from $(1\text{ by }1\text{ by }K)$ to $(1000 \text{ by } 1000
+\text{ by } K)$ with a minimum of 10 intermediate values. 25 iterations will be
+performed for each spectrum image size. A typical value for $K$ might be 2048 or
+1024, depending on the dataset used.
 
 Output: A plot of the calculation time required vs the size of the spectrum
 image used.
@@ -429,16 +435,13 @@ Type: Performance, Dynamic, Automatic
 
 Initial State: Spectrum loaded into \progname{}.
 
-Input: A known spectrum convolved with a broadening function (for instance, the
-data used in the paper by Bellido \textit{et al} \cite{bellido_toward_2014}, if
-it is available from the author), and transformed into a spectrum image data
-format (of 3D shape). Otherwise a spectrum will be simulated and convolved with
-a broadening function (such as a Lorentzian peak, a Gaussian peak, or an
-experimental point spread function). The broadening function itself is also an
-input to the deconvolution. The spectrum image size will be set at $(500 \text{
-by } 500 \text{ by } E)$ and a the number of iterations will be changed from 1
-to 500 with at least 10 intermediate steps. A typical value for E might be 2048
-or 1024, depending on the dataset used.
+Input: A known spectrum convolved with a broadening function (the data used in
+the paper by Bellido \textit{et al} \cite{bellido_toward_2014}), and transformed
+into a spectrum image data format (of 3D shape). The broadening
+function itself is also an input to the deconvolution. The spectrum image size
+will be set at $(500 \text{ by } 500 \text{ by } E)$ and a the number of
+iterations will be changed from 1 to 500 with at least 10 intermediate steps. A
+typical value for E might be 2048 or 1024, depending on the dataset used.
 
 Output: A plot of the calculation time required vs the number of iterations
 used.
@@ -502,15 +505,12 @@ Type: Performance, Dynamic, Automatic
 
 Initial State: Spectrum loaded into \progname{}.
 
-Input: A known spectrum (for instance, the data used in the paper by
-Bellido \textit{et al} \cite{bellido_toward_2014}, if it is available
-from the author), transformed into a spectrum image data format (of 3D
-shape).The spectrum image size will be varied from
-$(1\text{ by }1\text{ by }K)$ to
-$(1000 \text{ by } 1000 \text{ by }K)$ with a minimum of 10
-intermediate values. A typical value for $K$ might be 2048 or 1024,
-depending on the dataset used. The background correction will be given
-as a an array of ones of size $K$.
+Input: A known spectrum (the data used in the paper by Bellido \textit{et al}
+\cite{bellido_toward_2014}), transformed into a spectrum image data format (of
+3D shape).The spectrum image size will be varied from $(1\text{ by }1\text{ by
+}K)$ to $(1000 \text{ by } 1000 \text{ by }K)$ with a minimum of 10 intermediate
+values. A typical value for $K$ might be 2048 or 1024, depending on the dataset
+used. The background correction will be given as a an array of ones of size $K$.
 
 Output: A plot of the calculation time required vs the size of the spectrum
 image used.
@@ -519,6 +519,26 @@ How test will be performed: The gain correction function will be run on a series
 of spectrum images of varying size. The time required to finish the calculations
 will be recorded and plotted against the number of $(x, y)$ pixels in the
 spectrum image.\\
+\end{enumerate}
+
+\subsubsection{Usability}
+\begin{enumerate}
+\item{User survey}
+
+Type: Performance, Dynamic, Manual, Usability
+
+Initial State: None
+
+Input: A group of users of the software and a spectrum image dataset.
+
+Output: Completed user surveys (\hyperref[App:UserSurv]{Appendix}).
+
+How test will be performed: The user group will be asked to install the software
+(with help if required) and process the data set on their own, including
+normalizing the data, performing 10 iterations of Richardson-Lucy Deconvolution
+and exporting images from at least two peaks in the spectrum, as well as
+exporting two spectra from different areas of the image. Users will then be
+asked to fill out the survey given in the \hyperref[App:UserSurv]{Appendix}.\\
 
 \end{enumerate}
 
@@ -529,6 +549,10 @@ spectrum image.\\
   be nice to see the specific task that they will be asked to
   perform.  It would also be nice to know what resources they will be given, in terms of
   documentation, assistance from you etc.}
+\an{I was thinking that the user survey wasn't a 'test', so didn't fit under any
+    of the testing sections, and I mentioned it in the Non-testing Based
+    Verification. I've added this NFR test in to describe the user survey plan,
+    anyway.}
 
 \subsection{Traceability Between Test Cases and Requirements}
 This section provides a matrix with the relationships between the
@@ -581,7 +605,7 @@ images and spectrum datasets (\hyperref[R_SI_inputs]{R1},
 \hyperref[R_spectrum_inputs]{R2}, \hyperref[R_Input_dimension]{R3})
 \wss{Very nice to have explicit cross-references between documents.
   To keep the information up to date, consider using make to build
-  your documentation.}
+  your documentation.}\an{I have a makefile now, hope it works!}
 
 \paragraph{Spectrum Image Input}
 
@@ -733,6 +757,12 @@ usually shared readily) and trying out all of them.}
 \wss{Can you simplify your life and, at least for the time being,
   select one dm3 standard and make that the one you support and test?}
 
+\an{I could, and I think I will have to do this for now, because there's no way
+    of ensuring it will work for every possible one. I can test on the data
+    available to me from our instruments here. It will potentially limit the number
+    of people who can use the software, simply because the format may change
+    slightlly from instrument to instrument.}
+
 \item{SI .h5 file}
 
 Type: Functional, Dynamic, Unit.
@@ -779,14 +809,11 @@ For example, the following values might be used to create an SI:
 	\item $E(0) = -2\ \si{\electronvolt}$
 \end{itemize}
 
-Output: Spectrum Image stored within \progname{}; the first and second axes
-should correspond to spatial dimensions, while the third axis should correspond
-to a spectral dimension.
+Output: Exception raised.
 
 How test will be performed: Create a 3D data array and attempt to initialize a
-spectrum image in \progname{}. No errors should be raised. The spectrum image
-axes should be read in the correct order (x, y, E), and the calibrations should
-be applied to the correct axes.
+spectrum image in \progname{}. An error should be raised: the input data should
+be composed of real numbers.
 
 \end{enumerate}
 
@@ -1235,7 +1262,7 @@ and a gain-corrected spectrum should be returned.
 \newpage
 
 \section{Appendix}
-
+\label{App:CodeRev}
 This appendix contains questions for a Code Review and questions for a user
 survey.
 
@@ -1264,10 +1291,13 @@ multiple functions?
 (\textit{e.g.} are unnecessary copies of arrays being created?)
 \item Are array slicing references in the correct order? (\textit{e.g.}, check
 correct dimension is used)
-\item Does it appear to be easy to add new modules or functions?
+\item Does it appear to be easy to add new modules or functions? Write a
+function to subtract two spectra from each other and place it in the appropriate
+file.
 \end{itemize}
 
 \subsection{User Survey}
+\label{App:UserSurv}
 This section contains some sample questions which may be used to create a user
 survey of the software. Effort was made to keep the number of questions small
 and to address non-functional requirements.
@@ -1275,7 +1305,7 @@ and to address non-functional requirements.
 \item What operating system do you use?
 \item Did the software experience any noticeable lag while you were using the
 GUI interface?
-\item Where you able to use the interactive display easily, or did you find the
+\item Were you able to use the interactive display easily, or did you find the
 commands difficult to remember and use?
 \item Could you easily read everything you needed to on the data display?
 (please consider font, font size, colour, plot lines, colour maps, etc.)
