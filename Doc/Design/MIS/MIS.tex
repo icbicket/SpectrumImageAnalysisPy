@@ -2,12 +2,12 @@
 
 \usepackage{amsmath, mathtools}
 
+\usepackage{hyperref}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{colortbl}
 \usepackage{xr}
-\usepackage{xr-hyper}
 \usepackage{hyperref}
 \usepackage{longtable}
 \usepackage{xfrac}
@@ -20,7 +20,6 @@
 \usepackage{caption}
 \usepackage{fullpage}
 
-
 \hypersetup{
     bookmarks=true,     % show bookmarks bar?
     colorlinks=true,       % false: boxed links; true: colored links
@@ -31,6 +30,12 @@
     urlcolor=cyan          % color of external links
 }
 \externaldocument{../../SRS/SRS}
+\externaldocument{../MG/MG}
+
+\newcounter{mnum}
+\newcommand{\mthemnum}{M\themnum}
+\newcommand{\mref}[1]{M\ref{#1}}
+
 \usepackage{array}
 
 \input{../../Comments}
@@ -38,6 +43,7 @@
 \newcommand{\progname}{SpectrumImageAnalysisPy}
 
 \begin{document}
+    
 \label{doc:MIS}
 \bibliographystyle{ieeetr}
 \title{Module Interface Specification for \progname{}}
@@ -150,7 +156,7 @@ appear in this table.
   the specification for other modules clear.}
 
 \subsection{Module}
-HardwareHiding
+HardwareHiding (\mref{mHH})
 
 \subsection{Uses}
 N/A
@@ -217,7 +223,7 @@ N/A
 
 \section{MIS of Import csv Module} \label{Mod:ImportCSV} 
 \subsection{Module}
-ImportCSV
+ImportCSV (\mref{mcsvIm})
 
 \subsection{Uses}
 \begin{itemize}
@@ -286,7 +292,7 @@ assignations to intensity and energy range.
 
 \subsection{Module}
 
-ImportDM3
+ImportDM3 (\mref{mdm3Im})
 
 \subsection{Uses}
 \begin{itemize}
@@ -350,7 +356,7 @@ N/A
 \section{MIS of Import h5 Module} \label{Mod:ImportH5} 
 
 \subsection{Module}
-ImportH5
+ImportH5 (\mref{mh5Im})
 
 \subsection{Uses}
 \begin{itemize}
@@ -410,7 +416,7 @@ N/A
 
 \subsection{Module}
 
-ImportRPL
+ImportRPL (\mref{mrplIm})
 
 \subsection{Uses}
 \begin{itemize}
@@ -470,7 +476,7 @@ N/A
 
 \subsection{Module}
 
-ExportCSV
+ExportCSV (\mref{mcsvEx})
 
 \subsection{Uses}
 \begin{itemize}
@@ -531,7 +537,7 @@ N/A
 
 \subsection{Module}
 
-ExportH5
+ExportH5 (\mref{mh5Ex})
 
 \subsection{Uses}
 \begin{itemize}
@@ -600,7 +606,7 @@ N/A
 
 \subsection{Module}
 
-ExportPNG
+ExportPNG (\mref{mpngEx})
 
 \subsection{Uses}
 \begin{itemize}
@@ -661,7 +667,7 @@ N/A
 
 \subsection{Module}
 
-ExportRPL
+ExportRPL (\mref{mrplEx})
 
 \subsection{Uses}
 \begin{itemize}
@@ -725,7 +731,7 @@ N/A
 
 \subsection{Module}
 
-RLDeconvolution
+RLDeconvolution (\mref{mRL})
 
 \subsection{Uses}
 \begin{itemize}
@@ -817,7 +823,7 @@ N/A
 \section{MIS of Data Processing Normalization Module} \label{Mod:Normalization}
 
 \subsection{Module}
-Normalization
+Normalization (\mref{mNorm})
 
 \subsection{Uses}
 \begin{itemize}
@@ -880,7 +886,7 @@ N/A
 \section{MIS of Data Processing Gain Correction Module} \label{Mod:GainCorr}
 
 \subsection{Module}
-GainCorr
+GainCorr (\mref{mGain})
 
 \subsection{Uses}
 \begin{itemize}
@@ -950,7 +956,7 @@ N/A
 \label{Mod:BackgroundCorr}
 
 \subsection{Module}
-BkgndCorr
+BkgndCorr (\mref{mBkgnd})
 
 \subsection{Uses}
 \begin{itemize}
@@ -1014,7 +1020,7 @@ N/A
 \section{MIS of Data Extraction 1D Slice Module} \label{Mod:Slice1D}
 
 \subsection{Module}
-Slice1D
+Slice1D (\mref{m1Dslice})
 
 \subsection{Uses}
 \begin{itemize}
@@ -1095,7 +1101,7 @@ analysis with other modules.
 
 \subsection{Module}
 
-Mask2D
+Mask2D (\mref{m2Dmask})
 
 \subsection{Uses}
 \begin{itemize}
@@ -1210,7 +1216,7 @@ analysis with other modules.
 
 \subsection{Module}
 
-Mask3D
+Mask3D (\mref{m3Dmask})
 
 \subsection{Uses}
 \begin{itemize}
@@ -1379,7 +1385,7 @@ analysis with other modules.
 
 \subsection{Module}
 
-Disp1D
+Disp1D (\mref{m1Dspecdisplay})
 
 \subsection{Uses}
 \begin{itemize}
@@ -1433,7 +1439,7 @@ slice the spectrum).
 
 \subsection{Module}
 
-Disp2D
+Disp2D (\mref{m2Dimgdisplay})
 
 \subsection{Uses}
 \begin{itemize}
@@ -1534,7 +1540,7 @@ create masks on the image).
 
 \subsection{Module}
 
-Disp3D
+Disp3D (\mref{m3DSIdisplay})
 
 \subsection{Uses}
 \begin{itemize}
@@ -1599,7 +1605,7 @@ such that within one figure, all axes refer to the same dataset.
 
 \section{MIS of Data 1D Spectrum Module} \label{Mod:Spectrum}
 \subsection{Template Module}
-Spectrum
+Spectrum (\mref{m1Dspecdata})
 
 \subsection{Uses}
 \begin{itemize}
@@ -1683,7 +1689,7 @@ init initializes a Spectrum object.
 \section{MIS of Data 2D Image Module} \label{Mod:Image}
 
 \subsection{Template Module}
-Image
+Image (\mref{m2Dimgdata})
 
 \subsection{Uses}
 \begin{itemize}
@@ -1752,7 +1758,7 @@ init initializes an Image object.
 \section{MIS of Data 3D Spectrum Image Module} \label{Mod:SI}
 
 \subsection{Template Module}
-SI
+SI (\mref{m3DSIdata})
 
 \subsection{Uses}
 \begin{itemize}
@@ -1850,7 +1856,7 @@ init
 
 \subsection{Template Module}
 
-Array
+Array (\mref{mSeqStruct})
 
 \subsection{Uses}
 N/A
@@ -1907,7 +1913,7 @@ calculations on arrays.
 
 \subsection{Module}
 
-Plotting
+Plotting (\mref{mPlotLib})
 
 \subsection{Uses}
 \begin{itemize}

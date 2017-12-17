@@ -7,7 +7,7 @@ LATEXMKOPT=-pdf
 
 
 MAIN=MIS
-SOURCES=$(MAIN).tex Makefile ../../SRS/SRS.tex ../MG/ModuleHierarchyTable.tex
+SOURCES=$(MAIN).tex Makefile ../../SRS/SRS.tex ../MG/MG.tex ../MG/ModuleHierarchyTable.tex
 
 all:    $(MAIN).pdf
 
