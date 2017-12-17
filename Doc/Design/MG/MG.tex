@@ -712,22 +712,23 @@ addition of a new module under that node.
 
 \section{Use Hierarchy Between Modules} \label{SecUse}
 
-In this section, the uses hierarchy between modules is
-provided. \cite{Parnas1978} said of two programs A and B that A {\em uses} B if
-correct execution of B may be necessary for A to complete the task described in
-its specification. That is, A {\em uses} B if there exist situations in which
-the correct functioning of A depends upon the availability of a correct
+In this section, the uses hierarchy between modules is provided.
+\cite{Parnas1978} said of two programs A and B that A {\em uses} B if correct
+execution of B may be necessary for A to complete the task described in its
+specification. That is, A {\em uses} B if there exist situations in which the
+correct functioning of A depends upon the availability of a correct
 implementation of B.  Figure \ref{figure:UH} illustrates the use relation
-between
-the Level 1 and 2 modules. It can be seen that the graph is a directed acyclic
-graph
-(DAG). Each level of the hierarchy offers a testable and usable subset of the
-system, and modules in the higher level of the hierarchy are essentially simpler
-because they use modules from the lower levels. For clarity, the Level 3 modules
-have been split apart from the main Use Hierarchy diagram and are shown in more
-detail in Figure \ref{figure:UHIm}, Figure \ref{figure:UHEx}, Figure
-\ref{figure:UHDP}, Figure \ref{figure:UHDE}, Figure \ref{figure:UHDisp}, and
-Figure \ref{figure:UHData}.
+between the Level 1 and 2 modules. It can be seen that the graph is a directed
+acyclic graph (DAG). Each level of the hierarchy offers a testable and usable
+subset of the system, and modules in the higher level of the hierarchy are
+essentially simpler because they use modules from the lower levels. For clarity,
+the Level 3 modules have been split apart from the main Use Hierarchy diagram
+and are shown in more detail in Figure \ref{figure:UHIm}, Figure
+\ref{figure:UHEx}, Figure \ref{figure:UHDP}, Figure \ref{figure:UHDE}, Figure
+\ref{figure:UHDisp}, and Figure \ref{figure:UHData}. It should be noted that
+\progname{} is a library for analysis and visualization, so much of the control
+flow is directed by the user. The Use Hierarchy details the connections inside
+the program for the user to take advantage of.
 
 \begin{figure}[h!]
 	\centering
