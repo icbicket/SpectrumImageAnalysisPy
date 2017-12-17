@@ -50,6 +50,7 @@
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
 November 8, 2017 & 1.0 & Initial draft\\
+December 17, 2017 & 1.1 & Modifications to initial draft to address issues\\
 \bottomrule
 \end{tabularx}
 
@@ -130,8 +131,7 @@ unlikely changes are listed in Section \ref{SecUchange}.
 Anticipated changes are the source of the information that is to be hidden
 inside the modules. Ideally, changing one of the anticipated changes will only
 require changing the one module that hides the associated decision. The approach
-adapted here is called design for
-change.
+adapted here is called design for change.
 
 \begin{description}
 	\item[\refstepcounter{acnum} \actheacnum \label{acHardware}:] The specific
@@ -139,31 +139,40 @@ change.
 	\item[\refstepcounter{acnum} \actheacnum \label{acCSVheadings}:] The headings
 or data format of saved spectrum csv files.
 	\item[\refstepcounter{acnum} \actheacnum \label{acDM3datatype}:] The data type
-inside dm3 files.
+inside dm3 files (\textit{e.g.} a spectrum, a spectrum image, \textit{etc.}).
 	\item[\refstepcounter{acnum} \actheacnum \label{acDM3labels}:] The
-locations/labels of data and metadata inside dm3 files. \wss{Having two secrets
-  for dm3 files (and some of the others) seems like too fine a subdivision to
-  me.  I'm willing to be convinced that it is necessary, but the ``format of the
-  file'' is usually adequate as an anticipated change (and secret).}
+    locations/labels of data and metadata inside dm3 files. \wss{Having two secrets
+        for dm3 files (and some of the others) seems like too fine a subdivision to me.
+        I'm willing to be convinced that it is necessary, but the ``format of the
+        file'' is usually adequate as an anticipated change (and secret).}\an{The
+        format of the file is included in this anticipated change. The previous change
+        is related more to what is held inside the file (not the file format, but
+        related to the data itself). For instance, a dm3 file might contain a spectrum,
+        an image, a spectrum image, a stack of images...the initial version of the
+        software only accounts for 3D spectrum images inside dm3 files, but it's
+        something I would like to expand (same for other file formats, such as
+        the .h5), so I think I'll keep it as different changes. I tried to
+        clarify the format.}
 	\item[\refstepcounter{acnum} \actheacnum \label{acDM4support}:] Expanding
 support to dm4 files.
 	\item[\refstepcounter{acnum} \actheacnum \label{acH5datatype}:] The data type
 inside h5 files.
 	\item[\refstepcounter{acnum} \actheacnum \label{acH5labels}:] The
-locations/labels of data and metadata inside h5 files.
+    locations/labels of data and metadata inside h5 files (\textit{e.g.} a
+    spectrum, a spectrum image, \textit{etc.}).
 	\item[\refstepcounter{acnum} \actheacnum \label{acNewDataProcessing}:] Adding
 new data processing algorithms.
-	\item[\refstepcounter{acnum} \actheacnum \label{acRLoptimize}:] Functions used
-for RL deconvolution (optimizations for reduced error or speed).
-	\item[\refstepcounter{acnum} \actheacnum \label{acNorm}:] Optimizations on
-normalization algorithm.  \wss{I think the anticipated change is the
-  normalization algorithm.  The purpose of the change may be optimization of the
-  algorithm, but the change is the algorithm.  A similar comment applies for
-  some of the other anticipated changes.}
-	\item[\refstepcounter{acnum} \actheacnum \label{acGain}:] Optimizations on gain
+	\item[\refstepcounter{acnum} \actheacnum \label{acRLoptimize}:] Richardson-Lucy
+    implementation.
+	\item[\refstepcounter{acnum} \actheacnum \label{acNorm}:] Normalization
+    algorithm.  \wss{I think the anticipated change is the normalization algorithm.
+        The purpose of the change may be optimization of the algorithm, but the change
+        is the algorithm.  A similar comment applies for some of the other anticipated
+        changes.}\an{This makes sense, I have changed it}
+	\item[\refstepcounter{acnum} \actheacnum \label{acGain}:] Gain
 correction algorithm.
-	\item[\refstepcounter{acnum} \actheacnum \label{acBkgnd}:] Optimizations on
-background correction algorithm.
+	\item[\refstepcounter{acnum} \actheacnum \label{acBkgnd}:] Background
+    correction algorithm.
 	\item[\refstepcounter{acnum} \actheacnum \label{ac1DplotFormat}:] Format of 1D
 spectrum plot.
 	\item[\refstepcounter{acnum} \actheacnum \label{ac2DplotFormat}:] Format of 2D
@@ -171,7 +180,7 @@ image plot.
 	\item[\refstepcounter{acnum} \actheacnum \label{ac3DPlotLayout}:] Layout of 3D
 spectrum image plotting display.
 	\item[\refstepcounter{acnum} \actheacnum \label{ac3DPlotOptimize}:]
-Optimizations for faster response of spectrum image plotting display.
+Spectrum image plotting display.
 	\item[\refstepcounter{acnum} \actheacnum \label{ac3DPlotCommands}:] Changes to
 the interactive commands in the spectrum image plotting display.
 	\item[\refstepcounter{acnum} \actheacnum \label{acSpectrumUnits}:] Units or
@@ -211,22 +220,23 @@ hardware used to run the software (a laptop or desktop computer containing
 sufficient memory and computing power to perform the operations required).
 	\item[\refstepcounter{ucnum} \uctheucnum \label{ucInput}:] There will always be
 	  a source of input data external to the software.
-	\item[\refstepcounter{ucnum} \uctheucnum \label{ucArray}:]  The use of arrays
-for holding data. \wss{This is an unusual (and I believe unnecessary)
-  restriction.  Mathematically (abstractly) what you need is a sequence.  If it
-  is a numpy array, or a Python list, or another data structure in another
-  language, you could still implement your software.}
-	\item[\refstepcounter{ucnum} \uctheucnum \label{ucPlottingLibrary}:]  Plotting
-library used.
-	\item[\refstepcounter{ucnum} \uctheucnum \label{ucArrayLibrary}:]  Array
-structure library used. \wss{This seems like an unnecessary restriction to me.}
-	\item[\refstepcounter{ucnum} \uctheucnum \label{uc1DdataFormat}:]  Format of 1D
-data (y-axis and x-axis data). \wss{This also seems like an unnecessary
-  restriction.}
-	\item[\refstepcounter{ucnum} \uctheucnum \label{uc2DdataFormat}:]  Format of 2D
-data ($(x,y)$ data array).
-	\item[\refstepcounter{ucnum} \uctheucnum \label{uc3DdataFormat}:]  Format of 3D
-data ($(x,y,E)$ data array).
+	\item[\refstepcounter{ucnum} \uctheucnum \label{ucSeq}:]  The use of sequences
+    for holding data. \wss{This is an unusual (and I believe unnecessary)
+        restriction.  Mathematically (abstractly) what you need is a sequence.  If it
+        is a numpy array, or a Python list, or another data structure in another
+        language, you could still implement your software.}\an{Ok, I see that the word
+        'array' has a different meaning in software engineering than the one I am used
+        to, and that sequences are considered more general than arrays. I have changed
+        this and will update the rest of the modules. I think there is some difference
+        in terminology here that was confusing for me. I could imagine that someone
+        could write a similar software which uses functions instead of sequences, for
+        instance, but this is outside my scope and I want to limit the data used to
+        numerical arrays/sequences.}
+
+\wss{This seems like an unnecessary restriction to me.}\an{Ok, I've removed it}
+
+\wss{This also seems like an unnecessary
+  restriction.}\an{I have removed this as well!}
 	\item[\refstepcounter{ucnum} \uctheucnum \label{uc3DSIAxisOrder}:] The order of
 the spatial and spectral axes in a spectrum image.
 	\item[\refstepcounter{ucnum} \uctheucnum \label{ucExDataType}:] The data type
@@ -285,12 +295,12 @@ actually be implemented.
     \hyperref[sssec:Data2D]{Data 2D Image}.
 	\item [\refstepcounter{mnum} \mthemnum \label{m3DSIdata}:]
     \hyperref[sssec:Data3D]{Data 3D Spectrum Image}.
-	\item [\refstepcounter{mnum} \mthemnum \label{mArrayStruct}:]
-    \hyperref[sssec:ArrayStruct]{Array Data Structure}. \wss{The more abstract
-        notion of sequence hiding might be better
-  here.  The choice of using arrays in numpy is for efficiency, but a sequence
-  ADT with an interface that provides the services you need should be fine, and
-  it would be more amenable to change.}
+	\item [\refstepcounter{mnum} \mthemnum \label{mSeqStruct}:]
+    \hyperref[sssec:SeqStruct]{Sequence Data Structure}. \wss{The more abstract
+        notion of sequence hiding might be better here.  The choice of using arrays in
+        numpy is for efficiency, but a sequence ADT with an interface that provides the
+        services you need should be fine, and it would be more amenable to
+        change.}\an{I've modified the document to use sequences}
 	\item [\refstepcounter{mnum} \mthemnum \label{mPlotLib}:]
     \hyperref[sssec:PlotLib]{Plotting Library}.
 \end{description}
@@ -646,11 +656,11 @@ well as any relevant calibrations or metadata.
 	\item[Implemented By:] \progname
 \end{description}
 
-\subsubsection{Array Data Structure (\mref{mArrayStruct})}
-\label{sssec:ArrayStruct}
+\subsubsection{Sequence Data Structure (\mref{mSeqStruct})}
+\label{sssec:SeqStruct}
 \begin{description}
-	\item[Secrets:]Data structure for arrays.
-	\item[Services:]Functions and support for array data types.
+	\item[Secrets:]Data structure for sequences.
+	\item[Services:]Functions and support for sequence data types.
 	\item[Implemented By:] Python
 \end{description}
 
