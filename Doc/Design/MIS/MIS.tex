@@ -153,7 +153,10 @@ appear in this table.
 \section{MIS of Hardware Hiding Module} \label{Mod:HH}
 
 \wss{You probably don't need to document this module, unless you need it to make
-  the specification for other modules clear.}
+    the specification for other modules clear.}\an{You may be right, it's not
+    needed, but I wanted to do it for completeness in not leaving out modules. I
+    think writing this down also helped me to think about exactly what
+    responsibilities I was passing to this module. It helped me, at least :)}.
 
 \subsection{Module}
 HardwareHiding (\mref{mHH})
@@ -219,8 +222,8 @@ N/A
     \item exception: N/A
 \end{itemize}
 
-\wss{It is nice if each module starts one a new page.}
-
+\wss{It is nice if each module starts one a new page.}\an{Ok!}
+\newpage{}
 \section{MIS of Import csv Module} \label{Mod:ImportCSV} 
 \subsection{Module}
 ImportCSV (\mref{mcsvIm})
@@ -228,7 +231,7 @@ ImportCSV (\mref{mcsvIm})
 \subsection{Uses}
 \begin{itemize}
     \item \hyperref[Mod:Spectrum]{Data 1D Spectrum}
-    \item \hyperref[Mod:Array]{Array data structure}
+    \item \hyperref[Mod:Seq]{Sequence data structure}
     \item \hyperref[Mod:HH]{Hardware-hiding}
 \end{itemize}
 
@@ -247,7 +250,11 @@ ImportCSV (\mref{mcsvIm})
 \end{center}
 
 \wss{Having exception names with spaces in them might be a problem for your
-  implementation.}
+    implementation.}\an{I didn't want to restrict the implementation to use exactly
+    the same names used in this document. I would imagine other languages or other
+    naming conventions would affect how you name your exception, so I would rather
+    let the implementer decide the exact name to use, and put something more
+    readable in this document.}
 
 \subsection{Semantics}
 This module imports data from csv files and initializes a Spectrum object.
@@ -256,8 +263,8 @@ This module imports data from csv files and initializes a Spectrum object.
 N/A
 
 \subsubsection{Environment Variables}
-filesystem \wss{What is the type of your environment variable?  Usually a file
-  is abstracted as a sequence of strings.}
+file: sequence of strings \wss{What is the type of your environment variable?  Usually a file
+  is abstracted as a sequence of strings.}\an{Ok.}
 
 \subsubsection{Access Routine Semantics}
 
@@ -267,8 +274,8 @@ assignations to intensity and energy range.
 \begin{itemize}
     \item input: \textit{fname}: \textit{str}
     \item transition: N/A 
-    \item output: \hyperref[Mod:Spectrum]{Spectrum} \wss{You have inputs for the
-        constructor for Spectrum; you should identify them here.}
+    \item output: \hyperref[Mod:Spectrum]{Spectrum}(data, Srange, Slabel, Sunit) \wss{You have inputs for the
+        constructor for Spectrum; you should identify them here.}\an{Ok, I can specify these.}
     \item exceptions:
 \end{itemize}
 \begin{center}
@@ -287,7 +294,7 @@ assignations to intensity and energy range.
     \end{tabular}
 \end{center}
 
-
+\newpage
 \section{MIS of Import dm3 Module} \label{Mod:ImportDM3}
 
 \subsection{Module}
@@ -296,8 +303,8 @@ ImportDM3 (\mref{mdm3Im})
 
 \subsection{Uses}
 \begin{itemize}
-    \item \hyperref[Mod:Array]{Array data structure}
-    \item \hyperref[Mod:HH]{Hardware hiding}
+    \item \hyperref[Mod:Seq]{Sequence data structure}
+    \item \hyperref[Mod:HH]{Hardware Hiding}
     \item \hyperref[Mod:SI]{Data Spectrum Image}
     \item \hyperref[Mod:Spectrum]{Data 1D Spectrum}
     \item \hyperref[Mod:Image]{Data 2D Image}
@@ -334,8 +341,10 @@ N/A
 \begin{itemize}
     \item input: \textit{fname}: \textit{str}
     \item transition: N/A
-    \item output: \hyperref[Mod:SI]{Spectrum Image} or
-    \hyperref[Mod:Spectrum]{Spectrum} or \hyperref[Mod:Image]{Image}
+    \item output: \hyperref[Mod:SI]{Spectrum Image}(data, dispersion, [index,
+    value], Slabel, Sunit, Imcal, metadata) or
+    \hyperref[Mod:Spectrum]{Spectrum}((data, dispersion, [index, value], Slabel,
+    Sunit)) or \hyperref[Mod:Image]{Image}(data, Imcal, metadata)
     \item exception: 
     \begin{center}
         \begin{tabular}{p{3cm} p{12cm}}
@@ -353,6 +362,7 @@ N/A
     
 \end{itemize}
 
+\newpage
 \section{MIS of Import h5 Module} \label{Mod:ImportH5} 
 
 \subsection{Module}
@@ -360,8 +370,8 @@ ImportH5 (\mref{mh5Im})
 
 \subsection{Uses}
 \begin{itemize}
-    \item \hyperref[Mod:Array]{Array data structure}
-    \item \hyperref[Mod:HH]{Hardware hiding}
+    \item \hyperref[Mod:Seq]{Sequence data structure}
+    \item \hyperref[Mod:HH]{Hardware Hiding}
     \item \hyperref[Mod:SI]{Data Spectrum Image}
     \item \hyperref[Mod:Spectrum]{Data 1D Spectrum}
     \item \hyperref[Mod:Image]{Data 2D Image}
@@ -394,8 +404,10 @@ N/A
 \begin{itemize}
     \item input: \textit{fname}: \textit{str}
     \item transition: N/A
-    \item output: \hyperref[Mod:SI]{Spectrum Image} or
-    \hyperref[Mod:Spectrum]{Spectrum} or \hyperref[Mod:Image]{Image}
+    \item output: \hyperref[Mod:SI]{Spectrum Image}(data, dispersion, [index,
+    value], Slabel, Sunit, Imcal, metadata) or
+    \hyperref[Mod:Spectrum]{Spectrum}((data, dispersion, [index, value], Slabel,
+    Sunit)) or \hyperref[Mod:Image]{Image}(data, Imcal, metadata)
     \item exception: 
     \begin{center}
         \begin{tabular}{p{3cm} p{12cm}}
@@ -412,6 +424,7 @@ N/A
     \end{center}
 \end{itemize}
 
+\newpage
 \section{MIS of Import rpl Module} \label{Mod:ImportRPL}
 
 \subsection{Module}
@@ -420,8 +433,8 @@ ImportRPL (\mref{mrplIm})
 
 \subsection{Uses}
 \begin{itemize}
-    \item \hyperref[Mod:Array]{Array data structure}
-    \item \hyperref[Mod:HH]{Hardware hiding}
+    \item \hyperref[Mod:Seq]{Sequence data structure}
+    \item \hyperref[Mod:HH]{Hardware Hiding}
     \item \hyperref[Mod:SI]{Data Spectrum Image}
     \item \hyperref[Mod:Spectrum]{Data 1D Spectrum}
     \item \hyperref[Mod:Image]{Data 2D Image}
@@ -454,8 +467,10 @@ N/A
 \begin{itemize}
     \item input: \textit{fname}: \textit{str}
     \item transition: N/A
-    \item output: \hyperref[Mod:SI]{Spectrum Image} or
-    \hyperref[Mod:Spectrum]{Spectrum} or \hyperref[Mod:Image]{Image}
+    \item output: \hyperref[Mod:SI]{Spectrum Image}(data, dispersion, [index,
+    value], Slabel, Sunit, Imcal, metadata) or
+    \hyperref[Mod:Spectrum]{Spectrum}((data, dispersion, [index, value], Slabel,
+    Sunit)) or \hyperref[Mod:Image]{Image}(data, Imcal, metadata)
     \item exception: 
     \begin{center}
         \begin{tabular}{p{3cm} p{12cm}}
@@ -472,6 +487,7 @@ N/A
     \end{center}
 \end{itemize}
 
+\newpage
 \section{MIS of Export csv Module} \label{Mod:ExportCSV}
 
 \subsection{Module}
@@ -533,6 +549,7 @@ N/A
     \end{center}
 \end{itemize}
 
+\newpage
 \section{MIS of Export h5 Module} \label{Mod:ExportH5}
 
 \subsection{Module}
@@ -601,7 +618,7 @@ N/A
     \end{center}
 \end{itemize}
 
-
+\newpage
 \section{MIS of Export png Module} \label{Mod:ExportPNG}
 
 \subsection{Module}
@@ -663,6 +680,7 @@ N/A
     \end{center}
 \end{itemize}
 
+\newpage
 \section{MIS of Export rpl Module} \label{Mod:ExportRPL}
 
 \subsection{Module}
@@ -726,6 +744,7 @@ N/A
     \end{center}
 \end{itemize}
 
+\newpage
 \section{MIS of Data Processing Richardson-Lucy Deconvolution Module}
 \label{Mod: RLDeconvolution}
 
@@ -735,7 +754,7 @@ RLDeconvolution (\mref{mRL})
 
 \subsection{Uses}
 \begin{itemize}
-    \item \hyperref[Mod:Array]{Array Data Structure}
+    \item \hyperref[Mod:Seq]{Sequence Data Structure}
     \item \hyperref[Mod:HH]{Hardware Hiding}
     \item \hyperref[Mod:SI]{Data 3D Spectrum Image}
     \item \hyperref[Mod:Spectrum]{Data 1D Spectrum}
@@ -761,7 +780,7 @@ RLDeconvolution (\mref{mRL})
 \subsection{Semantics}
 This module performs the Richardson-Lucy deconvolution algorithm on either a
 Spectrum or Spectrum Image, following \hyperref[deconvolution]{IM2} in the
-SRS. \wss{Referencing the SRS is a good idea.}
+SRS. \wss{Referencing the SRS is a good idea.}\an{Thank you :)}
 
 \subsubsection{State Variables}
 N/A
@@ -820,6 +839,7 @@ N/A
     \item exception: N/A
 \end{itemize}
 
+\newpage
 \section{MIS of Data Processing Normalization Module} \label{Mod:Normalization}
 
 \subsection{Module}
@@ -827,7 +847,7 @@ Normalization (\mref{mNorm})
 
 \subsection{Uses}
 \begin{itemize}
-    \item \hyperref[Mod:Array]{Array Data Structure}
+    \item \hyperref[Mod:Seq]{Sequence Data Structure}
     \item \hyperref[Mod:SI]{Data 3D Spectrum Image}
     \item \hyperref[Mod:Spectrum]{Data 1D Spectrum}
     \item \hyperref[Mod:Slice1D]{Data Extraction 1D Slice}
@@ -883,6 +903,7 @@ N/A
     \end{center}
 \end{itemize}
 
+\newpage
 \section{MIS of Data Processing Gain Correction Module} \label{Mod:GainCorr}
 
 \subsection{Module}
@@ -890,7 +911,7 @@ GainCorr (\mref{mGain})
 
 \subsection{Uses}
 \begin{itemize}
-    \item \hyperref[Mod:Array]{Array Data Structure}
+    \item \hyperref[Mod:Seq]{Sequence Data Structure}
     \item \hyperref[Mod:SI]{Data 3D Spectrum Image}
     \item \hyperref[Mod:Spectrum]{Data 1D Spectrum}
 \end{itemize}
@@ -951,7 +972,7 @@ N/A
     \end{center}
 \end{itemize}
 
-
+\newpage
 \section{MIS of Data Processing Background Correction Module}
 \label{Mod:BackgroundCorr}
 
@@ -960,7 +981,7 @@ BkgndCorr (\mref{mBkgnd})
 
 \subsection{Uses}
 \begin{itemize}
-    \item \hyperref[Mod:Array]{Array Data Structure}
+    \item \hyperref[Mod:Seq]{Sequence Data Structure}
     \item \hyperref[Mod:SI]{Data 3D Spectrum Image}
     \item \hyperref[Mod:Spectrum]{Data 1D Spectrum}
 \end{itemize}
@@ -1016,7 +1037,7 @@ N/A
     \end{center}
 \end{itemize}
 
-
+\newpage
 \section{MIS of Data Extraction 1D Slice Module} \label{Mod:Slice1D}
 
 \subsection{Module}
@@ -1044,8 +1065,11 @@ Slice1D (\mref{m1Dslice})
 \end{center}
 
 \wss{What is the type of data, or is data a type?  It looks like data is of type
-Spectrum, so the Input types should be Spectrum.  If you would like to show the
-variable name, you could use the notation data: Spectrum.}
+    Spectrum, so the Input types should be Spectrum.  If you would like to show the
+    variable name, you could use the notation data: Spectrum.}\an{I found this was
+    making the table very complicated and messy, so I left the type information in
+    the definition. I felt that putting it in both places was repetitive, so I chose
+    to clean up the table a bit.}
 
 \subsection{Semantics}
 This module allows the user to extract slices from a 1D dataset for further
@@ -1097,6 +1121,7 @@ analysis with other modules.
     \item exception: N/A
 \end{itemize}
 
+\newpage
 \section{MIS of Data Extraction 2D Mask Module} \label{Mod:Mask2D}
 
 \subsection{Module}
@@ -1143,7 +1168,7 @@ analysis with other modules.
     \item input
     \begin{itemize}
         \item vertex list: $[x_i, y_i], x_i, y_i \in \mathbb{N}$, a list of
-        $(x,y)$ ordered pairs of indices to access an array of size(data)
+        $(x,y)$ ordered pairs of indices to access a sequence of size(data)
         \item size(data): $\mathbb{N}^2$, the size of the data to which the mask
         and vertex list refers
     \end{itemize}
@@ -1193,7 +1218,7 @@ analysis with other modules.
     \item input
     \begin{itemize}
         \item vertex list: $[x_i, y_i], x_i, y_i \in \mathbb{N}$, a list of
-        $(x,y)$ ordered pairs of indices to access an array of size(data)
+        $(x,y)$ ordered pairs of indices to access a sequence of size(data)
     \end{itemize}
     \item transition: Update mask to the new set of input vertices
     \item output: mask2D
@@ -1212,6 +1237,7 @@ analysis with other modules.
     \end{center}
 \end{itemize}
 
+\newpage
 \section{MIS of Data Extraction 3D Mask Module} \label{Mod:Mask3D}
 
 \subsection{Module}
@@ -1260,7 +1286,7 @@ analysis with other modules.
     \item input
     \begin{itemize}
         \item vertex list: $[x_i, y_i, k_i], x_i, y_i, k_i \in \mathbb{N}$, a
-        list of $(x,y,k)$ ordered pairs of indices to access an array of size(data)
+        list of $(x,y,k)$ ordered pairs of indices to access a sequence of size(data)
         \item size(data): $\mathbb{N}^3$, the size of the data to which the mask
         and vertex list refers
     \end{itemize}
@@ -1360,7 +1386,7 @@ analysis with other modules.
     \item input
     \begin{itemize}
         \item vertex list: $[x_i, y_i, k_i], x_i, y_i, k_i \in \mathbb{N}$, a
-        list of $(x,y,k)$ ordered pairs of indices to access an array of size(data)
+        list of $(x,y,k)$ ordered pairs of indices to access a sequence of size(data)
         \item size(data): $\mathbb{N}^3$, the size of the data to which the mask
         and vertex list refers
     \end{itemize}
@@ -1381,6 +1407,7 @@ analysis with other modules.
     \end{center}
 \end{itemize}
 
+\newpage
 \section{MIS of Display 1D Spectrum Module} \label{Mod:Disp1D}
 
 \subsection{Module}
@@ -1435,6 +1462,7 @@ slice the spectrum).
     \item exception: N/A
 \end{itemize}
 
+\newpage
 \section{MIS of Display 2D Image Module} \label{Mod:Disp2D}
 
 \subsection{Module}
@@ -1536,6 +1564,7 @@ create masks on the image).
     \end{center}
 \end{itemize}
 
+\newpage
 \section{MIS of Display 3D Spectrum Image Module} \label{Mod:Disp3D}
 
 \subsection{Module}
@@ -1544,10 +1573,10 @@ Disp3D (\mref{m3DSIdisplay})
 
 \subsection{Uses}
 \begin{itemize}
-    \item Data
-    \item Plotting library
-    \item 2D image plot
-    \item 1D spectrum plot
+    \item \hyperref[Mod:SI]{Data 3D Spectrum Image}
+    \item \hyperref[Mod:Plotting]{Plotting library}
+    \item \hyperref[Mod:Disp2D]{2D image plot}
+    \item \hyperref[Mod:Disp1D]{1D spectrum plot}
 \end{itemize}
 
 \subsection{Syntax}
@@ -1603,13 +1632,14 @@ such that within one figure, all axes refer to the same dataset.
     \item exception: N/A
 \end{itemize}
 
+\newpage
 \section{MIS of Data 1D Spectrum Module} \label{Mod:Spectrum}
 \subsection{Template Module}
 Spectrum (\mref{m1Dspecdata})
 
 \subsection{Uses}
 \begin{itemize}
-    \item \hyperref[Mod:Array]{Array data structure}
+    \item \hyperref[Mod:Seq]{Sequence Data Structure}
 \end{itemize}
 
 \subsection{Syntax}
@@ -1666,10 +1696,11 @@ init initializes a Spectrum object.
         uses (\textit{e.g.} \si{\electronvolt}, \si{\nano\metre}), \textit{str}
     \end{itemize}
     \item transition: Creates all state variables
-    \item output: N/A \wss{You actually have an output for a constructor.  If
-        you look at slide 19 of the MISContinued slides, you'll see an example
-        of an ADT.  You output the object here and then it can be an input for
-        another access program.}
+    \item output: Spectrum \wss{You actually have an output for a constructor. 
+        If you look at slide 19 of the MISContinued slides, you'll see an example of
+        an ADT.  You output the object here and then it can be an input for another
+        access program.}\an{Somehow I didn't catch that, going through the slides.
+        I'll add that for the ADTs.}
     \item exception:
     \begin{center}
         \begin{tabular}{p{3cm} p{12cm}}
@@ -1686,6 +1717,7 @@ init initializes a Spectrum object.
     \end{center}
 \end{itemize}
 
+\newpage
 \section{MIS of Data 2D Image Module} \label{Mod:Image}
 
 \subsection{Template Module}
@@ -1693,7 +1725,7 @@ Image (\mref{m2Dimgdata})
 
 \subsection{Uses}
 \begin{itemize}
-    \item \hyperref[Mod:Array]{Array data structure}
+    \item \hyperref[Mod:Seq]{Sequence Data Structure}
 \end{itemize}
 
 \subsection{Syntax}
@@ -1736,7 +1768,7 @@ init initializes an Image object.
         the source of the image (\textit{e.g.} experimental parameters)
     \end{itemize}
     \item transition: Creates all state variables
-    \item output: N/A
+    \item output: Image
     \item exception:
     \begin{center}
         \begin{tabular}{p{4cm} p{11.5cm}}
@@ -1755,6 +1787,7 @@ init initializes an Image object.
     \end{center}
 \end{itemize}
 
+\newpage
 \section{MIS of Data 3D Spectrum Image Module} \label{Mod:SI}
 
 \subsection{Template Module}
@@ -1762,9 +1795,8 @@ SI (\mref{m3DSIdata})
 
 \subsection{Uses}
 \begin{itemize}
-    \item Array Data Structure
+    \item \hyperref[Mod:Seq]{Sequence Data Structure}
 \end{itemize}
-
 
 \subsubsection{Types}
 Spectrum Image
@@ -1823,7 +1855,7 @@ init
         the source of the image (\textit{e.g.} experimental parameters)
     \end{itemize}
     \item transition: Initialize all state variables
-    \item output: N/A
+    \item output: Spectrum Image
     \item exception: 
     \begin{center}
         \begin{tabular}{p{3cm} p{12cm}}
@@ -1852,11 +1884,12 @@ init
     \end{center}
 \end{itemize}
 
-\section{MIS of Array Data Structure Module} \label{Mod:Array}
+\newpage
+\section{MIS of Sequence Data Structure Module} \label{Mod:Seq}
 
 \subsection{Template Module}
 
-Array (\mref{mSeqStruct})
+Sequence (\mref{mSeqStruct})
 
 \subsection{Uses}
 N/A
@@ -1865,7 +1898,7 @@ N/A
 
 \subsubsection{Type}
 \begin{itemize}
-    \item Array
+    \item Sequence
 \end{itemize}
 
 \subsubsection{Exported Access Programs}
@@ -1875,40 +1908,41 @@ N/A
         \hline
         \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
         \hline
-        CreateArray & data & Array & - \\
-        ModifyArray & Array & Array & - \\
+        CreateSeq & data & Sequence & - \\
+        ModifySeq & Sequence & Sequence & - \\
         \hline
     \end{tabular}
 \end{center}
 
 \subsection{Semantics}
-This module holds the array structure and functions for performing various
-calculations on arrays.
+This module holds the sequence structure and functions for performing various
+calculations on sequences.
 
 \subsubsection{State Variables}
 \begin{itemize}
-    \item Array: $\mathbb{C}^N, dim(N) \in \mathbb{N}$
+    \item sequence: $\mathbb{C}^N, dim(N) \in \mathbb{N}$
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent CreateArray():
+\noindent CreateSeq():
 \begin{itemize}
     \item input: data, $\mathbb{C}^N$
-    \item transition: Create array variable
-    \item output: Array, $\mathbb{C}^N$
+    \item transition: Create sequence variable
+    \item output: sequence, $\mathbb{C}^N$
     \item exception: N/A
 \end{itemize}
 
-\noindent ModifyArray():
+\noindent ModifySeq():
 \begin{itemize}
-    \item input: Array, $\mathbb{C}^N$
-    \item transition: Modify array by some operation, including but not limited
+    \item input: sequence, $\mathbb{C}^N$
+    \item transition: Modify sequence by some operation, including but not limited
     to, addition, subtraction, multiplication, division, \textit{etc.}
-    \item output: Array, $\mathbb{C}^N$
+    \item output: sequence, $\mathbb{C}^N$
     \item exception: N/A
 \end{itemize}
 
+\newpage
 \section{MIS of Plotting Library Module} \label{Mod:Plotting}
 
 \subsection{Module}
