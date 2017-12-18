@@ -11,6 +11,20 @@ import os
 from skimage.measure import profile_line
 #import LineProfile
 import LineDraw
+import FileNamer
+
+def cbarextensionfinder(clim, imglim):
+	cbar_top_test = clim[1] >= imglim[1]
+	cbar_bottom_test = clim[0] <= imglim[0]
+	if cbar_top_test and cbar_bottom_test:
+		cbar_extend = 'neither'
+	elif not cbar_top_test and cbar_bottom_test:
+		cbar_extend = 'max'
+	elif cbar_top_test and not cbar_bottom_test:
+		cbar_extend = 'min'
+	else:
+		cbar_extend = 'both'
+	return cbar_extend
 
 class ImagePlotter(object):
 	def __init__(self, image, axis=None, colourbar_axis = None, cmap=plt.get_cmap('gray'), filepath=os.getcwd(), polygoncallback = None):
@@ -66,18 +80,7 @@ class ImagePlotter(object):
 	def AddColourbar(self):
 		'''Check for comparison of the image contrast limits vs the image data contrast
 		limits to indicate this on the colourbar as appropriate'''
-		cbar_limit_test = np.equal(self.PlottedImage.get_clim(), self.Image.Imglim)
-		if not np.any(cbar_limit_test):
-			cbar_extend = 'both'
-		elif np.all(cbar_limit_test):
-			cbar_extend = 'neither'
-		else:
-			if cbar_limit_test[0] and self.PlottedImage.get_clim()[0] > self.Image.Imglim[0]:
-				cbar_extend = 'max'
-			elif cbar_limit_test[1] and self.PlottedImage.get_clim()[1] < self.Image.Imglim[0]:
-				cbar_extend = 'min'
-			else:
-				cbar_extend = 'neither'
+		cbar_extend = cbarextensionfinder(self.PlottedImage.get_clim(), self.Image.Imglim)
 		'''Plot colourbar'''
 		cbar = plt.colorbar(mappable=self.PlottedImage, cax=self.colourbar_axis, extend=cbar_extend)
 		return cbar
@@ -103,7 +106,7 @@ class ImagePlotter(object):
 			self.image_key_commands(event.key)
 		elif event.inaxes == self.colourbar_axis:
 			if event.key == 'e':
-				self.save_colourbar(filename=(os.path.join(self.filepath, 'Colourbar_.png')))
+				self.save_colourbar(filename=(os.path.join(self.filepath, self.canvas.get_window_title() + '_Colourbar_.png')))
 	
 	def image_key_commands(self, key):
 		if self.mover:
@@ -135,9 +138,9 @@ class ImagePlotter(object):
 			self.mover = PolygonMover.PolygonMover(
 				self.PolygonGroups.GetActivePolygon(), self.axis)
 		elif key == 'e':
-			self.save_image(os.path.join(self.filepath, 'Image_.png'))
+			self.save_image(os.path.join(self.filepath, self.canvas.get_window_title() + '_Image.png'))
 		elif key == 'E':
-			self.save_image_scale(os.path.join(self.filepath, 'Image_scale_.png'))
+			self.save_image_scale(os.path.join(self.filepath, self.canvas.get_window_title() + '_Image_scale.png'))
 		elif key == 'a':
 			self.PolygonGroups.ToggleGroupActive()
 		elif key == 'delete':
@@ -161,14 +164,12 @@ class ImagePlotter(object):
 		new_extent = np.array([np.min((extent_colourbar.get_points()[0,:], extent_toptick.get_points()[0,:], extent_bottomtick.get_points()[0,:]), axis=0),
 			np.max((extent_colourbar.get_points()[1,:], extent_toptick.get_points()[1,:], extent_bottomtick.get_points()[1,:]), axis=0)])
 		extent_colourbar.set_points(new_extent)
-		if os.path.exists(filename):
-			filename = filename[:-4] + '-1' + filename[-4:]
+		filename = FileNamer.NameFile(filename)
+		print('Saving colourbar as...', filename)
 		plt.gcf().savefig(filename, bbox_inches=extent_colourbar, transparent=True)
-		print('Saved colourbar to...', filename)
 	
 	def save_image(self, filename):
 		self.Image.SaveImgAsPNG(filename, self.PlottedImage.get_clim(), cmap=plt.get_cmap(self.cmap))
-		print('Saved image to...', filename)
 		
 	def save_image_scale(self, filename):
 		if self.Image.calibration==0:
@@ -176,8 +177,8 @@ class ImagePlotter(object):
 			return
 		self.axis.yaxis.set_major_locator(NullLocator())
 		self.axis.xaxis.set_major_locator(NullLocator())
+		filename = FileNamer.NameFile(filename)
 		plt.savefig(filename, transparent=True, bbox_inches='tight', pad_inches=0)
-		print('Saved scalebar figure to...', filename)
 	
 	def add_polygon_callback(self, polygon):
 		self.creator = None
