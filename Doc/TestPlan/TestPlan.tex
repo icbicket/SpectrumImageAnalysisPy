@@ -23,6 +23,7 @@
 \input{../Comments}
 
 \begin{document}
+\label{Doc:TestPlan}
 \bibliographystyle{ieeetr}
 \title{SpectrumImageAnalysisPy} 
 \author{Isobel Bicket}
@@ -189,34 +190,6 @@ deconvolution algorithm will be explained.
 \paragraph{}
 
 \begin{enumerate}
-
-\item{Deconvolution error estimation - blank PSF}
-\label{TFR:RLblankPSF}
-
-Type: Functional, Dynamic, Automatic
-
-Initial State: Spectrum loaded into \progname{}.
-
-Input: A known spectrum (the data used in the paper by Bellido
-\textit{et al} \cite{bellido_toward_2014}).
-\wss{Don't wait to ask for the information from Bellido.  You should contact him
-    or her now.  This sounds like a nice test case.}\an{Already did! I hadn't
-    heard back by the time I finished this, though.} A range of integers will be
-used as input for the number of deconvolution iterations. The input of a
-point spread function to the deconvolution will be an array of ones.
-
-Output: A series of spectra deconvolved using the range of iterations given in
-the input, and a plot of the RMS error vs the number of iterations used.
-
-How test will be performed: A series of deconvolutions will be run on the
-artificial spectrum, with varying numbers of iterations to produce a set of
-deconvolved spectra. The difference between the deconvolved spectra and the
-original simulated spectrum will be calculated and the RMS error plotted as a
-function of number of iterations. Ideally the deconvolved spectra will be
-identical to the input spectrum, because we are using a null function as the PSF
-reference.\\
-
-
 \item{Deconvolution error estimation}
 \label{TFR:RLerror}
 
@@ -1106,6 +1079,35 @@ the image (\textit{e.g.} -20 rounds to 0, 135 rounds to 99).
 
 \end{enumerate}
 
+\subsection{Deconvolution}
+This section describes the unit tests concerning the deconvolution of a spectrum
+or spectrum image (\hyperref[deconvolution]{IM2},
+\hyperref[R_deconvolution]{R6}).
+
+\begin{enumerate}
+    \item{Deconvolution error estimation - blank PSF}
+    \label{TFR:RLblankPSF}
+    
+    Type: Functional, Dynamic, Automatic
+    
+    Initial State: Spectrum loaded into \progname{}.
+    
+    Input: A known spectrum (the data used in the paper by Bellido
+    \textit{et al} \cite{bellido_toward_2014}).
+    \wss{Don't wait to ask for the information from Bellido.  You should contact him
+        or her now.  This sounds like a nice test case.}\an{Already did! I hadn't
+        heard back by the time I finished this, though.} A range of integers will be
+    used as input for the number of deconvolution iterations. The input of a
+    point spread function to the deconvolution will be an array of ones.
+    
+    Output: An exception stating that the system cannot handle data with a zero
+    on the denominator of the deconvolution algorithm.
+    
+    How test will be performed: A deconvolution will be run on the simulated
+    spectrum, using the PSF described above. An exception should be raised,
+    since this PSF is composed of mostly zeros and results in zeros in the
+    denominator of the RL algorithm (given in \hyperref[deconvolution]{IM2})\\
+\end{enumerate}
 \subsection{Normalization}
 This section details the unit tests concerning the normalization of a spectrum
 (\hyperref[normalization]{IM1}, \hyperref[R_normalization]{R7})

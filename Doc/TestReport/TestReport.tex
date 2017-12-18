@@ -1,6 +1,7 @@
 \documentclass[12pt, titlepage]{article}
 
 \usepackage{booktabs}
+\usepackage{xr-hyper}
 \usepackage{tabularx}
 \usepackage{hyperref}
 \hypersetup{
@@ -10,9 +11,15 @@
     linkcolor=red,
     urlcolor=blue
 }
-\usepackage[round]{natbib}
 
 \input{../Comments}
+\externaldocument{../TestPlan/TestPlan}
+\externaldocument{../SRS/SRS}
+\newcommand{\progname}{SpectrumImageAnalysisPy}
+
+\newcounter{reqnum} %Requirement Number
+\newcommand{\rthereqnum}{P\thereqnum}
+\newcommand{\rref}[1]{R\ref{#1}}
 
 \begin{document}
 
@@ -26,17 +33,17 @@
 
 \section{Revision History}
 
-\begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
+\begin{tabularx}{\textwidth}{p{4cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+December 18, 2017 & 1.0 & Initial draft\\
 \bottomrule
 \end{tabularx}
 
 ~\newpage
 
 \section{Symbols, Abbreviations and Acronyms}
+See \hyperref[Doc:SRS]{SRS} document for further definitions.\\
 
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{l l} 
@@ -47,7 +54,6 @@ Date 2 & 1.1 & Notes\\
   \bottomrule
 \end{tabular}\\
 
-\wss{symbols, abbreviations or acronyms -- you can reference the SRS tables if needed}
 
 \newpage
 
@@ -61,9 +67,33 @@ Date 2 & 1.1 & Notes\\
 
 \pagenumbering{arabic}
 
-This document ...
+This document details the results of the testing detailed in the
+\hyperref[Doc:TestPlan]{Test Plan}, for the code \progname, which can be found,
+along with the other documentation, on
+\url{https://github.com/icbicket/SpectrumImageAnalysisPy/tree/SpectrumImageAnalysisPy_dev}. 
+Data and results from testing can be found under 
+\url{/home/isobel/Documents/McMaster/PythonCodes/DataAnalysis/src/TestCase}.
 
 \section{Functional Requirements Evaluation}
+\subsection{\rref{R_SI_inputs}: SI Inputs}
+
+\subsection{\rref{R_spectrum_inputs}: Spectrum Inputs}
+
+\subsection{\rref{R_Input_dimension}: Input Verification}
+
+\subsection{\rref{R_SI_slicing}: Slice (1D) SI and extract Image}
+
+\subsection{\rref{R_SI_area}: Mask (2D) SI and extract Spectrum}
+
+\subsection{\rref{R_deconvolution}: Richardson-Lucy Deconvolution}
+
+
+
+\subsection{\rref{R_normalization}: Normalization}
+
+\subsection{\rref{R_background}: Background subtraction}
+
+\subsection{\rref{R_gain}: Gain Correction}
 
 \section{Nonfunctional Requirements Evaluation}
 
