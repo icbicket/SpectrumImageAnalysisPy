@@ -55,7 +55,6 @@ class SpectrumPlotter(object):
 		plotted_spectrum = self.linked_axis.plot(spectrum.SpectrumRange, 
 				spectrum.intensity, label=self.label)
 		return plotted_spectrum
-	
 		
 	def update_spectrum(self, line, spectrum):
 		line[0].remove()

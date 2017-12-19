@@ -90,15 +90,6 @@ class ImagePlotter(object):
 	def disconnect(self):
 		self.canvas.mpl_disconnect(self.cidkey)
 
-#	def connect_mouse(self):
-#		self.cidbutton = self.canvas.mpl_connect('button_press_event', 
-#			self.LineProfileStart)
-#		self.cidbuttonrelease = self.canvas.mpl_connect('button_release_event',
-#			self.LineProfileEnd)
-#	
-#	def disconnect_mouse(self):
-#		self.canvas.mpl_disconnect(self.cidbutton)
-#		
 	def keyboard_press(self, event):
 		if event.inaxes == self.axis:
 			self.image_key_commands(event.key)
@@ -143,17 +134,8 @@ class ImagePlotter(object):
 			self.PolygonGroups.ToggleGroupActive()
 		elif key == 'delete':
 			self.PolygonGroups.DeleteActivePolygon()
-		elif key == 'd':
-#			self.connect_mouse()
-			self.Lines.ConnectDraw()
 		plt.draw()
 
-	def LineProfileStart(self, event):
-		self.LineStart = (event.x, event.y)
-		
-	def LineProfileEnd(self, event):
-		self.LineEnd = (event.x, event.y)
-		self.LineProfile = LineProfile.LineProfilePlot(self.Image, self.LineStart, self.LineEnd)
 
 	def save_colourbar(self, filename):
 		extent_colourbar = self.colourbar_axis.get_window_extent().transformed(plt.gcf().dpi_scale_trans.inverted())
