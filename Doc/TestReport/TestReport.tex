@@ -264,7 +264,14 @@ test file. Coverage statistics for these files can be found in
 
 \section{Automated Testing}
 A Git Hook is used to automatically run the unit tests with every commit,
-providing automatic continuous integration testing.
+providing automatic continuous integration testing, using the following code in
+a pre-commit hook.
+\begin{lstlisting}
+#!/bin/bash
+cd src
+python3 -m unittest *_test.py
+exit $?
+\end{lstlisting}
 
 \section{Trace to Requirements}
 Table \ref{Table:R_trace} shows the connections between the tests and testing

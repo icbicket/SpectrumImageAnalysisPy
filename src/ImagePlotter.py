@@ -9,8 +9,6 @@ from matplotlib.patches import Polygon
 import PolygonMover
 import os
 from skimage.measure import profile_line
-#import LineProfile
-import LineDraw
 import FileNamer
 
 def cbarextensionfinder(clim, imglim):

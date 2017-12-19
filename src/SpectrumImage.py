@@ -51,10 +51,6 @@ class SpectrumImage(object):
 		self.spectrum_units = spectrum_units
 		## Add calibration for x, y, E/wavelength
 		
-#	def SpatialFilter(self):
-#		kernel = np.array(
-
-		
 class CLSpectrumImage(SpectrumImage):
 	def __init__(self, SI, WavelengthRange, spectrum_units='nm', calibration=0):
 		super(CLSpectrumImage, self).__init__(SI, spectrum_units, calibration)
