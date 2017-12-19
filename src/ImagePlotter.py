@@ -9,7 +9,7 @@ from matplotlib.patches import Polygon
 import PolygonMover
 import os
 from skimage.measure import profile_line
-import FileNamer
+import file_namer
 
 def cbarextensionfinder(clim, imglim):
 	cbar_top_test = clim[1] >= imglim[1]
@@ -144,7 +144,7 @@ class ImagePlotter(object):
 		new_extent = np.array([np.min((extent_colourbar.get_points()[0,:], extent_toptick.get_points()[0,:], extent_bottomtick.get_points()[0,:]), axis=0),
 			np.max((extent_colourbar.get_points()[1,:], extent_toptick.get_points()[1,:], extent_bottomtick.get_points()[1,:]), axis=0)])
 		extent_colourbar.set_points(new_extent)
-		filename = FileNamer.NameFile(filename)
+		filename = file_namer.name_file(filename)
 		print('Saving colourbar as...', filename)
 		plt.gcf().savefig(filename, bbox_inches=extent_colourbar, transparent=True)
 	
@@ -157,7 +157,7 @@ class ImagePlotter(object):
 			return
 		self.axis.yaxis.set_major_locator(NullLocator())
 		self.axis.xaxis.set_major_locator(NullLocator())
-		filename = FileNamer.NameFile(filename)
+		filename = file_namer.name_file(filename)
 		plt.savefig(filename, transparent=True, bbox_inches='tight', pad_inches=0)
 	
 	def add_polygon_callback(self, polygon):
