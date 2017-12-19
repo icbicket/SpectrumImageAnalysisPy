@@ -16,13 +16,20 @@
 }
 
 \input{../Comments}
+
+%\externaldocument{../Design/MG/MG}
 \externaldocument{../TestPlan/TestPlan}
 \externaldocument{../SRS/SRS}
+
 \newcommand{\progname}{SpectrumImageAnalysisPy}
 
 \newcounter{reqnum} %Requirement Number
 \newcommand{\rthereqnum}{P\thereqnum}
 \newcommand{\rref}[1]{R\ref{#1}}
+
+\newcounter{mnum}
+\newcommand{\mthemnum}{M\themnum}
+\newcommand{\mref}[1]{M\ref{#1}}
 
 \begin{document}
 
@@ -101,7 +108,7 @@ module in Spectrum.
 \subsection{\rref{R_SI_area}: Mask (2D) SI and extract Spectrum}
 Testing remains to be done.
 
-\subsection{\rref{R_deconvolution}: Richardson-Lucy Deconvolution}
+\subsection{\rref{R_deconvolution}: Richardson-Lucy Deconvolution \label{ssec:RLDeconv}}
 The test data for testing the RMS error and SNR of the deconvolution algorithm
 were obtained from Dr. E.P.Bellido and are the same datasets used in
 \cite{bellido_toward_2014}. The inputs to the deconvolution function are shown
@@ -229,11 +236,11 @@ function will be performed in the future.
 \label{sec:UnitTest}
 To date, partial unit testing has been performed on the following files:
 \begin{itemize}
-    \item Filenamer.py, used to name the files to be exported and avoid
+    \item Filenamer\_test.py, used to name the files to be exported and avoid
     conflicts with already existing files).
-    \item Spectrum.py, used to implement the Data 1D Spectrum module.
-    \item SpectrumImage.py, used to implement the Data 3D Spectrum module
-    \item ImagePlotter.py, implementing the Display 2D Image module.
+    \item Spectrum\_test.py, used to implement the Data 1D Spectrum module.
+    \item SpectrumImage\_test.py, used to implement the Data 3D Spectrum module
+    \item ImagePlotter\_test.py, implementing the Display 2D Image module.
 \end{itemize}
 
 The inputs, outputs, and procedure for each unit test can be found in each unit
@@ -249,45 +256,100 @@ test file. Coverage statistics for these files can be found in
 
 \section{Changes Due to Testing}
 \begin{itemize}
-    \item A zero in the denominator during RL deconvolution now raises an exception
+    \item A zero in the denominator during RL deconvolution now raises an
+    exception
     \item Minor bug fixes
     \item Rewrite of the file naming program for exporting files
 \end{itemize}
+
 \section{Automated Testing}
+A Git Hook is used to automatically run the unit tests with every commit,
+providing automatic continuous integration testing.
 
 \section{Trace to Requirements}
+Table \ref{Table:R_trace} shows the connections between the tests and testing
+files mentioned above and the functional requirements.
 
-\begin{table}[H]
+\begin{table}[h]
     \centering
-    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
         \hline
-        & & & & & \\
+        & \rref{R_SI_inputs} & \rref{R_spectrum_inputs} & \rref{R_Input_dimension}
+        & \rref{R_SI_slicing} & \rref{R_SI_area} & \rref{R_deconvolution} &
+        \rref{R_normalization} & \rref{R_background} & \rref{R_gain}\\
         \hline
-             &  &  &  & & \\ \hline
-                & &  & &  &  \\ \hline
-                  &  & &  &  &  \\ \hline
-             & &  &  &  &  \\ \hline
-        & & &  &  &  \\ \hline
-         & & &  &  &  \\ \hline
-         &  &  & &  &  \\ \hline
-         & & &  &  &  \\ \hline
-          &  &  &  & &  \\ \hline
-          &  &  &  &  & \\ \hline
+         Section \ref{ssec:RLDeconv} & & & & & & X & & & \\ \hline
+         Filenamer\_test.py & & & & X & X & & & & \\ \hline
+         Spectrum\_test.py & & & & X & & X & X & & \\ \hline
+         SpectrumImage\_test.py & X & & & & & & & & \\ \hline
+         ImagePlotter\_test.py & & & & X & & & & & \\ \hline
     \end{tabular}
-    \caption{Traceability Matrix Showing the Connections Between Functional Requirements and Tests}
+    \caption{Traceability Matrix Showing the Connections Between Functional
+        Requirements and Tests}
     \label{Table:R_trace}
 \end{table}
 
-\section{Trace to Modules}		
+\section{Trace to Modules}
+The relationship between the tests listed here and the different modules are
+listed in Tables \ref{Table:M_trace1}, \ref{Table:M_trace2}, and
+\ref{Table:M_trace3}.
+		
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        & M1 & M2 & M3 & M4 & M5 & M6 & M7 & M8 & M9 \\
+        \hline
+        Section \ref{ssec:RLDeconv} & & & & & & & & & \\ \hline
+        Filenamer\_test.py & & & & & & X & X & X & X \\ \hline
+        Spectrum\_test.py & & & & & & & & & \\ \hline
+        SpectrumImage\_test.py & & & & & & & & &  \\ \hline
+        ImagePlotter\_test.py & & & & & & & & & \\ \hline
+    \end{tabular}
+    \caption{Traceability Matrix Showing the Connections Between Modules and Tests (1)}
+    \label{Table:M_trace1}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+        \hline
+        & M10 & M11 & M12 & M13 & M14 & M15 & M16 & M17 \\
+        \hline
+        Section \ref{ssec:RLDeconv} & X & & & & & & & \\ \hline
+        Filenamer\_test.py & & & & & & & & \\ \hline
+        Spectrum\_test.py & X & X & & & X & & & \\ \hline
+        SpectrumImage\_test.py & & & & & &  & & \\ \hline
+        ImagePlotter\_test.py & & & & & &  & & \\ \hline
+    \end{tabular}
+    \caption{Traceability Matrix Showing the Connections Between Modules and Tests (2)}
+    \label{Table:M_trace2}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+        \hline
+        & M18 & M19 & M20 & M21 & M22 & M23 & M24 & M25 \\
+        \hline
+        Section \ref{ssec:RLDeconv} & & & & & & & & \\ \hline
+        Filenamer\_test.py & & & & & & & & \\ \hline
+        Spectrum\_test.py & & & & & & & & \\ \hline
+        SpectrumImage\_test.py & & & & & X &  & & \\ \hline
+        ImagePlotter\_test.py & X & & & & &  & & \\ \hline
+    \end{tabular}
+    \caption{Traceability Matrix Showing the Connections Between Modules and Tests (3)}
+    \label{Table:M_trace3}
+\end{table}
 
 \section{Code Coverage Metrics}
 Code coverage metrics were obtained using the Python coverage library
 (coverage.py-4.4.2) and represent the statement and branch coverage of the unit
-tests, to date.
+tests, to date. 
 
 \subsection{Statement Coverage}
 Statement coverage provides a value for the percentage of lines which were run
-during the unit tests.
+during the unit tests. The statistics can be found in Table \ref{Table:Statementcov}.
 
 \label{ssec:StatCov}
 \begin{table}[h!]
@@ -309,7 +371,9 @@ during the unit tests.
 \subsection{Branch Coverage}
 \label{ssec:BrCov}
 Branch coverage combines the number of statements run during the test with the
-number of branches covered during the test.
+number of branches covered during the test. The statistics for the branch
+coverage of the unit tests can be found in Table \ref{Table:Branchcov}.
+
 \begin{table}[h!]
     \centering
     \begin{tabular}{|c|c|c|c|c|c|}
@@ -326,7 +390,8 @@ number of branches covered during the test.
     \label{Table:Branchcov}
 \end{table}
 
-\newpage
+
+\clearpage
 \bibliographystyle{ieeetr}
 
 \bibliography{TestReport}
