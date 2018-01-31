@@ -4,6 +4,9 @@ import glob
 
 
 def name_file(filepath):
+    ''' If the filepath exists, find the last number associated with that
+    filename and add one more to it. If it does not exist, save the file
+    with the filename given'''
     if os.path.exists(filepath):
         new_name = find_latest_filename(filepath)
     else:
