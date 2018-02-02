@@ -1,0 +1,1047 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath, mathtools}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{colortbl}
+\usepackage{xr}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{xfrac}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{siunitx}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{pdflscape}
+\usepackage{afterpage}
+
+%\usepackage{refcheck}
+
+\hypersetup{
+    bookmarks=true,         % show bookmarks bar?
+      colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=red,          % color of internal links (change box color with
+%linkbordercolor)
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan           % color of external links
+}
+
+\input{../Comments}
+
+% For easy change of table widths
+\newcommand{\colZwidth}{1.0\textwidth}
+\newcommand{\colAwidth}{0.13\textwidth}
+\newcommand{\colBwidth}{0.82\textwidth}
+\newcommand{\colCwidth}{0.1\textwidth}
+\newcommand{\colDwidth}{0.05\textwidth}
+\newcommand{\colEwidth}{0.8\textwidth}
+\newcommand{\colFwidth}{0.17\textwidth}
+\newcommand{\colGwidth}{0.5\textwidth}
+\newcommand{\colHwidth}{0.28\textwidth}
+
+% Used so that cross-references have a meaningful prefix
+\newcounter{defnum} %Definition Number
+\newcommand{\dthedefnum}{GD\thedefnum}
+\newcommand{\dref}[1]{GD\ref{#1}}
+\newcounter{datadefnum} %Datadefinition Number
+\newcommand{\ddthedatadefnum}{DD\thedatadefnum}
+\newcommand{\ddref}[1]{DD\ref{#1}}
+\newcounter{theorynum} %Theory Number
+\newcommand{\tthetheorynum}{T\thetheorynum}
+\newcommand{\tref}[1]{T\ref{#1}}
+\newcounter{tablenum} %Table Number
+\newcommand{\tbthetablenum}{T\thetablenum}
+\newcommand{\tbref}[1]{TB\ref{#1}}
+\newcounter{assumpnum} %Assumption Number
+\newcommand{\atheassumpnum}{P\theassumpnum}
+\newcommand{\aref}[1]{A\ref{#1}}
+\newcounter{goalnum} %Goal Number
+\newcommand{\gthegoalnum}{P\thegoalnum}
+\newcommand{\gsref}[1]{GS\ref{#1}}
+\newcounter{instnum} %Instance Number
+\newcommand{\itheinstnum}{IM\theinstnum}
+\newcommand{\iref}[1]{IM\ref{#1}}
+\newcounter{reqnum} %Requirement Number
+\newcommand{\rthereqnum}{P\thereqnum}
+\newcommand{\rref}[1]{R\ref{#1}}
+\newcounter{lcnum} %Likely change number
+\newcommand{\lthelcnum}{LC\thelcnum}
+\newcommand{\lcref}[1]{LC\ref{#1}}
+
+\newcommand{\progname}{SpectrumImageAnalysisPy} % PUT YOUR PROGRAM NAME HERE
+
+\usepackage{fullpage}
+
+\begin{document}
+\label{doc:SRS}
+\bibliographystyle{ieeetr}
+\title{SpectrumImageAnalysisPy} 
+\author{Isobel Bicket}
+\date{\today}
+	
+\maketitle
+
+~\newpage
+
+\pagenumbering{roman}
+
+
+\section{Revision History}
+
+\begin{tabularx}{\textwidth}{p{4cm}p{2cm}X}
+	\toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
+	\midrule
+	October 4, 2017  & 1.0 & First draft\\
+	\today & 1.1 & Edits to first draft\\
+	\bottomrule
+\end{tabularx}
+
+~\newpage
+
+\tableofcontents
+
+\section{Reference Material}
+\label{SRS:RefMat}
+
+This section contains reference information to enable the reader to better
+understand the document.
+
+\subsection{Table of Units}
+\label{TableUnits}
+
+Throughout this document the system of units standard to the field of electron
+microscopy is used
+as the unit system, for consistency with relevant literature and practices. For
+each unit, the symbol is given followed by a
+description of the quantity described by the symbol and the unit name.
+~\newline
+
+\input{UnitTable.tex}
+
+\wss{Is ``number of particles'' a standard measure of intensity?  I did a quick
+  google search and I did not see any examples of intensity measured by the
+  number of particles.}\an{If you think about the physical process of detecting
+  a signal in the ideal case, you get one incoming photon and you get one count on
+  a spectrum (or image). So in this sense, you are counting the number of photons
+  (particles) which hit the detector at each pixel, and this builds up the
+  intensity of that pixel. More particles hitting one pixel than another means
+  that the first pixel has more intensity, so will be brighter/have higher counts.
+  It's usually not explicitly stated that the counts refers to the number of
+  particles, but I wanted to make this connection to the physical detector. In
+  reality, you have additional problems like dark current in the detector
+  electronics which add intensity to the spectrum/image which don't correspond to
+  actual particles, but in the ideal case, this would not be a problem. (I think
+  of it like 'counts'...what are you counting? ...things that hit the detector at
+  that pixel)}
+
+\subsection{Table of Symbols}
+\label{TableSymbols}
+
+The table that follows summarizes the symbols used in this document along with
+their units. The symbols are listed in alphabetical order.
+
+\input{SymbolTable.tex}
+
+\subsection{Abbreviations and Acronyms}
+
+\input{Abbr_acronymsTable.tex}
+
+\newpage
+\pagenumbering{arabic}
+
+\section{Introduction}
+Three-dimensional datasets are produced by many spectro-microscopy techniques:
+techniques in which the response of a sample is mapped in two spatial domains
+and one spectral dimension. The visualization of 3D spectro-microscopy datasets
+is a challenging and often non-intuitive task. The motivation behind this
+software is to enable easy visualization and navigation through a 3D dataset to
+discover the features of the sample in both spatial and spectral domains. The
+data processing methods of 3D datasets are not trivial to perform and require a
+dedicated software designed to handle 3D data. This document provides the
+Software Requirements Specification (SRS) for a software designed to visualize
+and process 3D spectro-microscopy datasets derived from electron energy loss
+spectroscopy or cathodoluminescence.
+
+\subsection{Purpose of Document}
+
+This document details the requirements of the software \progname{}. The
+responsibilities of the user and software are laid out and the requirements that
+the software must satisfy are explicitly detailed.
+
+\subsection{Scope of Requirements} 
+The scope of the requirements for the software \progname{} is limited to the
+import of; removal of instrumentation artifacts from; visualization and
+navigation through \wss{Do you want the word through here?}\an{yes, though I
+    have changed the rest of the clauses to match the same structure}; and export of
+EELS and CL spectrum imaging data.
+
+\subsection{Characteristics of Intended Reader} 
+The reader of this document should have an understanding of spectrum imaging
+techniques, particularly EELS and CL, and the data processing methods used to
+remove effects of the acquisition system from the data acquired. A basic
+knowledge of convolution theory, as might be obtained from an introductory
+post-secondary calculus or image processing course, will be helpful to the
+reader, as will an understanding of the characteristics of 3D datasets. The
+reader should understand EELS and CL, from either field experience or from an
+upper year post-secondary course on electron microscopy, as relevant to the
+sections of the document.  \wss{Can you also relate these characteristics to a
+    standard degree and level?  For instance, are you assuming an undergraduate
+    degree in physics?}\an{To be honest, I don't think there is a standard education
+    for understanding microscopy data or techniques. I suppose the lower limit would
+    be secondary school physics, but beyond that I can picture university
+    students/graduates, college students/graduates, employees in the
+    field/lab...anyone with formal or informal education in the field should be able
+    to read this. I have tried to clarify this more in the text.}
+
+\subsection{Organization of Document}
+
+The document follows the organizational scheme laid out by Smith \textit{et al.}
+\cite{SmithAndLai2005, smith_requirements_2007}, starting with general reference
+material for the reader. The introduction of the document details the purpose of
+the document and intended reader, and is followed by the General System
+Description. The Specific System Description reduces the problem under
+consideration to a set of clearly defined definitions and models. The
+Requirements section of the document clearly outlines both the Functional and
+Non-functional Requirements that the software must comply with. Finally, the
+document contains a list of Likely Changes to the software and Traceability
+matrices and graphs.
+
+\section{General System Description}
+
+This section identifies the interfaces between the system and its environment
+and describes the user characteristics and lists the system constraints.
+
+\subsection{System Context}
+
+Use of the software \progname{} confers the following responsibilities to the
+part of the user and to the program.
+
+\subsubsection{User Responsibilities}
+The user must
+\begin{itemize}
+	\item provide the correct input data to the program;
+	\item be capable of interacting with the software via a mouse, keyboard, and
+screen;
+	\item have the necessary dependencies for the program installed; and
+	\item possess sufficient knowledge on what processing steps need to be
+performed and be able to judge that the quality of the output data is sufficient
+for the application, or change the processing steps performed.
+\end{itemize}
+    
+\subsubsection{\progname{} Responsibilities}
+The program must
+\begin{itemize}
+	\item read inputs (either files or data arrays) and check the inputs for the
+correct data type and size;
+	\item display the data and graphical user interface for the user to interact
+with;
+	\item respond to user commands and accept user input as appropriate, including
+visualization and data processing commands; and
+	\item export data in the correct file format(s).
+\end{itemize}
+
+\subsection{User Characteristics} \label{SecUserCharacteristics}
+
+The end user of \progname{} should be familiar with the concept of a spectrum
+image and an understanding of what the data represents and the appropriate
+actions needed to process spectrum images and extract useful information. A
+basic familiarity with programming is expected. An
+understanding of the spectro-microscopy technique (CL or EELS) used to generate
+the data will
+be beneficial, but is not strictly required. 
+
+\subsection{System Constraints}
+
+The software must be able to read .dm3 files for EELS data import, and .h5 files
+for CL data import to be able to interface with output from the data acquisition
+software.  \wss{Great example of a constraint.}
+
+\section{Specific System Description}
+
+This section first presents the \hyperref[ssec:PD]{problem description}, which
+gives a high-level
+view of what the program is expected to do. The solution characteristics
+specification follows, detailing 
+\begin{itemize}
+    \item the \hyperref[sssec:Assumptions]{assumptions} that the software will make;
+    \item the \hyperref[sssec:TM]{theoretical models} the data analysis is based on;
+    \item \hyperref[sssec:DD]{definitions} for the types of data that the
+    software must be able to process; and
+    \item the \hyperref[sssec:IM]{instance models}, which detail the data
+    processing algorithms that the software will implement.
+    \end{itemize}
+
+\subsection{Problem Description} \label{ssec:PD}
+
+\progname{} is a software to allow users to import, process, navigate, and
+export 3D spectrum image data. 
+
+\subsubsection{Terminology and  Definitions}
+
+This subsection provides a list of terms that are used in the subsequent
+sections and their meaning, with the purpose of reducing ambiguity and making it
+easier to correctly understand the requirements:
+
+
+\input{Terminology_Definitions.tex}
+
+\subsubsection{Physical System Description}
+
+The physical system that the program is concerned with the analysis of includes
+the following elements:
+
+\begin{itemize}
+	\item[PS1:] Sample under study.
+	\item[PS2:] STEM equipped with EEL spectrometer.
+	\item[PS3:] SEM or STEM equipped with CL collection system.
+\end{itemize}
+
+\subsubsection{Goal Statements}
+
+\noindent Given a spectrum image dataset collected by either EELS or CL and a
+desire to visualize and process this dataset, the goal statements for
+\progname{} are
+
+\begin{itemize}
+	\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_ImportDisplay}:] Import a
+3D dataset and display it such that the user can interact with it and navigate
+all three dimensions.
+	\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_Processing}:] Provide
+processing options, including normalization and deconvolution for EELS SI;
+background subtraction and gain correction for a CL SI.
+	\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_Extraction}:] Extract
+slices and areas from the dataset as desired by the user and communicated
+through the user interface.
+    \item[GS\refstepcounter{goalnum}\thegoalnum \label{G_Export}:] Export
+    spectrum, image, or spectrum image data as desired by the user.
+\end{itemize}
+
+\wss{Sounds good!}
+
+\subsection{Solution Characteristics Specification}
+
+The assumptions used in consideration of spectrum imaging datasets are given in
+this section, followed by the models and definitions used to clearly define the
+data processing steps.
+
+\subsubsection{Assumptions}\label{sssec:Assumptions}
+
+This section simplifies the original problem and helps in developing the
+theoretical model by filling in the missing information for the physical
+system. The numbers given in the square brackets refer to the theoretical model
+[T], general definition [GD], data definition [DD], instance model [IM], or
+likely change [LC], in which the respective assumption is used.
+
+\begin{itemize}
+
+	\item[A\refstepcounter{assumpnum}\theassumpnum \label{EELS_System_Response}:]
+The EELS data can be described as the convolution of the ``real'' spectrum of
+the sample with the response of the microscope and spectrometer system function.
+The microscope and spectrometer system typically causes broadening in the peaks
+of the ``real'' spectrum.
+	
+	\item[A\refstepcounter{assumpnum}\theassumpnum \label{EELS_PSF_variability}:]
+The same PSF is valid for all pixels in the EELS spectrum image.
+	
+	\item[A\refstepcounter{assumpnum}\theassumpnum
+\label{EELS_Intensity_Fluctuations}:] Fluctuations in the intensity of the EELS
+signal are due to changes in the beam current as collected by the spectrometer.
+	
+	\item[A\refstepcounter{assumpnum}\theassumpnum \label{CL_Background}:] A
+subtraction is sufficient to \wss{to?}\an{yes!} remove the contributions of the
+dark signal and the substrate signal from the CL sample signal.
+	
+	\item[A\refstepcounter{assumpnum}\theassumpnum \label{CL_System_Response}:] The
+CL spectrometer wavelength sensitivity can be accurately modelled by
+experimental reference data.
+
+\end{itemize}
+
+\subsubsection{Theoretical Models}\label{sssec:TM}
+
+This section focuses on the general equations and laws underlying the data
+acquisition process on a camera, providing the motivation for the data
+processing models that \progname{} will implement.
+
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		  \hline
+		  \rowcolor[gray]{0.9}
+		  Number& T\refstepcounter{theorynum}\thetheorynum \label{intensity}\\
+		  \hline
+		  Label&\bf Intensity \\
+		  \hline
+		  Equation& $\zeta(k) = g(k) S(k) + b(k) + N(k)$ \\
+		  \hline
+		  Description & The signal, $\zeta(k)$ (\tref{signal}), obtained from each
+pixel, $k$, on the CCD detector can be considered as a sum of several different
+contributions: 
+		  \begin{itemize}
+			\item the signal obtained from the microscope $S(k)$, which is multiplied by
+the gain factor $g(k)$ of the pixel; 
+			\item the background signal of each pixel $b(k)$; and
+			\item the noise present at each pixel $N(k)$.
+		  \end{itemize}\\
+		  \hline
+		  Source & \cite{zuo_electron_2000}\\
+		  \hline
+		  Ref.\ By & \ddref{PSF}, \iref{background}, \iref{gain} \\
+		  \hline
+	\end{tabular}
+\end{minipage}\\
+
+%T2
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		  \hline
+		  \rowcolor[gray]{0.9}
+		  Number& T\refstepcounter{theorynum}\thetheorynum \label{signal}\\
+		  \hline
+		  Label&\bf Signal \\
+		  \hline
+		  Equation& $S(k)=\int_{\textit{pixel}}d\rho \lfloor \int f(\rho') h(\rho, \rho')
+d\rho' \rfloor$ (continuous)\\
+		  & $ S(k)=\sum_{k'} f(k') h(k, k')$ (discrete)\wss{Maybe in brackets
+                    after each option for $S(k)$ you should mention which
+                    version it is (continuous versus discrete).  Otherwise it is
+          confusing why you define a function twice.}\an{Ok, that makes sense.}\\
+		  \hline
+		  Description & The signal $S(k)$ (continuous) from the microscope, as read at
+          one pixel on the CCD ($k$), is an integral over the area of one pixel, and
+          becomes $S(k)$ (discrete). Inside the integral of the continuous function is
+          the probability ($f(\rho')$) of an electron landing at position $\rho'$ on
+          the detector given the interaction of the beam with the sample, multiplied
+          by the probability ($h(\rho, \rho')$) of detecting an electron at location
+          $\rho$ if the electron arrives at position $\rho'$ on the detector. The probability
+        $h(\rho, \rho')$ of detecting an electron at one location after it hits the
+        detector at another location is the point spread function (PSF: \ddref{PSF}).
+        Discretization of the Signal is done by the camera; each pixel in the camera
+        integrates signal over its area, discretizing a continuous Signal into discrete
+        Signal at each pixel.
+                                \wss{When do you use the continuous versus the
+                                    discrete version?}\an{I have tried to clarify
+                                    this in the text.}\\
+		  & The second equation is the discretized version of the first. The signal
+$S(k)$ is the sum over all pixels $k'$ of the probability ($f(k')$) of an
+electron hitting pixel $k'$ multiplied by the probability ($h(k, k')$) of
+detecting an electron at $k$ after it hits pixel $k'$.\\
+		  \hline
+		  Source & \cite{zuo_electron_2000}\\
+		  \hline
+		  Ref.\ By & \tref{intensity}, \ddref{Spectrum}, \ddref{PSF},
+\iref{deconvolution}\\
+		  \hline
+	\end{tabular}
+\end{minipage}\\
+
+~\newline
+
+\subsubsection{General Definitions}\label{sec_gendef}
+
+This section provides a definition beneficial to understanding the data
+definitions.
+
+%GD1
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& GD\refstepcounter{defnum}\thedefnum \label{grid}\\
+		\hline
+		Label & \textbf{Scanning grid}  \\
+		\hline
+		Units& \si{\nano\metre}\\
+		\hline
+		Equation& $P(x,y) = \{\langle x, y \rangle \in A \mid x \in \{0..X\}, y \in
+\{0..Y\} \}$\\
+		\hline
+		Description & $P(x,y)$ is a set of position coordinates describing the
+possible locations of the beam in two spatial coordinates $(x, y)$ during a
+raster scan across the sample in a rectangular grid pattern across the area on
+the sample, $A^2$. The limits on $(x,y)$ are set by the operator on the
+instrument, ranging from 0 to the maximum $(X,Y)$. \wss{Do you really mean
+                              $A^2$?  I would have thought you just meant $A$.}
+                            \an{I had a reason for doing that, but now I don't remember why...I have changed it}
+		\\
+		  \hline
+		  Ref.\ By & \ddref{SI}\\
+		  \hline
+	\end{tabular}
+\end{minipage}\\
+
+\subsubsection{Data Definitions}\label{sssec:DD}
+
+This section collects and defines the data types needed to build the instance
+models.
+
+% DD1
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{Spectrum}\\
+		\hline
+		Label& \bf Spectrum\\
+		\hline
+		Symbol & $I(E)$\\
+		\hline
+		Units & Electron counts (EELS)\\
+		& Photon counts (CL)\\
+		& or arbitrary units (a.u.) for EELS or CL\\
+		  \hline
+		  Equation &$I(E) = \zeta(k=0..K)$\\
+		  \hline
+		  Description & Each pixel ($k$) on the spectrometer CCD has an energy loss
+          (EELS) or wavelength (CL) value associated with it ($E$, where $E$ is also
+          function of $k$), obtained from the spectrometer acquisition settings, and a
+          collected signal ($\zeta(k)$, \tref{signal}). The intensity of the spectrum
+          ($I(E)$, in electron counts for EELS and photon counts for CL) is obtained
+          from the collected signal over the whole CCD, from the 0th pixel to the
+          final ($K$th) pixel on the CCD. \wss{Which count applies is not clear.  Does
+              the user select this, or does it change depending on the type of imaging, or
+              something else?  This might be something you can address under
+              your requirements?}\an{I've tried to clarify this: when you are
+              doing EELS, you are counting electrons at each pixel, when you are
+              doing CL, you are counting photons at each channel, so it depends
+              on the type of experiment you did. It's covered in the modules via
+              an input argument.}\\
+		  \hline
+		  Sources & \cite{egerton_introduction_2011} \\
+		  \hline
+		  Ref.\ By & \tref{signal}, \ddref{SI}, \ddref{PSF}, \iref{normalization},
+\iref{deconvolution}, \iref{background}, \iref{gain}\\
+		  \hline
+	\end{tabular}
+\end{minipage}\\
+
+% DD2
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+\renewcommand*{\arraystretch}{1.5}
+\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+	\hline
+	\rowcolor[gray]{0.9}
+	Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{SI}\\
+	\hline
+	Label& \bf Spectrum Image\\
+	\hline
+	Symbol &$I(x, y, E)$\\
+	\hline
+	Units & Electron counts (EELS)\\
+	& Photons (CL)\\
+	& or arbitrary units (a.u.) for EELS or CL\\
+	\hline
+	Equation& $I(x, y, E): \forall \langle x, y \rangle \in P(x,y), \exists
+I(x,y,E) \in \mathbb{R}$\\
+	\hline
+	Description & For all the pixels ($(x,y)$ pairs) within the scanning grid
+    acquired ($P(x,y)$, \dref{grid}), there is a Spectrum, ($I(x,y,E)$,
+    \ddref{Spectrum}), collected by the spectrometer. \wss{I suggest you restate
+        the math from the above equation in natural language.}\an{I have tried to
+        rephrase this, though I think it is very similar to what I said before and I'm
+        not sure what you want me to change...}
+	\\
+	\hline
+	Sources&~\cite{jeanguillaume_spectrum-image:_1989}  \\
+	\hline
+	Ref.\ By & \ddref{PSF}, \iref{normalization}, \iref{deconvolution}\\
+	\hline
+\end{tabular}
+\end{minipage}\\
+
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{PSF}\\
+		\hline
+		Label& \bf Point Spread Function\\
+		\hline
+		Symbol &$I_{\textit{PSF}}(E)$\\
+		\hline
+		Units & Electron counts or arbitrary units (a.u.) (EELS)\\
+		  \hline
+		  Equation&$I_{\textit{PSF}}(E) = \zeta(k) = g(k) S'(k) + b(k) +
+                            N(k),\ k \in [0..K]$ \wss{defining the limits on $k$ inside the
+                            function seems odd to me.  Maybe you could just say
+                            $\zeta(k)$ and then follow the equation with a comma
+          and $k \in [0..K]$?}\an{Sure, ok}\\
+		  \hline
+		  Description & $I_{PSF}(E)$ is a reference spectrum ($I(E)$,
+\ddref{Spectrum}) representing the point spread function (see \tref{signal}) on
+the collected spectra in the spectrum image (\ddref{SI}). It is a spectrum
+collected, ideally, with no interaction with a sample; the variables in the
+equation are defined as in \tref{intensity}, with the exception of $S'(k)$,
+which is an example of $S(k)$ with no sample interaction with the beam.
+		  \\
+		  \hline
+		  Sources&~\cite{zuo_electron_2000, jeanguillaume_spectrum-image:_1989,
+gloter_improving_2003}  \\
+		  \hline
+		  Ref.\ By & \tref{signal}, \iref{deconvolution}\\
+		  \hline
+	\end{tabular}
+\end{minipage}\\
+
+\subsubsection{Instance Models} \label{sssec:IM}    
+
+This section details the instance models, which are the algorithms that the code
+must perform to process spectrum imaging data, given the data types defined in
+Data Definitions above.
+
+The data processing goal \gsref{G_Processing} is solved by the following
+instance models (\iref{normalization}, \iref{deconvolution}, \iref{background}
+\iref{gain}).
+
+~\newline
+
+%Instance Model 1
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		  \hline
+		  \rowcolor[gray]{0.9}
+		  Number& IM\refstepcounter{instnum}\theinstnum \label{normalization}\\
+		  \hline
+		  Label& \bf Normalization to the integral\\
+		  \hline
+		  Input& $k_1$  is the index of beginning of the spectrum range (spectrum
+axis), user input\\
+		  & $k_2$ is the index of end of the spectrum range (spectrum axis), user
+input\\
+		  & $I(E)$ is the spectrum, user input\\
+		  & The input is constrained such that $k_1 >= 0$, and $k_2 <= N$\\
+		  \hline
+		  Equation &
+                             $I_{\textit{norm}}(E)=\frac{I(E)}{\sum_{E(k=k_1)}^{E(k=k_2)}
+                             I(E(k))}$ \wss{Technically, LaTeX will interpret
+                             norm in the equation as n times o times r ... in
+                             terms of spacing.  You probably actually want
+                             $I_{\textit{norm}}$.  Your reviewer (Keshav) noted that the
+                             denominator looks odd for this equation.  I agree.
+          :-)}\an{I have changed the subtext and moved the misplaced bracket!}\\
+		  \hline
+		  Output & Normalized spectrum\\
+		  \hline
+		  Description&$I(E)$ is a spectrum (\ddref{Spectrum}), user input.\\
+		  &$k_1$: Index of beginning of spectrum range (spectrum axis), user input.\\
+		  &$k_2$: Index of end of spectrum range (spectrum axis), user input.\\
+		  &$K$: Last index along the spectral axis.\\
+		  &$x$: Location along first spatial axis.\\
+		  &$y$: Location along second spatial axis.\\
+		  &$I_{\textit{norm}}(E)$: Spectrum normalized along the spectral axis to the integral
+defined by a user.\\
+		  & Note that this algorithm can be applied to a 3D spectrum image
+(\ddref{SI}) by applying the algorithm to each $(x,y)$ pixel independently.\\
+		  \hline
+		  Sources & -- \\
+		  \hline
+		  Ref.\ By & \iref{deconvolution}\\
+		  \hline
+	\end{tabular}
+\end{minipage}\\
+
+~\newline
+
+%Instance Model 2
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number & IM\refstepcounter{instnum}\theinstnum \label{deconvolution}\\
+		\hline
+		Label & \bf Richardson-Lucy Deconvolution\\
+		\hline
+		Input& $I_{\textit{PSF}}(E)$ is the point spread function of the instrument (see
+\ddref{PSF}).\\
+		& $I_{\textit{real}}^0(E)$ is the initial guess for the ``real'' spectrum
+(\ddref{Spectrum}).\\
+		& $I_{\textit{measured}}(E)$ is the measured spectrum, as obtained from the
+spectrometer software (\ddref{Spectrum}).\\
+		& $R$ is the total (non-negative integer) number of iterations of the
+deconvolution algorithm applied to the spectrum. \\
+		& $c$ is the number of the current iteration (at iteration 0, $c$ = 0).\\
+		& $i$, $j$, $l$ are each indices of pixels in the spectrum. Three different
+variables are used for the pixel index to make the effect of the different
+summations clear.\\
+		\hline
+		Equation & $I_{\textit{real} (j)}^{c+1}(E)=I_{\textit{real}
+(j)}^c(E)\sum_i{\frac{I_{\textit{PSF}}(E)I_{measured}(E)}{\sum_l{I_{\textit{PSF}}(E)I_{\textit{real}
+(l)}^c(E)}}}$, while $c < R$\\
+		\hline
+		Output& $I_{\textit{deconvolved}}(E_k)=I_{\textit{real} (j)}^{R}(E)$\\
+		\hline
+		Description & The purpose of the RL deconvolution algorithm is to separate the
+effects of the spectrometer point spread function from the ``real'' signal of
+the sample. \textit{I.e.} in \tref{signal}, the signal is described as the
+convolution of the point spread function with the signal from the microscope.
+Deconvolution is usually run after normalization of the spectra
+(\iref{normalization}) to eliminate effects of changes in the beam current.\\
+		& This algorithm can also  be expanded to apply to the 3D spectrum image
+(\ddref{SI})) by applying it at every $(x,y)$ pixel in the spectrum image.\\
+		\hline
+		Sources&~\cite{gloter_improving_2003, bellido_toward_2014} \ \\
+		\hline
+		Ref.\ By & --\\
+		\hline
+	\end{tabular}
+\end{minipage}\\
+
+~\newline
+
+%Instance Model 3
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& IM\refstepcounter{instnum}\theinstnum \label{background}\\
+		\hline
+		Label& \bf Background subtraction\\
+		\hline
+		Input & $I_{\textit{collected}}$ is the spectrum as collected by the spectrometer.\\
+		& $I_{\textit{background}}(E)$ is a spectrum representing the background to be
+subtracted (this could be associated with the dark signal or with the signal
+coming from unwanted sources: \textit{e.g.} outside noise, substrate
+signal...).\\
+		\hline
+		Equation & $I_{\textit{sample}}=I_{\textit{collected}}-I_{\textit{background}}$\\
+		\hline
+		Output& $I_{\textit{sample}}(E)$\\
+		\hline
+		Description & This model addresses the removal of background contributions to
+the signal ($b(k)$ in \tref{intensity}), where $b(k)$ is transformed to a
+spectrum (\ddref{Spectrum}) as a function of energy.\\
+		& The background spectrum must be of the same dimensions as the spectrum it is
+to be removed from. For the spectrum image, the background spectrum may be
+applied independently to each pixel.\\
+		\hline
+		Sources & -- \\
+		\hline
+		Ref.\ By & --\\
+		\hline
+	\end{tabular}
+\end{minipage}\\
+
+~\newline
+
+%Instance Model 4
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& IM\refstepcounter{instnum}\theinstnum \label{gain}\\
+		\hline
+		Label& \bf Gain correction\\
+		\hline
+		Input & $I_{\textit{collected}}$ is the spectrum (\ddref{Spectrum}) of the signal as
+collected by the spectrometer (see \tref{intensity}).\\
+		& $g(E)$ is the gain ``spectrum'' of the spectrometer $g(k)$ transformed into
+a function of energy (\ddref{Spectrum}).\\
+		\hline
+		Equation & $I_{\textit{corrected}}(E)=\frac{I_{\textit{collected}}(E)}{g(E)}$\\
+		\hline
+		Output& $I_{\textit{corrected}}(E)$ is the spectrum after the gain correction from the
+spectrometer CCD is applied.\\
+		\hline
+		Description & This model addresses the removal of the gain ($g(k)$ in
+\tref{intensity}) from the collected signal, where $g(k)$ is transformed to a
+``spectrum'' (\ddref{Spectrum}) as a function of energy.\\
+		\hline
+		Sources & --\\
+		\hline
+		Ref.\ By & --\\
+		\hline
+	\end{tabular}
+\end{minipage}\\
+
+\subsubsection{Data Constraints} \label{sec_DataConstraints}    
+This section details the constraints on the data that the software must process,
+including the input, processing steps, and output from the software. Physical
+constraints based on the expectations of the dataset are left out to allow the
+user more freedom in the input. The constraints on the data are defined as
+
+\begin{itemize}
+	\item The input spectrum image (\ddref{SI}) must be a 3D structure, or a 3D
+structure contained within a .dm3 or .h5 file.
+	\item The user input number of iterations to use for the deconvolution
+algorithm must be an integer number greater than or equal to 0.
+	\item For the normalization model, the user input of the number of bins to
+normalize must not be empty.
+	\item The user input of the background signal (\iref{background}) must be of
+the same length along the spectral axis as the spectrum image it will be applied
+to.
+	\item The user input of the gain signal (\iref{gain}) must be of the same
+length along the spectral axis as the spectrum image it will be applied to.
+	\item The normalization ({\iref{normalization}}) and deconvolution
+({\iref{deconvolution}}) data processing algorithms both include a division by
+experimentally-derived values. The denominator in these steps must not be 0.
+\end{itemize}
+
+\subsubsection{Properties of a Correct Solution} \label{sec_CorrectSolution}
+
+\noindent 
+Not applicable. A correct solution is determined by the satisfaction
+of the end user in using \progname{} to visualize and process their data.
+
+\section{Requirements}
+
+This section provides the functional requirements, the business tasks that the
+software is expected to complete, and the nonfunctional requirements, the
+qualities that the software is expected to exhibit.
+
+\subsection{Functional Requirements}
+\label{subsec:FR}
+
+\noindent \begin{itemize}
+
+	\item[R\refstepcounter{reqnum}\thereqnum \label{R_SI_inputs}:] Accept and read
+the following as Spectrum Image inputs:
+	
+	\begin{itemize}
+		\item 3D data array (\textit{e.g.}, already stored in computer memory)
+		\item File in format .dm3 containing 3D data array
+		\item File in format .h5 containing 3D data array
+	\end{itemize}
+	
+	\item[R\refstepcounter{reqnum}\thereqnum \label{R_spectrum_inputs}:] Accept and
+read the following as Spectrum inputs:
+	
+	\begin{itemize}
+		\item 1D data array
+		\item File containing 1D data array in .csv format
+	\end{itemize}
+
+	\item[R\refstepcounter{reqnum}\thereqnum \label{R_Input_dimension}:] Verify
+that all data inputs are of the correct dimensionality and composed of Real
+numbers
+	
+	\item[R\refstepcounter{reqnum}\thereqnum \label{R_SI_slicing}:] Accept user
+input to select a spectral range and extract $(x,y)$ slices averaged over the
+selected spectral range and display the $(x,y)$ slice as an image. The software
+should also export this image to an image file, as desired by the user.
+	
+	\item[R\refstepcounter{reqnum}\thereqnum \label{R_SI_area}:] Accept user input
+to define an area on an $(x,y)$ image display and extract a spectrum averaged
+over selected pixels. The software should also export this spectrum as a *.csv
+file, as desired by the user.
+	
+	\item[R\refstepcounter{reqnum}\thereqnum \label{R_deconvolution}:] Given a 1D
+spectrum array and an integer number, the software should perform that number of
+deconvolution iterations on a 3D EELS dataset using the 1D spectrum array as a
+reference of the system response (\iref{deconvolution}). The software should display the output of the
+deconvolution for navigation by the user. Output of the deconvolution algorithm
+will be validated by an expert user. 
+	
+	\item[R\refstepcounter{reqnum}\thereqnum \label{R_normalization}:] The software
+should be able to normalize a 3D spectrum image (\iref{normalization}) upon user command: either to an
+integrated portion of a chosen range along the spectral axis or to a single
+chosen channel.
+	
+	\item[R\refstepcounter{reqnum}\thereqnum \label{R_background}:] The software
+should be able to perform a background subtraction (\iref{background}), given the appropriate inputs
+of a spectrum or spectrum image and a background reference spectrum.
+	
+	\item[R\refstepcounter{reqnum}\thereqnum \label{R_gain}:] The software should
+be able to perform a gain correction (\iref{gain}), given the appropriate inputs of a spectrum
+or spectrum image and a gain reference spectrum.
+\end{itemize}
+
+\wss{Your requirements should reference explicitly the instance models that
+    apply.  This information is in your traceability matrices, but it should also be
+    explicit in the definition of the requirements themselves.}\an{Perhaps you can
+    include a comment about this in the template, because this wasn't clear at all.
+    For my type of software, it is also the case that not all requirements are based on
+    an instance model. I have added the cross-reference for those which do.}
+
+\subsection{Nonfunctional Requirements}
+\label{subsec:NfR}
+
+The nonfunctional priorities for the software are the correctness, useability,
+speed, maintainability, expandability, and understandability. The user must be
+able to easily use the software to extract the data that they want and do the
+processing operations that they want, given the user characteristics defined
+elsewhere. The speed of performance is of interest in the interactive display of
+the 3D datasets and in the data processing operations, which can be
+computationally heavy with large datasets. To improve the software over time and
+add new functionality as the data processing field expands, the software must be
+both maintainable and understandable by the original programmer and future
+programmers. In addition, a more advanced user may wish to add their own
+functions into the software data processing algorithms; the software should be
+written in such a way to make expanding its functionality simple and
+understandable. A user may also wish to perform their own tests of the software
+functions, emphasizing the need to have transparent and understandable software.
+To reach a wide user base, the program should be usable on many different
+operating systems. The nonfunctional requirements are listed below:
+
+\begin{itemize}
+	\item The software should be maintainable by the original programmer or future
+programmers to keep up to date with advances in data processing practices.
+	\item The software should allow the addition of more data processing functions
+as required by an advanced user experienced in programming.
+	\item The software should not display significant lag when interacting with the
+user, except in the case of data processing steps, which may be computationally
+expensive.
+	\item Use of the interactive display and of data processing functions should be
+intuitive for a user experienced with the processing techniques for 3D datasets.
+	\item The coding practices for the software should be open and transparent to
+facilitate inspection by an experienced user to encourage trust in the data
+processing steps performed.
+	\item The display for the user to interact with should be readable:
+\textit{i.e.} the text should be large enough to read by a user with average
+eyesight, with high contrast against the background for visibility.
+	\item The colours used in the display should be clearly distinguishable from
+each other.
+	\item The software should function on multiple operating systems, including
+Windows, Linux, and MacOS, in a laptop or desktop environment.
+\end{itemize}
+
+\section{Likely Changes}
+	This section details some changes which are likely to be made to the software
+once the initial requirements are met, in the interests of continuous
+improvement of the software's capabilities.
+	\noindent \begin{itemize}
+		\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_identicalPSF}:] A PSF unique
+to each pixel in the spectrum image (\ddref{SI}) will be used instead of
+assuming one PSF is valid for all pixels within a spectrum image
+(\aref{EELS_PSF_variability})
+		\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_identicalPSF}:] Cosmic rays
+appear as high intensity single pixel spikes in a spectrum and can be removed
+via 3D image filtering techniques. A future change will implement this filtering
+option for the user. 
+	\end{itemize}
+
+\section{Traceability Matrices and Graphs}
+
+The purpose of the traceability matrices is to provide easy references on what
+has to be additionally modified if a certain component is changed.  Every time a
+component is changed, the items in the column of that component that are marked
+with an ``X'' may have to be modified as well.  Table~\ref{Table:trace} shows
+the
+dependencies of theoretical models, general definitions, data definitions, and
+instance models with each other. Table~\ref{Table:R_trace} shows the
+dependencies of instance models, requirements, and data constraints on each
+other. Table~\ref{Table:A_trace} shows the dependencies of theoretical models,
+general definitions, data definitions, instance models, and likely changes on
+the assumptions.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+			& \aref{EELS_System_Response}& \aref{EELS_PSF_variability}&
+\aref{EELS_Intensity_Fluctuations}& \aref{CL_Background}&
+\aref{CL_System_Response}\\
+		\hline
+		\tref{intensity}     &  &  &  & X& X\\ \hline
+		\tref{signal}        & X&  & X&  &  \\ \hline
+		\dref{grid}          &  & X&  &  &  \\ \hline
+		\ddref{Spectrum}     & X&  &  &  &  \\ \hline
+		\ddref{SI}           & X& X&  &  &  \\ \hline
+		\ddref{PSF}          & X& X&  &  &  \\ \hline
+		\iref{normalization} &  &  & X&  &  \\ \hline
+		\iref{deconvolution} & X& X&  &  &  \\ \hline
+		\iref{background}    &  &  &  & X&  \\ \hline
+		\iref{gain}          &  &  &  &  & X\\ \hline
+	\end{tabular}
+	\caption{Traceability Matrix Showing the Connections Between Assumptions and
+Other Items}
+	\label{Table:A_trace}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+		\hline 
+		& \tref{intensity} & \tref{signal} & \dref{grid} & \ddref{Spectrum}&
+\ddref{SI} & \ddref{PSF}& \iref{normalization}& \iref{deconvolution}&
+\iref{background}& \iref{gain} \\
+		\hline
+		\tref{intensity}     &  & X&  &  &  &  &  &  & X& X\\ \hline
+		\tref{signal}        &  &  &  &  &  &  &  &  &  &  \\ \hline
+		\dref{grid}          &  &  &  &  &  &  &  &  &  &  \\ \hline
+		\ddref{Spectrum}     & X&  &  &  &  &  &  &  & X&  \\ \hline
+		\ddref{SI}           &  &  & X& X&  &  &  &  &  &  \\ \hline
+		\ddref{PSF}          & X&  &  & X&  &  &  & X&  &  \\ \hline
+		\iref{normalization} &  & X&  &  &  &  &  &  &  &  \\ \hline
+		\iref{deconvolution} & X& X&  &  &  & X&  &  &  &  \\ \hline
+		\iref{background}    & X&  &  &  &  &  &  &  &  &  \\ \hline
+		\iref{gain}          & X&  &  &  &  &  &  &  &  &  \\
+		\hline
+	\end{tabular}
+	\caption{Traceability Matrix Showing the Connections Between Items of Different
+Sections}
+	\label{Table:trace}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+	& \iref{normalization}& \iref{deconvolution}& \iref{background}& \iref{gain}&
+\ref{sec_DataConstraints}& \rref{R_SI_inputs}& \rref{R_spectrum_inputs} &
+\rref{R_Input_dimension} & \rref{R_SI_slicing} & \rref{R_SI_area} &
+\rref{R_deconvolution} & \rref{R_normalization} & \rref{R_background} &
+\rref{R_gain}\\
+\hline
+\iref{normalization}     &  &  &  &  &  & X&  &  &  &  &  & X&  &  \\ \hline
+\iref{deconvolution}     & X&  &  &  &  & X&  & X&  &  & X&  &  &  \\ \hline
+\iref{background}        &  &  &  &  &  & X& X& X&  &  &  &  & X&  \\ \hline
+\iref{gain}              &  &  &  &  &  & X& X& X&  &  &  &  &  & X\\ \hline
+\rref{R_SI_inputs}       &  &  &  &  & X& X&  & X&  & X&  &  &  &  \\ \hline
+\rref{R_spectrum_inputs} &  &  &  &  & X&  &  & X&  &  & X&  &  &  \\ \hline
+\rref{R_Input_dimension} &  &  &  &  & X& X& X&  & X& X&  &  & X& X\\ \hline
+\rref{R_SI_slicing}      &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+\rref{R_SI_area}         &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline 
+\rref{R_deconvolution}   &  & X&  &  &  &  & X&  &  &  &  & X&  &  \\ \hline
+\rref{R_normalization}   & X&  &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+\rref{R_background}      &  &  & X&  &  &  & X&  &  &  &  &  &  &  \\ \hline
+\rref{R_gain}            &  &  &  & X&  &  & X&  &  &  &  &  &  &  \\ \hline
+
+\hline
+\end{tabular}
+\caption{Traceability Matrix Showing the Connections Between Requirements and
+Instance Models}
+\label{Table:R_trace}
+\end{table}
+
+\newpage
+
+\bibliography {SRS}
+
+\end{document}

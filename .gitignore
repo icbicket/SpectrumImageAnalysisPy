@@ -68,6 +68,7 @@ target/
 
 # IPython Notebook
 .ipynb_checkpoints
+*.ipynb
 
 # pyenv
 .python-version
@@ -87,3 +88,21 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# LaTex files
+*.aux
+*.synctex.gz
+*.bbl
+*.blg
+*.out
+*.toc
+*.lot
+*.lof
+
+# Make files
+*.fdb_latexmk
+*.fls
+*.refresh
+
+# For Mac computers
+*.DS_Store

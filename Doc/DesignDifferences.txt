@@ -1,0 +1,86 @@
+M1 (Hardware hiding) - 
+    OS
+
+M2 (Import csv) - 
+    Spectrum.py
+    CLSystemReferenceImport.py (should be removed to unify import)
+
+M3 (Import dm3) - 
+    SpectrumImage.py
+    Dm3Import.py (from dm3_lib)
+
+M4 (Import h5) - 
+    CLSpectrumData.py (definitely needs to be unified with SpectrumImage)
+
+M5 (Import rpl)
+
+M6 (Export csv) - 
+    Spectrum.py
+    FileNamer.py (checks os for existing filenames and changes save name if it
+        exists already)
+
+M7 (Export h5) - 
+    SpectrumImageSave.py
+    FileNamer.py (checks os for existing filenames and changes save name if it
+        exists already)
+
+M8 (Export png) - 
+    Image.py (interface & export - should be split up)
+    FileNamer.py (checks os for existing filenames and changes save name if it
+        exists already)
+
+M9 (Export rpl) - 
+    not yet implemented (can be done through HyperSpy)
+
+M10 (RL Deconvolution) - 
+    SpectrumImage.py, 
+    Spectrum.py, 
+    handythread.py (multithreading)
+
+M11 (Normalization) - 
+    SpectrumImage.py, 
+    Spectrum.py
+
+M12 (Gain Correction) - 
+    CLSet.py (needs to be split up to relevant modules)
+
+M13 (Background Correction) - 
+    CLSet.py (needs to be split up to relevant modules)
+
+M14 (1D slice) - 
+    SpectrumImage.py & Spectrum.py (must be unified)
+
+M15 (2D mask) - 
+    PolygonCreator.py (creates masks), 
+    PolygonGrouper.py (holds information about polygons/masks and vertices),
+    PolygonMover.py (edits polygons), 
+    ImagePlotter.py (interface to polygons, interface to export png)
+
+M16 (3D mask) - 
+    SpectrumImage.py
+
+M17 (1D spectrum display) - 
+    SpectrumPlotter.py
+
+M18 (2D image display) - 
+    ImagePlotter.py
+
+M19 (3D spectrum image display) - 
+    SpectrumImagePlotter.py
+
+M20 (1D spectrum) - 
+    Spectrum.py (contains Spectrum with subclasses CLSpectrum and EELSSpectrum, 
+        these will be unified).
+
+M21 (2D image) - 
+    Image.py
+
+M22 (3D spectrum image) - 
+    SpectrumImage.py (contains SpectrumImage with subclasses EELSSpectrumImage 
+    and CLSpectrumImage - this will be changed to unify SpectrumImage)
+
+M23 (Sequence data structure) - 
+    numpy
+
+M24 (Plotting library) - 
+    matplotlib
