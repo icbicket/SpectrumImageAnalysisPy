@@ -2,7 +2,7 @@ from __future__ import print_function
 import numpy as np
 import png
 import os
-import FileNamer
+import file_namer
 
 class Image(object):
 	def __init__(self, Img, calibration=0):
@@ -17,13 +17,13 @@ class Image(object):
 	def PadImg(self, pad):
 		#Pad image, input pad = 2x2 array/tuple ((axis0_before, axis0_after), (axis1_before, axis1_after))
 		self.data = np.pad(self.data.astype(float), pad, 'constant', constant_values = (np.nan,))
-		
+
 	def SaveImgAsPNG(self, filename, clim, cmap=None):
 #		r_min = max(clim[0], self.Imglim[0])
 #		r_max = min(clim[1], self.Imglim[1])
 		r_min = clim[0]
 		r_max = clim[1]
-		filename = FileNamer.NameFile(filename)
+		filename = file_namer.name_file(filename)
 		writefile = open(filename, 'wb')
 		if type(self.data)==np.ma.MaskedArray:
 			writeImage = np.empty((self.size[0], self.size[1]*2))

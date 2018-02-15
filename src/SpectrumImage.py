@@ -56,8 +56,10 @@ class CLSpectrumImage(SpectrumImage):
 		super(CLSpectrumImage, self).__init__(SI, spectrum_units, calibration)
 		self.SpectrumRange = WavelengthRange
 		self.spectrum_unit_label = 'Wavelength'
-		self.spectrum_secondary_units = 'eV'
-		self.spectrum_secondary_unit_label = 'Energy'
+		self.secondary_units = 'eV'
+		self.secondary_unit_label = 'Energy'
+#		self.spectrum_secondary_units = 'eV'
+#		self.spectrum_secondary_unit_label = 'Energy'
 		self.dispersion = self.SpectrumRange[1] - self.SpectrumRange[0]
 
 	def ExtractSpectrum(self, mask3D):
@@ -102,10 +104,7 @@ class CLSpectrumImage(SpectrumImage):
 
 		spike_free = CLSpectrumImage(spike_free, self.SpectrumRange, self.spectrum_units, self.calibration)
 		i = np.where(convolved > 3)
-
 		return spike_free
-
-
 
 class EELSSpectrumImage(SpectrumImage):
 	def __init__(self, SI, SpectrumRange=None, channel_eV=None, dispersion=0.005, ZLP=True, spectrum_units='eV', calibration=0, metadata=None):
@@ -152,8 +151,8 @@ class EELSSpectrumImage(SpectrumImage):
 		self.secondary_unit_label = 'Wavelength'
 		
 		self.spectrum_unit_label = 'Energy'
-		self.spectrum_secondary_units = 'nm'
-		self.spectrum_secondary_unit_label = 'Wavelength'
+#		self.spectrum_secondary_units = 'nm'
+#		self.spectrum_secondary_unit_label = 'Wavelength'
 
 	@classmethod
 	def LoadFromDM3(cls, filename, spectrum_calibrated = True):
