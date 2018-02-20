@@ -7,6 +7,8 @@ import Image
 import collections
 import os
 from mpl_toolkits.axes_grid1 import host_subplot
+import matplotlib
+matplotlib.use('TkAgg')
 
 '''Things to do:
 Add vertex addition and deletion after creation for patches

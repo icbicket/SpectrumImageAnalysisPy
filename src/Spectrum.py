@@ -6,6 +6,12 @@ import csv
 from scipy.ndimage.filters import gaussian_filter1d
 import os
 import file_namer
+import sys
+
+def open_csv(filename, mode='r'):
+    """Open a csv file in proper mode depending on Python version."""
+    return(open(filename, mode=mode+'b') if sys.version_info[0] == 2 else
+           open(filename, mode=mode, newline=''))
 
 def ImportCSV(filename):
     x = np.genfromtxt(filename,
@@ -20,18 +26,21 @@ class Spectrum(object):
 		self.SpectrumRange = SpectrumRange
 		
 	def SaveSpectrumAsCSV(self,filename):
-		filename = file_namer.NameFile(filename)
+		filename = file_namer.name_file(filename)
 		ExportSpectrumRange = np.copy(self.SpectrumRange)
 		ExportIntensity = np.copy(self.intensity)
 		ExportSpectrumRange.resize(len(ExportSpectrumRange), 1)
 		ExportIntensity.resize(len(ExportIntensity), 1)
 		ExportData = np.append(ExportSpectrumRange, ExportIntensity, axis = 1)
-		ExportHeaders = [self.unit_label + ' (' + self.units + ')', 'Intensity']
-		with open(filename, 'wb') as csvfile:
+		ExportHeaders = [
+		    (self.unit_label + ' (' + self.units + ')'), 
+	        'Intensity']
+		with open_csv(filename, 'w') as csvfile:
 			writer = csv.writer(csvfile, delimiter = '	')
 			writer.writerow(ExportHeaders)
 			writer.writerows(ExportData)
-			
+		print('Saved file...', filename)
+
 	def SmoothingFilter1D(self, sigma=2):
 		kernel = np.array([1, 1, 2, 1, 1])/6.
 		intensity = np.append(self.intensity[4::-1], np.append(self.intensity, self.intensity[-5::]))
