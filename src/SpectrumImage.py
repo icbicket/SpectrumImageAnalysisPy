@@ -197,8 +197,6 @@ class EELSSpectrumImage(SpectrumImage):
 		thrmask = np.less(self.data.data[:, :, self.ZLP], threshold)
 #		self.thrmask = np.reshape(thrmask, (np.append(np.shape(thrmask), 1))) * np.ones(np.shape(self.data))
 		self.data.mask = np.reshape(thrmask, (np.append(np.shape(thrmask), 1))) * np.ones(np.shape(self.data))
-#		print(np.shape(self.data.mask))
-#		print(np.shape(self.thrmask))
 		
 	def InvertThreshold(self):
 		self.data.mask = np.invert(self.data.mask)

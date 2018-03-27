@@ -19,7 +19,7 @@ class SpectrumPlotter(object):
         '''
         self.spectrum = spectrum
         self.ax_transform = self.choose_ax_transform(ax_transform)
-            
+
         if hasattr(axis, 'twin'):
             self.main_axis = axis
             self.linked_axis = self.setup_linked_axis()
@@ -56,6 +56,9 @@ class SpectrumPlotter(object):
         linked_axis.set_viewlim_mode("transform")
         linked_axis.axis["right"].toggle(ticklabels=False) 
         linked_axis.xaxis.set_major_locator(nmTickLocator(self.main_axis, numticks=5))
+        linked_axis.xaxis.set_major_formatter(mticker.ScalarFormatter(useMathText=True, useOffset=False))
+#        linked_axis.ticklabel_format(style = 'sci', scilimits=(-1,1))
+        linked_axis.ticklabel_format(style = 'plain')
         linked_axis.set_xlabel(r"%s (%s)" % (self.spectrum.secondary_unit_label, self.spectrum.secondary_units))
         return linked_axis
 
@@ -185,7 +188,10 @@ class eV2nmTransform(mtransforms.Transform):
         mtransforms.Transform.__init__(self)
         
     def transform_non_affine(self, eV):
-        return LIGHTSPEED * PLANCK / (COULOMB * eV * 1e-9)
+        nm = np.empty(np.shape(eV))
+        nm[eV != 0] = LIGHTSPEED * PLANCK / (COULOMB * eV[eV != 0] * 1e-9)
+        nm[eV == 0] = 2**31 - 1
+        return nm
         
     def inverted(self):
         return nm2eVTransform()
@@ -200,7 +206,10 @@ class nm2eVTransform(mtransforms.Transform):
         mtransforms.Transform.__init__(self)
         
     def transform_non_affine(self, nm):
-        return LIGHTSPEED * PLANCK / (COULOMB * nm * 1e-9)
+        eV = np.empty(np.shape(nm))
+        eV[nm != 0] = LIGHTSPEED * PLANCK / (COULOMB * nm[nm != 0] * 1e-9)
+        eV[nm == 0] = 2**31-1
+        return eV
         
     def inverted(self):
         return eV2nmTransform()

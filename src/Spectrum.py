@@ -1,12 +1,12 @@
 from __future__ import print_function
 from __future__ import division
 import numpy as np
-import SpectrumImage
 import csv
 from scipy.ndimage.filters import gaussian_filter1d
 import os
 import file_namer
 import sys
+from scipy import stats
 
 def open_csv(filename, mode='r'):
     """Open a csv file in proper mode depending on Python version."""
@@ -86,7 +86,7 @@ class EELSSpectrum(Spectrum):
 			self.dispersion = dispersion
 
 		if ZLP:
-			self.ZLP = SpectrumImage.EELSSpectrumImage.FindZLP(self.intensity)
+			self.ZLP = self.FindZLP(self.intensity)
 			if SpectrumRange is not None:
 				self.SpectrumRange = SpectrumRange
 			else:
@@ -116,6 +116,10 @@ class EELSSpectrum(Spectrum):
 		spectrum = ImportCSV(filename)
 		return cls(intensity=spectrum[:, 1], SpectrumRange=spectrum[:,0], dispersion=spectrum[1,0]-spectrum[0,0], units='eV')
 		
+	def FindZLP(self, data):
+		ZLP = int(stats.mode(np.argmax(data, axis = -1), axis=None)[0])
+		return ZLP
+	
 	def Normalize(self):
 		'''Normalize data to integral'''
 		normfactor = np.sum(self.intensity, keepdims=True)
