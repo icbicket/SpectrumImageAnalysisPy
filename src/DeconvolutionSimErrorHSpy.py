@@ -5,7 +5,7 @@ import Spectrum
 import matplotlib.pyplot as plt
 import numpy as np
 import collections
-import RMS
+import rms
 from scipy import signal
 import csv
 

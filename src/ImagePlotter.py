@@ -26,7 +26,7 @@ def cbarextensionfinder(clim, imglim):
     return cbar_extend
 
 class ImagePlotter(object):
-    def __init__(self, image, axis=None, colourbar_axis = None, cmap=plt.get_cmap('gray'), filepath=os.getcwd(), polygoncallback = None):
+    def __init__(self, image, axis=None, colourbar_axis = None, cmap='gray', filepath=os.getcwd(), polygoncallback = None):
         '''For plotting Image as an image
         Input a 2D array to plot as an image, and an axis to plot the image on
         Optional arguments: define an axis to put a colourbar in, define the filepath to save images to'''
@@ -37,7 +37,7 @@ class ImagePlotter(object):
         else:
             self.axis = plt.figure().add_subplot(111)
 
-        self.cmap = cmap
+        self.cmap = plt.get_cmap(cmap)
         self.Image = image
         self.axis.set_axis_off()
         self.filepath = filepath

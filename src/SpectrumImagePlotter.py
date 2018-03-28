@@ -17,7 +17,7 @@ Figure out changing contrast of extracted patch with spectrum spanselector
 '''
 
 class SpectrumImagePlotter(object):
-    def __init__(self, SI, filepath=os.getcwd()):
+    def __init__(self, SI, filepath=os.getcwd(), cmap_im='gray'):
         '''Plot a 3D spectrum image array
         Input: 3D numpy array
         Optional argument: filepath to save spectra and images to
@@ -51,7 +51,7 @@ class SpectrumImagePlotter(object):
         self.contrast_ax = plt.axes([0.075, 0.925, 0.8, 0.075])
         self.colourbar_ax = plt.axes([0.9, 0.475, 0.05, 0.45]) 
         self.cmap = plt.get_cmap('Dark2')
-
+        self.cmap_im = plt.get_cmap(cmap_im)
         # Spectrum axis plotting and interactive span
         self.extracted_mask = np.zeros(self.SI.size[:2]).astype(bool)
         mask3D = np.zeros(self.SI.size).astype(bool)
@@ -74,6 +74,7 @@ class SpectrumImagePlotter(object):
         self.ImagePlot = ImagePlotter.ImagePlotter(self.summedim, 
             self.image_ax, 
             self.colourbar_ax,
+            cmap = self.cmap_im,
             filepath=self.filepath,
             polygoncallback=self.ImageKeyCommands)
         self.PlotImage()
