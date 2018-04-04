@@ -130,16 +130,16 @@ x = xx_yy[0].flatten()
 y = xx_yy[1].flatten()
 
 for xx, yy in zip(x,y):
-	if L_FWHM_line[xx, yy] > 0:
-		LorentzFit = models.Lorentz1D(amplitude=np.max(PSF.intensity), x_0=0, fwhm=L_FWHM_line[xx, yy])
-		PSF_Lorentz = np.convolve(LorentzFit(Lrange)[::-1][int(minI):int(maxI)], PSF.intensity, 'same')
-		MoffatFit = models.Moffat1D(amplitude=np.max(PSF.intensity), x_0=0, gamma=L_FWHM_line[xx, yy]/2., alpha=0.95)
-		PSF_Moffat = np.convolve(MoffatFit(Lrange)[::-1][int(minI):int(maxI)], PSF.intensity, 'same')
-	else: 
-		PSF_Lorentz = PSF.intensity
-    	PSF_Moffat = PSF.intensity
-	PSF_SI.data[xx, yy, :] = PSF_Lorentz/np.max(PSF_Lorentz)
-	PSF_SI_m.data[xx, yy, :] = PSF_Lorentz/np.max(PSF_Lorentz)
+    if L_FWHM_line[xx, yy] > 0:
+        LorentzFit = models.Lorentz1D(amplitude=np.max(PSF.intensity), x_0=0, fwhm=L_FWHM_line[xx, yy])
+        PSF_Lorentz = np.convolve(LorentzFit(Lrange)[::-1][int(minI):int(maxI)], PSF.intensity, 'same')
+        MoffatFit = models.Moffat1D(amplitude=np.max(PSF.intensity), x_0=0, gamma=L_FWHM_line[xx, yy]/2., alpha=0.95)
+        PSF_Moffat = np.convolve(MoffatFit(Lrange)[::-1][int(minI):int(maxI)], PSF.intensity, 'same')
+    else: 
+        PSF_Lorentz = PSF.intensity
+        PSF_Moffat = PSF.intensity
+    PSF_SI.data[xx, yy, :] = PSF_Lorentz/np.max(PSF_Lorentz)
+    PSF_SI_m.data[xx, yy, :] = PSF_Lorentz/np.max(PSF_Lorentz)
 
 Spectest1 = Spectrum.EELSSpectrum(PSF_SI.data[46, 38, :], ZLP=True, dispersion=0.005)
 Spectest2 = Spectrum.EELSSpectrum(SI.data[46, 38, :]/SI.data[38, 29, SI.ZLP], ZLP=True, dispersion=0.005)

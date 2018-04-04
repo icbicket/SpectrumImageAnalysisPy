@@ -21,9 +21,9 @@ iterations = np.array([0, 1, 5, 10, 50, 100, 500, 1000, 5000])
 spec1RL = collections.OrderedDict()
 error = []
 for ii in iterations:
-	spec1RL[ii] = spec1.RLDeconvolution(ii, blankPSF)
-	spec1plot.update_spectrum(spec1RL[ii], ID='RL' + str(ii))
-	error.append(rms.rms(spec1RL[ii].intensity, spec1.intensity))
+    spec1RL[ii] = spec1.RLDeconvolution(ii, blankPSF)
+    spec1plot.update_spectrum(spec1RL[ii], ID='RL' + str(ii))
+    error.append(rms.rms(spec1RL[ii].intensity, spec1.intensity))
 spec1plot.add_legend()
 
 fig_error = plt.figure('RMS error')

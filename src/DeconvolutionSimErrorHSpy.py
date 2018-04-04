@@ -19,13 +19,13 @@ spec1 = Spectrum.EELSSpectrum.LoadFromCSV(os.path.join(folder, spec1name))
 
 # Create point spread function (PSF)
 PSF_Gauss = Spectrum.EELSSpectrum(signal.gaussian(881, std=np.sqrt(2)), 
-	dispersion=0.01, ZLP=True)
+    dispersion=0.01, ZLP=True)
 
 # Convolve simulated data with PSF
 conv = np.convolve(PSF_Gauss.intensity, spec1.intensity, 'same')
 spec2 = Spectrum.EELSSpectrum(conv/np.max(conv), 
-	dispersion=0.01, ZLP=True)
-	
+    dispersion=0.01, ZLP=True)
+    
 # Load convolved data into hyperspy
 data = hs.signals.Signal1D(spec2.intensity)
 data.set_signal_type('EELS')

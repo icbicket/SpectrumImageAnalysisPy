@@ -10,19 +10,19 @@ from scipy import signal
 import csv
 
 def WriteToCSV(filename):
-		if os.path.exists(filename):
-			filename = filename[:-4] + '-1' + filename[-4:]
-		print('Saving...', filename)
-		ExportIterationNum = np.copy(iterations)
-		ExportRMS = np.copy(error)
-		ExportIterationNum.resize(len(ExportIterationNum), 1)
-		ExportRMS.resize(len(ExportRMS), 1)
-		ExportData = np.append(ExportIterationNum, ExportRMS, axis = 1)
-		ExportHeaders = ['Iteration number' , 'RMS Error']
-		with open(filename, 'wb') as csvfile:
-			writer = csv.writer(csvfile, delimiter = '	')
-			writer.writerow(ExportHeaders)
-			writer.writerows(ExportData)
+        if os.path.exists(filename):
+            filename = filename[:-4] + '-1' + filename[-4:]
+        print('Saving...', filename)
+        ExportIterationNum = np.copy(iterations)
+        ExportRMS = np.copy(error)
+        ExportIterationNum.resize(len(ExportIterationNum), 1)
+        ExportRMS.resize(len(ExportRMS), 1)
+        ExportData = np.append(ExportIterationNum, ExportRMS, axis = 1)
+        ExportHeaders = ['Iteration number' , 'RMS Error']
+        with open(filename, 'wb') as csvfile:
+            writer = csv.writer(csvfile, delimiter = '    ')
+            writer.writerow(ExportHeaders)
+            writer.writerows(ExportData)
 
 # Import test data (simulated spectrum from Bellido et al (2014)
 folder = 'TestCase'
@@ -34,12 +34,12 @@ spec1plot = SpectrumPlotter.SpectrumManager(spec1)
 
 # Create point spread function (PSF)
 PSF_Gauss = Spectrum.EELSSpectrum(signal.gaussian(801, std=np.sqrt(2)), 
-	dispersion=0.01, ZLP=True)
+    dispersion=0.01, ZLP=True)
 
 # Convolve simulated data with PSF
 conv = np.convolve(PSF_Gauss.intensity, spec1.intensity)
 spec2 = Spectrum.EELSSpectrum(conv/np.max(conv), 
-	dispersion=0.01, ZLP=True)
+    dispersion=0.01, ZLP=True)
 
 # Plot PSF and convolved (blurred) spectra
 spec1plot.update_spectrum(PSF_Gauss, ID='PSF Gauss')
@@ -54,9 +54,9 @@ PSF_sym = PSF_Gauss.RL_PSFsym(PSF_Gauss, PSF_pad=None)
 
 # Calculate results of deconvolution for sets of different numbers of iterations and root mean square error compared to actual spectrum
 for ii in iterations:
-	spec2RL[ii] = spec2.RLDeconvolution(ii, PSF_sym)
-	spec2RL[ii].intensity = spec2RL[ii].intensity/np.max(spec2RL[ii].intensity)
-	error.append(RMS.RMS(spec2RL[ii].eVSlice(-0.1, 4), spec1.eVSlice(-0.1, 4)))
+    spec2RL[ii] = spec2.RLDeconvolution(ii, PSF_sym)
+    spec2RL[ii].intensity = spec2RL[ii].intensity/np.max(spec2RL[ii].intensity)
+    error.append(RMS.RMS(spec2RL[ii].eVSlice(-0.1, 4), spec1.eVSlice(-0.1, 4)))
 
 # Plot RMS error
 fig_error = plt.figure('RMS error')
