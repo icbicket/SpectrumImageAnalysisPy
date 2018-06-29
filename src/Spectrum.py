@@ -36,7 +36,7 @@ class Spectrum(object):
             (self.unit_label + ' (' + self.units + ')'), 
             'Intensity']
         with open_csv(filename, 'w') as csvfile:
-            writer = csv.writer(csvfile, delimiter = '    ')
+            writer = csv.writer(csvfile, delimiter = '\t')
             writer.writerow(ExportHeaders)
             writer.writerows(ExportData)
         print('Saved file...', filename)
