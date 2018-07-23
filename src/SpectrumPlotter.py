@@ -106,12 +106,13 @@ class SpectrumManager(object):
         self.currentID = currentID
         self.ax_transform = ax_transform
         self.cmap = cmap
-        self.axis = axis
+#        self.axis = axis
         self.spectrumDict = collections.OrderedDict()
         self.spectrumDict[self.currentID] = spectrum
         self.lineDict = collections.OrderedDict()
         self.SpectrumPlot = SpectrumPlotter(self.spectrumDict[self.currentID], 
-            self.axis, ax_transform=self.ax_transform, colour=self.cmap)
+            axis, ax_transform=self.ax_transform, colour=self.cmap)
+        self.axis = self.SpectrumPlot.main_axis
         self.lineDict[self.currentID] = self.SpectrumPlot.add_spectrum(
             self.spectrumDict[self.currentID], label=str(self.currentID))
         self.colourDict = collections.OrderedDict()

@@ -3,6 +3,7 @@ import numpy as np
 import png
 import os
 import file_namer
+import image_functions as imfun
 
 class Image(object):
     def __init__(self, Img, calibration=0):
@@ -17,6 +18,41 @@ class Image(object):
     def PadImg(self, pad):
         #Pad image, input pad = 2x2 array/tuple ((axis0_before, axis0_after), (axis1_before, axis1_after))
         self.data = np.pad(self.data.astype(float), pad, 'constant', constant_values = (np.nan,))
+
+    def save_img(self, filename, clim=[None, None], cmap=None):
+        '''
+        Save image
+        Filename: string to name the file, include directory path if the 
+        current folder is not desired, filetype is given by the ending
+        clim: colour limits, if the image should be thresholded to a minimum
+        and maximum value. Should be of the form [minimum, maximum]
+        cmap: colourmap to apply to the saved image (eg, for grayscale images)
+        '''
+        if not isinstance(filename, str):
+            raise ValueError(
+                'Your filename is not a string!')
+        if clim[0] is not None:
+            r_min = np.maximum(clim[0], np.min(self.data.flatten()))
+        else:
+            r_min = np.min(self.data.flatten())
+            
+        if clim[1] is not None:
+            r_max = np.minimum(clim[1], np.max(self.data.flatten()))
+        else:
+            r_max = np.max(self.data.flatten())
+        filename = file_namer.name_file(filename)
+#        save_im = np.copy(self.data)
+#        save_im[save_im < r_min] = r_min
+#        save_im[save_im > r_max] = r_max
+        save_im = imfun.contrast_stretch(self.data, 
+            r=[r_min, r_max], 
+            s=[0,255], bits=8).astype('uint8')
+        
+        if cmap is not None:
+            imfun.write_image(cmap(save_im), filename)
+        else:
+            imfun.write_image(save_im, filename)
+
 
     def SaveImgAsPNG(self, filename, clim, cmap=None):
 #        r_min = max(clim[0], self.Imglim[0])
