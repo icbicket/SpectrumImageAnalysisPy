@@ -4,7 +4,24 @@ import png
 import os
 import file_namer
 import image_functions as imfun
+import sys
 
+def py2_3_string_check():
+    try:
+        basestring #Python 2
+        print('py2')
+        def isstr(s):
+            return isinstance(s, basestring)
+    except NameError: #Python 3
+        print('py3')
+        def isstr(s):
+            return isinstance(s, str)
+            
+def isstring(string):
+    return (isinstance(string, basestring) if sys.version_info[0] == 2 else
+            isinstance(string, str))
+           
+           
 class Image(object):
     def __init__(self, Img, calibration=0):
         """Function to initialize image class: Img = 2d numpy array
@@ -14,6 +31,7 @@ class Image(object):
         self.calibration = calibration # Dimension units per pixel (eg, for microscope data)
         #Extract the contrast limits for the input image (min and max intensity value)
         self.Imglim = [np.min(self.data[~np.isnan(self.data)]), np.max(self.data[~np.isnan(self.data)])]
+
 
     def PadImg(self, pad):
         #Pad image, input pad = 2x2 array/tuple ((axis0_before, axis0_after), (axis1_before, axis1_after))
@@ -28,9 +46,11 @@ class Image(object):
         and maximum value. Should be of the form [minimum, maximum]
         cmap: colourmap to apply to the saved image (eg, for grayscale images)
         '''
-        if not isinstance(filename, str):
+
+        if not isstring(filename):
             raise ValueError(
                 'Your filename is not a string!')
+
         if clim[0] is not None:
             r_min = np.maximum(clim[0], np.min(self.data.flatten()))
         else:
@@ -41,9 +61,7 @@ class Image(object):
         else:
             r_max = np.max(self.data.flatten())
         filename = file_namer.name_file(filename)
-#        save_im = np.copy(self.data)
-#        save_im[save_im < r_min] = r_min
-#        save_im[save_im > r_max] = r_max
+
         save_im = imfun.contrast_stretch(self.data, 
             r=[r_min, r_max], 
             s=[0,255], bits=8).astype('uint8')

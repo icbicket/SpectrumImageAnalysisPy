@@ -147,11 +147,16 @@ class ImagePlotter(object):
             np.max((extent_colourbar.get_points()[1,:], extent_toptick.get_points()[1,:], extent_bottomtick.get_points()[1,:]), axis=0)])
         extent_colourbar.set_points(new_extent)
         filename = file_namer.name_file(filename)
-        print('Saving colourbar as...', filename)
+#        print('Saving colourbar as...', filename)
         plt.gcf().savefig(filename, bbox_inches=extent_colourbar, transparent=True)
     
     def save_image(self, filename):
-        self.Image.SaveImgAsPNG(filename, self.PlottedImage.get_clim(), cmap=plt.get_cmap(self.cmap))
+        self.Image.save_img(
+            filename, 
+            clim=self.PlottedImage.get_clim(), 
+            cmap=plt.get_cmap(self.cmap)
+            )
+#        self.Image.SaveImgAsPNG(filename, self.PlottedImage.get_clim(), cmap=plt.get_cmap(self.cmap))
         
     def save_image_scale(self, filename):
         if self.Image.calibration==0:
