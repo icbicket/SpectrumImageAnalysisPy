@@ -96,7 +96,8 @@ class SpectrumImagePlotter(object):
     
     def ExtractedImageKeyCommands(self, key):
         if key == 'e':
-            self.SaveSpectrumAndPatch()
+            self.SaveSpectrumAndPatch() ## need to fix it so spectrum & patch come out with same name!
+            ## Patches are no longer transparent when saving!
     
     def SaveSpectrumAndPatch(self):
         spectrumID = self.ImagePlot.PolygonGroups.currentID
@@ -113,7 +114,8 @@ class SpectrumImagePlotter(object):
                 mask3D = np.reshape(mask, 
                     (self.SI.size[0], self.SI.size[1], 1)) * np.ones((
                     self.SI.size[0], self.SI.size[1], self.SI.size[2])).astype(bool)
-                self.extractedim = Image.Image(np.ma.masked_array(self.summedim.data, np.invert(mask)))
+                mask_im = np.ma.masked_array(np.ones(np.shape(self.summedim.data))*mask.astype(int), np.invert(mask))
+                self.extractedim = Image.Image(mask_im)
                 self.AddExtractedImagePatch(self.ImagePlot.PolygonGroups.currentID)
                 self.extracted_spectrum = self.SI.ExtractSpectrum(np.invert(mask3D))
                 self.SpectrumPlot.update_spectrum(self.extracted_spectrum, 
@@ -159,7 +161,7 @@ class SpectrumImagePlotter(object):
     
     def AddExtractedImagePatch(self, ID):
         self.ExtractedImagePlot[self.ImagePlot.PolygonGroups.currentID] = ImagePlotter.ImagePlotter(self.extractedim, self.extracted_ax, polygoncallback=self.ExtractedImageKeyCommands)
-            
+    
     def RemoveExtractedImagePatch(self, ID):
         self.ExtractedImagePlot[ID].PlottedImage.remove()
         pass

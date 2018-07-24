@@ -150,11 +150,12 @@ class ImagePlotter(object):
 #        print('Saving colourbar as...', filename)
         plt.gcf().savefig(filename, bbox_inches=extent_colourbar, transparent=True)
     
-    def save_image(self, filename):
+    def save_image(self, filename, **kwargs):
         self.Image.save_img(
             filename, 
             clim=self.PlottedImage.get_clim(), 
-            cmap=plt.get_cmap(self.cmap)
+            cmap=plt.get_cmap(self.cmap),
+            **kwargs
             )
 #        self.Image.SaveImgAsPNG(filename, self.PlottedImage.get_clim(), cmap=plt.get_cmap(self.cmap))
         

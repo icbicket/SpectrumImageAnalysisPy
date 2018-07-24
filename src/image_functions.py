@@ -23,16 +23,18 @@ def quadrant_sum(im):
     Q4 = np.sum(im[x_half:, y_half:])
     return np.array([[Q1, Q2], [Q3, Q4]])
 
-def write_image(im, filename):
+def write_image(im, filename, **kwarg):
     '''
     Write image to png
     im should be image data, can be grayscale (size NxM), RGB, (size NxMx3), 
     or RGBA (size NxMx4)
     '''
+
     imio.imwrite(
         filename, 
         im, 
-        format='png'
+        format='png',
+        **kwarg
         )
     return
 
