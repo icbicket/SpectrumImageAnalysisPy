@@ -67,7 +67,7 @@ class Image(object):
             s=[0,255], bits=8).astype('uint8')
 
         if cmap is not None:
-            save_im = cmap(self.data)
+            save_im = cmap(save_im)
 #            if np.ma.is_masked(self.data) and np.shape(save_im)[-1] == 4:
 #                print('mask')
 #                save_im[:, :, -1] = save_im[:, :, -1] * self.data.mask.astype(int)
