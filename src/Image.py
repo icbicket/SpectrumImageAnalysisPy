@@ -52,12 +52,14 @@ class Image(object):
                 'Your filename is not a string!')
 
         if clim[0] is not None:
-            r_min = np.maximum(clim[0], np.min(self.data.flatten()))
+            r_min = clim[0]
+#            r_min = np.maximum(clim[0], np.min(self.data.flatten()))
         else:
             r_min = np.min(self.data.flatten())
             
         if clim[1] is not None:
-            r_max = np.minimum(clim[1], np.max(self.data.flatten()))
+            r_max = clim[1]
+#            r_max = np.minimum(clim[1], np.max(self.data.flatten()))
         else:
             r_max = np.max(self.data.flatten())
         filename = file_namer.name_file(filename)

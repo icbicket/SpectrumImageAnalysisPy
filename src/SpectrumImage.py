@@ -98,7 +98,7 @@ class CLSpectrumImage(SpectrumImage):
         filtercopy = median_filter(np.copy(self.data), footprint=filtermask)
         corners = [(0, 0), (0, -1), (-1, -1), (-1, 0)]
         for cc in corners:
-            filtercopy[cc][convolved[cc] >= 2] = median_filter(np.copy(self.data), footprint=filtermaskcorner)
+            filtercopy[cc][convolved[cc] >= 2] = median_filter(np.copy(self.data), footprint=filtermaskcorner)[cc][convolved[cc] >= 2]
             convolved[cc][convolved[cc] >= 2] = 4
         spike_free = filtercopy*(convolved >= 3) + self.data*(convolved < 3)
 
