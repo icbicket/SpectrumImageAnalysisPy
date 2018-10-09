@@ -184,7 +184,6 @@ class EELSSpectrum(Spectrum):
         return EELSSpectrum(padded, SpectrumRange=padded_range, dispersion=self.dispersion, ZLP=self.ZLP, units=self.units)
 
     def FindFW(self, intensityfraction):
-#        intensity_norm = self.intensity.Normalize().intensity
         lefttail = self.intensity[:self.ZLP][::-1]
         diff1 = lefttail - intensityfraction*self.intensity[self.ZLP]
         left_index_1 = np.argmax(np.diff(np.sign(diff1)) != 0)
@@ -232,12 +231,8 @@ class EELSSpectrum(Spectrum):
             self.intensity, 
             [starteV, stopeV],
             self.SpectrumRange)
-#        startchannel = int(round(starteV / self.dispersion + self.ZLP))
-#        stopchannel = int(round(stopeV / self.dispersion + self.ZLP))
-#        sliced = self.intensity[startchannel:stopchannel]
         return sliced
         
-import matplotlib.pyplot as plt
 #Richardson-Lucy algorithm
 def RL(iterations, PSF, Spec):
     RL4 = Spec.copy()
