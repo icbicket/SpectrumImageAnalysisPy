@@ -5,6 +5,7 @@ import csv
 from scipy.ndimage.filters import gaussian_filter1d
 import os
 import file_namer
+import spectrum_functions as specfun
 import sys
 from scipy import stats
 
@@ -80,6 +81,10 @@ class EELSSpectrum(Spectrum):
            units: string, for plot axis
            '''
         super(EELSSpectrum, self).__init__(intensity, units)
+        if (SpectrumRange is not None):
+            if (len(intensity) != len(SpectrumRange)):
+                raise ValueError('intensity and SpectrumRange are not the same length!')
+            
         if SpectrumRange is not None:
             self.dispersion = SpectrumRange[1] - SpectrumRange[0]
         else:
@@ -128,26 +133,55 @@ class EELSSpectrum(Spectrum):
 
     def SymmetrizeAroundZLP(self):
         if self.ZLP < (self.length-1)/2.:
-            data_sym = np.delete(self.intensity, np.s_[(2*self.ZLP+1):self.length], axis = -1)            
+            data_sym = np.delete(self.intensity, np.s_[(2*self.ZLP+1):self.length], axis = -1)
+            range_sym = np.delete(self.SpectrumRange, np.s_[(2*self.ZLP+1):self.length], axis = -1)
         elif self.ZLP > (self.length-1)/2.:
             data_sym = np.delete(self.intensity, np.s_[:np.maximum(2*self.ZLP+1-self.length, 0)], axis = -1)
+            range_sym = np.delete(self.SpectrumRange, np.s_[:np.maximum(2*self.ZLP+1-self.length, 0)], axis = -1)
         else:
             data_sym = self.intensity
+            range_sym = self.SpectrumRange
         data_sym[data_sym<0] = 0
-        return EELSSpectrum(data_sym, SpectrumRange=self.SpectrumRange, dispersion=self.dispersion, ZLP=self.ZLP, units=self.units)
+        return EELSSpectrum(data_sym, SpectrumRange=range_sym, dispersion=self.dispersion, ZLP=self.ZLP, units=self.units)
 
     def PadSpectrum(self, pad_length, pad_value=0, pad_side='left'):
         if pad_side == 'left':
             padded = np.append(np.ones((pad_length, )) * pad_value, self.intensity)
+            padded_range = np.append(
+                np.linspace(
+                    self.SpectrumRange[0] - pad_length * self.dispersion, 
+                    self.SpectrumRange[0] - self.dispersion, 
+                    pad_length), 
+                self.SpectrumRange)
         elif pad_side == 'right':
             padded = np.append(self.intensity, np.ones((pad_length, 1)) * pad_value)
+            padded_range = np.append(
+                self.SpectrumRange, 
+                np.linspace(
+                    self.SpectrumRange[-1] + self.dispersion, 
+                    self.SpectrumRange[-1] + pad_length * self.dispersion, 
+                    pad_length)
+                )
         else:
             padded = np.append(
                     np.append(
                         np.ones((pad_length, 1)) * pad_value, 
                         self.intensity), 
                     np.ones((pad_length, 1)) * pad_value)
-        return EELSSpectrum(padded, SpectrumRange=self.SpectrumRange, dispersion=self.dispersion, ZLP=self.ZLP, units=self.units)
+            padded_range = np.append(
+                np.append(
+                    np.linspace(
+                        self.SpectrumRange[0] - pad_length * self.dispersion, 
+                        self.SpectrumRange[0] - self.dispersion, 
+                        pad_length), 
+                    self.SpectrumRange),
+                np.linspace(
+                    self.SpectrumRange[-1] + self.dispersion, 
+                    self.SpectrumRange[-1] + pad_length * self.dispersion, 
+                    pad_length)
+                )
+
+        return EELSSpectrum(padded, SpectrumRange=padded_range, dispersion=self.dispersion, ZLP=self.ZLP, units=self.units)
 
     def FindFW(self, intensityfraction):
 #        intensity_norm = self.intensity.Normalize().intensity
@@ -194,9 +228,13 @@ class EELSSpectrum(Spectrum):
         return EELSSpectrum(x_deconv, SpectrumRange=self.SpectrumRange, dispersion=self.dispersion, units=self.units)
         
     def eVSlice(self, starteV, stopeV):
-        startchannel = int(round(starteV / self.dispersion + self.ZLP))
-        stopchannel = int(round(stopeV / self.dispersion + self.ZLP))
-        sliced = self.intensity[startchannel:stopchannel]
+        sliced = specfun.slice_range(
+            self.intensity, 
+            [starteV, stopeV],
+            self.SpectrumRange)
+#        startchannel = int(round(starteV / self.dispersion + self.ZLP))
+#        stopchannel = int(round(stopeV / self.dispersion + self.ZLP))
+#        sliced = self.intensity[startchannel:stopchannel]
         return sliced
         
 import matplotlib.pyplot as plt
