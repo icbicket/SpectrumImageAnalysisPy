@@ -10,6 +10,7 @@ import handythread
 import multiprocessing
 from functools import partial
 import dm3_lib as DM3
+#from ncempy.io import dm
 import numbers
 
 def make_dict_from_tags(iterables):
@@ -32,7 +33,7 @@ def make_dict_from_tags(iterables):
 
 def import_EELS_dm3(filename):
     data = DM3.DM3(filename)
-    
+#    data = dm.dmReader(filename)
     tags = make_dict_from_tags(data._storedTags)
     imagedata = np.transpose(data.imagedata, axes=(1, 2, 0))
     return imagedata, tags

@@ -39,3 +39,17 @@ def slice_range(x, start_stop, y=None):
     start_i = (np.abs(y - start_stop[0])).argmin()
     stop_i = 1 + (np.abs(y - start_stop[1])).argmin()
     return x[start_i:stop_i]
+
+def normalize(x, ind):
+    '''Normalize data to value of x at the given index or the sum of x 
+    between the given indices'''
+    if isinstance(ind, int):
+        normfactor = x[ind]
+    elif np.size(ind) == 2:
+        normfactor = np.sum(x[ind[0]:ind[1]], keepdims=True)
+    else:
+        raise ValueError('ind is not right: it should be a single integer or '
+        'a list of two integers')
+    
+    x_norm = x/normfactor
+    return x_norm

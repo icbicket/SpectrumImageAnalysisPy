@@ -181,4 +181,4 @@ class EELSSpectrumTest(unittest.TestCase):
         self.assertArraysEqual(np.array([1, 28, 3, 5]), sliced)
         
 if __name__ == '__main__':
-    unittest.main()    
+    unittest.main()

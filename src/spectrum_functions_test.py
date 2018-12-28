@@ -99,5 +99,46 @@ class SpectrumFunctionsTest(unittest.TestCase):
             spectrum_functions.slice_range(x, start_stop, y)
             ))
 
+    def testNormalize1Index(self):
+        '''Normalize works as expected when a single index is given'''
+        x = np.arange(10)
+        ind = 2
+        np.testing.assert_allclose(
+            x/2., 
+            spectrum_functions.normalize(x, ind)
+            )
+
+    def testNormalizeFloatIndex(self):
+        '''Normalize throws an error when given a float index'''
+        x = np.arange(10)
+        ind = 2.4
+        with self.assertRaises(ValueError):
+           spectrum_functions.normalize(x, ind)
+
+    def testNormalize1IndexTuple(self):
+        '''Normalize throws an error if a single index inside a sequence
+         is given'''
+        x = np.arange(10)
+        ind = [3]
+        with self.assertRaises(ValueError):
+           spectrum_functions.normalize(x, ind)
+
+    def testNormalize2Indices(self):
+        '''Normalize works as expected when two indices are given'''
+        x = np.arange(10)
+        ind = (2, 5)
+        np.testing.assert_allclose(
+            x/9., 
+            spectrum_functions.normalize(x, ind)
+            )
+        
+    def testNormalizeMoreIndices(self):
+        '''Normalize raises an error if more than two indices are passed as
+        input'''
+        x = np.arange(10)
+        ind = (2, 5, 3)
+        with self.assertRaises(ValueError):
+           spectrum_functions.normalize(x, ind)
+
 if __name__ == '__main__':
     unittest.main()
