@@ -125,10 +125,9 @@ class EELSSpectrum(Spectrum):
         ZLP = int(stats.mode(np.argmax(data, axis = -1), axis=None)[0])
         return ZLP
     
-    def Normalize(self):
+    def Normalize(self, ind=None):
         '''Normalize data to integral'''
-        normfactor = np.sum(self.intensity, keepdims=True)
-        data_norm = self.intensity/normfactor
+        data_norm = specfun.normalize(self.intensity, ind)
         return EELSSpectrum(data_norm, SpectrumRange=self.SpectrumRange, dispersion=self.dispersion, ZLP=self.ZLP, units=self.units)
 
     def SymmetrizeAroundZLP(self):

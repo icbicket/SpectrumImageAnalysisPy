@@ -149,6 +149,8 @@ class EELSSpectrumTest(unittest.TestCase):
         eels = Spectrum.EELSSpectrum(data, dispersion=0.2, ZLP=True)
         eels_norm = eels.Normalize()
         data_norm = data/83.
+        print(np.sum(data_norm))
+        print(np.sum(eels_norm.intensity))
         self.assertArraysEqual(data_norm, eels_norm.intensity)
         
     def testeVSlice(self):

@@ -17,15 +17,14 @@ def Readh5SI(filename):
             AcqData = data[kk]['ImageData']['Image']
             DataShape = np.shape(AcqData)
             if DataShape[0] != 1:
-                SI = np.squeeze(np.array(AcqData))
+                SI = np.array(AcqData)[:, 0, 0, :, :]
                 Wavelengths = np.array(data[kk]['ImageData']['DimensionScaleC'])
             elif DataShape[1] != 1:
                 _ = AcqData # Drift image
             elif DataShape[3] == DataShape[4] == 512:
                 survey = Image(np.squeeze(AcqData), calibration=np.array(data[kk]['ImageData']['DimensionScaleX']))
             else:
-                SEM = Image(np.squeeze(AcqData), calibration=np.array(data[kk]['ImageData']['DimensionScaleX']))
-
+                SEM = Image(np.squeeze(AcqData), calibration=np.array(data[kk]['ImageData']['DimensionScaleX'])
     if np.shape(SEM.data)[-1] == 4 * np.shape(SI)[-1]:
         fuzzing = True
     return SI, Wavelengths, SEM, survey, fuzzing

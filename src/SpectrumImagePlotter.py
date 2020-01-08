@@ -14,6 +14,7 @@ matplotlib.use('TkAgg')
 Add vertex addition and deletion after creation for patches
 Why doesn't it work in multiple figures? --need to keep a reference to each one
 Figure out changing contrast of extracted patch with spectrum spanselector
+magic wand tool - auto-select regions of high intensity
 '''
 
 class SpectrumImagePlotter(object):

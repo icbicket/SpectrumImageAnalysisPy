@@ -74,7 +74,7 @@ class ImageDisplay(object):
         self.PlotContrastHistogram()
         
         # Colourmaps
-        self.maps=sorted([m for m in plt.cm.datad if not m.endswith("_r")], key=string.lower, reverse=True)
+        self.maps=sorted([m for m in plt.cm.datad if not m.endswith("_r")], key=str.casefold, reverse=True)
         #(https://scipy.github.io/old-wiki/pages/Cookbook/Matplotlib/Show_colormaps)
         
         # Show the display window

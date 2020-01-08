@@ -108,7 +108,7 @@ class CLSpectrumImage(SpectrumImage):
         return spike_free
 
 class EELSSpectrumImage(SpectrumImage):
-    def __init__(self, SI, SpectrumRange=None, channel_eV=None, dispersion=0.005, ZLP=True, spectrum_units='eV', calibration=0, metadata=None):
+    def __init__(self, SI, SpectrumRange=None, channel_eV=None, dispersion=0.005, ZLP=False, spectrum_units='eV', calibration=0, metadata=None):
         super(EELSSpectrumImage, self).__init__(SI, spectrum_units, calibration)
         '''intensity: 3D array
            SpectrumRange: 1D array of same length as energy axis
@@ -131,6 +131,8 @@ class EELSSpectrumImage(SpectrumImage):
                 raise ValueError("Your SpectrumRange is not the same size as your energy axis!")
             self.SpectrumRange = SpectrumRange
             self.dispersion = SpectrumRange[1] - SpectrumRange[0]
+            if np.min(SpectrumRange) < 0 and np.max(SpectrumRange) > 0:
+                self.ZLP = self.FindZLP(self.data)
         elif channel_eV:
             if len(channel_eV) != 2:
                 raise ValueError('channel_eV must have length 2!')
@@ -222,7 +224,7 @@ class EELSSpectrumImage(SpectrumImage):
         aligned_data = np.zeros((self.size[0], self.size[1], self.size[2] + channelmax - channelmin))
         aligned_data[index1, index2, index3] = self.data
         return EELSSpectrumImage(aligned_data, 
-            dispersion=self.dispersion, 
+            dispersion=self.dispersion, ZLP=self.ZLP,
             spectrum_units = self.spectrum_units, 
             calibration=self.calibration)
         
@@ -256,7 +258,7 @@ class EELSSpectrumImage(SpectrumImage):
         x_deconv = np.ma.array(x_deconv, mask = self.data.mask)
         print('Done %s iterations!' %RLiterations)
 
-        return EELSSpectrumImage(x_deconv, dispersion=self.dispersion)
+        return EELSSpectrumImage(x_deconv, SpectrumRange=self.SpectrumRange)
 
     def RLDeconvolution_Adaptive(self, RLiterations, PSF, threads=multiprocessing.cpu_count(), PSF_pad=0):
         PSF_sym = PSF.SymmetrizeAroundZLP()
