@@ -24,7 +24,7 @@ def Readh5SI(filename):
             elif DataShape[3] == DataShape[4] == 512:
                 survey = Image(np.squeeze(AcqData), calibration=np.array(data[kk]['ImageData']['DimensionScaleX']))
             else:
-                SEM = Image(np.squeeze(AcqData), calibration=np.array(data[kk]['ImageData']['DimensionScaleX'])
+                SEM = Image(np.squeeze(AcqData), calibration=np.array(data[kk]['ImageData']['DimensionScaleX']))
     if np.shape(SEM.data)[-1] == 4 * np.shape(SI)[-1]:
         fuzzing = True
     return SI, Wavelengths, SEM, survey, fuzzing

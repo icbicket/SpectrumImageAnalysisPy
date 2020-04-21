@@ -107,6 +107,6 @@ plt.show()
 rms_error_filename = 'RMS error - SimNoise exp_PSF.csv'
 snr_zlp_filename = 'SNR_zlp - SimNoise exp_PSF.csv'
 snr_plasmon_filename = 'SNR_plasmon - SimNoise exp_PSF.csv'
-WriteToCSV(os.path.join(folder, rms_error_filename), error, 'RMS error')
-WriteToCSV(os.path.join(folder, snr_zlp_filename), snr_zlp, 'SNR ZLP')
-WriteToCSV(os.path.join(folder, snr_plasmon_filename), snr_plasmon, 'SNR plasmon')
+#WriteToCSV(os.path.join(folder, rms_error_filename), error, 'RMS error')
+#WriteToCSV(os.path.join(folder, snr_zlp_filename), snr_zlp, 'SNR ZLP')
+#WriteToCSV(os.path.join(folder, snr_plasmon_filename), snr_plasmon, 'SNR plasmon')
