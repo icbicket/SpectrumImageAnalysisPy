@@ -59,6 +59,10 @@ def normalize(x, ind=None):
 def find_fw(y, dx, x_0, fraction):
     '''
     Find the full width at the given fraction of the height of a peak
+    y: the intensity
+    dx: the difference between neighbouring x values (dispersion), constant over the whole spectrum (for now)
+    x_0: the index of the centre of the peak
+    fraction: the fraction of the peak height at which to calculate the full width
     '''
     lefttail = y[:x_0+1][::-1]
     diff1 = lefttail - fraction * y[x_0]

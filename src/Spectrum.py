@@ -57,20 +57,13 @@ class CLSpectrum(Spectrum):
         self.unit_label = 'Wavelength'
         self.secondary_units = 'eV'
         self.secondary_unit_label = 'Energy'
-        
-#    def SpikeRemoval(self, threshold):
-#        median = np.median(self.intensity)
-#        d = np.abs(self.intensity - median)
-#        median_d = np.median(d)
-#        s = d/median_d if median_d else 0.
-#        print(s)
-        
+    
     @classmethod
     def LoadFromCSV(cls, filename):
         spectrum = ImportCSV(filename)
         return cls(intensity=spectrum[:, 1], WavelengthRange=spectrum[:, 0], units='nm')
 
-        
+
 class EELSSpectrum(Spectrum):
     def __init__(self, intensity, SpectrumRange=None, channel_eV = None, dispersion=0.005, ZLP=None, units='eV'):
         '''intensity: 1D array
@@ -207,14 +200,14 @@ class EELSSpectrum(Spectrum):
         x_deconv = RL(RLiterations, PSF.intensity, self.intensity)
         print('Done %s iterations!' %RLiterations)
         return EELSSpectrum(x_deconv, SpectrumRange=self.SpectrumRange, dispersion=self.dispersion, units=self.units)
-        
+    
     def eVSlice(self, starteV, stopeV):
         sliced = specfun.slice_range(
             self.intensity, 
             [starteV, stopeV],
             self.SpectrumRange)
         return sliced
-        
+    
 #Richardson-Lucy algorithm
 def RL(iterations, PSF, Spec):
     RL4 = Spec.copy()
