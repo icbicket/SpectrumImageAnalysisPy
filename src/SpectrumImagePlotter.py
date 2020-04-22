@@ -142,7 +142,10 @@ class SpectrumImagePlotter(object):
         return SpectrumPlot
     
     def PlotContrastHistogram(self):
-        self.summedimhist, self.summedimbins = np.histogram(self.summedim.data, bins = self.contrastbins)
+        if isinstance(self.summedim.data, np.ma.core.MaskedArray):
+            self.summedimhist, self.summedimbins = np.histogram(self.summedim.data.compressed(), bins = self.contrastbins)
+        else:
+            self.summedimhist, self.summedimbins = np.histogram(self.summedim.data, bins = self.contrastbins)
         self.contrast_ax.cla()
         self.contrast_ax.plot(self.summedimbins[:-1], self.summedimhist, color = 'k')
         self.contrast_ax.set_axis_off()

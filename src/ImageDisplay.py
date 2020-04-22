@@ -117,7 +117,10 @@ class ImageDisplay(object):
         
     # Calculates and plots image histogram and connects interactive spanselector
     def PlotContrastHistogram(self):
-        self.imhist, self.imbins = np.histogram(self.Image.data.compressed(), bins = self.contrastbins)
+        if isinstance(self.Image.data, np.ma.core.MaskedArray):
+            self.imhist, self.imbins = np.histogram(self.Image.data.compressed(), bins = self.contrastbins)
+        else:
+            self.imhist, self.imbins = np.histogram(self.Image.data, bins = self.contrastbins)
         self.ax_contrast.cla()
         self.ax_contrast.plot(self.imhist, self.imbins[:-1], color = 'k')
         self.ax_contrast.set_axis_off()
