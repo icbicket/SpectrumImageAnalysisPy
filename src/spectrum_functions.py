@@ -55,3 +55,26 @@ def normalize(x, ind=None):
     
     x_norm = x/normfactor
     return x_norm
+
+def find_fw(y, dx, x_0, fraction):
+    '''
+    Find the full width at the given fraction of the height of a peak
+    '''
+    lefttail = y[:x_0+1][::-1]
+    diff1 = lefttail - fraction * y[x_0]
+    left_index_1 = np.argmax(np.diff(np.sign(diff1)) != 0)
+    left_index_2 = left_index_1 + 1
+    left_energy = dx * np.interp(
+        fraction * y[x_0], 
+        [lefttail[left_index_2], lefttail[left_index_1]], 
+        [left_index_2, left_index_1])
+    righttail = y[x_0:]
+    diff2 = righttail - fraction * y[x_0]
+    right_index_1 = np.argmax(np.diff(np.sign(diff2)) != 0) 
+    right_index_2 = right_index_1 + 1
+    right_energy = dx * np.interp(
+        fraction * y[x_0], 
+        [righttail[right_index_2], righttail[right_index_1]], 
+        [right_index_2, right_index_1])
+    FW = left_energy + right_energy
+    return FW

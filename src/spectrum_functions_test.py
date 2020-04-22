@@ -140,5 +140,42 @@ class SpectrumFunctionsTest(unittest.TestCase):
         with self.assertRaises(ValueError):
            spectrum_functions.normalize(x, ind)
 
+    def testFindFWHMInt(self):
+        '''
+        find_fw finds the right fw given a simple function
+        '''
+        y = np.array([1, 1, 2, 4, 2, 1, 1])
+        x = np.arange(7)
+        fwhm = 2.
+        self.assertEqual(fwhm, spectrum_functions.find_fw(y, 1, 3, 0.5))
+    
+    def testFindFWHMDecimal(self):
+        '''
+        find_fw finds the right fw given a simple function, answer is a fraction of the dispersion
+        '''
+        y = np.array([1, 1, 2, 5, 2, 1, 1])
+        x = np.arange(7)
+        fwhm = 5/3.
+        np.testing.assert_almost_equal(spectrum_functions.find_fw(y, 1, 3, 0.5), fwhm)
+        
+    def testFindFWAsymmetrical(self):
+        '''
+        find_fw finds the right fw given an asymmetrical function
+        '''
+        y = np.array([1, 1, 3, 5, 2, 1, 1])
+        x = np.arange(7)
+        fwhm = 2.5 / 3 + 1 + 0.25
+        self.assertEqual(fwhm, spectrum_functions.find_fw(y, 1, 3, 0.5))
+    
+    def testFindFWAsymmetricalRight(self):
+        '''
+        find_fw finds the right fw given an asymmetrical function, higher on the right side
+        '''
+        y = np.array([1, 1, 2, 5, 3, 1, 1])
+        x = np.arange(7)
+        fwhm = 2.5 / 3 + 1 + 0.25
+        self.assertEqual(fwhm, spectrum_functions.find_fw(y, 1, 3, 0.5))
+    
+    
 if __name__ == '__main__':
     unittest.main()

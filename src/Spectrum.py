@@ -183,25 +183,7 @@ class EELSSpectrum(Spectrum):
         return EELSSpectrum(padded, SpectrumRange=padded_range, dispersion=self.dispersion, ZLP=self.ZLP, units=self.units)
 
     def FindFW(self, intensityfraction):
-        lefttail = self.intensity[:self.ZLP][::-1]
-        diff1 = lefttail - intensityfraction*self.intensity[self.ZLP]
-        left_index_1 = np.argmax(np.diff(np.sign(diff1)) != 0)
-        left_index_2 = left_index_1 + 1
-        left_energy = self.dispersion * np.interp(
-            intensityfraction*self.intensity[self.ZLP], 
-            [lefttail[left_index_2], lefttail[left_index_1]], 
-            [left_index_2, left_index_1])+self.dispersion
-        
-        righttail = self.intensity[self.ZLP:]
-        diff2 = righttail - intensityfraction*self.intensity[self.ZLP]
-        right_index_1 = np.argmax(np.diff(np.sign(diff2)) != 0) 
-        right_index_2 = right_index_1 + 1
-        right_energy = self.dispersion * np.interp(
-            intensityfraction*self.intensity[self.ZLP], 
-            [righttail[right_index_2], righttail[right_index_1]], 
-            [right_index_2, right_index_1])
-        
-        FW = left_energy + right_energy
+        FW = specfun.find_fw(self.intensity, self.dispersion, self.ZLP, intensityfraction)
         return FW
     
     def RL_PSFsym(self, PSF, PSF_pad=0):
@@ -217,7 +199,8 @@ class EELSSpectrum(Spectrum):
         return PSF_sym
 
     def RLDeconvolution(self, RLiterations, PSF):
-        '''Input: RLiterations=number of iterations to perform
+        '''
+        Input: RLiterations=number of iterations to perform
             PSF=point spread function (an EELS spectrum object)
         '''
         print('Beginning deconvolution...')
