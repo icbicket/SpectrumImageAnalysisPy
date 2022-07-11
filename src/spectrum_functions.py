@@ -96,10 +96,11 @@ def trim_edge_spikes(x, y, delta_x=10, spike_condition=10):
     Output
     The x and y values of the spectrum, trimmed to remove any spikes in the data
     '''
-    if np.size(x) != np.max(np.shape(x)) or np.size(y) != np.max(np.shape(y)):
-        raise ValueError('x and y must be 1D arrays!')
-    if np.shape(x) != np.shape(y):
-        raise ValueError('x and y must have the same shape')
+    check_spectrum(x,y)
+#    if np.size(x) != np.max(np.shape(x)) or np.size(y) != np.max(np.shape(y)):
+#        raise ValueError('x and y must be 1D arrays')
+#    if np.shape(x) != np.shape(y):
+#        raise ValueError('x and y must have the same shape')
     spectrum_diff = np.diff(y)
     condition = np.abs(spectrum_diff) > spike_condition
     trimmed_x = np.copy(x)

@@ -447,7 +447,7 @@ class TrimEdgeSpikesTest(unittest.TestCase):
             25+0.02200037]]))
         delta_x = 10
         spike_condition = 10
-        with self.assertRaisesRegex(ValueError, 'x and y must be 1D arrays!'):
+        with self.assertRaisesRegex(ValueError, 'x is not a 1 dimensional array'):
             calculated_x, calculated_y = spectrum_functions.trim_edge_spikes(x, y, delta_x, spike_condition)
 
     def testNby2YArray(self):
@@ -479,7 +479,7 @@ class TrimEdgeSpikesTest(unittest.TestCase):
             25+0.02200037]]))
         delta_x = 10
         spike_condition = 10
-        with self.assertRaisesRegex(ValueError, 'x and y must be 1D arrays'):
+        with self.assertRaisesRegex(ValueError, 'y is not a 1 dimensional array'):
             calculated_x, calculated_y = spectrum_functions.trim_edge_spikes(x, y, delta_x, spike_condition)
 
     def testXYDifferentShapes(self):
@@ -501,7 +501,7 @@ class TrimEdgeSpikesTest(unittest.TestCase):
             0.38701816])
         delta_x = 10
         spike_condition = 10
-        with self.assertRaisesRegex(ValueError, 'x and y must have the same shape'):
+        with self.assertRaisesRegex(ValueError, 'x and y are not the same length'):
             calculated_x, calculated_y = spectrum_functions.trim_edge_spikes(x, y, delta_x, spike_condition)
     
     def testSpikeBelowCondition(self):
