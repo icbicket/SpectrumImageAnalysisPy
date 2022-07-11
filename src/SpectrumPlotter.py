@@ -245,8 +245,8 @@ class nmTickLocator(mticker.MaxNLocator):
             steps = steps[igood]
         self.numticks = len(self.other_axis.get_xticks())
         ticks = 1/np.linspace(1/vmin, 1/vmax, self.numticks)
-        for step in steps:
-            best_vmin = (_vmin//step) * step
-            low = np.round(mticker.Base(step).le(_vmin - best_vmin) / step)
-            high = np.round(mticker.Base(step).ge(_vmax - best_vmin) / step)
+#        for step in Steps:
+#            Best_Vmin = (_Vmin//Step) * Step
+#            Low = Np.Round(Mticker.Base(Step).Le(_Vmin - Best_Vmin) / Step)
+#            High = np.round(mticker.Base(step).ge(_vmax - best_vmin) / step)
         return ticks

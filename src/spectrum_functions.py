@@ -68,6 +68,7 @@ def find_fw(y, dx, x_0, fraction):
     diff1 = lefttail - fraction * y[x_0]
     left_index_1 = np.argmax(np.diff(np.sign(diff1)) != 0)
     left_index_2 = left_index_1 + 1
+    print(type(dx), type(fraction), type(left_index_2))
     left_energy = dx * np.interp(
         fraction * y[x_0], 
         [lefttail[left_index_2], lefttail[left_index_1]], 
@@ -82,3 +83,34 @@ def find_fw(y, dx, x_0, fraction):
         [right_index_2, right_index_1])
     FW = left_energy + right_energy
     return FW
+
+def trim_edge_spikes(x, y, delta_x=10, spike_condition=10):
+    '''
+    Trim any large spikes that appear on the edges of a spectrum, 
+    typically due to distortions on the camera/pile-up of counts at the edges
+    Input
+    x: the x-values of the spectrum (range), 1D array
+    y: the y-values of the spectrum (intensity), 1D array
+    delta_x: how many channels to look for a spike in on either side of the edge
+    spike_condition: the value of the magnitude of the slope of the spike in order to be considered a spike to trim
+    Output
+    The x and y values of the spectrum, trimmed to remove any spikes in the data
+    '''
+    if np.size(x) != np.max(np.shape(x)) or np.size(y) != np.max(np.shape(y)):
+        raise ValueError('x and y must be 1D arrays!')
+    if np.shape(x) != np.shape(y):
+        raise ValueError('x and y must have the same shape')
+    spectrum_diff = np.diff(y)
+    condition = np.abs(spectrum_diff) > spike_condition
+    trimmed_x = np.copy(x)
+    trimmed_y = np.copy(y)
+    if np.any(condition[:delta_x]):
+        trim_index_min = np.argwhere(condition[:delta_x])
+        trimmed_x = trimmed_x[np.max(trim_index_min+1):]
+        trimmed_y = trimmed_y[np.max(trim_index_min+1):]
+    if np.any(condition[-delta_x:]):
+        trim_index_max = np.argwhere(condition[-delta_x:])
+        trimmed_x = trimmed_x[:-(delta_x-np.min(trim_index_max))]
+        trimmed_y = trimmed_y[:-(delta_x-np.min(trim_index_max))]
+    return trimmed_x, trimmed_y
+

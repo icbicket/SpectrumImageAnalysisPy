@@ -9,8 +9,8 @@ from scipy.ndimage.filters import median_filter
 import handythread
 import multiprocessing
 from functools import partial
-import dm3_lib as DM3
-#from ncempy.io import dm
+#import dm3_lib as DM3
+from ncempy.io import dm
 import numbers
 
 def make_dict_from_tags(iterables):
@@ -32,11 +32,12 @@ def make_dict_from_tags(iterables):
     return d
 
 def import_EELS_dm3(filename):
-    data = DM3.DM3(filename)
-#    data = dm.dmReader(filename)
-    tags = make_dict_from_tags(data._storedTags)
+#    data = DM3.DM3(filename)
+    data = dm.dmReader(filename)
+    #tags = data.keys()
+    #tags = make_dict_from_tags(data._storedTags)
     imagedata = np.transpose(data.imagedata, axes=(1, 2, 0))
-    return imagedata, tags
+    return data #imagedata
 
 class SpectrumImage(object):
     """Class for spectrum image data set, must be 3d numpy array
@@ -158,20 +159,25 @@ class EELSSpectrumImage(SpectrumImage):
 #        self.spectrum_secondary_unit_label = 'Wavelength'
 
     @classmethod
-    def LoadFromDM3(cls, filename, spectrum_calibrated = True):
-        SI, metadata = import_EELS_dm3(filename)
-        dispersion = float(metadata['root']['ImageList']['1']['ImageData']['Calibrations']['Dimension']['2']['Scale'])
+    def LoadFromDM3(cls, filename, ZLP=True):
+        data = import_EELS_dm3(filename)
+        dispersion=data['pixelSize'][0]
+        SI = np.transpose(data['data'], axes=(1, 2, 0))
+#        SI = np.transpose(data.imagedata, axes=(1, 2, 0))
+#        print(SI['pixelSize'])
+#        dispersion = SI['pixelSize'][0]
+#        dispersion = float(metadata['root']['ImageList']['1']['ImageData']['Calibrations']['Dimension']['2']['Scale'])
 #        drifttube = float(metadata['root']['ImageList']['1']['ImageTags']['EELS']['Acquisition']['Spectrometer']['Energy loss (eV)'])
-        zero = float(metadata['root']['ImageList']['1']['ImageData']['Calibrations']['Dimension']['2']['Origin'])
-        if zero >= 0:
-            ZLP = True
-        else:
-            ZLP = False
-        if spectrum_calibrated is True:
-            channel_eV = [0, -zero * dispersion]
-        else:
-            channel_eV = None
-        return cls(SI = SI, dispersion = dispersion, ZLP = ZLP, channel_eV = channel_eV, metadata = metadata)
+#        zero = float(metadata['root']['ImageList']['1']['ImageData']['Calibrations']['Dimension']['2']['Origin'])
+        #if zero >= 0:
+        #    ZLP = True # not robust against a mis-calibrated spectrum
+        #else:
+        #    ZLP = False
+        #if spectrum_calibrated is True:
+        #    channel_eV = [0, -zero * dispersion]
+        #else:
+        #    channel_eV = None
+        return cls(SI = SI, dispersion = dispersion, ZLP = ZLP)
 
     @staticmethod        
     def FindZLP(data):
