@@ -115,3 +115,14 @@ def trim_edge_spikes(x, y, delta_x=10, spike_condition=10):
         trimmed_y = trimmed_y[:-(delta_x-np.min(trim_index_max))]
     return trimmed_x, trimmed_y
 
+def find_zero_loss_peak(y, method='max'):
+    '''
+    Identify the zero loss peak
+    max method: use the global maximum in the spectrum
+    '''
+    if method=='max':
+        ZLP_location = np.argmax(y)
+    else:
+        raise NotImplementedError
+    return ZLP_location
+
