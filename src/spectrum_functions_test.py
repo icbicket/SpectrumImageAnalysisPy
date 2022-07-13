@@ -634,13 +634,19 @@ class TrimEdgeSpikesTest(unittest.TestCase):
 
 class FindZLPTest(unittest.TestCase):
     '''
-    max method
+    max method: a spectrum with a global maximum
+    max: a spectrum with two equal global maxima - should fail
+    gaussian_fit method: normal
+    gaussian_fit_method: spectrum with a poor fit
+    lorentz fit method: normal
+    lorentz_fit method: spectrum with a poor fit
     any other methods are not implemented yet
     '''
     def testFindMaximum(self):
         '''
         Identify the maximum in a spectrum
         '''
+        x = np.arange(50)
         y = np.array([0.3391376 , 0.90049531, 0.30303949, 0.00884677, 
             0.30550112, 0.79999341, 0.55395753, 0.92713465, 0.77807738, 
             0.16248537, 0.29886288, 0.74531467, 0.95555297, 0.98566114, 
@@ -652,13 +658,56 @@ class FindZLPTest(unittest.TestCase):
             0.12215078, 0.5616116 , 0.49832654, 0.65885033, 0.09776671, 
             0.00571385, 0.79742504, 0.77946996, 0.13200986, 0.41926802, 
             0.38701816])
-        calculated_zlp_location = spectrum_functions.find_zero_loss_peak(y, method='max')
-        np.testing.assert_equal(16, calculated_zlp_location)
+        calculated_zlp_location, calculated_zlp_eV = spectrum_functions.find_zero_loss_peak(x, y, method='max')
+        np.testing.assert_equal(calculated_zlp_location, 16)
+        np.testing.assert_equal(calculated_zlp_eV, 16)
+
+    def testFindMaximumNot1Dispersion(self):
+        '''
+        Identify the maximum in a spectrum
+        '''
+        x = np.arange(50)*0.1
+        y = np.array([0.3391376 , 0.90049531, 0.30303949, 0.00884677, 
+            0.30550112, 0.79999341, 0.55395753, 0.92713465, 0.77807738, 
+            0.16248537, 0.29886288, 0.74531467, 0.95555297, 0.98566114, 
+            0.55011048, 0.875005  , 5, 0.84585932, 0.1783356 , 
+            0.80704334, 0.04382603, 0.59102601, 0.62387758, 0.51083627, 
+            0.32349622, 0.92865613, 0.0199939 , 0.93996841, 0.39261883, 
+            0.05113949, 0.90197447, 0.91428898, 0.35906732, 0.77910498, 
+            0.47574624, 0.65789791, 0.29094445, 0.7290157 , 0.55764925, 
+            0.12215078, 0.5616116 , 0.49832654, 0.65885033, 0.09776671, 
+            0.00571385, 0.79742504, 0.77946996, 0.13200986, 0.41926802, 
+            0.38701816])
+        calculated_zlp_location, calculated_zlp_eV = spectrum_functions.find_zero_loss_peak(x, y, method='max')
+        np.testing.assert_equal(calculated_zlp_location, 16)
+        np.testing.assert_equal(calculated_zlp_eV, 1.6)
+
+    def testTwoMaxima(self):
+        '''
+        Two equal maxima in the spectrum - pick the lowest index one, but raise a warning
+        '''
+        x = np.arange(50)
+        y = np.array([0.3391376 , 0.90049531, 0.30303949, 0.00884677, 
+            0.30550112, 0.79999341, 0.55395753, 0.92713465, 0.77807738, 
+            0.16248537, 0.29886288, 0.74531467, 0.95555297, 0.98566114, 
+            0.55011048, 0.875005  , 5, 0.84585932, 0.1783356 , 
+            0.80704334, 0.04382603, 0.59102601, 0.62387758, 0.51083627, 
+            0.32349622, 0.92865613, 0.0199939 , 0.93996841, 0.39261883, 
+            0.05113949, 0.90197447, 5, 0.35906732, 0.77910498, 
+            0.47574624, 0.65789791, 0.29094445, 0.7290157 , 0.55764925, 
+            0.12215078, 0.5616116 , 0.49832654, 0.65885033, 0.09776671, 
+            0.00571385, 0.79742504, 0.77946996, 0.13200986, 0.41926802, 
+            0.38701816])
+        with self.assertRaisesRegex(Warning, 'Two possible ZLPs found'):
+            calculated_zlp_location, calculated_zlp_eV = spectrum_functions.find_zero_loss_peak(x, y, method='max')
+            self.assertEqual(calculated_zlp_location, 16)
+            self.assertEqual(calculated_zlp_eV, 16)
 
     def testNotImplemented(self):
         '''
         Try a method that is not yet implemented
         '''
+        x = np.arange(50)
         y = np.array([0.3391376 , 0.90049531, 0.30303949, 0.00884677, 
             0.30550112, 0.79999341, 0.55395753, 0.92713465, 0.77807738, 
             0.16248537, 0.29886288, 0.74531467, 0.95555297, 0.98566114, 
@@ -671,7 +720,7 @@ class FindZLPTest(unittest.TestCase):
             0.00571385, 0.79742504, 0.77946996, 0.13200986, 0.41926802, 
             0.38701816])
         with self.assertRaises(NotImplementedError):
-            calculated_zlp_location = spectrum_functions.find_zero_loss_peak(y, method='min')
+            calculated_zlp_location = spectrum_functions.find_zero_loss_peak(x, y, method='min')
 
 class FindBaselineTest(unittest.TestCase):
     '''

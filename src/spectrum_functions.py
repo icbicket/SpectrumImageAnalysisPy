@@ -1,5 +1,6 @@
 from __future__ import division
 import numpy as np
+from astropy.modeling import models, fitting, powerlaws
 
 '''
 This file contains functions for 1D datasets, primarily intended for use with
@@ -133,17 +134,48 @@ def trim_edge_spikes(x, y, delta_x=10, spike_condition=10):
         trimmed_y = trimmed_y[:-(delta_x-np.min(trim_index_max))]
     return trimmed_x, trimmed_y
 
-def find_zero_loss_peak(y, method='max'):
+def find_zero_loss_peak(x, y, method='max'):
     '''
     Identify the zero loss peak
     max method: use the global maximum in the spectrum
     '''
+    check_spectrum(x,y)
+    max_location = np.argmax(y)
     if method=='max':
-        ZLP_location = np.argmax(y)
+        ZLP_location = max_location
+        if np.count_nonzero(y==y[ZLP_location]) != 1:
+            raise Warning('Two possible ZLPs found')
+            print('Returning the first ZLP, found at {x[ZLP_location]} eV')
+        else:
+            print(f'ZLP found at {x[ZLP_location]} eV')
+        return ZLP_location, x[ZLP_location]
 #        ZLP = int(stats.mode(np.argmax(data, axis = -1), axis=None)[0])
+    elif method=='gaussian_fit':
+    # TODO: find the FWHM and input it into stddev
+    # TODO: calculate fit statistics and use them to judge if the fit was successful
+        model_zlp = models.Gaussian1D(amplitude = y[max_location], mean=max_location, stddev=0.01)
+        fit_zlp = fitting.LevMarLSQFitter()
+        zlp_fit_range = range(max_location - 2, max_location + 2)
+        zlp_fitted = fit_zlp(model_zlp, x[zlp_fit_range], y[zlp_fit_range])
+        print(f'ZLP found at {fit_zlp.mean}')
+        return fit_zlp
     else:
         raise NotImplementedError
-    return ZLP_location
+
+
+#def fit_zlp_maximum(self, data, data_range):
+#        #model_zlp = models.Lorentz1D(amplitude = np.max(data), x_0=0, fwhm=0.01)
+#        model_zlp = models.Gaussian1D(amplitude = np.max(data), mean=0, stddev=0.01)
+#        fit_zlp = fitting.LevMarLSQFitter()
+#        zlp_location = self.find_ZLP(data)
+#        zlp_fit_range = range(zlp_location - 2, zlp_location + 2)
+#        zlp_fitted = fit_zlp(model_zlp, data_range[zlp_fit_range], data[zlp_fit_range])
+#        print(fit_zlp.fit_info)
+#        print(dir(fit_zlp))
+#        #plt.figure()
+#        #plt.plot(data_range, data, marker='x')
+#        #plt.plot(np.linspace(-0.01, 0.01, 100), zlp_fitted(np.linspace(-0.01, 0.01, 100)), ls='--')
+#        return zlp_fitted
 
 def find_baseline(y, indices):
         '''

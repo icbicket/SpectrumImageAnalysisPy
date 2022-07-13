@@ -115,7 +115,7 @@ class EELSSpectrum(Spectrum):
         return cls(intensity=spectrum[:, 1], SpectrumRange=spectrum[:,0], dispersion=spectrum[1,0]-spectrum[0,0], units='eV')
 
     def FindZLP(self, data, method='max'):
-        ZLP=specfun.find_zero_loss_peak(data, method)
+        ZLP, ZLP_eV = specfun.find_zero_loss_peak(self.SpectrumRange, data, method)
         return ZLP
     
     def Normalize(self, value=None, index=None):
