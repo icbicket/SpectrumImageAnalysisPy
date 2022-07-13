@@ -761,7 +761,47 @@ class SubtractValueTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Input value should not be NaN'):
             calculated = spectrum_functions.subtract_value(y, value)
 
+class IntegrateSpectrumTest(unittest.TestCase):
+    '''
+    integrate the whole spectrum
+    integrate a slice of the spectrum
+    same deltaX throughout spectrum
+    changing deltaX at different locations
+    '''
+    def testWholeSpectrum(self):
+        y = np.array([1, 2 ,3])
+        x = np.array([4, 6, 8])
+        expected = 8.0
+        calculated = spectrum_functions.integrate_spectrum(x, y)
+        self.assertAlmostEqual(expected, calculated)
 
+    def testIndexWholeSpectrum(self):
+        y = np.array([1, 2 ,3])
+        x = np.array([4, 6, 8])
+        expected = 8.0
+        calculated = spectrum_functions.integrate_spectrum(x, y, indices=(0, 3))
+        self.assertAlmostEqual(expected, calculated)
+
+    def testIndexPartialSpectrum(self):
+        y = np.array([1, 5, 4, 4, 6, 2])
+        x = np.array([4, 6, 8, 10, 12, 14])
+        expected = 17.0
+        calculated = spectrum_functions.integrate_spectrum(x, y, indices=(1, 4))
+        self.assertAlmostEqual(expected, calculated)
+
+    def testIndexChangingXDiffWholeSpectrum(self):
+        y = np.array([1, 5 ,4, 4, 6, 2])
+        x = np.array([4, 6, 7, 9.5, 12.2, 12.5])
+        expected = 35.2
+        calculated = spectrum_functions.integrate_spectrum(x, y)
+        self.assertAlmostEqual(expected, calculated)
+
+    def testIndexChangingXDiffPartialSpectrum(self):
+        y = np.array([1, 5 ,4, 4, 6, 2])
+        x = np.array([4, 6, 7, 9.5, 12.2, 12.5])
+        expected = 28
+        calculated = spectrum_functions.integrate_spectrum(x, y, indices=(1,5))
+        self.assertAlmostEqual(expected, calculated)
 
 if __name__ == '__main__':
     unittest.main()

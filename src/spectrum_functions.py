@@ -150,6 +150,15 @@ def subtract_value(y, value):
     new_y = y - value
     return new_y
 
-def integrate_spectrum(x, y):
-    integral = np.trapz(data, data_range)
+def integrate_spectrum(x, y, indices=None):
+    '''
+    Integrate a spectrum or slice from a spectrum
+    indices: a (start, stop) value pair of indices over which to integrate 
+    (eg, integrating only a slice). If None, integrate the whole spectrum.
+    '''
+    check_spectrum(x, y)
+    if indices is not None:
+        integral = np.trapz(y[indices[0]:indices[1]], x[indices[0]:indices[1]])
+    else:
+        integral = np.trapz(y, x)
     return integral

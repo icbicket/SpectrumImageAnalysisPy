@@ -235,7 +235,17 @@ class EELSSpectrum(Spectrum):
         '''
         self.intensity = specfun.subtract_value(self.intensity, baseline)
         return
-
+        
+    def integrate_spectrum(self, indices=None):
+        '''
+        Integrate the area between the indices
+        indices: (start, stop) index values, following numpy indexing conventions
+        '''
+        integral = specfun.integrate_spectrum(
+            self.intensity, 
+            self.SpectrumRange, 
+            indices)
+        return integral
 
 #Richardson-Lucy algorithm
 def RL(iterations, PSF, Spec):
