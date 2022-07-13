@@ -20,7 +20,7 @@ def check_spectrum(x, y):
 
 def check_spectrum_one_axis(x):
     if len(np.shape(x)) != 1:
-        raise ValueError('x is not a 1 dimensional array')
+        raise ValueError('This is not a 1 dimensional array')
     return
 
 def slice_range(x, start_stop, y=None):
@@ -140,3 +140,16 @@ def find_baseline(y, indices):
         check_spectrum_one_axis(y)
         baseline = np.average(y[indices])
         return baseline
+        
+def subtract_value(y, value):
+    '''
+    Subtract a value from the spectral intensity (DC offset)
+    '''
+    if np.isnan(value):
+        raise ValueError('Input value should not be NaN')
+    new_y = y - value
+    return new_y
+
+def integrate_spectrum(x, y):
+    integral = np.trapz(data, data_range)
+    return integral

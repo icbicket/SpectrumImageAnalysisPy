@@ -700,5 +700,68 @@ class FindBaselineTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             calculated = spectrum_functions.find_baseline(y, indices)
 
+class SubtractValueTest(unittest.TestCase):
+    '''
+    - Subtract a positive value
+    - subtract a negative value
+    - subtract a 1D array
+    - subtract a single value
+    - subtract NaN
+    '''
+    def testPositiveValue(self):
+        y = np.array([0.3391376 , 0.90049531, 0.30303949, 0.00884677, 
+            0.30550112, 0.79999341, 0.55395753, 0.92713465, 0.77807738, 
+            0.16248537, 0.29886288, 0.74531467, 0.95555297, 0.98566114, 
+            0.55011048, 0.875005])
+        value = 0.1
+        expected = np.array([0.2391376 , 0.80049531, 0.20303949, -0.09115323, 
+            0.20550112, 0.69999341, 0.45395753, 0.82713465, 0.67807738, 
+            0.06248537, 0.19886288, 0.64531467, 0.85555297, 0.88566114, 
+            0.45011048, 0.775005])
+        calculated = spectrum_functions.subtract_value(y, value)
+        np.testing.assert_allclose(calculated, expected)
+    
+    def testNegativeValue(self):
+        y = np.array([0.3391376 , 0.90049531, 0.30303949, 0.00884677, 
+            0.30550112, 0.79999341, 0.55395753, 0.92713465, 0.77807738, 
+            0.16248537, 0.29886288, 0.74531467, 0.95555297, 0.98566114, 
+            0.55011048, 0.875005])
+        value = -0.1
+        expected = np.array([0.4391376 , 1.00049531, 0.40303949, 0.10884677, 
+            0.40550112, 0.89999341, 0.65395753, 1.02713465, 0.87807738, 
+            0.26248537, 0.39886288, 0.84531467, 1.05555297, 1.08566114, 
+            0.65011048, 0.975005])
+        calculated = spectrum_functions.subtract_value(y, value)
+        np.testing.assert_allclose(calculated, expected)
+
+    def test1DArrayValue(self):
+        y = np.array([0.3391376 , 0.90049531, 0.30303949, 0.00884677, 
+            0.30550112, 0.79999341, 0.55395753, 0.92713465, 0.77807738, 
+            0.16248537, 0.29886288, 0.74531467, 0.95555297, 0.98566114, 
+            0.55011048, 0.875005])
+        value = np.array([0.1, -0.1])
+        with self.assertRaises(ValueError):
+            calculated = spectrum_functions.subtract_value(y, value)
+
+    def test1DArrayValue(self):
+        y = np.array([0.3391376 , 0.90049531, 0.30303949, 0.00884677, 
+            0.30550112, 0.79999341, 0.55395753, 0.92713465, 0.77807738, 
+            0.16248537, 0.29886288, 0.74531467, 0.95555297, 0.98566114, 
+            0.55011048, 0.875005])
+        value = np.nan
+        with self.assertRaises(ValueError):
+            calculated = spectrum_functions.subtract_value(y, value)
+
+    def testNaNValue(self):
+        y = np.array([0.3391376 , 0.90049531, 0.30303949, 0.00884677, 
+            0.30550112, 0.79999341, 0.55395753, 0.92713465, 0.77807738, 
+            0.16248537, 0.29886288, 0.74531467, 0.95555297, 0.98566114, 
+            0.55011048, 0.875005])
+        value = np.nan
+        with self.assertRaisesRegex(ValueError, 'Input value should not be NaN'):
+            calculated = spectrum_functions.subtract_value(y, value)
+
+
+
 if __name__ == '__main__':
     unittest.main()

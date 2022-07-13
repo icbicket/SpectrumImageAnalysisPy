@@ -227,6 +227,15 @@ class EELSSpectrum(Spectrum):
         '''
         baseline_value = specfun.find_baseline(self.intensity, indices)
         return baseline_value
+    
+    def subtract_baseline(self, baseline):
+        '''
+        Subtract a baseline value from the spectrum
+        Modifies intensity in place
+        '''
+        self.intensity = specfun.subtract_value(self.intensity, baseline)
+        return
+
 
 #Richardson-Lucy algorithm
 def RL(iterations, PSF, Spec):
