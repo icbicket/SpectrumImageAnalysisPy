@@ -113,9 +113,9 @@ class EELSSpectrum(Spectrum):
     def LoadFromCSV(cls, filename):
         spectrum = ImportCSV(filename)
         return cls(intensity=spectrum[:, 1], SpectrumRange=spectrum[:,0], dispersion=spectrum[1,0]-spectrum[0,0], units='eV')
-        
-    def FindZLP(self, data):
-        ZLP = int(stats.mode(np.argmax(data, axis = -1), axis=None)[0])
+
+    def FindZLP(self, data, method='max'):
+        ZLP=specfun.find_zero_loss_peak(data, method)
         return ZLP
     
     def Normalize(self, ind=None):
@@ -207,7 +207,19 @@ class EELSSpectrum(Spectrum):
             [starteV, stopeV],
             self.SpectrumRange)
         return sliced
-    
+
+    def trim_edge_spikes(self, delta_x=10, spike_condition=10):
+        '''
+        Trim the edge spikes off. Modifies the spectrum in place.
+        '''
+        self.SpectrumRange, self.intensity = specfun.trim_edge_spikes(
+            self.SpectrumRange, 
+            self.intensity, 
+            delta_x, 
+            spike_condition)
+        print('Edge spikes trimmed')
+        return
+
 #Richardson-Lucy algorithm
 def RL(iterations, PSF, Spec):
     RL4 = Spec.copy()

@@ -122,6 +122,7 @@ def find_zero_loss_peak(y, method='max'):
     '''
     if method=='max':
         ZLP_location = np.argmax(y)
+#        ZLP = int(stats.mode(np.argmax(data, axis = -1), axis=None)[0])
     else:
         raise NotImplementedError
     return ZLP_location
