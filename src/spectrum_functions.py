@@ -46,21 +46,38 @@ def slice_range(x, start_stop, y=None):
     stop_i = 1 + (np.abs(y - start_stop[1])).argmin()
     return x[start_i:stop_i]
 
-def normalize(x, ind=None):
-    '''Normalize data to value of x at the given index or the sum of x 
-    between the given indices or if ind is None, over the whole spectrum'''
-    if isinstance(ind, int):
-        normfactor = x[ind]
-    elif ind is None:
-        normfactor = np.sum(x, keepdims=True)
-    elif np.size(ind) == 2:
-        normfactor = np.sum(x[ind[0]:ind[1]], keepdims=True)
+def normalize(x, y, value=None, index=None):
+    '''
+    Normalize data to value given in the input value or to the value of y at the given index or the integral of y over the given indices. If value is None and index is None, normalize the data to the integral of the whole spectrum
+    '''
+#    if isinstance(ind, int):
+#        normfactor = x[ind]
+#    elif ind is None:
+#        normfactor = np.sum(x, keepdims=True)
+#    elif np.size(ind) == 2:
+#        normfactor = np.sum(x[ind[0]:ind[1]], keepdims=True)
+#    else:
+#        raise ValueError('ind is not right: it should be a single integer or '
+#        'a list of two integers, or None')
+    check_spectrum(x,y)
+    if value is not None and index is not None:
+        raise ValueError('value and index are mutually exclusive inputs')
+    elif value is None and index is not None:
+        if isinstance(index, int):
+            value = y[index]
+        elif np.size(index) == 2:
+            value = integrate_spectrum(x, y, index)
+        else:
+            raise ValueError('index must be an integer, a pair of integers, or None')
+    elif value is not None and index is None:
+        if isinstance(value, int) or isinstance(value, float):
+            pass
+        else:
+            raise ValueError('value must be a single number')
     else:
-        raise ValueError('ind is not right: it should be a single integer or '
-        'a list of two integers, or None')
-    
-    x_norm = x/normfactor
-    return x_norm
+        value = integrate_spectrum(x, y)
+    y_norm = y/value
+    return y_norm
 
 def find_fw(y, dx, x_0, fraction):
     '''
@@ -74,7 +91,6 @@ def find_fw(y, dx, x_0, fraction):
     diff1 = lefttail - fraction * y[x_0]
     left_index_1 = np.argmax(np.diff(np.sign(diff1)) != 0)
     left_index_2 = left_index_1 + 1
-    print(type(dx), type(fraction), type(left_index_2))
     left_energy = dx * np.interp(
         fraction * y[x_0], 
         [lefttail[left_index_2], lefttail[left_index_1]], 

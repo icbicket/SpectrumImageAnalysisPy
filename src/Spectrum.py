@@ -118,10 +118,39 @@ class EELSSpectrum(Spectrum):
         ZLP=specfun.find_zero_loss_peak(data, method)
         return ZLP
     
-    def Normalize(self, ind=None):
-        '''Normalize data to integral'''
-        data_norm = specfun.normalize(self.intensity, ind)
-        return EELSSpectrum(data_norm, SpectrumRange=self.SpectrumRange, dispersion=self.dispersion, ZLP=self.ZLP, units=self.units)
+    def Normalize(self, value=None, index=None):
+        '''
+        Normalize data to the value given or to the value of intensity at 
+        index, or to the integral of the spectrum over a pair of indices given
+        '''
+#        if value is not None and index is not None:
+#            raise ValueError('value and index are mutually exclusive inputs')
+#        elif value is None and index is not None:
+#            if isinstance(index, int):
+#                value = self.intensity[index]
+#            elif index is None:
+#                value = np.sum(x, keepdims=True)
+#            elif np.size(index) == 2:
+#                value = specfun.integrate_spectrum(
+#                    self.SpectrumRange, 
+#                    self.intensity, 
+#                    index)
+#                value = np.sum(x[index[0]:index[1]], keepdims=True)
+#            else:
+#                raise ValueError('ind is not right: it should be a single integer, '
+#                'a pair of two integers, or None')
+#        elif value is not None and index is None:
+#            pass
+#        else:
+#            value = specfun.integrate_spectrum(self.SpectrumRange, self.intensity
+#            )
+        data_norm = specfun.normalize(self.SpectrumRange, self.intensity, value, index)
+        return EELSSpectrum(
+            data_norm, 
+            SpectrumRange=self.SpectrumRange, 
+            dispersion=self.dispersion, 
+            ZLP=self.ZLP, 
+            units=self.units)
 
     def SymmetrizeAroundZLP(self):
         if self.ZLP < (self.length-1)/2.:

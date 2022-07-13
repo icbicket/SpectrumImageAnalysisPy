@@ -2,7 +2,7 @@ import spectrum_functions
 import unittest
 import numpy as np
 
-class SpectrumFunctionsTest(unittest.TestCase):
+class CheckSpectrumTest(unittest.TestCase):
     
     def test2DSpecX(self):
         '''an error is raised if check_spectrum is given a 2D x input'''
@@ -29,6 +29,7 @@ class SpectrumFunctionsTest(unittest.TestCase):
            'x and y are not the same length'):
            spectrum_functions.check_spectrum(x, y)
 
+class SliceRangeTest(unittest.TestCase):
     def testSliceRange(self):
         '''slice_range works properly in normal use case'''
         x = np.arange(10)
@@ -99,47 +100,128 @@ class SpectrumFunctionsTest(unittest.TestCase):
             spectrum_functions.slice_range(x, start_stop, y)
             ))
 
+class NormalizeTest(unittest.TestCase):
+    '''
+    value is None and index is None
+    value is None and index is a single integer
+    value is None and index is a pair of integers
+    value is None and index is a float
+    value is None and index has more than two values inside
+    value is a single integer and index is None
+    value is a single float and index is None
+    value has two numbers inside and index is None
+    value is not a float or integer and index is None
+    value is a number and index is a number
+    '''
     def testNormalize1Index(self):
         '''Normalize works as expected when a single index is given'''
-        x = np.arange(10)
+        x = np.arange(10)*0.2
+        y = np.array([1, 1, 2, 20, 35, 20, 1, 1, 1, 1])
         ind = 2
         np.testing.assert_allclose(
-            x/2., 
-            spectrum_functions.normalize(x, ind)
+            y/2., 
+            spectrum_functions.normalize(x, y, value=None, index=ind),
+            atol=1e-7
             )
 
     def testNormalizeFloatIndex(self):
         '''Normalize throws an error when given a float index'''
-        x = np.arange(10)
+        x = np.arange(10)*0.2
+        y = np.array([1, 1, 2, 20, 35, 20, 1, 1, 1, 1])
         ind = 2.4
-        with self.assertRaises(ValueError):
-           spectrum_functions.normalize(x, ind)
+        with self.assertRaisesRegex(ValueError, 'index must be an integer, a pair of integers, or None'):
+           spectrum_functions.normalize(x, y, value=None, index=ind)
 
     def testNormalize1IndexTuple(self):
-        '''Normalize throws an error if a single index inside a sequence
-         is given'''
+        '''
+        Normalize throws an error if a single index inside a sequence
+        is given
+         '''
         x = np.arange(10)
-        ind = [3]
-        with self.assertRaises(ValueError):
-           spectrum_functions.normalize(x, ind)
+        y = np.array([1, 1, 2, 20, 35, 20, 1, 1, 1, 1])
+        ind = (3,)
+        with self.assertRaisesRegex(ValueError, 'index must be an integer, a pair of integers, or None'):
+           spectrum_functions.normalize(x, y, value=None, index=ind)
 
     def testNormalize2Indices(self):
         '''Normalize works as expected when two indices are given'''
         x = np.arange(10)
-        ind = (2, 5)
+        y = np.array([1, 1, 2, 20, 35, 20, 1, 1, 1, 1])
+        ind = (2, 6)
         np.testing.assert_allclose(
-            x/9., 
-            spectrum_functions.normalize(x, ind)
+            y/66., 
+            spectrum_functions.normalize(x, y, value=None, index=ind)
             )
         
     def testNormalizeMoreIndices(self):
         '''Normalize raises an error if more than two indices are passed as
         input'''
         x = np.arange(10)
+        y = np.array([1, 1, 2, 20, 35, 20, 1, 1, 1, 1, 1])
         ind = (2, 5, 3)
         with self.assertRaises(ValueError):
-           spectrum_functions.normalize(x, ind)
+           spectrum_functions.normalize(x, y, value=None, index=ind)
 
+    def testNoIndexNoValue(self):
+        '''
+        Uses the integral of the whole spectrum as the normalization factor
+        '''
+        x = np.arange(10)
+        y = np.array([1, 1, 2, 20, 35, 20, 1, 1, 1, 1])
+        expected = y/82
+        calculated = spectrum_functions.normalize(x, y, value=None, index=None)
+        np.testing.assert_allclose(calculated, expected)
+
+    def test1IntValueNoIndex(self):
+        '''
+        Feed in a single value to normalize to
+        '''
+        x = np.arange(10)
+        y = np.array([1, 1, 2, 20, 35, 20, 1, 1, 1, 1])
+        expected = np.array([0.5, 0.5, 1, 10, 17.5, 10, 0.5, 0.5, 0.5, 0.5])
+        calculated = spectrum_functions.normalize(x, y, value=2, index=None)
+        np.testing.assert_allclose(calculated, expected)
+
+    def test1FloatValueNoIndex(self):
+        '''
+        Feed in a single floating point value to normalize to
+        '''
+        x = np.arange(10)
+        y = np.array([1, 1, 2, 20, 35, 20, 1, 1, 1, 1])
+        expected = np.array([0.4, 0.4, 0.8, 8.0, 14.0, 8.0, 0.4, 0.4, 0.4, 0.4])
+        calculated = spectrum_functions.normalize(x, y, value=2.5, index=None)
+        np.testing.assert_allclose(calculated, expected)
+
+    def testBadValueNoIndex(self):
+        '''
+        value is a string - should throw an error
+        '''
+        x = np.arange(10)
+        y = np.array([1, 1, 2, 20, 35, 20, 1, 1, 1, 1])
+        expected = np.array([0.5, 0.5, 1, 10, 17.5, 10, 0.5, 0.5, 0.5, 0.5])
+        with self.assertRaisesRegex(ValueError, 'value must be a single number'):
+            calculated = spectrum_functions.normalize(x, y, value='12', index=None)
+
+    def test2ValuesNoIndex(self):
+        '''
+        value has two numbers - should throw an error
+        '''
+        x = np.arange(10)
+        y = np.array([1, 1, 2, 20, 35, 20, 1, 1, 1, 1])
+        with self.assertRaisesRegex(ValueError, 'value must be a single number'):
+            calculated = spectrum_functions.normalize(x, y, value=[2, 3], index=None)
+
+    def testValueAndIndex(self):
+        '''
+        both value and index are defined - should throw an error
+        '''
+        x = np.arange(10)
+        y = np.array([1, 1, 2, 20, 35, 20, 1, 1, 1, 1])
+        with self.assertRaisesRegex(ValueError, 'value and index are mutually exclusive'):
+            calculated = spectrum_functions.normalize(x, y, value=1.5, index=2)
+
+
+class FindFWTest(unittest.TestCase):
     def testFindFWHMInt(self):
         '''
         find_fw finds the right fw given a simple function
