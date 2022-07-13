@@ -220,6 +220,14 @@ class EELSSpectrum(Spectrum):
         print('Edge spikes trimmed')
         return
 
+    def estimate_baseline(self, indices):
+        '''
+        Estimate a baseline (offset of intensity values above the x-axis)
+        based on user-input indices
+        '''
+        baseline_value = specfun.find_baseline(self.intensity, indices)
+        return baseline_value
+
 #Richardson-Lucy algorithm
 def RL(iterations, PSF, Spec):
     RL4 = Spec.copy()

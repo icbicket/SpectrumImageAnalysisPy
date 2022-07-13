@@ -16,6 +16,12 @@ def check_spectrum(x, y):
         raise ValueError('y is not a 1 dimensional array')
     if len(x) != len(y):
         raise ValueError('x and y are not the same length')
+    return
+
+def check_spectrum_one_axis(x):
+    if len(np.shape(x)) != 1:
+        raise ValueError('x is not a 1 dimensional array')
+    return
 
 def slice_range(x, start_stop, y=None):
     '''
@@ -97,10 +103,6 @@ def trim_edge_spikes(x, y, delta_x=10, spike_condition=10):
     The x and y values of the spectrum, trimmed to remove any spikes in the data
     '''
     check_spectrum(x,y)
-#    if np.size(x) != np.max(np.shape(x)) or np.size(y) != np.max(np.shape(y)):
-#        raise ValueError('x and y must be 1D arrays')
-#    if np.shape(x) != np.shape(y):
-#        raise ValueError('x and y must have the same shape')
     spectrum_diff = np.diff(y)
     condition = np.abs(spectrum_diff) > spike_condition
     trimmed_x = np.copy(x)
@@ -127,3 +129,14 @@ def find_zero_loss_peak(y, method='max'):
         raise NotImplementedError
     return ZLP_location
 
+def find_baseline(y, indices):
+        '''
+        Find a value for the baseline 
+        (to compensate for poor dark/gain reference on the camera)
+        Input
+        - y: the y-data/intensity data for the spectrum
+        - indices: the indices over which to derive the baseline
+        '''
+        check_spectrum_one_axis(y)
+        baseline = np.average(y[indices])
+        return baseline
